@@ -1,67 +1,598 @@
-				<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CreatureMeza</title>
+    <title>CreatureMeza — Fashion</title>
 
     <style>
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            min-height: 100vh;
-            font-family: Arial, sans-serif;
-            background: #0b0b0f;
-            color: white;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #0a0a0a;
+            color: #fff;
+        }
 
+        /* Шапка */
+
+        header {
+            height: 75px;
             display: flex;
-            justify-content: center;
             align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            border-bottom: 1px solid #222;
+            position: sticky;
+            top: 0;
+            background: rgba(10, 10, 10, 0.92);
+            backdrop-filter: blur(15px);
+            z-index: 10;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .logo span {
+            color: #888;
+        }
+
+        .cart {
+            font-size: 14px;
+            color: #aaa;
+        }
+
+        /* Главный экран */
+
+        .hero {
+            min-height: 650px;
+            padding: 90px 7% 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
             text-align: center;
         }
 
-        .container {
-            padding: 30px;
+        .label {
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            font-size: 12px;
+            margin-bottom: 20px;
         }
 
-        h1 {
-            font-size: 48px;
-            margin-bottom: 15px;
+        .hero h1 {
+            margin: 0;
+            font-size: clamp(50px, 12vw, 130px);
+            line-height: 0.85;
+            letter-spacing: -7px;
         }
 
-        p {
-            color: #aaa;
-            font-size: 18px;
-            margin-bottom: 30px;
+        .hero p {
+            color: #999;
+            max-width: 500px;
+            margin: 35px auto;
+            font-size: 16px;
+            line-height: 1.6;
         }
 
-        button {
-            border: none;
+        .start {
+            width: fit-content;
+            margin: 0 auto;
             padding: 15px 30px;
-            border-radius: 12px;
-            background: white;
-            color: black;
-            font-size: 17px;
+            border: 1px solid #fff;
+            border-radius: 100px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
             font-weight: bold;
+            transition: 0.2s;
+        }
+
+        .start:hover {
+            transform: scale(1.04);
+        }
+
+        /* Конструктор */
+
+        .builder {
+            padding: 90px 7%;
+            border-top: 1px solid #222;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 42px;
+            margin: 0 0 12px;
+            letter-spacing: -2px;
+        }
+
+        .section-title p {
+            color: #777;
+            margin: 0;
+        }
+
+        .category {
+            margin-bottom: 70px;
+        }
+
+        .category-name {
+            text-align: center;
+            color: #777;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        .selector {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+
+        .arrow {
+            width: 48px;
+            height: 48px;
+            border: 1px solid #333;
+            border-radius: 50%;
+            background: #111;
+            color: #fff;
+            font-size: 22px;
+            cursor: pointer;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+
+        .arrow:hover {
+            background: #fff;
+            color: #000;
+        }
+
+        .item {
+            width: min(360px, 65vw);
+            min-height: 390px;
+            border: 1px solid #252525;
+            border-radius: 24px;
+            background: #111;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .item-image {
+            height: 270px;
+            border-radius: 16px;
+            background:
+                radial-gradient(circle at 50% 35%, #444 0%, #222 30%, #111 70%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 70px;
+        }
+
+        .item-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            gap: 15px;
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .item-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .item-price {
+            color: #aaa;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        /* Итог */
+
+        .total {
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 30px;
+            border: 1px solid #333;
+            border-radius: 24px;
+            background: #111;
+            text-align: center;
+        }
+
+        .total-title {
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 11px;
+        }
+
+        .total-price {
+            font-size: 42px;
+            font-weight: bold;
+            margin: 12px 0 20px;
+        }
+
+        .choose {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #fff;
+            color: #000;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
+        footer {
+            padding: 50px 7%;
+            border-top: 1px solid #222;
+            text-align: center;
+            color: #555;
+            font-size: 13px;
+        }
+
+        @media (max-width: 600px) {
+
+            header {
+                padding: 0 20px;
+            }
+
+            .hero {
+                padding: 70px 20px;
+            }
+
+            .hero h1 {
+                letter-spacing: -4px;
+            }
+
+            .builder {
+                padding: 70px 20px;
+            }
+
+            .selector {
+                gap: 10px;
+            }
+
+            .arrow {
+                width: 42px;
+                height: 42px;
+            }
+
+            .item {
+                width: 65vw;
+            }
         }
     </style>
 </head>
 
 <body>
 
-    <div class="container">
+<header>
+    <div class="logo">Creature<span>Meza</span></div>
+    <div class="cart">YOUR OUTFIT</div>
+</header>
 
-        <h1>CreatureMeza</h1>
+<section class="hero">
 
-        <p>Добро пожаловать на мой сайт.</p>
+    <div class="label">CreatureMeza / 2026</div>
 
-        <button>Начать</button>
+    <h1>CREATE<br>YOUR FIT.</h1>
+
+    <p>
+        Собери свой образ из вещей, которые подходят именно тебе.
+        Выбирай верх, низ и обувь.
+    </p>
+
+    <a href="#builder" class="start">Начать →</a>
+
+</section>
+
+<section class="builder" id="builder">
+
+    <div class="section-title">
+        <h2>BUILD YOUR OUTFIT</h2>
+        <p>Переключай вещи стрелками</p>
+    </div>
+
+
+    <!-- ВЕРХ -->
+
+    <div class="category">
+
+        <div class="category-name">
+            Верхняя одежда
+        </div>
+
+        <div class="selector">
+
+            <button class="arrow" onclick="changeItem('top', -1)">
+                ←
+            </button>
+
+            <div class="item">
+
+                <div class="item-image" id="top-image">
+                    🧥
+                </div>
+
+                <div class="item-info">
+
+                    <div>
+                        <div class="item-name" id="top-name">
+                            Black Bomber
+                        </div>
+
+                        <div class="item-price" id="top-price">
+                            8 990 ₽
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="arrow" onclick="changeItem('top', 1)">
+                →
+            </button>
+
+        </div>
 
     </div>
+
+
+    <!-- НИЗ -->
+
+    <div class="category">
+
+        <div class="category-name">
+            Низ
+        </div>
+
+        <div class="selector">
+
+            <button class="arrow" onclick="changeItem('bottom', -1)">
+                ←
+            </button>
+
+            <div class="item">
+
+                <div class="item-image" id="bottom-image">
+                    👖
+                </div>
+
+                <div class="item-info">
+
+                    <div>
+                        <div class="item-name" id="bottom-name">
+                            Wide Denim
+                        </div>
+
+                        <div class="item-price" id="bottom-price">
+                            7 490 ₽
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="arrow" onclick="changeItem('bottom', 1)">
+                →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ОБУВЬ -->
+
+    <div class="category">
+
+        <div class="category-name">
+            Обувь
+        </div>
+
+        <div class="selector">
+
+            <button class="arrow" onclick="changeItem('shoes', -1)">
+                ←
+            </button>
+
+            <div class="item">
+
+                <div class="item-image" id="shoes-image">
+                    👟
+                </div>
+
+                <div class="item-info">
+
+                    <div>
+                        <div class="item-name" id="shoes-name">
+                            Runner 01
+                        </div>
+
+                        <div class="item-price" id="shoes-price">
+                            11 990 ₽
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <button class="arrow" onclick="changeItem('shoes', 1)">
+                →
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ИТОГ -->
+
+    <div class="total">
+
+        <div class="total-title">
+            Total outfit
+        </div>
+
+        <div class="total-price" id="total">
+            28 470 ₽
+        </div>
+
+        <button class="choose" onclick="alert('Образ выбран!')">
+            Выбрать этот образ
+        </button>
+
+    </div>
+
+</section>
+
+
+<footer>
+    CreatureMeza © 2026
+</footer>
+
+
+<script>
+
+    const clothes = {
+
+        top: [
+            {
+                name: "Black Bomber",
+                price: 8990,
+                image: "🧥"
+            },
+            {
+                name: "Denim Jacket",
+                price: 10990,
+                image: "🧥"
+            },
+            {
+                name: "Oversized Hoodie",
+                price: 6990,
+                image: "👕"
+            }
+        ],
+
+        bottom: [
+            {
+                name: "Wide Denim",
+                price: 7490,
+                image: "👖"
+            },
+            {
+                name: "Cargo Pants",
+                price: 8990,
+                image: "👖"
+            },
+            {
+                name: "Black Jeans",
+                price: 6490,
+                image: "👖"
+            }
+        ],
+
+        shoes: [
+            {
+                name: "Runner 01",
+                price: 11990,
+                image: "👟"
+            },
+            {
+                name: "Classic Sneakers",
+                price: 9990,
+                image: "👟"
+            },
+            {
+                name: "Street Runner",
+                price: 13990,
+                image: "🥾"
+            }
+        ]
+
+    };
+
+
+    const selected = {
+        top: 0,
+        bottom: 0,
+        shoes: 0
+    };
+
+
+    function changeItem(category, direction) {
+
+        selected[category] += direction;
+
+        if (selected[category] < 0) {
+            selected[category] = clothes[category].length - 1;
+        }
+
+        if (selected[category] >= clothes[category].length) {
+            selected[category] = 0;
+        }
+
+        updateItem(category);
+        updateTotal();
+
+    }
+
+
+    function updateItem(category) {
+
+        const item = clothes[category][selected[category]];
+
+        document.getElementById(category + "-name").textContent =
+            item.name;
+
+        document.getElementById(category + "-price").textContent =
+            item.price.toLocaleString("ru-RU") + " ₽";
+
+        document.getElementById(category + "-image").textContent =
+            item.image;
+
+    }
+
+
+    function updateTotal() {
+
+        const total =
+            clothes.top[selected.top].price +
+            clothes.bottom[selected.bottom].price +
+            clothes.shoes[selected.shoes].price;
+
+        document.getElementById("total").textContent =
+            total.toLocaleString("ru-RU") + " ₽";
+
+    }
+
+</script>
 
 </body>
 </html>
