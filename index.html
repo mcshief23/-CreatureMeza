@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 
 <meta charset="UTF-8">
@@ -20,6 +21,7 @@
 >
 
 <title>CreatureMeza — Archive</title>
+
 
 <style>
 
@@ -290,6 +292,16 @@ a{
 
 }
 
+.logo-wrap{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+}
+
 .logo{
 
     font-size:14px;
@@ -302,13 +314,49 @@ a{
 
 }
 
+.logo-dot{
+
+    width:7px;
+    height:7px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    box-shadow:
+        0 0 15px
+        rgba(255,255,255,.8);
+
+    animation:
+        logoPulse
+        2s
+        ease-in-out
+        infinite;
+
+}
+
+@keyframes logoPulse{
+
+    0%,
+    100%{
+        transform:scale(.75);
+        opacity:.45;
+    }
+
+    50%{
+        transform:scale(1);
+        opacity:1;
+    }
+
+}
+
 .header-right{
 
     display:flex;
 
     align-items:center;
 
-    gap:12px;
+    gap:9px;
 
 }
 
@@ -358,39 +406,102 @@ a{
 
 }
 
+.music-button{
+
+    border:1px solid #303030;
+
+    background:#090909;
+
+    color:#fff;
+
+    padding:
+        11px
+        15px;
+
+    font-size:8px;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    transition:.25s ease;
+
+}
+
+.music-button:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+    border-color:#fff;
+
+}
+
 
 /* =========================================================
-   AUDIO PLAYER
+   MUSIC PANEL
 ========================================================= */
 
-.audio-player{
+.music-panel{
 
     position:fixed;
 
-    top:92px;
+    top:88px;
 
     right:5vw;
 
     z-index:4900;
 
-    width:285px;
+    width:300px;
 
     border:1px solid #292929;
 
     background:
-        rgba(8,8,8,.94);
+        rgba(8,8,8,.97);
 
     box-shadow:
-        0 20px 60px
-        rgba(0,0,0,.35);
+        0 25px 80px
+        rgba(0,0,0,.55);
 
-    backdrop-filter:blur(14px);
+    backdrop-filter:blur(18px);
 
-    -webkit-backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(18px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transform:
+        translateY(-10px)
+        scale(.97);
+
+    transform-origin:top right;
+
+    transition:
+        opacity .25s ease,
+        visibility .25s ease,
+        transform .25s ease;
 
 }
 
-.audio-head{
+.music-panel.open{
+
+    opacity:1;
+
+    visibility:visible;
+
+    pointer-events:auto;
+
+    transform:
+        translateY(0)
+        scale(1);
+
+}
+
+.music-head{
 
     display:flex;
 
@@ -399,61 +510,70 @@ a{
     justify-content:space-between;
 
     padding:
-        12px
-        13px;
+        13px
+        14px;
 
     border-bottom:1px solid #1c1c1c;
 
 }
 
-.audio-label{
+.music-title{
 
     font-size:8px;
 
     font-weight:900;
 
-    letter-spacing:.18em;
+    letter-spacing:.2em;
 
     text-transform:uppercase;
 
 }
 
-.audio-state{
+.music-close{
 
-    color:#555;
+    width:25px;
+    height:25px;
 
-    font-size:7px;
+    border:1px solid #292929;
 
-    letter-spacing:.16em;
+    background:#080808;
 
-    text-transform:uppercase;
+    color:#777;
 
-}
-
-.audio-body{
-
-    padding:13px;
+    transition:.2s ease;
 
 }
 
-.audio-track-row{
+.music-close:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+}
+
+.music-body{
+
+    padding:15px;
+
+}
+
+.music-track{
 
     display:flex;
 
     align-items:center;
 
-    gap:10px;
-
-    margin-bottom:13px;
+    gap:11px;
 
 }
 
-.audio-disc{
+.music-disc{
 
-    width:38px;
-    height:38px;
+    width:40px;
+    height:40px;
 
-    flex:0 0 38px;
+    flex:0 0 40px;
 
     border:1px solid #333;
 
@@ -465,13 +585,15 @@ a{
 
     justify-content:center;
 
-    color:#777;
+    font-size:7px;
 
-    font-size:8px;
+    letter-spacing:.05em;
+
+    color:#888;
 
 }
 
-.audio-disc.playing{
+.music-disc.playing{
 
     animation:
         audioSpin
@@ -489,19 +611,17 @@ a{
 
 }
 
-.audio-info{
+.music-info{
 
     min-width:0;
 
 }
 
-.audio-name{
+.music-name{
 
     font-size:10px;
 
     font-weight:900;
-
-    text-transform:uppercase;
 
     white-space:nowrap;
 
@@ -509,9 +629,11 @@ a{
 
     text-overflow:ellipsis;
 
+    text-transform:uppercase;
+
 }
 
-.audio-sub{
+.music-artist{
 
     margin-top:5px;
 
@@ -519,26 +641,27 @@ a{
 
     font-size:7px;
 
-    letter-spacing:.14em;
+    letter-spacing:.12em;
 
     text-transform:uppercase;
 
 }
 
-.audio-controls{
+.music-controls{
 
     display:flex;
 
+    align-items:center;
+
     gap:5px;
 
-    margin-bottom:12px;
+    margin-top:14px;
 
 }
 
-.audio-btn{
+.music-control{
 
     width:34px;
-
     height:30px;
 
     border:1px solid #292929;
@@ -553,15 +676,15 @@ a{
 
 }
 
-.audio-btn.main{
+.music-control.main{
 
-    width:52px;
+    width:54px;
 
     color:#fff;
 
 }
 
-.audio-btn:hover{
+.music-control:hover{
 
     background:#fff;
 
@@ -571,21 +694,21 @@ a{
 
 }
 
-.audio-progress{
+.music-progress{
 
     width:100%;
 
     height:2px;
 
+    margin-top:13px;
+
     background:#222;
 
     cursor:pointer;
 
-    position:relative;
-
 }
 
-.audio-progress-fill{
+.music-progress-fill{
 
     width:0;
 
@@ -593,35 +716,31 @@ a{
 
     background:#fff;
 
-    pointer-events:none;
-
 }
 
-.audio-bottom{
+.music-bottom{
 
     display:flex;
 
     align-items:center;
 
-    gap:8px;
+    gap:9px;
 
     margin-top:9px;
 
 }
 
-.audio-time{
-
-    min-width:62px;
+.music-time{
 
     color:#555;
 
     font-size:7px;
 
-    letter-spacing:.08em;
+    white-space:nowrap;
 
 }
 
-.audio-volume{
+.music-volume{
 
     flex:1;
 
@@ -629,17 +748,17 @@ a{
 
 }
 
-.audio-note{
+.music-credit{
 
-    margin-top:10px;
+    margin-top:11px;
 
-    color:#444;
+    color:#3f3f3f;
 
-    font-size:7px;
+    font-size:6px;
 
-    line-height:1.5;
+    line-height:1.6;
 
-    letter-spacing:.08em;
+    letter-spacing:.09em;
 
     text-transform:uppercase;
 
@@ -750,7 +869,6 @@ a{
 .catalog-close{
 
     width:34px;
-
     height:34px;
 
     border:1px solid #333;
@@ -905,6 +1023,29 @@ a{
 
     transform:rotate(-18deg);
 
+    animation:
+        orbitFloat
+        12s
+        ease-in-out
+        infinite;
+
+}
+
+@keyframes orbitFloat{
+
+    0%,
+    100%{
+        transform:
+            rotate(-18deg)
+            scale(1);
+    }
+
+    50%{
+        transform:
+            rotate(-12deg)
+            scale(1.025);
+    }
+
 }
 
 .hero-orbit::before,
@@ -939,7 +1080,6 @@ a{
     position:absolute;
 
     width:7px;
-
     height:7px;
 
     background:#fff;
@@ -984,9 +1124,9 @@ a{
 
     font-size:
         clamp(
-            65px,
-            13vw,
-            190px
+            55px,
+            12vw,
+            175px
         );
 
     line-height:.78;
@@ -1008,7 +1148,7 @@ a{
 .hero-title span:nth-child(2){
 
     transform:
-        translateX(7vw);
+        translateX(5vw);
 
 }
 
@@ -1111,10 +1251,8 @@ a{
 @keyframes marquee{
 
     to{
-
         transform:
             translateX(-50%);
-
     }
 
 }
@@ -1165,7 +1303,7 @@ a{
     padding:
         105px
         5vw
-        40px;
+        45px;
 
 }
 
@@ -1185,7 +1323,7 @@ a{
 
 .builder-head-right{
 
-    max-width:340px;
+    max-width:390px;
 
     color:#555;
 
@@ -1221,7 +1359,7 @@ a{
 
     position:relative;
 
-    min-height:530px;
+    min-height:580px;
 
     background:#080808;
 
@@ -1229,7 +1367,9 @@ a{
 
     border:1px solid transparent;
 
-    transition:.3s ease;
+    transition:
+        background .3s ease,
+        border-color .3s ease;
 
 }
 
@@ -1238,9 +1378,6 @@ a{
     background:#0e0e0e;
 
     border-color:#363636;
-
-    transform:
-        translateY(-4px);
 
 }
 
@@ -1257,6 +1394,8 @@ a{
     font-size:8px;
 
     letter-spacing:.2em;
+
+    z-index:4;
 
 }
 
@@ -1276,16 +1415,23 @@ a{
 
     text-transform:uppercase;
 
+    z-index:4;
+
 }
+
+
+/* =========================================================
+   FIT IMAGE
+========================================================= */
 
 .fit-image{
 
     position:absolute;
 
     inset:
-        58px
-        30px
-        105px;
+        55px
+        28px
+        125px;
 
     background:#0b0b0b;
 
@@ -1307,7 +1453,9 @@ a{
 
     object-fit:contain;
 
-    transition:.5s ease;
+    transition:
+        transform .45s ease,
+        opacity .25s ease;
 
 }
 
@@ -1331,7 +1479,46 @@ a{
 
     text-align:center;
 
+    padding:20px;
+
 }
+
+
+/* =========================================================
+   ITEM SWITCH
+========================================================= */
+
+.item-changing{
+
+    animation:
+        itemChange
+        .28s
+        ease;
+
+}
+
+@keyframes itemChange{
+
+    0%{
+        opacity:.2;
+        transform:
+            translateX(12px)
+            scale(.985);
+    }
+
+    100%{
+        opacity:1;
+        transform:
+            translateX(0)
+            scale(1);
+    }
+
+}
+
+
+/* =========================================================
+   CARD INFO
+========================================================= */
 
 .fit-info{
 
@@ -1341,7 +1528,7 @@ a{
 
     right:20px;
 
-    bottom:20px;
+    bottom:59px;
 
 }
 
@@ -1382,6 +1569,72 @@ a{
     color:#999;
 
     font-size:9px;
+
+}
+
+
+/* =========================================================
+   CARD NAVIGATION
+========================================================= */
+
+.fit-navigation{
+
+    position:absolute;
+
+    left:18px;
+
+    right:18px;
+
+    bottom:17px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    z-index:5;
+
+}
+
+.item-arrow{
+
+    width:36px;
+    height:30px;
+
+    border:1px solid #292929;
+
+    background:#090909;
+
+    color:#777;
+
+    font-size:14px;
+
+    line-height:1;
+
+    transition:.2s ease;
+
+}
+
+.item-arrow:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+    border-color:#fff;
+
+}
+
+.item-position{
+
+    color:#444;
+
+    font-size:7px;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
 
 }
 
@@ -1645,13 +1898,13 @@ a{
 
 
 /* =========================================================
-   ARCHIVE
+   ARCHIVE INFO
 ========================================================= */
 
 .archive{
 
     padding:
-        45px
+        70px
         5vw
         110px;
 
@@ -1669,13 +1922,13 @@ a{
 
     gap:40px;
 
-    margin-bottom:42px;
+    margin-bottom:45px;
 
 }
 
 .archive-description{
 
-    max-width:340px;
+    max-width:430px;
 
     color:#555;
 
@@ -1689,117 +1942,39 @@ a{
 
 }
 
-.archive-controls{
-
-    display:flex;
-
-    gap:7px;
-
-    margin-bottom:20px;
-
-}
-
-.archive-search{
-
-    flex:1;
-
-    min-width:0;
-
-    outline:none;
-
-    border:1px solid #222;
-
-    background:#080808;
-
-    color:#fff;
-
-    padding:
-        14px
-        16px;
-
-    font-size:9px;
-
-    letter-spacing:.08em;
-
-}
-
-.archive-search::placeholder{
-
-    color:#444;
-
-}
-
-.archive-search:focus{
-
-    border-color:#555;
-
-}
-
-.category-filter{
-
-    border:1px solid #222;
-
-    outline:none;
-
-    background:#080808;
-
-    color:#777;
-
-    padding:
-        0
-        16px;
-
-    font-size:8px;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
 
 /* =========================================================
-   ARCHIVE GRID
+   ARCHIVE CATEGORY PANELS
 ========================================================= */
 
-.archive-grid{
+.archive-categories{
 
     display:grid;
 
     grid-template-columns:
-        repeat(4,minmax(0,1fr));
+        repeat(3,1fr);
 
     gap:1px;
 
-    background:#202020;
+    background:#222;
 
 }
 
-.archive-item{
+.archive-category{
 
-    position:relative;
+    min-height:250px;
 
-    min-height:310px;
-
-    padding:14px;
+    padding:25px;
 
     background:#080808;
 
     border:1px solid transparent;
 
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:space-between;
-
-    overflow:hidden;
-
     transition:.25s ease;
 
 }
 
-.archive-item:hover{
+.archive-category:hover{
 
     background:#101010;
 
@@ -1807,123 +1982,46 @@ a{
 
 }
 
-.archive-item-index{
-
-    position:absolute;
-
-    top:10px;
-
-    right:10px;
+.archive-category-number{
 
     color:#333;
 
     font-size:7px;
 
-}
-
-.archive-item-image{
-
-    height:205px;
-
-    background:#0b0b0b;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    overflow:hidden;
+    letter-spacing:.2em;
 
 }
 
-.archive-item-image img{
+.archive-category-title{
 
-    width:100%;
+    margin-top:60px;
 
-    height:100%;
+    font-size:
+        clamp(
+            32px,
+            4vw,
+            55px
+        );
 
-    object-fit:contain;
+    font-weight:900;
 
-    transition:.4s ease;
+    line-height:.8;
 
-}
+    letter-spacing:-.07em;
 
-.archive-item:hover
-.archive-item-image img{
-
-    transform:
-        scale(1.04);
-
-}
-
-.archive-item-meta{
-
-    padding-top:14px;
+    text-transform:uppercase;
 
 }
 
-.archive-item-brand{
+.archive-category-count{
+
+    margin-top:30px;
 
     color:#555;
 
     font-size:7px;
 
-    letter-spacing:.17em;
-
-    text-transform:uppercase;
-
-    margin-bottom:6px;
-
-}
-
-.archive-item-name{
-
-    font-size:9px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-}
-
-.archive-item-bottom{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    margin-top:8px;
-
-    color:#666;
-
-    font-size:7px;
-
-}
-
-.archive-empty{
-
-    grid-column:1/-1;
-
-    min-height:250px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    color:#444;
-
-    font-size:8px;
-
-    letter-spacing:.2em;
+    letter-spacing:.16em;
 
     text-transform:uppercase;
 
@@ -2062,15 +2160,35 @@ a{
    RESPONSIVE
 ========================================================= */
 
-@media(max-width:1000px){
+@media(max-width:900px){
 
-    .archive-grid{
+    .fit-grid{
 
-        grid-template-columns:
-            repeat(
-                3,
-                minmax(0,1fr)
-            );
+        grid-template-columns:1fr;
+
+    }
+
+    .fit-card{
+
+        min-height:560px;
+
+    }
+
+    .archive-categories{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .archive-category{
+
+        min-height:190px;
+
+    }
+
+    .archive-category-title{
+
+        margin-top:40px;
 
     }
 
@@ -2079,13 +2197,11 @@ a{
 
 @media(max-width:800px){
 
-    .audio-player{
+    .music-panel{
 
-        top:auto;
+        top:82px;
 
         right:14px;
-
-        bottom:14px;
 
         width:
             calc(
@@ -2105,6 +2221,21 @@ a{
     .header-index{
 
         display:none;
+
+    }
+
+    .header-right{
+
+        gap:5px;
+
+    }
+
+    .header-button,
+    .music-button{
+
+        padding:
+            10px
+            11px;
 
     }
 
@@ -2130,12 +2261,11 @@ a{
         padding:
             75px
             16px
-            30px;
+            35px;
 
     }
 
-    .builder-head,
-    .archive-head{
+    .builder-head{
 
         display:block;
 
@@ -2143,41 +2273,32 @@ a{
 
     }
 
-    .builder-head-right,
-    .archive-description{
+    .builder-head-right{
 
         margin-top:18px;
-
-    }
-
-    .fit-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .fit-card{
-
-        min-height:430px;
 
     }
 
     .archive{
 
         padding:
-            35px
+            55px
             16px
             80px;
 
     }
 
-    .archive-grid{
+    .archive-head{
 
-        grid-template-columns:
-            repeat(
-                2,
-                minmax(0,1fr)
-            );
+        display:block;
+
+        margin-bottom:30px;
+
+    }
+
+    .archive-description{
+
+        margin-top:18px;
 
     }
 
@@ -2206,17 +2327,22 @@ a{
 
 @media(max-width:520px){
 
-    .header-button{
+    .logo{
 
-        padding:
-            10px
-            11px;
+        font-size:12px;
+
+    }
+
+    .logo-dot{
+
+        width:6px;
+        height:6px;
 
     }
 
     .hero-title{
 
-        font-size:21vw;
+        font-size:19vw;
 
     }
 
@@ -2234,6 +2360,33 @@ a{
 
     }
 
+    .fit-card{
+
+        min-height:500px;
+
+    }
+
+    .fit-image{
+
+        inset:
+            55px
+            18px
+            120px;
+
+    }
+
+    .fit-info{
+
+        left:18px;
+        right:18px;
+    }
+
+    .fit-navigation{
+
+        left:18px;
+        right:18px;
+    }
+
     .fit-actions{
 
         grid-template-columns:1fr;
@@ -2249,38 +2402,6 @@ a{
     .tool-button{
 
         flex:1;
-
-    }
-
-    .archive-controls{
-
-        flex-direction:column;
-
-    }
-
-    .category-filter{
-
-        height:44px;
-
-    }
-
-    .archive-item{
-
-        min-height:245px;
-
-        padding:9px;
-
-    }
-
-    .archive-item-image{
-
-        height:150px;
-
-    }
-
-    .archive-item-name{
-
-        font-size:8px;
 
     }
 
@@ -2342,15 +2463,29 @@ a{
 
 <header class="header">
 
-    <div class="logo">
-        CreatureMeza
+    <div class="logo-wrap">
+
+        <div class="logo">
+            CreatureMeza
+        </div>
+
+        <div class="logo-dot"></div>
+
     </div>
+
 
     <div class="header-right">
 
         <div class="header-index">
             CM / 001
         </div>
+
+        <button
+            class="music-button"
+            id="musicButton"
+        >
+            Music
+        </button>
 
         <button
             class="header-button"
@@ -2365,55 +2500,55 @@ a{
 
 
 <!-- =======================================================
-     AUDIO PLAYER
+     MUSIC PANEL
 ======================================================= -->
 
 <div
-    class="audio-player"
-    id="audioPlayer"
+    class="music-panel"
+    id="musicPanel"
 >
 
-    <div class="audio-head">
+    <div class="music-head">
 
-        <div class="audio-label">
+        <div class="music-title">
             CM / Audio
         </div>
 
-        <div
-            class="audio-state"
-            id="audioState"
+        <button
+            class="music-close"
+            id="musicClose"
         >
-            Ready
-        </div>
+            ×
+        </button>
 
     </div>
 
 
-    <div class="audio-body">
+    <div class="music-body">
 
-        <div class="audio-track-row">
+        <div class="music-track">
 
             <div
-                class="audio-disc"
-                id="audioDisc"
+                class="music-disc"
+                id="musicDisc"
             >
                 CM
             </div>
 
-            <div class="audio-info">
+            <div class="music-info">
 
                 <div
-                    class="audio-name"
-                    id="audioName"
+                    class="music-name"
+                    id="musicName"
                 >
-                    No track loaded
+                    Nightfall
                 </div>
 
                 <div
-                    class="audio-sub"
-                    id="audioSub"
+                    class="music-artist"
+                    id="musicArtist"
                 >
-                    Add MP3 files to /music
+                    Scott Buckley
                 </div>
 
             </div>
@@ -2421,28 +2556,25 @@ a{
         </div>
 
 
-        <div class="audio-controls">
+        <div class="music-controls">
 
             <button
-                class="audio-btn"
+                class="music-control"
                 id="prevTrack"
-                aria-label="Previous track"
             >
                 ‹
             </button>
 
             <button
-                class="audio-btn main"
+                class="music-control main"
                 id="playTrack"
-                aria-label="Play or pause"
             >
                 ▶
             </button>
 
             <button
-                class="audio-btn"
+                class="music-control"
                 id="nextTrack"
-                aria-label="Next track"
             >
                 ›
             </button>
@@ -2451,30 +2583,30 @@ a{
 
 
         <div
-            class="audio-progress"
-            id="audioProgress"
+            class="music-progress"
+            id="musicProgress"
         >
 
             <div
-                class="audio-progress-fill"
-                id="audioProgressFill"
+                class="music-progress-fill"
+                id="musicProgressFill"
             ></div>
 
         </div>
 
 
-        <div class="audio-bottom">
+        <div class="music-bottom">
 
             <div
-                class="audio-time"
-                id="audioTime"
+                class="music-time"
+                id="musicTime"
             >
                 0:00 / 0:00
             </div>
 
             <input
-                class="audio-volume"
-                id="audioVolume"
+                class="music-volume"
+                id="musicVolume"
                 type="range"
                 min="0"
                 max="1"
@@ -2485,11 +2617,9 @@ a{
         </div>
 
 
-        <div class="audio-note">
+        <div class="music-credit">
 
-            Place your files in
-            music/track-01.mp3,
-            track-02.mp3...
+            Scott Buckley — Nightfall
 
         </div>
 
@@ -2542,6 +2672,7 @@ a{
 
     <div class="hero-grid"></div>
 
+
     <div class="hero-orbit">
 
         <div class="hero-orbit-dot"></div>
@@ -2558,11 +2689,11 @@ a{
 
         <h1 class="hero-title">
 
-            <span>Build</span>
+            <span>Creature</span>
 
-            <span>Your</span>
+            <span>Meza</span>
 
-            <span>Fit.</span>
+            <span>Archive.</span>
 
         </h1>
 
@@ -2570,8 +2701,8 @@ a{
         <p class="hero-subtitle">
 
             Select objects from the archive.
-            Construct your own combination.
-            No rules. Just objects.
+            Build your own combination.
+            Three categories. No rules.
 
         </p>
 
@@ -2599,7 +2730,7 @@ a{
 
         <span>Independent Archive</span>
 
-        <span>Built For The Archive</span>
+        <span>Build Your Fit</span>
 
         <span>CreatureMeza</span>
 
@@ -2607,7 +2738,7 @@ a{
 
         <span>Independent Archive</span>
 
-        <span>Built For The Archive</span>
+        <span>Build Your Fit</span>
 
     </div>
 
@@ -2632,7 +2763,8 @@ a{
             </div>
 
             <h2 class="section-title">
-                Outfit
+                Build<br>
+                Your Fit.
             </h2>
 
         </div>
@@ -2640,9 +2772,11 @@ a{
 
         <div class="builder-head-right">
 
-            Three categories.
-            One combination.
-            Select one object from each category.
+            Browse through the archive
+            using the arrows.
+            Choose one object for the top,
+            one for the bottom and one
+            for the shoes.
 
         </div>
 
@@ -2699,21 +2833,81 @@ a{
             Rate this combination
         </div>
 
+
         <div
             class="rating-buttons"
             id="ratingButtons"
         >
 
-            <button class="rating-button" data-rating="1">1</button>
-            <button class="rating-button" data-rating="2">2</button>
-            <button class="rating-button" data-rating="3">3</button>
-            <button class="rating-button" data-rating="4">4</button>
-            <button class="rating-button" data-rating="5">5</button>
-            <button class="rating-button" data-rating="6">6</button>
-            <button class="rating-button" data-rating="7">7</button>
-            <button class="rating-button" data-rating="8">8</button>
-            <button class="rating-button" data-rating="9">9</button>
-            <button class="rating-button" data-rating="10">10</button>
+            <button
+                class="rating-button"
+                data-rating="1"
+            >
+                1
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="2"
+            >
+                2
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="3"
+            >
+                3
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="4"
+            >
+                4
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="5"
+            >
+                5
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="6"
+            >
+                6
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="7"
+            >
+                7
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="8"
+            >
+                8
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="9"
+            >
+                9
+            </button>
+
+            <button
+                class="rating-button"
+                data-rating="10"
+            >
+                10
+            </button>
 
         </div>
 
@@ -2752,7 +2946,7 @@ a{
 ======================================================= -->
 
 <section
-    class="archive"
+    class="archive reveal"
     id="archive"
 >
 
@@ -2765,10 +2959,8 @@ a{
             </div>
 
             <h2 class="section-title">
-
                 Selected<br>
                 Objects.
-
             </h2>
 
         </div>
@@ -2776,56 +2968,75 @@ a{
 
         <div class="archive-description">
 
-            A growing collection of pieces,
-            objects and references selected
-            from the CreatureMeza archive.
+            The full archive contains
+            117 selected objects across
+            13 brands and three categories.
+
+            <br><br>
+
+            Objects are not displayed
+            as a continuous product wall.
+            Browse them through the
+            Outfit Builder above.
 
         </div>
 
     </div>
 
 
-    <div class="archive-controls">
+    <div class="archive-categories">
 
-        <input
-            class="archive-search"
-            id="archiveSearch"
-            type="text"
-            placeholder="SEARCH OBJECTS..."
-            autocomplete="off"
-        >
+        <div class="archive-category">
 
+            <div class="archive-category-number">
+                01
+            </div>
 
-        <select
-            class="category-filter"
-            id="categoryFilter"
-        >
-
-            <option value="all">
-                All categories
-            </option>
-
-            <option value="top">
+            <div class="archive-category-title">
                 Top
-            </option>
+            </div>
 
-            <option value="bottom">
+            <div class="archive-category-count">
+                39 objects
+            </div>
+
+        </div>
+
+
+        <div class="archive-category">
+
+            <div class="archive-category-number">
+                02
+            </div>
+
+            <div class="archive-category-title">
                 Bottom
-            </option>
+            </div>
 
-            <option value="shoes">
+            <div class="archive-category-count">
+                39 objects
+            </div>
+
+        </div>
+
+
+        <div class="archive-category">
+
+            <div class="archive-category-number">
+                03
+            </div>
+
+            <div class="archive-category-title">
                 Shoes
-            </option>
+            </div>
 
-        </select>
+            <div class="archive-category-count">
+                39 objects
+            </div>
+
+        </div>
 
     </div>
-
-
-    <div
-        class="archive-grid"
-        id="archiveGrid"
-    ></div>
 
 </section>
 
@@ -3853,6 +4064,26 @@ const state={
 
 
 /* =========================================================
+   AUDIO
+========================================================= */
+
+const tracks=[
+
+    {
+        name:"Nightfall",
+        artist:"Scott Buckley",
+        file:"music/nightfall.mp3"
+    }
+
+];
+
+
+let audio=null;
+
+let audioReady=false;
+
+
+/* =========================================================
    HELPERS
 ========================================================= */
 
@@ -3958,7 +4189,6 @@ function imageMarkup(item){
             <img
                 src="${escapeHTML(item.image)}"
                 alt="${escapeHTML(item.name)}"
-                loading="lazy"
             >
 
         `;
@@ -3971,6 +4201,10 @@ function imageMarkup(item){
         <div class="placeholder">
 
             ${escapeHTML(item.brand)}
+
+            <br><br>
+
+            IMAGE / SOON
 
         </div>
 
@@ -4079,7 +4313,12 @@ function loadState(){
             );
 
 
-        if(rating){
+        if(
+            rating &&
+            Number.isFinite(
+                Number(rating)
+            )
+        ){
 
             state.rating =
                 Number(rating);
@@ -4091,11 +4330,6 @@ function loadState(){
         setInitialFit(false);
 
     }
-
-
-    renderBuilder();
-
-    syncRatingButtons();
 
 }
 
@@ -4122,16 +4356,17 @@ function setInitialFit(save=true){
 
     }
 
-    renderBuilder();
-
 }
 
 
 /* =========================================================
-   BUILDER
+   RENDER BUILDER
 ========================================================= */
 
-function renderBuilder(){
+function renderBuilder(
+    changedCategory=null,
+    direction=0
+){
 
     const grid =
         document.getElementById(
@@ -4147,6 +4382,16 @@ function renderBuilder(){
 
     categories.forEach(
         (category,index)=>{
+
+            const list =
+                getCategoryItems(
+                    category
+                );
+
+
+            const selectedIndex =
+                state.selected[category];
+
 
             const item =
                 getSelectedItem(
@@ -4170,19 +4415,32 @@ function renderBuilder(){
                     Number(item.price);
 
 
+                const changing =
+                    changedCategory === category
+                        ? " item-changing"
+                        : "";
+
+
                 card.innerHTML=`
 
                     <div class="fit-card-number">
                         0${index+1}
                     </div>
 
+
                     <div class="fit-card-category">
                         ${getCategoryLabel(category)}
                     </div>
 
-                    <div class="fit-image">
+
+                    <div
+                        class="fit-image${changing}"
+                    >
+
                         ${imageMarkup(item)}
+
                     </div>
+
 
                     <div class="fit-info">
 
@@ -4200,6 +4458,40 @@ function renderBuilder(){
 
                     </div>
 
+
+                    <div class="fit-navigation">
+
+                        <button
+                            class="item-arrow"
+                            data-category="${category}"
+                            data-direction="-1"
+                            aria-label="Previous ${getCategoryLabel(category)}"
+                        >
+                            ←
+                        </button>
+
+
+                        <div class="item-position">
+
+                            ${String(selectedIndex + 1).padStart(2,"0")}
+                            /
+                            ${String(list.length).padStart(2,"0")}
+
+                        </div>
+
+
+                        <button
+                            class="item-arrow"
+                            data-category="${category}"
+                            data-direction="1"
+                            aria-label="Next ${getCategoryLabel(category)}"
+                        >
+                            →
+
+                        </button>
+
+                    </div>
+
                 `;
 
             }else{
@@ -4214,6 +4506,7 @@ function renderBuilder(){
                         ${getCategoryLabel(category)}
                     </div>
 
+
                     <div class="fit-image">
 
                         <div class="placeholder">
@@ -4221,6 +4514,7 @@ function renderBuilder(){
                         </div>
 
                     </div>
+
 
                     <div class="fit-info">
 
@@ -4231,6 +4525,31 @@ function renderBuilder(){
                         <div class="fit-name">
                             Empty slot
                         </div>
+
+                    </div>
+
+
+                    <div class="fit-navigation">
+
+                        <button
+                            class="item-arrow"
+                            data-category="${category}"
+                            data-direction="-1"
+                        >
+                            ←
+                        </button>
+
+                        <div class="item-position">
+                            00 / ${String(list.length).padStart(2,"0")}
+                        </div>
+
+                        <button
+                            class="item-arrow"
+                            data-category="${category}"
+                            data-direction="1"
+                        >
+                            →
+                        </button>
 
                     </div>
 
@@ -4249,6 +4568,121 @@ function renderBuilder(){
         "totalValue"
     ).textContent =
         formatPrice(total);
+
+
+    setupItemNavigation();
+
+}
+
+
+/* =========================================================
+   ITEM NAVIGATION
+========================================================= */
+
+function changeItem(
+    category,
+    direction
+){
+
+    const list =
+        getCategoryItems(
+            category
+        );
+
+
+    if(!list.length){
+
+        return;
+
+    }
+
+
+    let current =
+        state.selected[category];
+
+
+    if(
+        current === null ||
+        !Number.isInteger(current)
+    ){
+
+        current=0;
+
+    }
+
+
+    let next =
+        current + direction;
+
+
+    if(next < 0){
+
+        next =
+            list.length - 1;
+
+    }
+
+
+    if(next >= list.length){
+
+        next=0;
+
+    }
+
+
+    state.selected[category]=next;
+
+    state.rating=null;
+
+    saveState();
+
+    renderBuilder(
+        category,
+        direction
+    );
+
+    syncRatingButtons();
+
+}
+
+
+function setupItemNavigation(){
+
+    document
+        .querySelectorAll(
+            ".item-arrow"
+        )
+        .forEach(
+            button=>{
+
+                button.addEventListener(
+                    "click",
+                    event=>{
+
+                        const category =
+                            event.currentTarget
+                                .dataset
+                                .category;
+
+
+                        const direction =
+                            Number(
+                                event.currentTarget
+                                    .dataset
+                                    .direction
+                            );
+
+
+                        changeItem(
+                            category,
+                            direction
+                        );
+
+                    }
+                );
+
+            }
+        );
 
 }
 
@@ -4332,154 +4766,6 @@ function setStatus(text){
     document.getElementById(
         "status"
     ).textContent=text;
-
-}
-
-
-/* =========================================================
-   ARCHIVE
-========================================================= */
-
-function renderArchive(){
-
-    const grid =
-        document.getElementById(
-            "archiveGrid"
-        );
-
-
-    const search =
-        document.getElementById(
-            "archiveSearch"
-        )
-        .value
-        .trim()
-        .toLowerCase();
-
-
-    const filter =
-        document.getElementById(
-            "categoryFilter"
-        )
-        .value;
-
-
-    let items =
-        getAllItems();
-
-
-    if(filter !== "all"){
-
-        items =
-            items.filter(
-                item =>
-                    item.category === filter
-            );
-
-    }
-
-
-    if(search){
-
-        items =
-            items.filter(
-                item => {
-
-                    const text = `
-
-                        ${item.name}
-                        ${item.brand}
-                        ${item.category}
-
-                    `.toLowerCase();
-
-
-                    return text.includes(
-                        search
-                    );
-
-                }
-            );
-
-    }
-
-
-    grid.innerHTML="";
-
-
-    if(!items.length){
-
-        grid.innerHTML=`
-
-            <div class="archive-empty">
-
-                Nothing found.
-
-            </div>
-
-        `;
-
-        return;
-
-    }
-
-
-    items.forEach(
-        (item,index)=>{
-
-            const article =
-                document.createElement(
-                    "article"
-                );
-
-
-            article.className =
-                "archive-item";
-
-
-            article.innerHTML=`
-
-                <div class="archive-item-index">
-                    ${String(index+1).padStart(3,"0")}
-                </div>
-
-                <div class="archive-item-image">
-
-                    ${imageMarkup(item)}
-
-                </div>
-
-                <div class="archive-item-meta">
-
-                    <div class="archive-item-brand">
-                        ${escapeHTML(item.brand)}
-                    </div>
-
-                    <div class="archive-item-name">
-                        ${escapeHTML(item.name)}
-                    </div>
-
-                    <div class="archive-item-bottom">
-
-                        <span>
-                            ${getCategoryLabel(item.category)}
-                        </span>
-
-                        <span>
-                            ${formatPrice(item.price)}
-                        </span>
-
-                    </div>
-
-                </div>
-
-            `;
-
-
-            grid.appendChild(article);
-
-        }
-    );
 
 }
 
@@ -4776,32 +5062,6 @@ function setupReveal(){
 
 
 /* =========================================================
-   SEARCH
-========================================================= */
-
-function setupSearch(){
-
-    document.getElementById(
-        "archiveSearch"
-    )
-    .addEventListener(
-        "input",
-        renderArchive
-    );
-
-
-    document.getElementById(
-        "categoryFilter"
-    )
-    .addEventListener(
-        "change",
-        renderArchive
-    );
-
-}
-
-
-/* =========================================================
    BUTTONS
 ========================================================= */
 
@@ -4899,25 +5159,7 @@ function setupCatalog(){
 
 
 /* =========================================================
-   AUDIO
-========================================================= */
-
-const tracks=[
-    {
-        name:"DROPPED OUT",
-        file:"Playboi_Cart_-_DROPPED_OUT_(mp3.pm).mp3"
-    }
-
-];
-
-
-let audio=null;
-
-let audioReady=false;
-
-
-/* =========================================================
-   AUDIO TIME
+   AUDIO HELPERS
 ========================================================= */
 
 function formatTime(seconds){
@@ -4964,32 +5206,17 @@ function updateAudioUI(){
 
 
     document.getElementById(
-        "audioName"
+        "musicName"
     )
     .textContent =
         track.name;
 
 
     document.getElementById(
-        "audioSub"
+        "musicArtist"
     )
     .textContent =
-        audioReady
-            ? "CreatureMeza archive"
-            : "Add MP3 files to /music";
-
-
-    document.getElementById(
-        "audioState"
-    )
-    .textContent =
-        audioReady
-            ? (
-                audio?.paused
-                    ? "Paused"
-                    : "Playing"
-            )
-            : "Ready";
+        track.artist;
 
 
     document.getElementById(
@@ -5004,7 +5231,7 @@ function updateAudioUI(){
 
 
     document.getElementById(
-        "audioDisc"
+        "musicDisc"
     )
     .classList
     .toggle(
@@ -5028,7 +5255,7 @@ function updateAudioUI(){
 
 
         document.getElementById(
-            "audioProgressFill"
+            "musicProgressFill"
         )
         .style
         .width =
@@ -5036,24 +5263,22 @@ function updateAudioUI(){
 
 
         document.getElementById(
-            "audioTime"
+            "musicTime"
         )
         .textContent =
-            `${formatTime(audio.currentTime)}
-             /
-             ${formatTime(audio.duration)}`;
+            `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
 
     }else{
 
         document.getElementById(
-            "audioProgressFill"
+            "musicProgressFill"
         )
         .style
         .width="0%";
 
 
         document.getElementById(
-            "audioTime"
+            "musicTime"
         )
         .textContent =
             "0:00 / 0:00";
@@ -5111,7 +5336,7 @@ function loadTrack(
     audio.volume =
         Number(
             document.getElementById(
-                "audioVolume"
+                "musicVolume"
             ).value
         );
 
@@ -5176,35 +5401,19 @@ function loadTrack(
 
             audioReady=false;
 
+            updateAudioUI();
 
             document.getElementById(
-                "audioState"
+                "musicName"
             )
             .textContent =
-                "No file";
-
+                track.name;
 
             document.getElementById(
-                "audioSub"
+                "musicArtist"
             )
             .textContent =
-                "Add the MP3 to /music";
-
-
-            document.getElementById(
-                "playTrack"
-            )
-            .textContent =
-                "▶";
-
-
-            document.getElementById(
-                "audioDisc"
-            )
-            .classList
-            .remove(
-                "playing"
-            );
+                "Audio file not found";
 
         }
     );
@@ -5218,7 +5427,7 @@ function loadTrack(
 
 
 /* =========================================================
-   PLAY
+   PLAY AUDIO
 ========================================================= */
 
 function playAudio(){
@@ -5245,10 +5454,10 @@ function playAudio(){
             ()=>{
 
                 document.getElementById(
-                    "audioState"
+                    "musicArtist"
                 )
                 .textContent =
-                    "Tap play";
+                    "Tap play to start";
 
             }
         );
@@ -5257,7 +5466,7 @@ function playAudio(){
 
 
 /* =========================================================
-   TOGGLE
+   TOGGLE AUDIO
 ========================================================= */
 
 function toggleAudio(){
@@ -5283,6 +5492,62 @@ function toggleAudio(){
         audio.pause();
 
     }
+
+}
+
+
+/* =========================================================
+   MUSIC PANEL
+========================================================= */
+
+function openMusic(){
+
+    document.getElementById(
+        "musicPanel"
+    )
+    .classList
+    .add("open");
+
+}
+
+
+function closeMusic(){
+
+    document.getElementById(
+        "musicPanel"
+    )
+    .classList
+    .remove("open");
+
+}
+
+
+function setupMusicPanel(){
+
+    document.getElementById(
+        "musicButton"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            document.getElementById(
+                "musicPanel"
+            )
+            .classList
+            .toggle("open");
+
+        }
+    );
+
+
+    document.getElementById(
+        "musicClose"
+    )
+    .addEventListener(
+        "click",
+        closeMusic
+    );
 
 }
 
@@ -5335,7 +5600,7 @@ function setupAudio(){
 
 
     document.getElementById(
-        "audioVolume"
+        "musicVolume"
     )
     .addEventListener(
         "input",
@@ -5355,7 +5620,7 @@ function setupAudio(){
 
 
     document.getElementById(
-        "audioProgress"
+        "musicProgress"
     )
     .addEventListener(
         "click",
@@ -5408,6 +5673,59 @@ function setupAudio(){
 
 
 /* =========================================================
+   GLOBAL KEYBOARD
+========================================================= */
+
+function setupKeyboard(){
+
+    document.addEventListener(
+        "keydown",
+        event=>{
+
+            const tag =
+                document.activeElement?.tagName;
+
+
+            if(
+                tag === "INPUT" ||
+                tag === "TEXTAREA"
+            ){
+
+                return;
+
+            }
+
+
+            if(
+                event.key === "ArrowLeft"
+            ){
+
+                changeItem(
+                    "top",
+                    -1
+                );
+
+            }
+
+
+            if(
+                event.key === "ArrowRight"
+            ){
+
+                changeItem(
+                    "top",
+                    1
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
    LOADER
 ========================================================= */
 
@@ -5426,16 +5744,13 @@ function hideLoader(){
     }
 
 
-    /*
-       Loader больше не зависит
-       от window.load.
-    */
-
     setTimeout(
         ()=>{
+
             loader.classList.add(
                 "hide"
             );
+
         },
         1300
     );
@@ -5451,7 +5766,7 @@ function init(){
 
     loadState();
 
-    renderArchive();
+    renderBuilder();
 
     renderCatalog();
 
@@ -5459,13 +5774,17 @@ function init(){
 
     setupCatalog();
 
-    setupSearch();
-
     setupButtons();
 
     setupReveal();
 
+    setupMusicPanel();
+
     setupAudio();
+
+    setupKeyboard();
+
+    syncRatingButtons();
 
     hideLoader();
 
