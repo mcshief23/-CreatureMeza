@@ -1,1464 +1,983 @@
 <!DOCTYPE html>
-<html lang="ru">
-
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>CreatureMeza — Archive</title>
 
-
 <style>
 
-/* =====================================================
-   RESET
-===================================================== */
-
-* {
-    box-sizing: border-box;
+:root{
+    --bg:#050505;
+    --card:#0d0d0d;
+    --border:#202020;
+    --text:#f4f4f4;
+    --muted:#777;
 }
 
-html {
-    scroll-behavior: smooth;
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
 }
 
-body {
-
-    margin: 0;
-
-    background: #070707;
-
-    color: #fff;
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    overflow-x: hidden;
+html{
+    scroll-behavior:smooth;
 }
 
-
-/* =====================================================
-   INTRO
-===================================================== */
-
-.intro {
-
-    min-height: 100vh;
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    text-align: center;
-
-    overflow: hidden;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #242424 0%,
-            #111 35%,
-            #070707 72%
-        );
+body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, Helvetica, sans-serif;
+    overflow-x:hidden;
 }
 
-
-/* rotating circles */
-
-.intro::before {
-
-    content: "";
-
-    position: absolute;
-
-    width: 420px;
-
-    height: 420px;
-
-    border: 1px solid #292929;
-
-    border-radius: 50%;
-
-    animation:
-        rotate 22s linear infinite;
+button{
+    font-family:inherit;
 }
 
-
-.intro::after {
-
-    content: "";
-
-    position: absolute;
-
-    width: 650px;
-
-    height: 650px;
-
-    border: 1px solid #171717;
-
-    border-radius: 50%;
-
-    animation:
-        rotateReverse 32s linear infinite;
+a{
+    color:inherit;
+    text-decoration:none;
 }
 
+/* =========================
+   LOADER
+========================= */
 
-@keyframes rotate {
-
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
-
+.loader{
+    position:fixed;
+    inset:0;
+    background:#050505;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.7s ease;
 }
 
-
-@keyframes rotateReverse {
-
-    from {
-        transform: rotate(360deg);
-    }
-
-    to {
-        transform: rotate(0deg);
-    }
-
+.loader.hide{
+    opacity:0;
+    pointer-events:none;
 }
 
-
-.intro-content {
-
-    position: relative;
-
-    z-index: 2;
-
-    animation:
-        introIn 1.2s ease;
+.loader-title{
+    font-size:clamp(30px,8vw,90px);
+    font-weight:900;
+    letter-spacing:-5px;
+    animation:pulse 1.4s infinite alternate;
 }
 
-
-@keyframes introIn {
-
-    from {
-
-        opacity: 0;
-
-        transform:
-            translateY(30px)
-            scale(.97);
-
-    }
-
-    to {
-
-        opacity: 1;
-
-        transform:
-            translateY(0)
-            scale(1);
-
-    }
-
+@keyframes pulse{
+    from{opacity:.3}
+    to{opacity:1}
 }
 
-
-.intro h1 {
-
-    margin: 0;
-
-    font-size:
-        clamp(
-            65px,
-            15vw,
-            150px
-        );
-
-    line-height: .78;
-
-    letter-spacing: -9px;
-
-    font-weight: 900;
-}
-
-
-.intro-subtitle {
-
-    margin-top: 35px;
-
-    color: #555;
-
-    font-size: 10px;
-
-    letter-spacing: 4px;
-}
-
-
-.enter-button {
-
-    display: inline-block;
-
-    margin-top: 30px;
-
-    padding:
-        15px 28px;
-
-    border:
-        1px solid #444;
-
-    border-radius: 100px;
-
-    color: white;
-
-    text-decoration: none;
-
-    font-size: 11px;
-
-    letter-spacing: 2px;
-
-    transition: .3s;
-}
-
-
-.enter-button:hover {
-
-    background: white;
-
-    color: black;
-
-    transform:
-        scale(1.05);
-}
-
-
-/* =====================================================
+/* =========================
    HEADER
-===================================================== */
+========================= */
 
-.header {
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:1000;
 
-    position: sticky;
+    height:70px;
 
-    top: 0;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
 
-    z-index: 1000;
+    padding:0 28px;
 
-    height: 68px;
+    background:rgba(5,5,5,.72);
+    backdrop-filter:blur(18px);
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding:
-        0 22px;
-
-    background:
-        rgba(
-            7,
-            7,
-            7,
-            .9
-        );
-
-    backdrop-filter:
-        blur(20px);
-
-    border-bottom:
-        1px solid #1d1d1d;
+    border-bottom:1px solid rgba(255,255,255,.07);
 }
 
-
-.logo {
-
-    font-size: 21px;
-
-    font-weight: 900;
-
-    letter-spacing: -1px;
+.logo{
+    font-size:22px;
+    font-weight:900;
+    letter-spacing:-1.5px;
 }
 
-
-.logo span {
-
-    color: #555;
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:12px;
 }
 
+.catalog-button{
+    border:1px solid #333;
+    background:#0b0b0b;
+    color:white;
 
-.catalog-toggle {
+    padding:11px 17px;
 
-    border: 0;
+    cursor:pointer;
 
-    background: none;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
 
-    color: #aaa;
-
-    display: flex;
-
-    align-items: center;
-
-    gap: 10px;
-
-    cursor: pointer;
-
-    font-size: 11px;
-
-    letter-spacing: 2px;
-
-    transition: .25s;
+    transition:.25s;
 }
 
-
-.catalog-toggle:hover {
-
-    color: white;
+.catalog-button:hover{
+    background:white;
+    color:black;
 }
 
+/* =========================
+   CATALOG
+========================= */
 
-.menu-icon {
+.catalog-panel{
+    position:fixed;
+    top:70px;
+    right:-380px;
 
-    width: 25px;
+    width:350px;
+    height:calc(100vh - 70px);
 
-    height: 15px;
+    z-index:999;
 
-    position: relative;
+    background:#090909;
+    border-left:1px solid #222;
+
+    padding:25px;
+
+    overflow-y:auto;
+
+    transition:.45s cubic-bezier(.77,0,.18,1);
 }
 
-
-.menu-icon::before,
-.menu-icon::after {
-
-    content: "";
-
-    position: absolute;
-
-    left: 0;
-
-    width: 25px;
-
-    height: 1px;
-
-    background: #888;
-
-    transition: .3s;
+.catalog-panel.open{
+    right:0;
 }
 
-
-.menu-icon::before {
-
-    top: 3px;
+.catalog-title{
+    font-size:11px;
+    letter-spacing:3px;
+    color:#666;
+    margin-bottom:20px;
 }
 
-
-.menu-icon::after {
-
-    top: 10px;
-
-    width: 17px;
+.brand-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
 }
 
+.brand-button{
+    width:100%;
 
-/* =====================================================
-   CATALOG PANEL
-===================================================== */
+    background:transparent;
+    color:#aaa;
 
-.catalog {
+    border:0;
 
-    position: fixed;
+    padding:12px 0;
 
-    top: 68px;
+    text-align:left;
 
-    left: 0;
+    font-size:15px;
+    cursor:pointer;
 
-    z-index: 999;
-
-    width:
-        min(
-            360px,
-            90vw
-        );
-
-    max-height:
-        calc(
-            100vh - 68px
-        );
-
-    overflow-y: auto;
-
-    padding: 25px;
-
-    background:
-        rgba(
-            9,
-            9,
-            9,
-            .98
-        );
-
-    backdrop-filter:
-        blur(25px);
-
-    border-right:
-        1px solid #292929;
-
-    border-bottom:
-        1px solid #292929;
-
-    transform:
-        translateX(-105%);
-
-    transition:
-        transform
-        .45s
-        cubic-bezier(
-            .77,
-            0,
-            .18,
-            1
-        );
+    transition:.2s;
 }
 
-
-.catalog.open {
-
-    transform:
-        translateX(0);
+.brand-button:hover,
+.brand-button.active{
+    color:white;
+    padding-left:10px;
 }
 
-
-.catalog-label {
-
-    color: #444;
-
-    font-size: 9px;
-
-    letter-spacing: 3px;
-
-    margin-bottom: 15px;
+.brand-button.active{
+    font-weight:bold;
 }
 
+/* =========================
+   HERO
+========================= */
 
-.catalog-brand {
+.hero{
+    min-height:100vh;
 
-    width: 100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    padding:
-        14px 0;
-
-    border: 0;
-
-    border-bottom:
-        1px solid #1c1c1c;
-
-    background: none;
-
-    color: #777;
-
-    text-align: left;
-
-    font-size: 13px;
-
-    cursor: pointer;
-
-    transition: .25s;
+    position:relative;
+    overflow:hidden;
 }
 
-
-.catalog-brand:hover {
-
-    color: white;
-
-    padding-left: 8px;
+.hero-center{
+    position:relative;
+    z-index:2;
+    text-align:center;
 }
 
+.hero-title{
+    font-size:clamp(55px,13vw,180px);
+    font-weight:900;
 
-.catalog-brand.active {
+    letter-spacing:-9px;
+    line-height:.8;
 
-    color: white;
-
-    padding-left: 8px;
+    animation:heroIn 1.5s cubic-bezier(.77,0,.18,1);
 }
 
+.hero-sub{
+    margin-top:30px;
 
-.catalog-brand::before {
+    font-size:10px;
+    letter-spacing:5px;
 
-    content: "— ";
+    color:#666;
 
-    color: #333;
+    text-transform:uppercase;
 }
 
+@keyframes heroIn{
+    from{
+        opacity:0;
+        transform:translateY(50px) scale(.95);
+    }
 
-/* =====================================================
+    to{
+        opacity:1;
+        transform:none;
+    }
+}
+
+.orbit{
+    position:absolute;
+
+    width:55vw;
+    height:55vw;
+
+    max-width:700px;
+    max-height:700px;
+
+    border:1px solid #181818;
+
+    border-radius:50%;
+
+    animation:spin 22s linear infinite;
+}
+
+.orbit:before,
+.orbit:after{
+    content:"";
+
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    background:white;
+
+    border-radius:50%;
+}
+
+.orbit:before{
+    top:8%;
+    left:20%;
+}
+
+.orbit:after{
+    right:10%;
+    bottom:20%;
+}
+
+.orbit.two{
+    width:75vw;
+    height:75vw;
+
+    max-width:900px;
+    max-height:900px;
+
+    animation-direction:reverse;
+    animation-duration:35s;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =========================
    MARQUEE
-===================================================== */
+========================= */
 
-.marquee {
+.marquee{
+    border-top:1px solid #181818;
+    border-bottom:1px solid #181818;
 
-    overflow: hidden;
+    overflow:hidden;
+    white-space:nowrap;
 
-    white-space: nowrap;
-
-    padding:
-        13px 0;
-
-    border-top:
-        1px solid #151515;
-
-    border-bottom:
-        1px solid #151515;
-
-    color: #333;
-
-    font-size: 9px;
-
-    letter-spacing: 4px;
+    padding:15px 0;
 }
 
+.marquee-track{
+    display:inline-block;
 
-.marquee-track {
+    animation:marquee 22s linear infinite;
 
-    display: inline-block;
-
-    animation:
-        marquee
-        25s
-        linear
-        infinite;
+    font-size:11px;
+    letter-spacing:4px;
+    color:#777;
 }
 
-
-@keyframes marquee {
-
-    from {
-        transform:
-            translateX(0);
-    }
-
-    to {
-        transform:
-            translateX(-50%);
-    }
-
+@keyframes marquee{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
 }
 
-
-/* =====================================================
+/* =========================
    BUILDER
-===================================================== */
+========================= */
 
-.builder {
-
-    max-width: 1050px;
-
-    margin: auto;
-
-    padding:
-        100px 18px;
+.builder{
+    padding:130px 5vw;
 }
 
+.section-head{
+    display:flex;
+    align-items:end;
+    justify-content:space-between;
 
-/* title */
-
-.builder-title {
-
-    text-align: center;
-
-    margin-bottom: 65px;
+    margin-bottom:50px;
 }
 
-
-.builder-title h2 {
-
-    margin: 0;
-
-    font-size:
-        clamp(
-            40px,
-            8vw,
-            70px
-        );
-
-    letter-spacing: -4px;
+.section-kicker{
+    font-size:10px;
+    color:#666;
+    letter-spacing:3px;
+    text-transform:uppercase;
+    margin-bottom:10px;
 }
 
-
-.builder-title p {
-
-    margin-top: 18px;
-
-    color: #555;
-
-    font-size: 12px;
+.section-title{
+    font-size:clamp(40px,7vw,90px);
+    letter-spacing:-5px;
+    line-height:.9;
 }
 
-
-.current-brand {
-
-    margin-top: 25px;
-
-    color: #777;
-
-    font-size: 10px;
-
-    letter-spacing: 3px;
-
-    text-transform: uppercase;
+.current-brand{
+    text-align:right;
 }
 
-
-/* =====================================================
-   CATEGORY
-===================================================== */
-
-.category {
-
-    margin-bottom: 100px;
-
-    opacity: 0;
-
-    transform:
-        translateY(40px);
-
-    transition:
-        opacity
-        .8s ease,
-        transform
-        .8s ease;
+.current-brand-label{
+    color:#666;
+    font-size:9px;
+    letter-spacing:3px;
 }
 
-
-.category.visible {
-
-    opacity: 1;
-
-    transform:
-        translateY(0);
+.current-brand-name{
+    font-size:15px;
+    margin-top:7px;
 }
 
+/* =========================
+   OUTFIT GRID
+========================= */
 
-.category-header {
+.outfit-grid{
+    display:grid;
 
-    display: flex;
+    grid-template-columns:
+        repeat(3,1fr);
 
-    align-items: center;
-
-    justify-content: space-between;
-
-    margin-bottom: 15px;
+    gap:16px;
 }
 
+.product-card{
+    position:relative;
 
-.category-title {
+    background:#0a0a0a;
 
-    font-size: 22px;
+    border:1px solid #181818;
 
-    font-weight: 800;
+    min-height:650px;
 
-    letter-spacing: -1px;
+    overflow:hidden;
+
+    transition:.35s;
 }
 
-
-.category-counter {
-
-    color: #444;
-
-    font-size: 11px;
+.product-card:hover{
+    border-color:#383838;
+    transform:translateY(-5px);
 }
 
+.category-label{
+    position:absolute;
 
-/* =====================================================
-   PRODUCT
-===================================================== */
+    top:20px;
+    left:20px;
 
-.product-row {
+    z-index:5;
 
-    display: flex;
-
-    align-items: center;
-
-    gap: 14px;
+    font-size:9px;
+    letter-spacing:3px;
+    color:#666;
 }
 
+.product-photo{
+    height:470px;
 
-.product {
+    position:relative;
 
-    flex: 1;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-    min-width: 0;
-
-    overflow: hidden;
-
-    border:
-        1px solid #252525;
-
-    border-radius: 25px;
-
-    background: #0e0e0e;
-
-    transition:
-        border-color .3s,
-        transform .3s;
+    overflow:hidden;
 }
 
+.product-photo::before{
+    content:"";
 
-.product:hover {
+    position:absolute;
 
-    border-color: #444;
+    width:70%;
+    height:70%;
 
-    transform:
-        translateY(-4px);
-}
-
-
-/* photo */
-
-.product-photo {
-
-    height: 440px;
-
-    position: relative;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    overflow: hidden;
+    border-radius:50%;
 
     background:
         radial-gradient(
-            circle at center,
-            #252525 0%,
-            #111 45%,
-            #080808 100%
+            circle,
+            #171717 0%,
+            #0b0b0b 50%,
+            transparent 72%
         );
+
+    filter:blur(10px);
 }
 
+.product-photo img{
+    position:relative;
+    z-index:2;
 
-.product-photo::before {
+    width:82%;
+    height:82%;
 
-    content: "CREATUREMEZA";
+    object-fit:contain;
 
-    position: absolute;
+    opacity:0;
 
-    color: #181818;
+    transform:scale(.88);
 
-    font-size: 55px;
-
-    font-weight: 900;
-
-    letter-spacing: -5px;
-
-    transform:
-        rotate(-12deg);
-
-    white-space: nowrap;
+    transition:.5s;
 }
 
-
-.product-photo img {
-
-    width: 100%;
-
-    height: 100%;
-
-    object-fit: cover;
-
-    display: none;
-
-    position: relative;
-
-    z-index: 2;
+.product-photo.has-image img{
+    opacity:1;
+    transform:scale(1);
 }
 
+.placeholder{
+    position:relative;
+    z-index:2;
 
-.product-photo.has-image::before {
+    text-align:center;
 
-    display: none;
+    color:#333;
 }
 
-
-.product-photo.has-image img {
-
-    display: block;
+.placeholder-symbol{
+    font-size:65px;
+    line-height:1;
+    margin-bottom:12px;
 }
 
-
-/* info */
-
-.product-info {
-
-    padding: 21px;
+.placeholder-text{
+    font-size:9px;
+    letter-spacing:3px;
 }
 
+.product-info{
+    padding:24px;
 
-.product-brand {
-
-    color: #555;
-
-    font-size: 10px;
-
-    letter-spacing: 2px;
+    border-top:1px solid #181818;
 }
 
+.product-brand{
+    font-size:9px;
+    letter-spacing:2px;
+    color:#666;
 
-.product-name {
-
-    margin-top: 8px;
-
-    font-size: 20px;
-
-    font-weight: 800;
-
-    line-height: 1.2;
+    margin-bottom:10px;
 }
 
+.product-name{
+    font-size:17px;
+    line-height:1.2;
 
-.product-price {
-
-    margin-top: 12px;
-
-    color: #888;
-
-    font-size: 13px;
+    min-height:42px;
 }
 
+.product-bottom{
+    margin-top:25px;
 
-/* =====================================================
-   PRODUCT CHANGE ANIMATION
-===================================================== */
-
-.product.change {
-
-    animation:
-        productChange
-        .4s ease;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-
-@keyframes productChange {
-
-    0% {
-
-        opacity: .2;
-
-        transform:
-            translateX(15px)
-            scale(.98);
-
-    }
-
-    100% {
-
-        opacity: 1;
-
-        transform:
-            translateX(0)
-            scale(1);
-
-    }
-
+.product-price{
+    font-size:14px;
 }
 
-
-/* =====================================================
-   ARROWS
-===================================================== */
-
-.arrow {
-
-    width: 54px;
-
-    height: 54px;
-
-    flex-shrink: 0;
-
-    border:
-        1px solid #292929;
-
-    border-radius: 50%;
-
-    background: #101010;
-
-    color: white;
-
-    font-size: 20px;
-
-    cursor: pointer;
-
-    transition: .25s;
+.counter{
+    font-size:10px;
+    color:#666;
 }
 
+.arrows{
+    position:absolute;
 
-.arrow:hover {
+    bottom:24px;
+    right:24px;
 
-    background: white;
+    display:flex;
+    gap:6px;
 
-    color: black;
-
-    transform:
-        scale(1.08);
+    z-index:10;
 }
 
+.arrow{
+    width:38px;
+    height:38px;
 
-.arrow:active {
+    background:#111;
+    color:white;
 
-    transform:
-        scale(.9);
+    border:1px solid #292929;
+
+    cursor:pointer;
+
+    font-size:18px;
+
+    transition:.2s;
 }
 
-
-/* =====================================================
-   EMPTY CATEGORY
-===================================================== */
-
-.empty {
-
-    height: 440px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    color: #444;
-
-    font-size: 11px;
-
-    letter-spacing: 3px;
+.arrow:hover{
+    background:white;
+    color:black;
 }
 
-
-/* =====================================================
+/* =========================
    TOTAL
-===================================================== */
+========================= */
 
-.total {
+.total-bar{
+    margin-top:20px;
 
-    position: sticky;
+    border:1px solid #202020;
 
-    bottom: 15px;
+    background:#090909;
 
-    z-index: 100;
+    padding:22px 25px;
 
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding:
-        20px 24px;
-
-    border:
-        1px solid #333;
-
-    border-radius: 22px;
-
-    background:
-        rgba(
-            15,
-            15,
-            15,
-            .95
-        );
-
-    backdrop-filter:
-        blur(20px);
-
-    box-shadow:
-        0 15px 50px
-        rgba(
-            0,
-            0,
-            0,
-            .5
-        );
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
 }
 
-
-.total-label {
-
-    color: #555;
-
-    font-size: 9px;
-
-    letter-spacing: 2px;
+.total-label{
+    font-size:10px;
+    letter-spacing:3px;
+    color:#666;
 }
 
-
-.total-price {
-
-    margin-top: 5px;
-
-    font-size: 25px;
-
-    font-weight: 900;
+.total-price{
+    font-size:25px;
+    font-weight:bold;
 }
 
-
-.selected {
-
-    color: #666;
-
-    font-size: 11px;
-
-    text-align: right;
-}
-
-
-/* =====================================================
+/* =========================
    ARCHIVE
-===================================================== */
+========================= */
 
-.archive {
-
-    padding:
-        120px 20px;
-
-    text-align: center;
-
-    border-top:
-        1px solid #181818;
-
-    border-bottom:
-        1px solid #181818;
-
-    background: #090909;
+.archive{
+    padding:100px 5vw 150px;
 }
 
-
-.archive h2 {
-
-    margin: 0;
-
-    font-size:
-        clamp(
-            40px,
-            8vw,
-            70px
-        );
-
-    letter-spacing: -4px;
+.archive-header{
+    max-width:700px;
+    margin-bottom:50px;
 }
 
-
-.archive p {
-
-    max-width: 520px;
-
-    margin:
-        22px auto 0;
-
-    color: #555;
-
-    font-size: 13px;
-
-    line-height: 1.7;
+.archive-header h2{
+    font-size:clamp(45px,7vw,100px);
+    letter-spacing:-6px;
+    line-height:.85;
 }
 
+.archive-header p{
+    margin-top:25px;
 
-/* =====================================================
+    color:#666;
+    line-height:1.6;
+    font-size:13px;
+}
+
+.archive-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:8px;
+}
+
+.archive-item{
+    aspect-ratio:1/1;
+
+    background:#0b0b0b;
+
+    border:1px solid #151515;
+
+    padding:15px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    transition:.3s;
+}
+
+.archive-item:hover{
+    transform:translateY(-5px);
+    border-color:#333;
+}
+
+.archive-number{
+    color:#444;
+    font-size:9px;
+}
+
+.archive-brand{
+    font-size:12px;
+    letter-spacing:1px;
+}
+
+.archive-name{
+    color:#666;
+    font-size:10px;
+    line-height:1.4;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.info{
+    padding:100px 5vw;
+
+    border-top:1px solid #181818;
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:80px;
+}
+
+.info h2{
+    font-size:60px;
+    letter-spacing:-4px;
+}
+
+.info p{
+    color:#777;
+    line-height:1.7;
+    font-size:13px;
+}
+
+/* =========================
    FOOTER
-===================================================== */
+========================= */
 
-footer {
+footer{
+    border-top:1px solid #181818;
 
-    padding:
-        80px 20px;
+    padding:40px 5vw;
 
-    text-align: center;
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
 
-    color: #3b3b3b;
+    color:#555;
 
-    font-size: 12px;
-
-    line-height: 2;
+    font-size:10px;
+    letter-spacing:1px;
 }
 
-
-footer strong {
-
-    color: #555;
-
-    font-size: 14px;
+footer strong{
+    color:#aaa;
 }
 
+/* =========================
+   REVEAL
+========================= */
 
-/* =====================================================
-   MOBILE
-===================================================== */
+.reveal{
+    opacity:0;
+    transform:translateY(35px);
 
-@media(max-width:600px) {
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+}
 
-    .header {
+.reveal.visible{
+    opacity:1;
+    transform:none;
+}
 
-        padding:
-            0 15px;
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .outfit-grid{
+        grid-template-columns:1fr;
     }
 
-
-    .builder {
-
-        padding:
-            75px 12px;
+    .product-card{
+        min-height:600px;
     }
 
-
-    .product-photo {
-
-        height: 360px;
+    .archive-grid{
+        grid-template-columns:
+            repeat(2,1fr);
     }
 
-
-    .empty {
-
-        height: 360px;
+    .info{
+        grid-template-columns:1fr;
     }
 
+}
 
-    .arrow {
+@media(max-width:600px){
 
-        width: 43px;
-
-        height: 43px;
-
-        font-size: 17px;
+    header{
+        padding:0 16px;
     }
 
-
-    .product-info {
-
-        padding: 16px;
+    .logo{
+        font-size:18px;
     }
 
-
-    .product-name {
-
-        font-size: 17px;
+    .hero-title{
+        letter-spacing:-5px;
     }
 
+    .orbit{
+        width:100vw;
+        height:100vw;
+    }
 
-    .archive {
+    .builder{
+        padding:90px 16px;
+    }
 
-        padding:
-            90px 20px;
+    .section-head{
+        display:block;
+    }
+
+    .current-brand{
+        text-align:left;
+        margin-top:25px;
+    }
+
+    .archive{
+        padding-left:16px;
+        padding-right:16px;
+    }
+
+    .archive-grid{
+        grid-template-columns:1fr 1fr;
+    }
+
+    .info{
+        padding:80px 16px;
+    }
+
+    footer{
+        flex-direction:column;
     }
 
 }
 
 </style>
-
 </head>
 
 
 <body>
 
+<!-- =========================
+     LOADER
+========================= -->
 
-<!-- =====================================================
-     INTRO
-===================================================== -->
+<div class="loader" id="loader">
+    <div class="loader-title">
+        CreatureMeza
+    </div>
+</div>
 
-<section class="intro">
 
-    <div class="intro-content">
+<!-- =========================
+     HEADER
+========================= -->
 
-        <h1>
-            CREATURE<br>
-            MEZA
+<header>
+
+    <div class="logo">
+        CreatureMeza
+    </div>
+
+    <div class="header-right">
+
+        <button
+            class="catalog-button"
+            id="catalogToggle"
+        >
+            Catalog
+        </button>
+
+    </div>
+
+</header>
+
+
+<!-- =========================
+     CATALOG PANEL
+========================= -->
+
+<aside
+    class="catalog-panel"
+    id="catalogPanel"
+>
+
+    <div class="catalog-title">
+        SELECT BRAND
+    </div>
+
+    <div
+        class="brand-list"
+        id="brandList"
+    ></div>
+
+</aside>
+
+
+<!-- =========================
+     HERO
+========================= -->
+
+<section class="hero">
+
+    <div class="orbit"></div>
+    <div class="orbit two"></div>
+
+    <div class="hero-center">
+
+        <h1 class="hero-title">
+            CreatureMeza
         </h1>
 
-        <div class="intro-subtitle">
-
-            FASHION / STREETWEAR / ARCHIVE
-
+        <div class="hero-sub">
+            Archive / Streetwear / Culture
         </div>
-
-        <a
-            href="#builder"
-            class="enter-button"
-        >
-            ENTER
-        </a>
 
     </div>
 
 </section>
 
 
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
-
-<header class="header">
-
-    <div class="logo">
-
-        Creature<span>Meza</span>
-
-    </div>
-
-
-    <button
-        class="catalog-toggle"
-        onclick="toggleCatalog()"
-    >
-
-        <span class="menu-icon"></span>
-
-        CATALOG
-
-    </button>
-
-</header>
-
-
-
-<!-- =====================================================
-     CATALOG
-===================================================== -->
-
-<nav
-    class="catalog"
-    id="catalog"
->
-
-    <div class="catalog-label">
-
-        SELECT BRAND
-
-    </div>
-
-
-    <button
-        class="catalog-brand active"
-        onclick="selectBrand('ALL', this)"
-    >
-        ALL BRANDS
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('ERD', this)"
-    >
-        ERD
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('MASTERMIND', this)"
-    >
-        MASTERMIND
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('STONE ISLAND', this)"
-    >
-        STONE ISLAND
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('RICK OWENS', this)"
-    >
-        RICK OWENS
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('STUSSY', this)"
-    >
-        STÜSSY
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('SUPREME', this)"
-    >
-        SUPREME
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('NIKE', this)"
-    >
-        NIKE
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('ADIDAS', this)"
-    >
-        ADIDAS
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('CARHARTT WIP', this)"
-    >
-        CARHARTT WIP
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('BAPE', this)"
-    >
-        BAPE
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('OFF-WHITE', this)"
-    >
-        OFF-WHITE
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('PALACE', this)"
-    >
-        PALACE
-    </button>
-
-
-    <button
-        class="catalog-brand"
-        onclick="selectBrand('BALENCIAGA', this)"
-    >
-        BALENCIAGA
-    </button>
-
-</nav>
-
-
-
-<!-- =====================================================
+<!-- =========================
      MARQUEE
-===================================================== -->
+========================= -->
 
 <div class="marquee">
 
     <div class="marquee-track">
 
-        CREATUREMEZA / STREETWEAR / ARCHIVE /
-        CREATUREMEZA / STREETWEAR / ARCHIVE /
-        CREATUREMEZA / STREETWEAR / ARCHIVE /
-        CREATUREMEZA / STREETWEAR / ARCHIVE /
+        RICK OWENS DRKSHDW — SUPREME — STONE ISLAND —
+        STÜSSY — BAPE — OFF-WHITE — PALACE —
+        CARHARTT WIP — BALENCIAGA — NIKE — ADIDAS —
+        MASTERMIND JAPAN — ERD —
+
+        RICK OWENS DRKSHDW — SUPREME — STONE ISLAND —
+        STÜSSY — BAPE — OFF-WHITE — PALACE —
+        CARHARTT WIP — BALENCIAGA — NIKE — ADIDAS —
+        MASTERMIND JAPAN — ERD —
 
     </div>
 
 </div>
 
 
-
-<!-- =====================================================
+<!-- =========================
      BUILDER
-===================================================== -->
+========================= -->
 
-<main
-    class="builder"
-    id="builder"
->
+<section class="builder reveal">
 
+    <div class="section-head">
 
-<div class="builder-title">
+        <div>
 
-    <h2>
-        OUTFIT BUILDER
-    </h2>
+            <div class="section-kicker">
+                BUILD YOUR FIT
+            </div>
 
-    <p>
-        Choose a brand and build your outfit.
-    </p>
-
-    <div
-        class="current-brand"
-        id="currentBrand"
-    >
-        ALL BRANDS
-    </div>
-
-</div>
-
-
-
-<!-- =====================================================
-     TOP
-===================================================== -->
-
-<section
-    class="category reveal"
->
-
-    <div class="category-header">
-
-        <div class="category-title">
-
-            01 — TOP
+            <h2 class="section-title">
+                Outfit
+            </h2>
 
         </div>
 
+        <div class="current-brand">
 
-        <div
-            class="category-counter"
-            id="topCounter"
-        >
+            <div class="current-brand-label">
+                CURRENT BRAND
+            </div>
 
-            1 / 1
+            <div
+                class="current-brand-name"
+                id="currentBrand"
+            >
+                ALL BRANDS
+            </div>
 
         </div>
 
     </div>
 
 
-    <div class="product-row">
+    <div class="outfit-grid">
 
 
-        <button
-            class="arrow"
-            onclick="changeItem('top', -1)"
-        >
+        <!-- TOP -->
 
-            ←
+        <article class="product-card">
 
-        </button>
-
-
-
-        <div
-            class="product"
-            id="topProduct"
-        >
+            <div class="category-label">
+                TOP
+            </div>
 
             <div
                 class="product-photo"
@@ -1470,6 +989,21 @@ footer strong {
                     alt=""
                 >
 
+                <div
+                    class="placeholder"
+                    id="topPlaceholder"
+                >
+
+                    <div class="placeholder-symbol">
+                        ◇
+                    </div>
+
+                    <div class="placeholder-text">
+                        IMAGE
+                    </div>
+
+                </div>
+
             </div>
 
 
@@ -1480,86 +1014,56 @@ footer strong {
                     id="topBrand"
                 ></div>
 
-
                 <div
                     class="product-name"
                     id="topName"
                 ></div>
 
+                <div class="product-bottom">
 
-                <div
-                    class="product-price"
-                    id="topPrice"
-                ></div>
+                    <div
+                        class="product-price"
+                        id="topPrice"
+                    ></div>
+
+                    <div
+                        class="counter"
+                        id="topCounter"
+                    ></div>
+
+                </div>
 
             </div>
 
-        </div>
+
+            <div class="arrows">
+
+                <button
+                    class="arrow"
+                    onclick="changeItem('top', -1)"
+                >
+                    ←
+                </button>
+
+                <button
+                    class="arrow"
+                    onclick="changeItem('top', 1)"
+                >
+                    →
+                </button>
+
+            </div>
+
+        </article>
 
 
+        <!-- BOTTOM -->
 
-        <button
-            class="arrow"
-            onclick="changeItem('top', 1)"
-        >
+        <article class="product-card">
 
-            →
-
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     BOTTOM
-===================================================== -->
-
-<section
-    class="category reveal"
->
-
-    <div class="category-header">
-
-        <div class="category-title">
-
-            02 — BOTTOM
-
-        </div>
-
-
-        <div
-            class="category-counter"
-            id="bottomCounter"
-        >
-
-            1 / 1
-
-        </div>
-
-    </div>
-
-
-    <div class="product-row">
-
-
-        <button
-            class="arrow"
-            onclick="changeItem('bottom', -1)"
-        >
-
-            ←
-
-        </button>
-
-
-
-        <div
-            class="product"
-            id="bottomProduct"
-        >
+            <div class="category-label">
+                BOTTOM
+            </div>
 
             <div
                 class="product-photo"
@@ -1571,6 +1075,21 @@ footer strong {
                     alt=""
                 >
 
+                <div
+                    class="placeholder"
+                    id="bottomPlaceholder"
+                >
+
+                    <div class="placeholder-symbol">
+                        ◇
+                    </div>
+
+                    <div class="placeholder-text">
+                        IMAGE
+                    </div>
+
+                </div>
+
             </div>
 
 
@@ -1581,86 +1100,56 @@ footer strong {
                     id="bottomBrand"
                 ></div>
 
-
                 <div
                     class="product-name"
                     id="bottomName"
                 ></div>
 
+                <div class="product-bottom">
 
-                <div
-                    class="product-price"
-                    id="bottomPrice"
-                ></div>
+                    <div
+                        class="product-price"
+                        id="bottomPrice"
+                    ></div>
+
+                    <div
+                        class="counter"
+                        id="bottomCounter"
+                    ></div>
+
+                </div>
 
             </div>
 
-        </div>
+
+            <div class="arrows">
+
+                <button
+                    class="arrow"
+                    onclick="changeItem('bottom', -1)"
+                >
+                    ←
+                </button>
+
+                <button
+                    class="arrow"
+                    onclick="changeItem('bottom', 1)"
+                >
+                    →
+                </button>
+
+            </div>
+
+        </article>
 
 
+        <!-- SHOES -->
 
-        <button
-            class="arrow"
-            onclick="changeItem('bottom', 1)"
-        >
+        <article class="product-card">
 
-            →
-
-        </button>
-
-    </div>
-
-</section>
-
-
-
-<!-- =====================================================
-     SHOES
-===================================================== -->
-
-<section
-    class="category reveal"
->
-
-    <div class="category-header">
-
-        <div class="category-title">
-
-            03 — SHOES
-
-        </div>
-
-
-        <div
-            class="category-counter"
-            id="shoesCounter"
-        >
-
-            1 / 1
-
-        </div>
-
-    </div>
-
-
-    <div class="product-row">
-
-
-        <button
-            class="arrow"
-            onclick="changeItem('shoes', -1)"
-        >
-
-            ←
-
-        </button>
-
-
-
-        <div
-            class="product"
-            id="shoesProduct"
-        >
+            <div class="category-label">
+                SHOES
+            </div>
 
             <div
                 class="product-photo"
@@ -1672,6 +1161,21 @@ footer strong {
                     alt=""
                 >
 
+                <div
+                    class="placeholder"
+                    id="shoesPlaceholder"
+                >
+
+                    <div class="placeholder-symbol">
+                        ◇
+                    </div>
+
+                    <div class="placeholder-text">
+                        IMAGE
+                    </div>
+
+                </div>
+
             </div>
 
 
@@ -1682,1333 +1186,1322 @@ footer strong {
                     id="shoesBrand"
                 ></div>
 
-
                 <div
                     class="product-name"
                     id="shoesName"
                 ></div>
 
+                <div class="product-bottom">
 
-                <div
-                    class="product-price"
-                    id="shoesPrice"
-                ></div>
+                    <div
+                        class="product-price"
+                        id="shoesPrice"
+                    ></div>
+
+                    <div
+                        class="counter"
+                        id="shoesCounter"
+                    ></div>
+
+                </div>
 
             </div>
 
-        </div>
 
+            <div class="arrows">
 
+                <button
+                    class="arrow"
+                    onclick="changeItem('shoes', -1)"
+                >
+                    ←
+                </button>
 
-        <button
-            class="arrow"
-            onclick="changeItem('shoes', 1)"
-        >
+                <button
+                    class="arrow"
+                    onclick="changeItem('shoes', 1)"
+                >
+                    →
+                </button>
 
-            →
+            </div>
 
-        </button>
+        </article>
 
     </div>
 
-</section>
 
-
-
-<!-- =====================================================
-     TOTAL
-===================================================== -->
-
-<div class="total">
-
-    <div>
+    <div class="total-bar">
 
         <div class="total-label">
-
-            TOTAL OUTFIT
-
+            TOTAL FIT VALUE
         </div>
-
 
         <div
             class="total-price"
             id="totalPrice"
         >
-
             $0
-
         </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     ARCHIVE
+========================= -->
+
+<section class="archive reveal">
+
+    <div class="archive-header">
+
+        <div class="section-kicker">
+            CREATUREMEZA ARCHIVE
+        </div>
+
+        <h2>
+            Selected<br>
+            Objects.
+        </h2>
+
+        <p>
+            A curated archive of influential streetwear,
+            designer pieces and iconic collaborations.
+            Scroll through the collection and build your own fit.
+        </p>
 
     </div>
 
 
     <div
-        class="selected"
-        id="selectedText"
-    >
-
-        3 ITEMS
-
-    </div>
-
-</div>
-
-
-</main>
-
-
-
-<!-- =====================================================
-     ARCHIVE
-===================================================== -->
-
-<section class="archive">
-
-    <h2>
-
-        THE ARCHIVE
-
-    </h2>
-
-
-    <p>
-
-        A growing collection of fashion,
-        streetwear and rare pieces.
-        Images will be added to the archive
-        as the project grows.
-
-    </p>
+        class="archive-grid"
+        id="archiveGrid"
+    ></div>
 
 </section>
 
 
+<!-- =========================
+     INFO
+========================= -->
 
-<!-- =====================================================
+<section class="info reveal">
+
+    <div>
+
+        <h2>
+            Built for<br>
+            the archive.
+        </h2>
+
+    </div>
+
+    <div>
+
+        <p>
+            CreatureMeza is a visual archive dedicated
+            to streetwear, fashion culture and iconic
+            collaborations.
+        </p>
+
+        <br>
+
+        <p>
+            From Rick Owens DRKSHDW and Enfants Riches
+            Déprimés to Supreme, Stone Island, Nike,
+            Off-White and Palace.
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
      FOOTER
-===================================================== -->
+========================= -->
 
 <footer>
 
-    <strong>
-        CREATUREMEZA
-    </strong>
+    <div>
+        made by <strong>Borov’s team</strong>
+    </div>
 
-    <br>
-
-    made by Borov’s team
-
-    <br>
-
-    our telegram channel: CreatureMeza
+    <div>
+        our telegram channel:
+        <strong>CreatureMeza</strong>
+    </div>
 
 </footer>
-
 
 
 <script>
 
 /* =====================================================
-   DATABASE
-=====================================================
-
-   ВАЖНО:
-
-   Здесь каждый бренд полностью отделён.
-
-   brand
-      ├── top
-      ├── bottom
-      └── shoes
-
-   Потом сюда будем добавлять фотографии.
-
+   CREATUREMEZA DATABASE
 ===================================================== */
-
 
 const catalog = {
 
-
-/* =====================================================
-   ERD
-===================================================== */
-
-ERD: {
-
-    top: [
-
-        {
-            name:
-                "Anti-Communist League Short Sleeve Shirt",
-            price: 450,
-            image: ""
-        },
-
-        {
-            name:
-                "Anti-Communist League Shrunken T-Shirt",
-            price: 380,
-            image: ""
-        },
-
-        {
-            name:
-                "Artist's Grave Antique Sweater",
-            price: 590,
-            image: ""
-        },
-
-        {
-            name:
-                "Backless Rose Buckle Vest",
-            price: 620,
-            image: ""
-        },
-
-        {
-            name:
-                "Archive Graphic T-Shirt",
-            price: 420,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Antique Work Trousers",
-            price: 520,
-            image: ""
-        },
-
-        {
-            name:
-                "Distressed Denim",
-            price: 470,
-            image: ""
-        },
-
-        {
-            name:
-                "Archive Work Pants",
-            price: 490,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Black Platform Sneakers",
-            price: 390,
-            image: ""
-        },
-
-        {
-            name:
-                "Archive Leather Sneakers",
-            price: 420,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   MASTERMIND
-===================================================== */
-
-MASTERMIND: {
-
-    top: [
-
-        {
-            name:
-                "Skull Logo Hoodie",
-            price: 850,
-            image: ""
-        },
-
-        {
-            name:
-                "MASTERMIND WORLD Graphic Tee",
-            price: 450,
-            image: ""
-        },
-
-        {
-            name:
-                "Skull Zip Hoodie",
-            price: 790,
-            image: ""
-        },
-
-        {
-            name:
-                "MASTERMIND Bomber Jacket",
-            price: 1100,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Skull Cargo Pants",
-            price: 580,
-            image: ""
-        },
-
-        {
-            name:
-                "Black Wide Trousers",
-            price: 520,
-            image: ""
-        },
-
-        {
-            name:
-                "MASTERMIND Denim",
-            price: 560,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "MASTERMIND Skull Sneakers",
-            price: 420,
-            image: ""
-        },
-
-        {
-            name:
-                "MASTERMIND Leather Shoes",
-            price: 480,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   STONE ISLAND
-===================================================== */
-
-"STONE ISLAND": {
-
-    top: [
-
-        {
-            name:
-                "Dense Oxford Nylon-TC Jacket",
-            price: 720,
-            image: ""
-        },
-
-        {
-            name:
-                "David Light-TC Jacket",
-            price: 760,
-            image: ""
-        },
-
-        {
-            name:
-                "Organic Cotton Jersey T-Shirt",
-            price: 190,
-            image: ""
-        },
-
-        {
-            name:
-                "Brushed Cotton Sweatshirt",
-            price: 320,
-            image: ""
-        },
-
-        {
-            name:
-                "Ghost Piece Jacket",
-            price: 850,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Cargo Trousers",
-            price: 390,
-            image: ""
-        },
-
-        {
-            name:
-                "Ghost Cargo Pants",
-            price: 450,
-            image: ""
-        },
-
-        {
-            name:
-                "Regular Trousers",
-            price: 360,
-            image: ""
-        },
-
-        {
-            name:
-                "Organic Cotton Trousers",
-            price: 330,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Technical Sneakers",
-            price: 360,
-            image: ""
-        },
-
-        {
-            name:
-                "Stone Island Sneaker",
-            price: 390,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   RICK OWENS
-===================================================== */
-
-"RICK OWENS": {
-
-    top: [
-
-        {
-            name:
-                "Oversized Hoodie",
-            price: 900,
-            image: ""
-        },
-
-        {
-            name:
-                "Porterville Sweatshirt",
-            price: 780,
-            image: ""
-        },
-
-        {
-            name:
-                "Classic Bomber",
-            price: 1450,
-            image: ""
-        },
-
-        {
-            name:
-                "Mountain Hoodie",
-            price: 980,
-            image: ""
-        },
-
-        {
-            name:
-                "Oversized Jacket",
-            price: 1250,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Bolan Banana Cut",
-            price: 850,
-            image: ""
-        },
-
-        {
-            name:
-                "Creatch Cargo Pants",
-            price: 920,
-            image: ""
-        },
-
-        {
-            name:
-                "Black Wide Trousers",
-            price: 800,
-            image: ""
-        },
-
-        {
-            name:
-                "Wide Leg Denim",
-            price: 880,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Geobasket",
-            price: 1050,
-            image: ""
-        },
-
-        {
-            name:
-                "Ramones",
-            price: 850,
-            image: ""
-        },
-
-        {
-            name:
-                "Abstract Sneaker",
-            price: 950,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   STUSSY
-===================================================== */
-
-STUSSY: {
-
-    top: [
-
-        {
-            name:
-                "Basic Stock Hoodie",
-            price: 180,
-            image: ""
-        },
-
-        {
-            name:
-                "8 Ball Sherpa Jacket",
-            price: 260,
-            image: ""
-        },
-
-        {
-            name:
-                "World Tour Tee",
-            price: 90,
-            image: ""
-        },
-
-        {
-            name:
-                "Stock Logo Crewneck",
-            price: 160,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Relaxed Jeans",
-            price: 210,
-            image: ""
-        },
-
-        {
-            name:
-                "Big Ol' Jeans",
-            price: 240,
-            image: ""
-        },
-
-        {
-            name:
-                "Work Pants",
-            price: 190,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Canvas Sneaker",
-            price: 130,
-            image: ""
-        },
-
-        {
-            name:
-                "Stock Low Sneaker",
-            price: 150,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   SUPREME
-===================================================== */
-
-SUPREME: {
-
-    top: [
-
-        {
-            name:
-                "Box Logo Hoodie",
-            price: 320,
-            image: ""
-        },
-
-        {
-            name:
-                "Classic Logo Crewneck",
-            price: 280,
-            image: ""
-        },
-
-        {
-            name:
-                "Motion Logo Tee",
-            price: 110,
-            image: ""
-        },
-
-        {
-            name:
-                "Small Box Logo Tee",
-            price: 100,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Baggy Jean",
-            price: 290,
-            image: ""
-        },
-
-        {
-            name:
-                "Cargo Pant",
-            price: 280,
-            image: ""
-        },
-
-        {
-            name:
-                "Work Pant",
-            price: 260,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Supreme Street Sneaker",
-            price: 220,
-            image: ""
-        },
-
-        {
-            name:
-                "Supreme Canvas Shoe",
-            price: 200,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   NIKE
-===================================================== */
-
-NIKE: {
-
-    top: [
-
-        {
-            name:
-                "Tech Fleece Hoodie",
-            price: 160,
-            image: ""
-        },
-
-        {
-            name:
-                "ACG Jacket",
-            price: 240,
-            image: ""
-        },
-
-        {
-            name:
-                "Solo Swoosh Hoodie",
-            price: 150,
-            image: ""
-        },
-
-        {
-            name:
-                "Sportswear Tech Pack Jacket",
-            price: 190,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Tech Fleece Pants",
-            price: 120,
-            image: ""
-        },
-
-        {
-            name:
-                "ACG Trail Pants",
-            price: 170,
-            image: ""
-        },
-
-        {
-            name:
-                "Tech Pack Trousers",
-            price: 150,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Air Force 1",
-            price: 120,
-            image: ""
-        },
-
-        {
-            name:
-                "Air Max 95",
-            price: 180,
-            image: ""
-        },
-
-        {
-            name:
-                "Air Jordan 1",
-            price: 180,
-            image: ""
-        },
-
-        {
-            name:
-                "Air Max Plus",
-            price: 170,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   ADIDAS
-===================================================== */
-
-ADIDAS: {
-
-    top: [
-
-        {
-            name:
-                "Firebird Track Jacket",
-            price: 120,
-            image: ""
-        },
-
-        {
-            name:
-                "SST Track Jacket",
-            price: 110,
-            image: ""
-        },
-
-        {
-            name:
-                "Trefoil Hoodie",
-            price: 100,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Firebird Track Pants",
-            price: 110,
-            image: ""
-        },
-
-        {
-            name:
-                "SST Track Pants",
-            price: 100,
-            image: ""
-        },
-
-        {
-            name:
-                "Adibreak Pants",
-            price: 120,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Campus 00s",
-            price: 110,
-            image: ""
-        },
-
-        {
-            name:
-                "Samba OG",
-            price: 120,
-            image: ""
-        },
-
-        {
-            name:
-                "Gazelle Indoor",
-            price: 120,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   CARHARTT WIP
-===================================================== */
-
-"CARHARTT WIP": {
-
-    top: [
-
-        {
-            name:
-                "Detroit Jacket",
-            price: 250,
-            image: ""
-        },
-
-        {
-            name:
-                "Active Jacket",
-            price: 230,
-            image: ""
-        },
-
-        {
-            name:
-                "Chase Sweatshirt",
-            price: 130,
-            image: ""
-        },
-
-        {
-            name:
-                "OG Active Jacket",
-            price: 280,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Newel Pant",
-            price: 170,
-            image: ""
-        },
-
-        {
-            name:
-                "Double Knee Pant",
-            price: 180,
-            image: ""
-        },
-
-        {
-            name:
-                "Single Knee Pant",
-            price: 175,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Canvas Sneaker",
-            price: 150,
-            image: ""
-        },
-
-        {
-            name:
-                "Work Sneaker",
-            price: 160,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   BAPE
-===================================================== */
-
-BAPE: {
-
-    top: [
-
-        {
-            name:
-                "Shark Full Zip Hoodie",
-            price: 480,
-            image: ""
-        },
-
-        {
-            name:
-                "Tiger Full Zip Hoodie",
-            price: 520,
-            image: ""
-        },
-
-        {
-            name:
-                "College Logo Tee",
-            price: 170,
-            image: ""
-        },
-
-        {
-            name:
-                "ABC Camo Jacket",
-            price: 600,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Camo Shark Pants",
-            price: 300,
-            image: ""
-        },
-
-        {
-            name:
-                "ABC Camo Sweatpants",
-            price: 320,
-            image: ""
-        },
-
-        {
-            name:
-                "BAPE Denim",
-            price: 350,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Bapesta",
-            price: 330,
-            image: ""
-        },
-
-        {
-            name:
-                "BAPE STA",
-            price: 360,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   OFF-WHITE
-===================================================== */
-
-"OFF-WHITE": {
-
-    top: [
-
-        {
-            name:
-                "Industrial Jacket",
-            price: 790,
-            image: ""
-        },
-
-        {
-            name:
-                "Arrow Hoodie",
-            price: 590,
-            image: ""
-        },
-
-        {
-            name:
-                "Caravaggio Hoodie",
-            price: 650,
-            image: ""
-        },
-
-        {
-            name:
-                "Diagonal Graphic Tee",
-            price: 300,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Diagonal Denim",
-            price: 650,
-            image: ""
-        },
-
-        {
-            name:
-                "Cargo Pants",
-            price: 600,
-            image: ""
-        },
-
-        {
-            name:
-                "Wide Leg Trousers",
-            price: 620,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Out Of Office",
-            price: 590,
-            image: ""
-        },
-
-        {
-            name:
-                "Odsy-1000",
-            price: 620,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   PALACE
-===================================================== */
-
-PALACE: {
-
-    top: [
-
-        {
-            name:
-                "Tri-Ferg Hoodie",
-            price: 230,
-            image: ""
-        },
-
-        {
-            name:
-                "Tri-Ferg Jacket",
-            price: 260,
-            image: ""
-        },
-
-        {
-            name:
-                "P-Logo Crewneck",
-            price: 190,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Palace Baggy Jeans",
-            price: 240,
-            image: ""
-        },
-
-        {
-            name:
-                "Palace Cargo Pants",
-            price: 250,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "P-Trainer",
-            price: 190,
-            image: ""
-        },
-
-        {
-            name:
-                "Palace Skate Shoe",
-            price: 200,
-            image: ""
-        }
-
-    ]
-
-},
-
-
-
-/* =====================================================
-   BALENCIAGA
-===================================================== */
-
-BALENCIAGA: {
-
-    top: [
-
-        {
-            name:
-                "Oversized Hoodie",
-            price: 950,
-            image: ""
-        },
-
-        {
-            name:
-                "Logo Zip Hoodie",
-            price: 900,
-            image: ""
-        },
-
-        {
-            name:
-                "Puffer Jacket",
-            price: 1100,
-            image: ""
-        },
-
-        {
-            name:
-                "Oversized T-Shirt",
-            price: 500,
-            image: ""
-        }
-
-    ],
-
-
-    bottom: [
-
-        {
-            name:
-                "Baggy Pants",
-            price: 780,
-            image: ""
-        },
-
-        {
-            name:
-                "Wide Leg Denim",
-            price: 850,
-            image: ""
-        },
-
-        {
-            name:
-                "Cargo Trousers",
-            price: 800,
-            image: ""
-        }
-
-    ],
-
-
-    shoes: [
-
-        {
-            name:
-                "Triple S",
-            price: 980,
-            image: ""
-        },
-
-        {
-            name:
-                "Runner Sneaker",
-            price: 1050,
-            image: ""
-        },
-
-        {
-            name:
-                "3XL Sneaker",
-            price: 1100,
-            image: ""
-        }
-
-    ]
-
-}
+    "RICK OWENS DRKSHDW": {
+
+        top: [
+
+            {
+                name:"DRKSHDW Ramones High",
+                price:1850,
+                image:"images/rick-owens-drkshdw-ramones-high.png"
+            },
+
+            {
+                name:"DRKSHDW Bolan Banana Jeans",
+                price:1100,
+                image:"images/rick-owens-drkshdw-bolan-jeans.png"
+            },
+
+            {
+                name:"DRKSHDW Creatch Cargo",
+                price:1250,
+                image:"images/rick-owens-drkshdw-creatch-cargo.png"
+            },
+
+            {
+                name:"DRKSHDW Oversized Hoodie",
+                price:950,
+                image:"images/rick-owens-drkshdw-hoodie.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"DRKSHDW Bolan Banana Jeans",
+                price:1100,
+                image:"images/rick-owens-drkshdw-bolan-jeans.png"
+            },
+
+            {
+                name:"DRKSHDW Creatch Cargo Pants",
+                price:1250,
+                image:"images/rick-owens-drkshdw-creatch-cargo.png"
+            },
+
+            {
+                name:"DRKSHDW Wide Trousers",
+                price:1000,
+                image:"images/rick-owens-drkshdw-wide-trousers.png"
+            },
+
+            {
+                name:"DRKSHDW Detroit Cut Jeans",
+                price:1050,
+                image:"images/rick-owens-drkshdw-detroit-jeans.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"DRKSHDW Ramones High",
+                price:1850,
+                image:"images/rick-owens-drkshdw-ramones-high.png"
+            },
+
+            {
+                name:"DRKSHDW Ramones Low",
+                price:1700,
+                image:"images/rick-owens-drkshdw-ramones-low.png"
+            },
+
+            {
+                name:"Converse x DRKSHDW TURBOWPN",
+                price:200,
+                image:"images/converse-drkshdw-turbowpn.png"
+            },
+
+            {
+                name:"DRKSHDW TURBODRK Chuck 70",
+                price:220,
+                image:"images/drkshdw-turbodrk-chuck.png"
+            }
+
+        ]
+
+    },
+
+
+    "SUPREME": {
+
+        top:[
+
+            {
+                name:"Supreme × Louis Vuitton Box Logo Hoodie",
+                price:3500,
+                image:"images/supreme-louis-vuitton-box-logo.png"
+            },
+
+            {
+                name:"Supreme × MM6 Maison Margiela Box Logo Hoodie",
+                price:900,
+                image:"images/supreme-mm6-box-logo.png"
+            },
+
+            {
+                name:"Supreme Motion Logo Hoodie",
+                price:500,
+                image:"images/supreme-motion-logo-hoodie.png"
+            },
+
+            {
+                name:"Supreme Arabic Logo Tee",
+                price:300,
+                image:"images/supreme-arabic-logo-tee.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Supreme × Stone Island Cargo Pants",
+                price:950,
+                image:"images/supreme-stone-island-cargo.png"
+            },
+
+            {
+                name:"Supreme Baggy Jean",
+                price:500,
+                image:"images/supreme-baggy-jeans.png"
+            },
+
+            {
+                name:"Supreme × The North Face Pants",
+                price:700,
+                image:"images/supreme-north-face-pants.png"
+            },
+
+            {
+                name:"Supreme Work Pant",
+                price:450,
+                image:"images/supreme-work-pants.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Supreme × Nike Air Force 1",
+                price:150,
+                image:"images/supreme-nike-air-force-1.png"
+            },
+
+            {
+                name:"Supreme × Nike SB Dunk",
+                price:650,
+                image:"images/supreme-nike-sb-dunk.png"
+            },
+
+            {
+                name:"Supreme × Clarks Wallabee",
+                price:300,
+                image:"images/supreme-clarks-wallabee.png"
+            },
+
+            {
+                name:"Supreme × Dr. Martens",
+                price:350,
+                image:"images/supreme-dr-martens.png"
+            }
+
+        ]
+
+    },
+
+
+    "STONE ISLAND": {
+
+        top:[
+
+            {
+                name:"Stone Island Ghost Piece Overshirt",
+                price:850,
+                image:"images/stone-island-ghost-overshirt.png"
+            },
+
+            {
+                name:"Stone Island × Supreme Nylon Metal Jacket",
+                price:1100,
+                image:"images/stone-island-supreme-nylon-jacket.png"
+            },
+
+            {
+                name:"Stone Island Shadow Project Overshirt",
+                price:900,
+                image:"images/stone-island-shadow-overshirt.png"
+            },
+
+            {
+                name:"Stone Island Technical Jacket",
+                price:1000,
+                image:"images/stone-island-technical-jacket.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Stone Island Shadow Project Cargo Pants",
+                price:750,
+                image:"images/stone-island-shadow-cargo.png"
+            },
+
+            {
+                name:"Stone Island × Supreme Cargo Pants",
+                price:800,
+                image:"images/stone-island-supreme-cargo.png"
+            },
+
+            {
+                name:"Stone Island Ghost Cargo",
+                price:700,
+                image:"images/stone-island-ghost-cargo.png"
+            },
+
+            {
+                name:"Stone Island Nylon Metal Pants",
+                price:650,
+                image:"images/stone-island-nylon-metal-pants.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Stone Island × New Balance 574 Legacy",
+                price:250,
+                image:"images/stone-island-new-balance-574.png"
+            },
+
+            {
+                name:"Stone Island × Nike Air Max 95",
+                price:400,
+                image:"images/stone-island-nike-air-max-95.png"
+            },
+
+            {
+                name:"Stone Island × adidas Gazelle",
+                price:250,
+                image:"images/stone-island-adidas-gazelle.png"
+            },
+
+            {
+                name:"Stone Island Compass Sneaker",
+                price:300,
+                image:"images/stone-island-sneaker.png"
+            }
+
+        ]
+
+    },
+
+
+    "STÜSSY": {
+
+        top:[
+
+            {
+                name:"Stüssy × Dior Beach Shirt",
+                price:1000,
+                image:"images/stussy-dior-beach-shirt.png"
+            },
+
+            {
+                name:"Stüssy 8 Ball Hoodie",
+                price:500,
+                image:"images/stussy-8-ball-hoodie.png"
+            },
+
+            {
+                name:"Stüssy Stock Logo Tee",
+                price:250,
+                image:"images/stussy-stock-tee.png"
+            },
+
+            {
+                name:"Stüssy 8 Ball Sherpa Jacket",
+                price:650,
+                image:"images/stussy-8-ball-jacket.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Stüssy × Levi's 501",
+                price:500,
+                image:"images/stussy-levis-501.png"
+            },
+
+            {
+                name:"Stüssy Work Pant",
+                price:350,
+                image:"images/stussy-work-pants.png"
+            },
+
+            {
+                name:"Stüssy Big Ol' Jean",
+                price:400,
+                image:"images/stussy-big-ol-jeans.png"
+            },
+
+            {
+                name:"Stüssy Relaxed Trouser",
+                price:380,
+                image:"images/stussy-relaxed-trousers.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Stüssy × Nike Air Force 1",
+                price:180,
+                image:"images/stussy-nike-air-force-1.png"
+            },
+
+            {
+                name:"Stüssy × Nike Air Zoom Spiridon",
+                price:300,
+                image:"images/stussy-nike-spiridon.png"
+            },
+
+            {
+                name:"Stüssy Converse Chuck 70",
+                price:200,
+                image:"images/stussy-converse.png"
+            },
+
+            {
+                name:"Stüssy New Balance",
+                price:250,
+                image:"images/stussy-new-balance.png"
+            }
+
+        ]
+
+    },
+
+
+    "BAPE": {
+
+        top:[
+
+            {
+                name:"BAPE 1st Camo Shark Full Zip Hoodie",
+                price:650,
+                image:"images/bape-shark-hoodie.png"
+            },
+
+            {
+                name:"BAPE × Coach Shark Hoodie",
+                price:900,
+                image:"images/bape-coach-shark.png"
+            },
+
+            {
+                name:"BAPE College Logo T-Shirt",
+                price:300,
+                image:"images/bape-college-tee.png"
+            },
+
+            {
+                name:"BAPE × The Weeknd College Tee",
+                price:350,
+                image:"images/bape-weeknd-tee.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"BAPE 1st Camo Cargo Pants",
+                price:450,
+                image:"images/bape-camo-cargo.png"
+            },
+
+            {
+                name:"BAPE Shark Sweatpants",
+                price:400,
+                image:"images/bape-shark-pants.png"
+            },
+
+            {
+                name:"BAPE × Coach Cargo Pants",
+                price:600,
+                image:"images/bape-coach-pants.png"
+            },
+
+            {
+                name:"BAPE Relaxed Denim",
+                price:450,
+                image:"images/bape-denim.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"BAPE × adidas Super Ape Star",
+                price:300,
+                image:"images/bape-adidas-super-ape-star.png"
+            },
+
+            {
+                name:"BAPE Bapesta",
+                price:350,
+                image:"images/bape-bapesta.png"
+            },
+
+            {
+                name:"BAPE × adidas Campus",
+                price:280,
+                image:"images/bape-adidas-campus.png"
+            },
+
+            {
+                name:"BAPE Sta",
+                price:350,
+                image:"images/bape-sta.png"
+            }
+
+        ]
+
+    },
+
+
+    "OFF-WHITE": {
+
+        top:[
+
+            {
+                name:"Off-White Diag Arrows Hoodie",
+                price:700,
+                image:"images/off-white-diag-hoodie.png"
+            },
+
+            {
+                name:"Off-White Caravaggio T-Shirt",
+                price:400,
+                image:"images/off-white-caravaggio.png"
+            },
+
+            {
+                name:"Off-White Industrial Jacket",
+                price:800,
+                image:"images/off-white-industrial-jacket.png"
+            },
+
+            {
+                name:"Off-White Marker T-Shirt",
+                price:350,
+                image:"images/off-white-marker-tee.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Off-White Industrial Cargo Pants",
+                price:700,
+                image:"images/off-white-cargo.png"
+            },
+
+            {
+                name:"Off-White Diag Jeans",
+                price:600,
+                image:"images/off-white-diag-jeans.png"
+            },
+
+            {
+                name:"Off-White Carpenter Pants",
+                price:550,
+                image:"images/off-white-carpenter.png"
+            },
+
+            {
+                name:"Off-White Wide Trousers",
+                price:600,
+                image:"images/off-white-wide-trousers.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Off-White × Nike Air Jordan 1",
+                price:2200,
+                image:"images/off-white-nike-aj1.png"
+            },
+
+            {
+                name:"Off-White × Nike Air Presto",
+                price:900,
+                image:"images/off-white-nike-presto.png"
+            },
+
+            {
+                name:"Off-White × Nike Air Max 90",
+                price:700,
+                image:"images/off-white-nike-air-max-90.png"
+            },
+
+            {
+                name:"Off-White × Nike Blazer Mid",
+                price:650,
+                image:"images/off-white-nike-blazer.png"
+            }
+
+        ]
+
+    },
+
+
+    "PALACE": {
+
+        top:[
+
+            {
+                name:"Palace × Gucci GG Canvas Jacket",
+                price:1400,
+                image:"images/palace-gucci-jacket.png"
+            },
+
+            {
+                name:"Palace × Gucci Track Jacket",
+                price:1200,
+                image:"images/palace-gucci-track.png"
+            },
+
+            {
+                name:"Palace Tri-Ferg Hoodie",
+                price:450,
+                image:"images/palace-tri-ferg-hoodie.png"
+            },
+
+            {
+                name:"Palace Tri-Ferg T-Shirt",
+                price:250,
+                image:"images/palace-tri-ferg-tee.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Palace × Gucci Track Pants",
+                price:850,
+                image:"images/palace-gucci-track-pants.png"
+            },
+
+            {
+                name:"Palace Shell Cargo Pants",
+                price:500,
+                image:"images/palace-shell-pants.png"
+            },
+
+            {
+                name:"Palace Baggy Denim",
+                price:450,
+                image:"images/palace-baggy-denim.png"
+            },
+
+            {
+                name:"Palace Tri-Ferg Joggers",
+                price:400,
+                image:"images/palace-joggers.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Palace × adidas Campus",
+                price:250,
+                image:"images/palace-adidas-campus.png"
+            },
+
+            {
+                name:"Palace × Arc'teryx Shoe",
+                price:450,
+                image:"images/palace-arcteryx-shoe.png"
+            },
+
+            {
+                name:"Palace Vans",
+                price:180,
+                image:"images/palace-vans.png"
+            },
+
+            {
+                name:"Palace adidas Superstar",
+                price:250,
+                image:"images/palace-superstar.png"
+            }
+
+        ]
+
+    },
+
+
+    "CARHARTT WIP": {
+
+        top:[
+
+            {
+                name:"Carhartt WIP Detroit Jacket",
+                price:450,
+                image:"images/carhartt-detroit.png"
+            },
+
+            {
+                name:"Carhartt WIP OG Active Jacket",
+                price:500,
+                image:"images/carhartt-active.png"
+            },
+
+            {
+                name:"Carhartt WIP OG Chore Coat",
+                price:450,
+                image:"images/carhartt-chore.png"
+            },
+
+            {
+                name:"Carhartt WIP Pocket T-Shirt",
+                price:150,
+                image:"images/carhartt-pocket-tee.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Carhartt WIP Double Knee Pant",
+                price:300,
+                image:"images/carhartt-double-knee.png"
+            },
+
+            {
+                name:"Carhartt WIP Single Knee Pant",
+                price:280,
+                image:"images/carhartt-single-knee.png"
+            },
+
+            {
+                name:"Carhartt WIP Cargo Pant",
+                price:320,
+                image:"images/carhartt-cargo.png"
+            },
+
+            {
+                name:"Carhartt WIP Newel Pant",
+                price:280,
+                image:"images/carhartt-newel.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Carhartt WIP × Converse Chuck 70",
+                price:220,
+                image:"images/carhartt-converse.png"
+            },
+
+            {
+                name:"Carhartt WIP × New Balance 990",
+                price:350,
+                image:"images/carhartt-new-balance.png"
+            },
+
+            {
+                name:"Carhartt WIP × Salomon ACS Pro",
+                price:300,
+                image:"images/carhartt-salomon.png"
+            },
+
+            {
+                name:"Carhartt WIP Converse",
+                price:180,
+                image:"images/carhartt-shoes.png"
+            }
+
+        ]
+
+    },
+
+
+    "BALENCIAGA": {
+
+        top:[
+
+            {
+                name:"Balenciaga Political Campaign Hoodie",
+                price:900,
+                image:"images/balenciaga-political-hoodie.png"
+            },
+
+            {
+                name:"Balenciaga Destroyed Hoodie",
+                price:950,
+                image:"images/balenciaga-destroyed-hoodie.png"
+            },
+
+            {
+                name:"Balenciaga Oversized T-Shirt",
+                price:550,
+                image:"images/balenciaga-oversized-tee.png"
+            },
+
+            {
+                name:"Balenciaga Logo Bomber",
+                price:1100,
+                image:"images/balenciaga-bomber.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Balenciaga Baggy Jeans",
+                price:750,
+                image:"images/balenciaga-baggy-jeans.png"
+            },
+
+            {
+                name:"Balenciaga Wide Leg Trousers",
+                price:700,
+                image:"images/balenciaga-wide-trousers.png"
+            },
+
+            {
+                name:"Balenciaga Cargo Pants",
+                price:800,
+                image:"images/balenciaga-cargo.png"
+            },
+
+            {
+                name:"Balenciaga Destroyed Denim",
+                price:850,
+                image:"images/balenciaga-destroyed-denim.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Balenciaga 3XL Sneaker",
+                price:1100,
+                image:"images/balenciaga-3xl.png"
+            },
+
+            {
+                name:"Balenciaga Triple S",
+                price:1000,
+                image:"images/balenciaga-triple-s.png"
+            },
+
+            {
+                name:"Balenciaga Runner",
+                price:1050,
+                image:"images/balenciaga-runner.png"
+            },
+
+            {
+                name:"Balenciaga × Crocs Boot",
+                price:900,
+                image:"images/balenciaga-crocs.png"
+            }
+
+        ]
+
+    },
+
+
+    "NIKE": {
+
+        top:[
+
+            {
+                name:"Nike × Off-White The Ten Air Jordan 1",
+                price:2200,
+                image:"images/nike-off-white-aj1.png"
+            },
+
+            {
+                name:"Nike × Travis Scott Air Jordan 1",
+                price:1200,
+                image:"images/nike-travis-aj1.png"
+            },
+
+            {
+                name:"Nike × Stüssy Air Force 1",
+                price:250,
+                image:"images/nike-stussy-af1.png"
+            },
+
+            {
+                name:"Nike × NOCTA Tech Fleece",
+                price:500,
+                image:"images/nike-nocta-tech-fleece.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"Nike × NOCTA Tech Fleece Pants",
+                price:300,
+                image:"images/nike-nocta-pants.png"
+            },
+
+            {
+                name:"Nike × Off-White Track Pants",
+                price:600,
+                image:"images/nike-off-white-pants.png"
+            },
+
+            {
+                name:"Nike ACG Cargo Pants",
+                price:250,
+                image:"images/nike-acg-cargo.png"
+            },
+
+            {
+                name:"Nike Tech Fleece Pants",
+                price:180,
+                image:"images/nike-tech-pants.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"Nike × Off-White Air Presto",
+                price:900,
+                image:"images/nike-off-white-presto.png"
+            },
+
+            {
+                name:"Nike × Off-White Air Max 90",
+                price:700,
+                image:"images/nike-off-white-air-max-90.png"
+            },
+
+            {
+                name:"Nike × Travis Scott Air Jordan 4",
+                price:1100,
+                image:"images/nike-travis-aj4.png"
+            },
+
+            {
+                name:"Nike × Sacai LDWaffle",
+                price:500,
+                image:"images/nike-sacai-ldwaffle.png"
+            }
+
+        ]
+
+    },
+
+
+    "ADIDAS": {
+
+        top:[
+
+            {
+                name:"adidas × Wales Bonner Track Jacket",
+                price:500,
+                image:"images/adidas-wales-bonmer-jacket.png"
+            },
+
+            {
+                name:"adidas × BAPE Firebird Track Jacket",
+                price:600,
+                image:"images/adidas-bape-firebird.png"
+            },
+
+            {
+                name:"adidas × Prada Superstar",
+                price:900,
+                image:"images/adidas-prada-superstar.png"
+            },
+
+            {
+                name:"adidas × Gucci Track Jacket",
+                price:1100,
+                image:"images/adidas-gucci-track.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"adidas × Wales Bonner Track Pants",
+                price:450,
+                image:"images/adidas-wales-bonmer-pants.png"
+            },
+
+            {
+                name:"adidas × Gucci Track Pants",
+                price:800,
+                image:"images/adidas-gucci-pants.png"
+            },
+
+            {
+                name:"adidas Firebird Track Pants",
+                price:150,
+                image:"images/adidas-firebird-pants.png"
+            },
+
+            {
+                name:"adidas × Fear of God Athletics Pants",
+                price:250,
+                image:"images/adidas-fear-of-god-pants.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"adidas × Wales Bonner Samba",
+                price:400,
+                image:"images/adidas-wales-bonmer-samba.png"
+            },
+
+            {
+                name:"adidas × Bad Bunny Campus",
+                price:300,
+                image:"images/adidas-bad-bunny-campus.png"
+            },
+
+            {
+                name:"adidas × BAPE Super Ape Star",
+                price:300,
+                image:"images/adidas-bape-super-ape-star.png"
+            },
+
+            {
+                name:"adidas × Gucci Gazelle",
+                price:850,
+                image:"images/adidas-gucci-gazelle.png"
+            }
+
+        ]
+
+    },
+
+
+    "MASTERMIND JAPAN": {
+
+        top:[
+
+            {
+                name:"mastermind JAPAN Skull & Crossbones T-Shirt",
+                price:450,
+                image:"images/mastermind-skull-tee.png"
+            },
+
+            {
+                name:"mastermind JAPAN Skull Hoodie",
+                price:700,
+                image:"images/mastermind-skull-hoodie.png"
+            },
+
+            {
+                name:"mastermind JAPAN MA-1 Bomber",
+                price:1100,
+                image:"images/mastermind-ma1.png"
+            },
+
+            {
+                name:"mastermind JAPAN Zip Hoodie",
+                price:650,
+                image:"images/mastermind-zip-hoodie.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"mastermind JAPAN Track Pants",
+                price:500,
+                image:"images/mastermind-track-pants.png"
+            },
+
+            {
+                name:"mastermind JAPAN Cargo Pants",
+                price:550,
+                image:"images/mastermind-cargo.png"
+            },
+
+            {
+                name:"mastermind JAPAN Denim",
+                price:600,
+                image:"images/mastermind-denim.png"
+            },
+
+            {
+                name:"mastermind JAPAN Sweatpants",
+                price:450,
+                image:"images/mastermind-sweatpants.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"mastermind JAPAN × adidas",
+                price:500,
+                image:"images/mastermind-adidas.png"
+            },
+
+            {
+                name:"mastermind JAPAN × Vans",
+                price:350,
+                image:"images/mastermind-vans.png"
+            },
+
+            {
+                name:"mastermind JAPAN Converse",
+                price:350,
+                image:"images/mastermind-converse.png"
+            },
+
+            {
+                name:"mastermind JAPAN Skull Sneaker",
+                price:450,
+                image:"images/mastermind-sneaker.png"
+            }
+
+        ]
+
+    },
+
+
+    "ERD": {
+
+        top:[
+
+            {
+                name:"ERD Anti-Communist League T-Shirt",
+                price:450,
+                image:"images/erd-anti-communist-tee.png"
+            },
+
+            {
+                name:"ERD Artist's Grave Sweater",
+                price:590,
+                image:"images/erd-artists-grave.png"
+            },
+
+            {
+                name:"ERD Backless Rose Buckle Vest",
+                price:620,
+                image:"images/erd-rose-vest.png"
+            },
+
+            {
+                name:"ERD Graphic T-Shirt",
+                price:480,
+                image:"images/erd-graphic-tee.png"
+            }
+
+        ],
+
+        bottom:[
+
+            {
+                name:"ERD Antique Work Trousers",
+                price:520,
+                image:"images/erd-antique-work-trousers.png"
+            },
+
+            {
+                name:"ERD Distressed Denim",
+                price:600,
+                image:"images/erd-distressed-denim.png"
+            },
+
+            {
+                name:"ERD Archive Work Pants",
+                price:550,
+                image:"images/erd-work-pants.png"
+            },
+
+            {
+                name:"ERD Wide Trousers",
+                price:580,
+                image:"images/erd-wide-trousers.png"
+            }
+
+        ],
+
+        shoes:[
+
+            {
+                name:"ERD Archive Leather Sneakers",
+                price:600,
+                image:"images/erd-leather-sneakers.png"
+            },
+
+            {
+                name:"ERD Black Platform Sneakers",
+                price:650,
+                image:"images/erd-platform-sneakers.png"
+            },
+
+            {
+                name:"ERD Archive Boots",
+                price:700,
+                image:"images/erd-boots.png"
+            },
+
+            {
+                name:"ERD Distressed Sneakers",
+                price:550,
+                image:"images/erd-distressed-sneakers.png"
+            }
+
+        ]
+
+    }
 
 };
-
 
 
 /* =====================================================
@@ -3017,226 +2510,146 @@ BALENCIAGA: {
 
 let activeBrand = "ALL";
 
-
 let current = {
 
-    top: 0,
-
-    bottom: 0,
-
-    shoes: 0
+    top:0,
+    bottom:0,
+    shoes:0
 
 };
-
 
 
 /* =====================================================
    GET ITEMS
 ===================================================== */
 
-function getItems(type) {
+function getItems(type){
 
-    /*
-       Если ALL —
-       объединяем вещи всех брендов.
-
-       Если выбран бренд —
-       берём ТОЛЬКО его каталог.
-    */
-
-    if (activeBrand === "ALL") {
+    if(activeBrand === "ALL"){
 
         let result = [];
 
+        Object.keys(catalog).forEach(brand => {
 
-        Object.keys(catalog)
-            .forEach(brand => {
+            catalog[brand][type].forEach(item => {
 
-                catalog[brand][type]
-                    .forEach(item => {
+                result.push({
 
-                        result.push({
+                    ...item,
 
-                            ...item,
+                    brand:brand
 
-                            brand: brand
-
-                        });
-
-                    });
+                });
 
             });
 
+        });
 
         return result;
 
     }
 
+    return catalog[activeBrand][type].map(item => ({
 
-    return catalog[activeBrand][type]
-        .map(item => ({
+        ...item,
 
-            ...item,
+        brand:activeBrand
 
-            brand: activeBrand
-
-        }));
+    }));
 
 }
 
+
+/* =====================================================
+   FORMAT PRICE
+===================================================== */
+
+function formatPrice(price){
+
+    return "$" + price.toLocaleString();
+
+}
 
 
 /* =====================================================
    RENDER
 ===================================================== */
 
-function render(type) {
+function render(type){
 
-    const items =
-        getItems(type);
+    const items = getItems(type);
 
+    if(!items.length) return;
 
-    const product =
-        document.getElementById(
-            type + "Product"
-        );
-
-
-    const photo =
-        document.getElementById(
-            type + "Photo"
-        );
-
-
-    const image =
-        document.getElementById(
-            type + "Image"
-        );
-
-
-    if (!items.length) {
-
-        document.getElementById(
-            type + "Brand"
-        ).textContent = "";
-
-
-        document.getElementById(
-            type + "Name"
-        ).textContent =
-            "NO ITEMS";
-
-
-        document.getElementById(
-            type + "Price"
-        ).textContent = "";
-
-
-        document.getElementById(
-            type + "Counter"
-        ).textContent =
-            "0 / 0";
-
-        return;
-
-    }
-
-
-    /* protect index */
-
-    if (
-        current[type]
-        >=
-        items.length
-    ) {
+    if(current[type] >= items.length){
 
         current[type] = 0;
 
     }
 
+    if(current[type] < 0){
 
-    if (
-        current[type] < 0
-    ) {
-
-        current[type] =
-            items.length - 1;
+        current[type] = items.length - 1;
 
     }
 
-
-    const item =
-        items[current[type]];
+    const item = items[current[type]];
 
 
-    /* image */
+    const image =
+        document.getElementById(type + "Image");
 
-    if (item.image) {
+    const photo =
+        document.getElementById(type + "Photo");
 
-        image.src =
-            item.image;
+    const placeholder =
+        document.getElementById(type + "Placeholder");
 
-        photo.classList.add(
-            "has-image"
-        );
 
-    } else {
+    document.getElementById(type + "Brand")
+        .textContent = item.brand;
 
-        image.removeAttribute(
-            "src"
-        );
+    document.getElementById(type + "Name")
+        .textContent = item.name;
 
-        photo.classList.remove(
-            "has-image"
-        );
+    document.getElementById(type + "Price")
+        .textContent = formatPrice(item.price);
+
+    document.getElementById(type + "Counter")
+        .textContent =
+        `${current[type] + 1} / ${items.length}`;
+
+
+    image.src = item.image || "";
+
+    image.alt = item.name;
+
+
+    image.onload = function(){
+
+        photo.classList.add("has-image");
+
+        placeholder.style.display = "none";
+
+    };
+
+
+    image.onerror = function(){
+
+        photo.classList.remove("has-image");
+
+        placeholder.style.display = "block";
+
+    };
+
+
+    if(!item.image){
+
+        photo.classList.remove("has-image");
+
+        placeholder.style.display = "block";
 
     }
-
-
-    /* information */
-
-    document.getElementById(
-        type + "Brand"
-    ).textContent =
-        item.brand;
-
-
-    document.getElementById(
-        type + "Name"
-    ).textContent =
-        item.name;
-
-
-    document.getElementById(
-        type + "Price"
-    ).textContent =
-        "$" + item.price;
-
-
-    /* counter */
-
-    document.getElementById(
-        type + "Counter"
-    ).textContent =
-
-        (current[type] + 1)
-        + " / "
-        + items.length;
-
-
-    /* animation */
-
-    product.classList.remove(
-        "change"
-    );
-
-
-    void product.offsetWidth;
-
-
-    product.classList.add(
-        "change"
-    );
 
 
     updateTotal();
@@ -3244,234 +2657,290 @@ function render(type) {
 }
 
 
-
 /* =====================================================
    CHANGE ITEM
 ===================================================== */
 
-function changeItem(
-    type,
-    direction
-) {
+function changeItem(type, direction){
 
-    const items =
-        getItems(type);
+    const items = getItems(type);
 
+    if(!items.length) return;
 
-    if (!items.length) {
-
-        return;
-
-    }
+    current[type] += direction;
 
 
-    current[type] +=
-        direction;
-
-
-    if (
-        current[type]
-        >=
-        items.length
-    ) {
-
-        current[type] = 0;
-
-    }
-
-
-    if (
-        current[type] < 0
-    ) {
+    if(current[type] < 0){
 
         current[type] =
             items.length - 1;
 
     }
 
+    if(current[type] >= items.length){
 
-    render(type);
+        current[type] = 0;
 
-}
-
-
-
-/* =====================================================
-   SELECT BRAND
-===================================================== */
-
-function selectBrand(
-    brand,
-    button
-) {
-
-    activeBrand =
-        brand;
+    }
 
 
-    /*
-       Самое главное:
-
-       ПРИ КАЖДОМ НОВОМ БРЕНДЕ
-       все три категории
-       начинаются с первого товара.
-    */
-
-    current.top = 0;
-
-    current.bottom = 0;
-
-    current.shoes = 0;
-
-
-    document
-        .querySelectorAll(
-            ".catalog-brand"
-        )
-        .forEach(
-            item =>
-                item.classList.remove(
-                    "active"
-                )
+    const card =
+        document.querySelector(
+            `.product-card:nth-child(${
+                type === "top" ? 1 :
+                type === "bottom" ? 2 : 3
+            })`
         );
 
 
-    button.classList.add(
-        "active"
-    );
+    card.style.transform =
+        "translateY(10px)";
+
+    card.style.opacity = ".3";
 
 
-    document.getElementById(
-        "currentBrand"
-    ).textContent =
-        brand;
+    setTimeout(() => {
 
+        render(type);
 
-    render("top");
+        card.style.transform = "";
 
-    render("bottom");
+        card.style.opacity = "";
 
-    render("shoes");
-
-
-    /* close catalog */
-
-    document
-        .getElementById(
-            "catalog"
-        )
-        .classList.remove(
-            "open"
-        );
+    },120);
 
 }
-
 
 
 /* =====================================================
    TOTAL
 ===================================================== */
 
-function getCurrentItem(
-    type
-) {
-
-    const items =
-        getItems(type);
-
-
-    if (!items.length) {
-
-        return null;
-
-    }
-
-
-    return items[
-        current[type]
-    ];
-
-}
-
-
-function updateTotal() {
-
-    const top =
-        getCurrentItem(
-            "top"
-        );
-
-
-    const bottom =
-        getCurrentItem(
-            "bottom"
-        );
-
-
-    const shoes =
-        getCurrentItem(
-            "shoes"
-        );
-
+function updateTotal(){
 
     let total = 0;
 
+    ["top","bottom","shoes"].forEach(type => {
 
-    if (top) {
+        const items = getItems(type);
 
-        total += top.price;
+        if(items.length){
 
-    }
+            total +=
+                items[current[type]].price;
 
+        }
 
-    if (bottom) {
-
-        total += bottom.price;
-
-    }
-
-
-    if (shoes) {
-
-        total += shoes.price;
-
-    }
+    });
 
 
-    document.getElementById(
-        "totalPrice"
-    ).textContent =
-        "$" + total;
-
-
-    document.getElementById(
-        "selectedText"
-    ).textContent =
-
-        "3 ITEMS • "
-        +
-        activeBrand;
+    document.getElementById("totalPrice")
+        .textContent = formatPrice(total);
 
 }
 
+
+/* =====================================================
+   BRAND SELECT
+===================================================== */
+
+function selectBrand(brand, button){
+
+    activeBrand = brand;
+
+
+    current.top = 0;
+    current.bottom = 0;
+    current.shoes = 0;
+
+
+    document.querySelectorAll(".brand-button")
+        .forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+
+    if(button){
+
+        button.classList.add("active");
+
+    }
+
+
+    document.getElementById("currentBrand")
+        .textContent =
+        brand === "ALL"
+            ? "ALL BRANDS"
+            : brand;
+
+
+    render("top");
+    render("bottom");
+    render("shoes");
+
+
+    document
+        .getElementById("catalogPanel")
+        .classList.remove("open");
+
+}
+
+
+/* =====================================================
+   BUILD BRAND MENU
+===================================================== */
+
+function buildBrandMenu(){
+
+    const list =
+        document.getElementById("brandList");
+
+
+    list.innerHTML = "";
+
+
+    const allButton =
+        document.createElement("button");
+
+
+    allButton.className =
+        "brand-button active";
+
+
+    allButton.textContent =
+        "ALL BRANDS";
+
+
+    allButton.onclick = function(){
+
+        selectBrand("ALL", this);
+
+    };
+
+
+    list.appendChild(allButton);
+
+
+    Object.keys(catalog).forEach(brand => {
+
+        const button =
+            document.createElement("button");
+
+
+        button.className =
+            "brand-button";
+
+
+        button.textContent =
+            brand;
+
+
+        button.onclick = function(){
+
+            selectBrand(brand, this);
+
+        };
+
+
+        list.appendChild(button);
+
+    });
+
+}
+
+
+/* =====================================================
+   ARCHIVE GRID
+===================================================== */
+
+function buildArchive(){
+
+    const grid =
+        document.getElementById("archiveGrid");
+
+
+    let counter = 1;
+
+
+    Object.keys(catalog).forEach(brand => {
+
+        ["top","bottom","shoes"].forEach(type => {
+
+            catalog[brand][type].forEach(item => {
+
+                const card =
+                    document.createElement("div");
+
+
+                card.className =
+                    "archive-item";
+
+
+                card.innerHTML = `
+
+                    <div class="archive-number">
+                        ${String(counter).padStart(2,"0")}
+                    </div>
+
+                    <div class="archive-brand">
+                        ${brand}
+                    </div>
+
+                    <div class="archive-name">
+                        ${item.name}
+                    </div>
+
+                `;
+
+
+                grid.appendChild(card);
+
+
+                counter++;
+
+            });
+
+        });
+
+    });
+
+}
 
 
 /* =====================================================
    CATALOG TOGGLE
 ===================================================== */
 
-function toggleCatalog() {
+document
+    .getElementById("catalogToggle")
+    .addEventListener("click", function(){
 
-    document
-        .getElementById(
-            "catalog"
-        )
-        .classList.toggle(
-            "open"
-        );
+        document
+            .getElementById("catalogPanel")
+            .classList.toggle("open");
 
-}
+    });
 
+
+/* =====================================================
+   KEYBOARD
+===================================================== */
+
+document.addEventListener("keydown", function(event){
+
+    if(event.key === "ArrowLeft"){
+
+        changeItem("top",-1);
+
+    }
+
+    if(event.key === "ArrowRight"){
+
+        changeItem("top",1);
+
+    }
+
+});
 
 
 /* =====================================================
@@ -3480,97 +2949,65 @@ function toggleCatalog() {
 
 const observer =
     new IntersectionObserver(
+
         entries => {
 
-            entries.forEach(
-                entry => {
+            entries.forEach(entry => {
 
-                    if (
-                        entry.isIntersecting
-                    ) {
+                if(entry.isIntersecting){
 
-                        entry.target
-                            .classList
-                            .add(
-                                "visible"
-                            );
-
-                    }
+                    entry.target
+                        .classList.add("visible");
 
                 }
-            );
+
+            });
 
         },
+
         {
-            threshold: .12
+            threshold:.12
         }
+
     );
 
 
-document
-    .querySelectorAll(
-        ".reveal"
-    )
-    .forEach(
-        element =>
-            observer.observe(
-                element
-            )
+document.querySelectorAll(".reveal")
+    .forEach(element =>
+        observer.observe(element)
     );
 
 
-
 /* =====================================================
-   KEYBOARD
+   INIT
 ===================================================== */
 
-document.addEventListener(
-    "keydown",
-    event => {
+buildBrandMenu();
 
-        if (
-            event.key ===
-            "ArrowLeft"
-        ) {
-
-            changeItem(
-                "top",
-                -1
-            );
-
-        }
-
-
-        if (
-            event.key ===
-            "ArrowRight"
-        ) {
-
-            changeItem(
-                "top",
-                1
-            );
-
-        }
-
-    }
-);
-
-
-
-/* =====================================================
-   START
-===================================================== */
+buildArchive();
 
 render("top");
-
 render("bottom");
-
 render("shoes");
+
+
+/* =====================================================
+   LOADER
+===================================================== */
+
+window.addEventListener("load",function(){
+
+    setTimeout(() => {
+
+        document
+            .getElementById("loader")
+            .classList.add("hide");
+
+    },700);
+
+});
 
 </script>
 
-
 </body>
-
 </html>
