@@ -1,13 +1,12 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
 
 <meta charset="UTF-8">
 
 <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
 >
 
 <meta
@@ -15,9 +14,36 @@
     content="#050505"
 >
 
+<meta
+    name="description"
+    content="CreatureMeza — Independent fashion archive"
+>
+
 <title>CreatureMeza — Archive</title>
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+
+    --bg:#050505;
+    --panel:#080808;
+    --panel-light:#0d0d0d;
+
+    --line:#1c1c1c;
+    --line-light:#292929;
+
+    --white:#f4f4f4;
+    --muted:#666;
+    --dark:#333;
+
+    --header-height:78px;
+
+}
+
 
 /* =========================================================
    RESET
@@ -30,21 +56,40 @@
 }
 
 html{
+    background:var(--bg);
     scroll-behavior:smooth;
 }
 
 body{
-    background:#050505;
-    color:#f2f2f2;
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% 10%,
+            #111 0,
+            transparent 34rem
+        ),
+        var(--bg);
+
+    color:var(--white);
+
     font-family:
         Arial,
         Helvetica,
         sans-serif;
+
     overflow-x:hidden;
+
+}
+
+body.locked{
+    overflow:hidden;
 }
 
 button,
-input{
+input,
+select{
     font:inherit;
 }
 
@@ -56,1240 +101,6 @@ a{
     color:inherit;
     text-decoration:none;
 }
-
-
-/* =========================================================
-   LOADER
-========================================================= */
-
-.loader{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    background:#050505;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:
-        opacity .7s ease,
-        visibility .7s ease;
-}
-
-.loader.hide{
-    opacity:0;
-    visibility:hidden;
-}
-
-.loader-inner{
-    text-align:center;
-}
-
-.loader-title{
-    font-size:clamp(28px,5vw,64px);
-    font-weight:900;
-    letter-spacing:-.06em;
-    text-transform:uppercase;
-}
-
-.loader-line{
-    width:180px;
-    height:1px;
-    background:#333;
-    margin:18px auto;
-    overflow:hidden;
-}
-
-.loader-progress{
-    width:0;
-    height:100%;
-    background:#fff;
-    animation:loaderProgress 1.5s ease forwards;
-}
-
-.loader-small{
-    color:#666;
-    font-size:9px;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-}
-
-@keyframes loaderProgress{
-    from{
-        width:0;
-    }
-    to{
-        width:100%;
-    }
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:76px;
-    z-index:1000;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 5vw;
-
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(5,5,5,.96),
-            rgba(5,5,5,.72),
-            transparent
-        );
-
-    backdrop-filter:blur(10px);
-}
-
-.logo{
-    font-size:14px;
-    font-weight:900;
-    letter-spacing:.04em;
-    text-transform:uppercase;
-}
-
-.header-meta{
-    display:flex;
-    align-items:center;
-    gap:24px;
-}
-
-.header-index{
-    color:#555;
-    font-size:9px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-}
-
-.catalog-button{
-    border:1px solid #333;
-    background:#090909;
-    color:#fff;
-
-    padding:11px 16px;
-
-    font-size:9px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        transform .2s ease;
-}
-
-.catalog-button:hover{
-    background:#fff;
-    color:#050505;
-    border-color:#fff;
-    transform:translateY(-2px);
-}
-
-
-/* =========================================================
-   CATALOG OVERLAY
-========================================================= */
-
-.catalog-overlay{
-    position:fixed;
-    inset:0;
-    z-index:2000;
-
-    background:rgba(5,5,5,.94);
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    opacity:0;
-    visibility:hidden;
-
-    transition:
-        opacity .3s ease,
-        visibility .3s ease;
-}
-
-.catalog-overlay.open{
-    opacity:1;
-    visibility:visible;
-}
-
-.catalog-panel{
-    width:min(900px,90vw);
-    max-height:85vh;
-    overflow:auto;
-
-    border:1px solid #292929;
-    background:#090909;
-
-    padding:35px;
-}
-
-.catalog-panel-head{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    margin-bottom:30px;
-}
-
-.catalog-panel-title{
-    font-size:12px;
-    font-weight:900;
-    letter-spacing:.14em;
-    text-transform:uppercase;
-}
-
-.catalog-close{
-    border:1px solid #333;
-    background:transparent;
-    color:#aaa;
-
-    width:36px;
-    height:36px;
-
-    transition:.2s ease;
-}
-
-.catalog-close:hover{
-    background:#fff;
-    color:#050505;
-}
-
-.catalog-list{
-    display:grid;
-    grid-template-columns:
-        repeat(2,minmax(0,1fr));
-    gap:1px;
-    background:#292929;
-}
-
-.catalog-brand{
-    background:#090909;
-    padding:20px;
-    transition:.2s ease;
-}
-
-.catalog-brand:hover{
-    background:#111;
-}
-
-.catalog-brand-name{
-    font-size:12px;
-    font-weight:900;
-    text-transform:uppercase;
-    margin-bottom:7px;
-}
-
-.catalog-brand-count{
-    color:#555;
-    font-size:9px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-    position:relative;
-    min-height:100vh;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
-
-    padding:
-        120px 5vw
-        80px;
-}
-
-.hero-grid{
-    position:absolute;
-    inset:0;
-
-    background-image:
-        linear-gradient(
-            rgba(255,255,255,.025) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.025) 1px,
-            transparent 1px
-        );
-
-    background-size:70px 70px;
-
-    mask-image:
-        radial-gradient(
-            ellipse at center,
-            black 20%,
-            transparent 75%
-        );
-}
-
-.hero-orbit{
-    position:absolute;
-
-    width:55vw;
-    height:55vw;
-
-    max-width:700px;
-    max-height:700px;
-
-    border:1px solid #171717;
-    border-radius:50%;
-
-    transform:rotate(-18deg);
-}
-
-.hero-orbit::before,
-.hero-orbit::after{
-    content:"";
-    position:absolute;
-    inset:9%;
-
-    border:1px solid #111;
-    border-radius:50%;
-}
-
-.hero-orbit::after{
-    inset:20%;
-    border-color:#1b1b1b;
-}
-
-.hero-content{
-    position:relative;
-    z-index:2;
-    text-align:center;
-}
-
-.hero-kicker{
-    color:#777;
-    font-size:9px;
-    letter-spacing:.35em;
-    text-transform:uppercase;
-    margin-bottom:25px;
-}
-
-.hero-title{
-    font-size:
-        clamp(
-            60px,
-            13vw,
-            190px
-        );
-
-    line-height:.78;
-    font-weight:900;
-    letter-spacing:-.09em;
-    text-transform:uppercase;
-}
-
-.hero-title span{
-    display:block;
-}
-
-.hero-subtitle{
-    max-width:500px;
-    margin:35px auto 0;
-
-    color:#777;
-
-    font-size:10px;
-    line-height:1.8;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-}
-
-
-/* =========================================================
-   MARQUEE
-========================================================= */
-
-.marquee{
-    border-top:1px solid #161616;
-    border-bottom:1px solid #161616;
-
-    overflow:hidden;
-    white-space:nowrap;
-
-    padding:15px 0;
-
-    color:#666;
-
-    font-size:9px;
-    letter-spacing:.25em;
-    text-transform:uppercase;
-}
-
-.marquee-track{
-    display:inline-block;
-    animation:
-        marquee 25s linear infinite;
-}
-
-.marquee-track span{
-    margin-right:60px;
-}
-
-@keyframes marquee{
-    from{
-        transform:translateX(0);
-    }
-
-    to{
-        transform:translateX(-50%);
-    }
-}
-
-
-/* =========================================================
-   GENERAL LABELS
-========================================================= */
-
-.section-label{
-    color:#555;
-
-    font-size:9px;
-    letter-spacing:.25em;
-    text-transform:uppercase;
-
-    margin-bottom:16px;
-}
-
-.section-title{
-    font-size:
-        clamp(
-            34px,
-            6vw,
-            80px
-        );
-
-    line-height:.9;
-    letter-spacing:-.06em;
-    text-transform:uppercase;
-}
-
-
-/* =========================================================
-   BUILDER
-========================================================= */
-
-.builder{
-    padding:
-        100px
-        5vw
-        35px;
-}
-
-.builder-head{
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-
-    margin-bottom:45px;
-}
-
-.builder-head-right{
-    max-width:330px;
-
-    color:#555;
-
-    font-size:9px;
-    line-height:1.8;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-}
-
-
-/* =========================================================
-   PRODUCT CARDS
-========================================================= */
-
-.fit-grid{
-    display:grid;
-    grid-template-columns:
-        repeat(3,minmax(0,1fr));
-
-    gap:1px;
-
-    background:#222;
-}
-
-.fit-card{
-    position:relative;
-
-    min-height:500px;
-
-    background:#080808;
-
-    border:1px solid transparent;
-
-    overflow:hidden;
-
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        transform .25s ease;
-}
-
-.fit-card:hover{
-    background:#0d0d0d;
-    border-color:#333;
-    transform:translateY(-4px);
-}
-
-.fit-card-number{
-    position:absolute;
-    top:18px;
-    left:18px;
-
-    color:#555;
-
-    font-size:9px;
-    letter-spacing:.18em;
-}
-
-.fit-card-category{
-    position:absolute;
-    top:18px;
-    right:18px;
-
-    color:#666;
-
-    font-size:8px;
-    letter-spacing:.15em;
-    text-transform:uppercase;
-}
-
-.fit-image{
-    position:absolute;
-    inset:55px 30px 100px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    overflow:hidden;
-
-    background:#0b0b0b;
-}
-
-.fit-image img{
-    width:100%;
-    height:100%;
-
-    object-fit:contain;
-
-    transition:
-        transform .5s ease;
-}
-
-.fit-card:hover .fit-image img{
-    transform:scale(1.04);
-}
-
-.fit-info{
-    position:absolute;
-    left:20px;
-    right:20px;
-    bottom:20px;
-}
-
-.fit-brand{
-    color:#666;
-
-    font-size:8px;
-    letter-spacing:.18em;
-    text-transform:uppercase;
-
-    margin-bottom:7px;
-}
-
-.fit-name{
-    font-size:14px;
-    font-weight:900;
-    text-transform:uppercase;
-
-    max-width:80%;
-}
-
-.fit-price{
-    position:absolute;
-    right:0;
-    bottom:0;
-
-    color:#999;
-
-    font-size:10px;
-}
-
-
-/* =========================================================
-   TOTAL
-========================================================= */
-
-.total-bar{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    border:1px solid #202020;
-    border-top:0;
-
-    padding:22px 24px;
-
-    background:#080808;
-}
-
-.total-label{
-    color:#555;
-
-    font-size:8px;
-    letter-spacing:.2em;
-    text-transform:uppercase;
-}
-
-.total-value{
-    font-size:24px;
-    font-weight:900;
-    letter-spacing:-.04em;
-}
-
-
-/* =========================================================
-   FIT ACTIONS
-========================================================= */
-
-.fit-actions{
-    display:flex;
-    gap:1px;
-
-    margin-top:18px;
-
-    background:#222;
-}
-
-.fit-action{
-    flex:1;
-
-    border:1px solid #222;
-
-    background:#090909;
-    color:#fff;
-
-    padding:17px 20px;
-
-    font-size:9px;
-    font-weight:900;
-
-    letter-spacing:.18em;
-    text-transform:uppercase;
-
-    transition:.2s ease;
-}
-
-.fit-action:hover{
-    background:#fff;
-    color:#050505;
-}
-
-.fit-action.primary{
-    background:#f2f2f2;
-    color:#050505;
-}
-
-.fit-action.primary:hover{
-    background:#ccc;
-}
-
-
-/* =========================================================
-   RATING
-========================================================= */
-
-.rating-panel{
-    margin-top:18px;
-
-    border:1px solid #202020;
-
-    background:#080808;
-
-    padding:25px;
-
-    display:none;
-}
-
-.rating-panel.open{
-    display:block;
-}
-
-.rating-title{
-    font-size:10px;
-    font-weight:900;
-    text-transform:uppercase;
-    margin-bottom:18px;
-}
-
-.rating-buttons{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-}
-
-.rating-button{
-    min-width:45px;
-    height:40px;
-
-    border:1px solid #292929;
-
-    background:#0b0b0b;
-    color:#777;
-
-    font-size:10px;
-
-    transition:.2s ease;
-}
-
-.rating-button:hover,
-.rating-button.active{
-    background:#fff;
-    color:#050505;
-    border-color:#fff;
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-.status{
-    min-height:20px;
-
-    margin-top:16px;
-
-    color:#666;
-
-    font-size:9px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-}
-
-
-/* =========================================================
-   BUILDER TOOLS
-========================================================= */
-
-.builder-tools{
-    display:flex;
-    justify-content:flex-end;
-    gap:8px;
-
-    margin-top:20px;
-}
-
-.tool-button{
-    border:1px solid #292929;
-
-    background:#080808;
-    color:#777;
-
-    padding:12px 16px;
-
-    font-size:8px;
-    letter-spacing:.16em;
-    text-transform:uppercase;
-
-    transition:.2s ease;
-}
-
-.tool-button:hover{
-    color:#fff;
-    border-color:#555;
-    background:#111;
-}
-
-
-/* =========================================================
-   ARCHIVE
-========================================================= */
-
-.archive{
-    padding:
-        45px
-        5vw
-        100px;
-
-    border-top:1px solid #111;
-}
-
-.archive-head{
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-
-    gap:40px;
-
-    margin-bottom:35px;
-}
-
-.archive-description{
-    max-width:340px;
-
-    color:#555;
-
-    font-size:9px;
-    line-height:1.8;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-}
-
-
-/* =========================================================
-   ARCHIVE CONTROLS
-========================================================= */
-
-.archive-controls{
-    display:flex;
-    gap:8px;
-
-    margin-bottom:20px;
-}
-
-.archive-search{
-    flex:1;
-
-    min-width:0;
-
-    border:1px solid #222;
-
-    outline:none;
-
-    background:#080808;
-    color:#fff;
-
-    padding:14px 16px;
-
-    font-size:10px;
-
-    transition:.2s ease;
-}
-
-.archive-search::placeholder{
-    color:#444;
-}
-
-.archive-search:focus{
-    border-color:#555;
-}
-
-.category-filter{
-    border:1px solid #222;
-
-    background:#080808;
-    color:#777;
-
-    padding:0 16px;
-
-    font-size:9px;
-    letter-spacing:.12em;
-    text-transform:uppercase;
-
-    outline:none;
-}
-
-
-/* =========================================================
-   ARCHIVE GRID
-========================================================= */
-
-.archive-grid{
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,minmax(0,1fr));
-
-    gap:1px;
-
-    background:#202020;
-}
-
-.archive-item{
-    position:relative;
-
-    min-height:290px;
-
-    background:#080808;
-
-    border:1px solid transparent;
-
-    padding:15px;
-
-    display:flex;
-    flex-direction:column;
-    justify-content:space-between;
-
-    overflow:hidden;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease;
-}
-
-.archive-item:hover{
-    background:#101010;
-    border-color:#333;
-}
-
-.archive-item-image{
-    height:190px;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    background:#0b0b0b;
-
-    overflow:hidden;
-}
-
-.archive-item-image img{
-    width:100%;
-    height:100%;
-
-    object-fit:contain;
-
-    transition:
-        transform .4s ease;
-}
-
-.archive-item:hover
-.archive-item-image img{
-    transform:scale(1.04);
-}
-
-.archive-item-meta{
-    padding-top:14px;
-}
-
-.archive-item-brand{
-    color:#555;
-
-    font-size:7px;
-    letter-spacing:.17em;
-    text-transform:uppercase;
-
-    margin-bottom:6px;
-}
-
-.archive-item-name{
-    font-size:10px;
-    font-weight:900;
-    text-transform:uppercase;
-
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.archive-item-bottom{
-    display:flex;
-    justify-content:space-between;
-
-    margin-top:8px;
-
-    color:#666;
-
-    font-size:8px;
-}
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-.info{
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:80px;
-
-    padding:
-        90px
-        5vw;
-
-    border-top:1px solid #181818;
-}
-
-.info-title{
-    font-size:
-        clamp(
-            42px,
-            7vw,
-            95px
-        );
-
-    line-height:.83;
-
-    letter-spacing:-.07em;
-
-    text-transform:uppercase;
-}
-
-.info-copy{
-    align-self:end;
-
-    color:#666;
-
-    font-size:10px;
-    line-height:1.9;
-
-    letter-spacing:.1em;
-    text-transform:uppercase;
-}
-
-.info-copy strong{
-    color:#aaa;
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-
-    padding:
-        28px
-        5vw;
-
-    border-top:1px solid #151515;
-
-    color:#444;
-
-    font-size:8px;
-    letter-spacing:.15em;
-    text-transform:uppercase;
-}
-
-.footer a{
-    transition:.2s ease;
-}
-
-.footer a:hover{
-    color:#fff;
-}
-
-
-/* =========================================================
-   REVEAL
-========================================================= */
-
-.reveal{
-    opacity:0;
-    transform:translateY(25px);
-
-    transition:
-        opacity .7s ease,
-        transform .7s ease;
-}
-
-.reveal.visible{
-    opacity:1;
-    transform:none;
-}
-
-
-/*
-   ВАЖНО:
-   ARCHIVE больше НЕ зависит от reveal.
-   Поэтому если какой-то JS-эффект сломается,
-   огромного невидимого блока не будет.
-*/
-
-.archive{
-    opacity:1 !important;
-    transform:none !important;
-}
-
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
-
-@media(max-width:900px){
-
-    .fit-grid{
-        grid-template-columns:1fr;
-    }
-
-    .fit-card{
-        min-height:430px;
-    }
-
-    .archive-grid{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-    }
-
-    .info{
-        grid-template-columns:1fr;
-        gap:40px;
-    }
-
-    .catalog-list{
-        grid-template-columns:1fr;
-    }
-
-}
-
-
-@media(max-width:600px){
-
-    .header{
-        height:64px;
-        padding:0 16px;
-    }
-
-    .header-index{
-        display:none;
-    }
-
-    .hero{
-        min-height:90vh;
-        padding:
-            100px 16px
-            60px;
-    }
-
-    .hero-orbit{
-        width:120vw;
-        height:120vw;
-    }
-
-    .hero-title{
-        font-size:20vw;
-    }
-
-    .builder{
-        padding:
-            70px
-            16px
-            20px;
-    }
-
-    .builder-head{
-        display:block;
-        margin-bottom:28px;
-    }
-
-    .builder-head-right{
-        margin-top:18px;
-    }
-
-    .fit-card{
-        min-height:390px;
-    }
-
-    .total-bar{
-        padding:18px;
-    }
-
-    .fit-actions{
-        flex-direction:column;
-    }
-
-    .builder-tools{
-        justify-content:stretch;
-    }
-
-    .tool-button{
-        flex:1;
-    }
-
-    .archive{
-        padding:
-            25px
-            16px
-            70px;
-    }
-
-    .archive-head{
-        display:block;
-        margin-bottom:25px;
-    }
-
-    .archive-description{
-        margin-top:18px;
-    }
-
-    .archive-controls{
-        flex-direction:column;
-    }
-
-    .category-filter{
-        height:44px;
-    }
-
-    .archive-grid{
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-    }
-
-    .archive-item{
-        min-height:240px;
-        padding:10px;
-    }
-
-    .archive-item-image{
-        height:150px;
-    }
-
-    .archive-item-name{
-        font-size:8px;
-    }
-
-    .info{
-        padding:
-            65px
-            16px;
-    }
-
-    .footer{
-        padding:
-            24px 16px;
-
-        gap:20px;
-    }
-
-}
-
-
-/* =========================================================
-   SELECTION
-========================================================= */
 
 ::selection{
     background:#fff;
@@ -1317,6 +128,2176 @@ a{
     background:#444;
 }
 
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+.loader{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:99999;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    background:#050505;
+
+    opacity:1;
+
+    visibility:visible;
+
+    transition:
+        opacity .7s ease,
+        visibility .7s ease;
+
+}
+
+.loader.hide{
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+}
+
+.loader-inner{
+
+    width:min(360px,80vw);
+
+    text-align:center;
+
+}
+
+.loader-title{
+
+    font-size:
+        clamp(
+            32px,
+            7vw,
+            70px
+        );
+
+    line-height:.9;
+
+    font-weight:900;
+
+    letter-spacing:-.07em;
+
+    text-transform:uppercase;
+
+}
+
+.loader-line{
+
+    width:100%;
+
+    height:1px;
+
+    margin:
+        22px
+        0
+        14px;
+
+    overflow:hidden;
+
+    background:#222;
+
+}
+
+.loader-progress{
+
+    width:0;
+
+    height:100%;
+
+    background:#fff;
+
+    animation:
+        loaderProgress
+        1.25s
+        cubic-bezier(.4,0,.2,1)
+        forwards;
+
+}
+
+.loader-small{
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+
+}
+
+@keyframes loaderProgress{
+
+    to{
+        width:100%;
+    }
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+    position:fixed;
+
+    top:0;
+    left:0;
+
+    width:100%;
+
+    height:var(--header-height);
+
+    z-index:5000;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        0
+        5vw;
+
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(5,5,5,.98),
+            rgba(5,5,5,.78),
+            transparent
+        );
+
+    backdrop-filter:blur(12px);
+
+    -webkit-backdrop-filter:blur(12px);
+
+}
+
+.logo{
+
+    font-size:14px;
+
+    font-weight:900;
+
+    letter-spacing:.04em;
+
+    text-transform:uppercase;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:12px;
+
+}
+
+.header-index{
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+}
+
+.header-button{
+
+    border:1px solid #303030;
+
+    background:#090909;
+
+    color:#fff;
+
+    padding:
+        11px
+        15px;
+
+    font-size:8px;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    transition:.25s ease;
+
+}
+
+.header-button:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+    border-color:#fff;
+
+    transform:translateY(-2px);
+
+}
+
+
+/* =========================================================
+   AUDIO PLAYER
+========================================================= */
+
+.audio-player{
+
+    position:fixed;
+
+    top:92px;
+
+    right:5vw;
+
+    z-index:4900;
+
+    width:285px;
+
+    border:1px solid #292929;
+
+    background:
+        rgba(8,8,8,.94);
+
+    box-shadow:
+        0 20px 60px
+        rgba(0,0,0,.35);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+}
+
+.audio-head{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        12px
+        13px;
+
+    border-bottom:1px solid #1c1c1c;
+
+}
+
+.audio-label{
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+}
+
+.audio-state{
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+
+}
+
+.audio-body{
+
+    padding:13px;
+
+}
+
+.audio-track-row{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:10px;
+
+    margin-bottom:13px;
+
+}
+
+.audio-disc{
+
+    width:38px;
+    height:38px;
+
+    flex:0 0 38px;
+
+    border:1px solid #333;
+
+    border-radius:50%;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#777;
+
+    font-size:8px;
+
+}
+
+.audio-disc.playing{
+
+    animation:
+        audioSpin
+        4s
+        linear
+        infinite;
+
+}
+
+@keyframes audioSpin{
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+.audio-info{
+
+    min-width:0;
+
+}
+
+.audio-name{
+
+    font-size:10px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.audio-sub{
+
+    margin-top:5px;
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.14em;
+
+    text-transform:uppercase;
+
+}
+
+.audio-controls{
+
+    display:flex;
+
+    gap:5px;
+
+    margin-bottom:12px;
+
+}
+
+.audio-btn{
+
+    width:34px;
+
+    height:30px;
+
+    border:1px solid #292929;
+
+    background:#0b0b0b;
+
+    color:#aaa;
+
+    font-size:10px;
+
+    transition:.2s ease;
+
+}
+
+.audio-btn.main{
+
+    width:52px;
+
+    color:#fff;
+
+}
+
+.audio-btn:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+    border-color:#fff;
+
+}
+
+.audio-progress{
+
+    width:100%;
+
+    height:2px;
+
+    background:#222;
+
+    cursor:pointer;
+
+    position:relative;
+
+}
+
+.audio-progress-fill{
+
+    width:0;
+
+    height:100%;
+
+    background:#fff;
+
+    pointer-events:none;
+
+}
+
+.audio-bottom{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:9px;
+
+}
+
+.audio-time{
+
+    min-width:62px;
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.08em;
+
+}
+
+.audio-volume{
+
+    flex:1;
+
+    accent-color:#fff;
+
+}
+
+.audio-note{
+
+    margin-top:10px;
+
+    color:#444;
+
+    font-size:7px;
+
+    line-height:1.5;
+
+    letter-spacing:.08em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   CATALOG OVERLAY
+========================================================= */
+
+.catalog-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:8000;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    padding:30px;
+
+    background:
+        rgba(0,0,0,.78);
+
+    backdrop-filter:blur(14px);
+
+    -webkit-backdrop-filter:blur(14px);
+
+    opacity:0;
+
+    visibility:hidden;
+
+    pointer-events:none;
+
+    transition:.3s ease;
+
+}
+
+.catalog-overlay.open{
+
+    opacity:1;
+
+    visibility:visible;
+
+    pointer-events:auto;
+
+}
+
+.catalog-panel{
+
+    width:min(950px,94vw);
+
+    max-height:86vh;
+
+    overflow:auto;
+
+    border:1px solid #292929;
+
+    background:#080808;
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.6);
+
+}
+
+.catalog-panel-head{
+
+    position:sticky;
+
+    top:0;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        22px
+        25px;
+
+    border-bottom:1px solid #202020;
+
+    background:#080808;
+
+}
+
+.catalog-panel-title{
+
+    font-size:10px;
+
+    font-weight:900;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+}
+
+.catalog-close{
+
+    width:34px;
+
+    height:34px;
+
+    border:1px solid #333;
+
+    background:transparent;
+
+    color:#aaa;
+
+    font-size:18px;
+
+    transition:.2s ease;
+
+}
+
+.catalog-close:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+}
+
+.catalog-list{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:1px;
+
+    background:#242424;
+
+}
+
+.catalog-brand{
+
+    padding:22px;
+
+    background:#090909;
+
+    transition:.2s ease;
+
+}
+
+.catalog-brand:hover{
+
+    background:#111;
+
+}
+
+.catalog-brand-name{
+
+    font-size:11px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+}
+
+.catalog-brand-count{
+
+    margin-top:7px;
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    position:relative;
+
+    min-height:100svh;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+    padding:
+        140px
+        5vw
+        100px;
+
+}
+
+.hero-grid{
+
+    position:absolute;
+
+    inset:0;
+
+    background-image:
+
+        linear-gradient(
+            rgba(255,255,255,.025)
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025)
+            1px,
+            transparent 1px
+        );
+
+    background-size:70px 70px;
+
+    mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 10%,
+            transparent 72%
+        );
+
+    -webkit-mask-image:
+        radial-gradient(
+            ellipse at center,
+            black 10%,
+            transparent 72%
+        );
+
+}
+
+.hero-orbit{
+
+    position:absolute;
+
+    width:min(62vw,760px);
+
+    height:min(62vw,760px);
+
+    border:1px solid #171717;
+
+    border-radius:50%;
+
+    transform:rotate(-18deg);
+
+}
+
+.hero-orbit::before,
+.hero-orbit::after{
+
+    content:"";
+
+    position:absolute;
+
+    border:1px solid #111;
+
+    border-radius:50%;
+
+}
+
+.hero-orbit::before{
+
+    inset:9%;
+
+}
+
+.hero-orbit::after{
+
+    inset:20%;
+
+    border-color:#1b1b1b;
+
+}
+
+.hero-orbit-dot{
+
+    position:absolute;
+
+    width:7px;
+
+    height:7px;
+
+    background:#fff;
+
+    border-radius:50%;
+
+    top:13%;
+
+    left:72%;
+
+    box-shadow:
+        0 0 20px
+        rgba(255,255,255,.8);
+
+}
+
+.hero-content{
+
+    position:relative;
+
+    z-index:2;
+
+    text-align:center;
+
+}
+
+.hero-kicker{
+
+    color:#666;
+
+    font-size:8px;
+
+    letter-spacing:.35em;
+
+    text-transform:uppercase;
+
+    margin-bottom:25px;
+
+}
+
+.hero-title{
+
+    font-size:
+        clamp(
+            65px,
+            13vw,
+            190px
+        );
+
+    line-height:.78;
+
+    font-weight:900;
+
+    letter-spacing:-.095em;
+
+    text-transform:uppercase;
+
+}
+
+.hero-title span{
+
+    display:block;
+
+}
+
+.hero-title span:nth-child(2){
+
+    transform:
+        translateX(7vw);
+
+}
+
+.hero-title span:nth-child(3){
+
+    transform:
+        translateX(-3vw);
+
+}
+
+.hero-subtitle{
+
+    max-width:510px;
+
+    margin:
+        38px
+        auto
+        0;
+
+    color:#666;
+
+    font-size:9px;
+
+    line-height:1.9;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+
+}
+
+.hero-scroll{
+
+    position:absolute;
+
+    bottom:30px;
+
+    left:50%;
+
+    transform:
+        translateX(-50%);
+
+    color:#444;
+
+    font-size:7px;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   MARQUEE
+========================================================= */
+
+.marquee{
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    border-top:1px solid #171717;
+
+    border-bottom:1px solid #171717;
+
+    padding:14px 0;
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+
+}
+
+.marquee-track{
+
+    display:inline-flex;
+
+    width:max-content;
+
+    animation:
+        marquee
+        28s
+        linear
+        infinite;
+
+}
+
+.marquee-track span{
+
+    margin-right:70px;
+
+}
+
+@keyframes marquee{
+
+    to{
+
+        transform:
+            translateX(-50%);
+
+    }
+
+}
+
+
+/* =========================================================
+   GENERAL
+========================================================= */
+
+.section-label{
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.25em;
+
+    text-transform:uppercase;
+
+    margin-bottom:15px;
+
+}
+
+.section-title{
+
+    font-size:
+        clamp(
+            38px,
+            6vw,
+            82px
+        );
+
+    line-height:.86;
+
+    letter-spacing:-.07em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   BUILDER
+========================================================= */
+
+.builder{
+
+    padding:
+        105px
+        5vw
+        40px;
+
+}
+
+.builder-head{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:40px;
+
+    margin-bottom:42px;
+
+}
+
+.builder-head-right{
+
+    max-width:340px;
+
+    color:#555;
+
+    font-size:8px;
+
+    line-height:1.9;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   FIT GRID
+========================================================= */
+
+.fit-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,minmax(0,1fr));
+
+    gap:1px;
+
+    background:#242424;
+
+}
+
+.fit-card{
+
+    position:relative;
+
+    min-height:530px;
+
+    background:#080808;
+
+    overflow:hidden;
+
+    border:1px solid transparent;
+
+    transition:.3s ease;
+
+}
+
+.fit-card:hover{
+
+    background:#0e0e0e;
+
+    border-color:#363636;
+
+    transform:
+        translateY(-4px);
+
+}
+
+.fit-card-number{
+
+    position:absolute;
+
+    top:18px;
+
+    left:18px;
+
+    color:#444;
+
+    font-size:8px;
+
+    letter-spacing:.2em;
+
+}
+
+.fit-card-category{
+
+    position:absolute;
+
+    top:18px;
+
+    right:18px;
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.17em;
+
+    text-transform:uppercase;
+
+}
+
+.fit-image{
+
+    position:absolute;
+
+    inset:
+        58px
+        30px
+        105px;
+
+    background:#0b0b0b;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+}
+
+.fit-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+    transition:.5s ease;
+
+}
+
+.fit-card:hover
+.fit-image img{
+
+    transform:
+        scale(1.045);
+
+}
+
+.placeholder{
+
+    color:#282828;
+
+    font-size:8px;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+    text-align:center;
+
+}
+
+.fit-info{
+
+    position:absolute;
+
+    left:20px;
+
+    right:20px;
+
+    bottom:20px;
+
+}
+
+.fit-brand{
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    margin-bottom:7px;
+
+}
+
+.fit-name{
+
+    font-size:13px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    max-width:75%;
+
+}
+
+.fit-price{
+
+    position:absolute;
+
+    right:0;
+
+    bottom:0;
+
+    color:#999;
+
+    font-size:9px;
+
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.total-bar{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:
+        20px
+        24px;
+
+    background:#080808;
+
+    border:
+        1px solid
+        #202020;
+
+    border-top:0;
+
+}
+
+.total-label{
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+}
+
+.total-value{
+
+    font-size:23px;
+
+    font-weight:900;
+
+    letter-spacing:-.04em;
+
+}
+
+
+/* =========================================================
+   ACTIONS
+========================================================= */
+
+.fit-actions{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:1px;
+
+    background:#242424;
+
+    margin-top:18px;
+
+}
+
+.fit-action{
+
+    border:
+        1px solid
+        #242424;
+
+    background:#090909;
+
+    color:#fff;
+
+    padding:
+        17px
+        20px;
+
+    font-size:8px;
+
+    font-weight:900;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    transition:.2s ease;
+
+}
+
+.fit-action:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+}
+
+.fit-action.primary{
+
+    background:#f2f2f2;
+
+    color:#050505;
+
+}
+
+.fit-action.primary:hover{
+
+    background:#cfcfcf;
+
+}
+
+
+/* =========================================================
+   RATING
+========================================================= */
+
+.rating-panel{
+
+    display:none;
+
+    margin-top:18px;
+
+    padding:24px;
+
+    border:1px solid #202020;
+
+    background:#080808;
+
+}
+
+.rating-panel.open{
+
+    display:block;
+
+}
+
+.rating-title{
+
+    font-size:9px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    margin-bottom:16px;
+
+}
+
+.rating-buttons{
+
+    display:flex;
+
+    flex-wrap:wrap;
+
+    gap:7px;
+
+}
+
+.rating-button{
+
+    min-width:42px;
+
+    height:38px;
+
+    border:1px solid #292929;
+
+    background:#0b0b0b;
+
+    color:#777;
+
+    font-size:9px;
+
+    transition:.2s ease;
+
+}
+
+.rating-button:hover,
+.rating-button.active{
+
+    background:#fff;
+
+    color:#050505;
+
+    border-color:#fff;
+
+}
+
+.status{
+
+    min-height:18px;
+
+    margin-top:15px;
+
+    color:#666;
+
+    font-size:8px;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   BUILDER TOOLS
+========================================================= */
+
+.builder-tools{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:7px;
+
+    margin-top:18px;
+
+}
+
+.tool-button{
+
+    border:1px solid #292929;
+
+    background:#080808;
+
+    color:#666;
+
+    padding:
+        11px
+        15px;
+
+    font-size:7px;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+
+    transition:.2s ease;
+
+}
+
+.tool-button:hover{
+
+    color:#fff;
+
+    background:#111;
+
+    border-color:#555;
+
+}
+
+
+/* =========================================================
+   ARCHIVE
+========================================================= */
+
+.archive{
+
+    padding:
+        45px
+        5vw
+        110px;
+
+    border-top:1px solid #111;
+
+}
+
+.archive-head{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    gap:40px;
+
+    margin-bottom:42px;
+
+}
+
+.archive-description{
+
+    max-width:340px;
+
+    color:#555;
+
+    font-size:8px;
+
+    line-height:1.9;
+
+    letter-spacing:.13em;
+
+    text-transform:uppercase;
+
+}
+
+.archive-controls{
+
+    display:flex;
+
+    gap:7px;
+
+    margin-bottom:20px;
+
+}
+
+.archive-search{
+
+    flex:1;
+
+    min-width:0;
+
+    outline:none;
+
+    border:1px solid #222;
+
+    background:#080808;
+
+    color:#fff;
+
+    padding:
+        14px
+        16px;
+
+    font-size:9px;
+
+    letter-spacing:.08em;
+
+}
+
+.archive-search::placeholder{
+
+    color:#444;
+
+}
+
+.archive-search:focus{
+
+    border-color:#555;
+
+}
+
+.category-filter{
+
+    border:1px solid #222;
+
+    outline:none;
+
+    background:#080808;
+
+    color:#777;
+
+    padding:
+        0
+        16px;
+
+    font-size:8px;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   ARCHIVE GRID
+========================================================= */
+
+.archive-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,minmax(0,1fr));
+
+    gap:1px;
+
+    background:#202020;
+
+}
+
+.archive-item{
+
+    position:relative;
+
+    min-height:310px;
+
+    padding:14px;
+
+    background:#080808;
+
+    border:1px solid transparent;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    overflow:hidden;
+
+    transition:.25s ease;
+
+}
+
+.archive-item:hover{
+
+    background:#101010;
+
+    border-color:#333;
+
+}
+
+.archive-item-index{
+
+    position:absolute;
+
+    top:10px;
+
+    right:10px;
+
+    color:#333;
+
+    font-size:7px;
+
+}
+
+.archive-item-image{
+
+    height:205px;
+
+    background:#0b0b0b;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    overflow:hidden;
+
+}
+
+.archive-item-image img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+    transition:.4s ease;
+
+}
+
+.archive-item:hover
+.archive-item-image img{
+
+    transform:
+        scale(1.04);
+
+}
+
+.archive-item-meta{
+
+    padding-top:14px;
+
+}
+
+.archive-item-brand{
+
+    color:#555;
+
+    font-size:7px;
+
+    letter-spacing:.17em;
+
+    text-transform:uppercase;
+
+    margin-bottom:6px;
+
+}
+
+.archive-item-name{
+
+    font-size:9px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.archive-item-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:8px;
+
+    color:#666;
+
+    font-size:7px;
+
+}
+
+.archive-empty{
+
+    grid-column:1/-1;
+
+    min-height:250px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#444;
+
+    font-size:8px;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   INFO
+========================================================= */
+
+.info{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:80px;
+
+    padding:
+        95px
+        5vw;
+
+    border-top:1px solid #181818;
+
+}
+
+.info-title{
+
+    font-size:
+        clamp(
+            45px,
+            7vw,
+            100px
+        );
+
+    line-height:.82;
+
+    letter-spacing:-.075em;
+
+    text-transform:uppercase;
+
+}
+
+.info-copy{
+
+    align-self:end;
+
+    color:#666;
+
+    font-size:9px;
+
+    line-height:1.9;
+
+    letter-spacing:.1em;
+
+    text-transform:uppercase;
+
+}
+
+.info-copy strong{
+
+    color:#aaa;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:
+        28px
+        5vw;
+
+    border-top:1px solid #151515;
+
+    color:#444;
+
+    font-size:7px;
+
+    letter-spacing:.15em;
+
+    text-transform:uppercase;
+
+}
+
+.footer a{
+
+    transition:.2s ease;
+
+}
+
+.footer a:hover{
+
+    color:#fff;
+
+}
+
+
+/* =========================================================
+   REVEAL
+========================================================= */
+
+.reveal{
+
+    opacity:0;
+
+    transform:
+        translateY(24px);
+
+    transition:
+        opacity .8s ease,
+        transform .8s ease;
+
+}
+
+.reveal.visible{
+
+    opacity:1;
+
+    transform:none;
+
+}
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media(max-width:1000px){
+
+    .archive-grid{
+
+        grid-template-columns:
+            repeat(
+                3,
+                minmax(0,1fr)
+            );
+
+    }
+
+}
+
+
+@media(max-width:800px){
+
+    .audio-player{
+
+        top:auto;
+
+        right:14px;
+
+        bottom:14px;
+
+        width:
+            calc(
+                100vw - 28px
+            );
+
+    }
+
+    .header{
+
+        padding:
+            0
+            16px;
+
+    }
+
+    .header-index{
+
+        display:none;
+
+    }
+
+    .hero{
+
+        padding:
+            120px
+            16px
+            80px;
+
+    }
+
+    .hero-orbit{
+
+        width:100vw;
+
+        height:100vw;
+
+    }
+
+    .builder{
+
+        padding:
+            75px
+            16px
+            30px;
+
+    }
+
+    .builder-head,
+    .archive-head{
+
+        display:block;
+
+        margin-bottom:28px;
+
+    }
+
+    .builder-head-right,
+    .archive-description{
+
+        margin-top:18px;
+
+    }
+
+    .fit-grid{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .fit-card{
+
+        min-height:430px;
+
+    }
+
+    .archive{
+
+        padding:
+            35px
+            16px
+            80px;
+
+    }
+
+    .archive-grid{
+
+        grid-template-columns:
+            repeat(
+                2,
+                minmax(0,1fr)
+            );
+
+    }
+
+    .info{
+
+        grid-template-columns:1fr;
+
+        gap:45px;
+
+        padding:
+            75px
+            16px;
+
+    }
+
+    .footer{
+
+        padding:
+            24px
+            16px;
+
+    }
+
+}
+
+
+@media(max-width:520px){
+
+    .header-button{
+
+        padding:
+            10px
+            11px;
+
+    }
+
+    .hero-title{
+
+        font-size:21vw;
+
+    }
+
+    .hero-title span:nth-child(2){
+
+        transform:
+            translateX(5vw);
+
+    }
+
+    .hero-title span:nth-child(3){
+
+        transform:
+            translateX(-2vw);
+
+    }
+
+    .fit-actions{
+
+        grid-template-columns:1fr;
+
+    }
+
+    .builder-tools{
+
+        justify-content:stretch;
+
+    }
+
+    .tool-button{
+
+        flex:1;
+
+    }
+
+    .archive-controls{
+
+        flex-direction:column;
+
+    }
+
+    .category-filter{
+
+        height:44px;
+
+    }
+
+    .archive-item{
+
+        min-height:245px;
+
+        padding:9px;
+
+    }
+
+    .archive-item-image{
+
+        height:150px;
+
+    }
+
+    .archive-item-name{
+
+        font-size:8px;
+
+    }
+
+    .catalog-overlay{
+
+        padding:12px;
+
+    }
+
+    .catalog-list{
+
+        grid-template-columns:1fr;
+
+    }
+
+}
+
 </style>
 
 </head>
@@ -1329,7 +2310,10 @@ a{
      LOADER
 ======================================================= -->
 
-<div class="loader" id="loader">
+<div
+    class="loader"
+    id="loader"
+>
 
     <div class="loader-inner">
 
@@ -1338,7 +2322,9 @@ a{
         </div>
 
         <div class="loader-line">
+
             <div class="loader-progress"></div>
+
         </div>
 
         <div class="loader-small">
@@ -1360,14 +2346,14 @@ a{
         CreatureMeza
     </div>
 
-    <div class="header-meta">
+    <div class="header-right">
 
         <div class="header-index">
             CM / 001
         </div>
 
         <button
-            class="catalog-button"
+            class="header-button"
             id="catalogButton"
         >
             Catalog
@@ -1376,6 +2362,140 @@ a{
     </div>
 
 </header>
+
+
+<!-- =======================================================
+     AUDIO PLAYER
+======================================================= -->
+
+<div
+    class="audio-player"
+    id="audioPlayer"
+>
+
+    <div class="audio-head">
+
+        <div class="audio-label">
+            CM / Audio
+        </div>
+
+        <div
+            class="audio-state"
+            id="audioState"
+        >
+            Ready
+        </div>
+
+    </div>
+
+
+    <div class="audio-body">
+
+        <div class="audio-track-row">
+
+            <div
+                class="audio-disc"
+                id="audioDisc"
+            >
+                CM
+            </div>
+
+            <div class="audio-info">
+
+                <div
+                    class="audio-name"
+                    id="audioName"
+                >
+                    No track loaded
+                </div>
+
+                <div
+                    class="audio-sub"
+                    id="audioSub"
+                >
+                    Add MP3 files to /music
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="audio-controls">
+
+            <button
+                class="audio-btn"
+                id="prevTrack"
+                aria-label="Previous track"
+            >
+                ‹
+            </button>
+
+            <button
+                class="audio-btn main"
+                id="playTrack"
+                aria-label="Play or pause"
+            >
+                ▶
+            </button>
+
+            <button
+                class="audio-btn"
+                id="nextTrack"
+                aria-label="Next track"
+            >
+                ›
+            </button>
+
+        </div>
+
+
+        <div
+            class="audio-progress"
+            id="audioProgress"
+        >
+
+            <div
+                class="audio-progress-fill"
+                id="audioProgressFill"
+            ></div>
+
+        </div>
+
+
+        <div class="audio-bottom">
+
+            <div
+                class="audio-time"
+                id="audioTime"
+            >
+                0:00 / 0:00
+            </div>
+
+            <input
+                class="audio-volume"
+                id="audioVolume"
+                type="range"
+                min="0"
+                max="1"
+                step="0.01"
+                value=".8"
+            >
+
+        </div>
+
+
+        <div class="audio-note">
+
+            Place your files in
+            music/track-01.mp3,
+            track-02.mp3...
+
+        </div>
+
+    </div>
+
+</div>
 
 
 <!-- =======================================================
@@ -1422,7 +2542,12 @@ a{
 
     <div class="hero-grid"></div>
 
-    <div class="hero-orbit"></div>
+    <div class="hero-orbit">
+
+        <div class="hero-orbit-dot"></div>
+
+    </div>
+
 
     <div class="hero-content">
 
@@ -1430,13 +2555,17 @@ a{
             Independent fashion archive
         </div>
 
+
         <h1 class="hero-title">
 
             <span>Build</span>
+
             <span>Your</span>
+
             <span>Fit.</span>
 
         </h1>
+
 
         <p class="hero-subtitle">
 
@@ -1446,6 +2575,11 @@ a{
 
         </p>
 
+    </div>
+
+
+    <div class="hero-scroll">
+        Scroll / Explore
     </div>
 
 </section>
@@ -1460,13 +2594,19 @@ a{
     <div class="marquee-track">
 
         <span>CreatureMeza</span>
+
         <span>Selected Objects</span>
+
         <span>Independent Archive</span>
+
         <span>Built For The Archive</span>
 
         <span>CreatureMeza</span>
+
         <span>Selected Objects</span>
+
         <span>Independent Archive</span>
+
         <span>Built For The Archive</span>
 
     </div>
@@ -1497,6 +2637,7 @@ a{
 
         </div>
 
+
         <div class="builder-head-right">
 
             Three categories.
@@ -1508,15 +2649,11 @@ a{
     </div>
 
 
-    <!-- FIT GRID -->
-
     <div
         class="fit-grid"
         id="fitGrid"
     ></div>
 
-
-    <!-- TOTAL -->
 
     <div class="total-bar">
 
@@ -1533,8 +2670,6 @@ a{
 
     </div>
 
-
-    <!-- ACTIONS -->
 
     <div class="fit-actions">
 
@@ -1555,8 +2690,6 @@ a{
     </div>
 
 
-    <!-- RATING -->
-
     <div
         class="rating-panel"
         id="ratingPanel"
@@ -1571,60 +2704,27 @@ a{
             id="ratingButtons"
         >
 
-            <button class="rating-button" data-rating="1">
-                1
-            </button>
-
-            <button class="rating-button" data-rating="2">
-                2
-            </button>
-
-            <button class="rating-button" data-rating="3">
-                3
-            </button>
-
-            <button class="rating-button" data-rating="4">
-                4
-            </button>
-
-            <button class="rating-button" data-rating="5">
-                5
-            </button>
-
-            <button class="rating-button" data-rating="6">
-                6
-            </button>
-
-            <button class="rating-button" data-rating="7">
-                7
-            </button>
-
-            <button class="rating-button" data-rating="8">
-                8
-            </button>
-
-            <button class="rating-button" data-rating="9">
-                9
-            </button>
-
-            <button class="rating-button" data-rating="10">
-                10
-            </button>
+            <button class="rating-button" data-rating="1">1</button>
+            <button class="rating-button" data-rating="2">2</button>
+            <button class="rating-button" data-rating="3">3</button>
+            <button class="rating-button" data-rating="4">4</button>
+            <button class="rating-button" data-rating="5">5</button>
+            <button class="rating-button" data-rating="6">6</button>
+            <button class="rating-button" data-rating="7">7</button>
+            <button class="rating-button" data-rating="8">8</button>
+            <button class="rating-button" data-rating="9">9</button>
+            <button class="rating-button" data-rating="10">10</button>
 
         </div>
 
     </div>
 
 
-    <!-- STATUS -->
-
     <div
         class="status"
         id="status"
     ></div>
 
-
-    <!-- TOOLS -->
 
     <div class="builder-tools">
 
@@ -1665,11 +2765,14 @@ a{
             </div>
 
             <h2 class="section-title">
+
                 Selected<br>
                 Objects.
+
             </h2>
 
         </div>
+
 
         <div class="archive-description">
 
@@ -1682,8 +2785,6 @@ a{
     </div>
 
 
-    <!-- CONTROLS -->
-
     <div class="archive-controls">
 
         <input
@@ -1693,6 +2794,7 @@ a{
             placeholder="SEARCH OBJECTS..."
             autocomplete="off"
         >
+
 
         <select
             class="category-filter"
@@ -1719,8 +2821,6 @@ a{
 
     </div>
 
-
-    <!-- GRID -->
 
     <div
         class="archive-grid"
@@ -1749,6 +2849,7 @@ a{
         </h2>
 
     </div>
+
 
     <div class="info-copy">
 
@@ -1794,760 +2895,930 @@ a{
 
 /* =========================================================
    CATALOG
+   13 BRANDS / 117 OBJECTS
 ========================================================= */
 
 const catalog = {
 
-    "Ader Error": {
 
-        top: [
+    "Ader Error":{
+
+        top:[
+
             {
                 name:"Oversized Logo Tee",
                 price:120,
                 image:""
             },
+
             {
                 name:"Layered Graphic Shirt",
                 price:180,
                 image:""
             },
+
             {
                 name:"Archive Cotton Hoodie",
                 price:290,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Wide Cargo Trousers",
                 price:260,
                 image:""
             },
+
             {
                 name:"Relaxed Denim",
                 price:240,
                 image:""
             },
+
             {
                 name:"Utility Pants",
                 price:280,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Chunky Runner",
                 price:310,
                 image:""
             },
+
             {
                 name:"Archive Sneaker",
                 price:330,
                 image:""
             },
+
             {
                 name:"Platform Trainer",
                 price:350,
                 image:""
             }
+
         ]
 
     },
 
-    "Balenciaga": {
 
-        top: [
+    "Balenciaga":{
+
+        top:[
+
             {
                 name:"Logo T-Shirt",
                 price:550,
                 image:""
             },
+
             {
                 name:"Oversized Hoodie",
                 price:850,
                 image:""
             },
+
             {
                 name:"Zip Jacket",
                 price:1100,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Wide Leg Jeans",
                 price:850,
                 image:""
             },
+
             {
                 name:"Cargo Trousers",
                 price:900,
                 image:""
             },
+
             {
                 name:"Destroyed Denim",
                 price:980,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Runner Sneaker",
                 price:1050,
                 image:""
             },
+
             {
                 name:"Triple Sole Trainer",
                 price:990,
                 image:""
             },
+
             {
                 name:"Track Sneaker",
                 price:1150,
                 image:""
             }
+
         ]
 
     },
 
-    "Carhartt WIP": {
 
-        top: [
+    "Carhartt WIP":{
+
+        top:[
+
             {
                 name:"Pocket Tee",
                 price:65,
                 image:""
             },
+
             {
                 name:"Work Jacket",
                 price:180,
                 image:""
             },
+
             {
                 name:"Detroit Jacket",
                 price:220,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Single Knee Pant",
                 price:120,
                 image:""
             },
+
             {
                 name:"Cargo Pant",
                 price:130,
                 image:""
             },
+
             {
                 name:"Double Knee Pant",
                 price:145,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Canvas Sneaker",
                 price:90,
                 image:""
             },
+
             {
                 name:"Work Boot",
                 price:150,
                 image:""
             },
+
             {
                 name:"Low Trainer",
                 price:110,
                 image:""
             }
+
         ]
 
     },
 
-    "Comme des Garçons": {
 
-        top: [
+    "Comme des Garçons":{
+
+        top:[
+
             {
                 name:"Play Tee",
                 price:130,
                 image:""
             },
+
             {
                 name:"Graphic Shirt",
                 price:190,
                 image:""
             },
+
             {
                 name:"Wool Cardigan",
                 price:420,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Wide Trousers",
                 price:350,
                 image:""
             },
+
             {
                 name:"Pleated Pants",
                 price:390,
                 image:""
             },
+
             {
                 name:"Archive Shorts",
                 price:250,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Converse Play",
                 price:150,
                 image:""
             },
+
             {
                 name:"Derby Shoes",
                 price:480,
                 image:""
             },
+
             {
                 name:"Archive Trainer",
                 price:300,
                 image:""
             }
+
         ]
 
     },
 
-    "Diesel": {
 
-        top: [
+    "Diesel":{
+
+        top:[
+
             {
                 name:"Washed Tee",
                 price:100,
                 image:""
             },
+
             {
                 name:"Graphic Tee",
                 price:120,
                 image:""
             },
+
             {
                 name:"Denim Jacket",
                 price:350,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Bootcut Denim",
                 price:250,
                 image:""
             },
+
             {
                 name:"Distressed Jeans",
                 price:280,
                 image:""
             },
+
             {
                 name:"Wide Denim",
                 price:300,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"D-Rise Sneaker",
                 price:320,
                 image:""
             },
+
             {
                 name:"Low Profile Shoe",
                 price:270,
                 image:""
             },
+
             {
                 name:"Archive Runner",
                 price:350,
                 image:""
             }
+
         ]
 
     },
 
-    "Givenchy": {
 
-        top: [
+    "Givenchy":{
+
+        top:[
+
             {
                 name:"Star Logo Polo",
                 price:500,
                 image:""
             },
+
             {
                 name:"Logo Tee",
                 price:450,
                 image:""
             },
+
             {
                 name:"Oversized Sweatshirt",
                 price:700,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Wide Trousers",
                 price:650,
                 image:""
             },
+
             {
                 name:"Cargo Pants",
                 price:620,
                 image:""
             },
+
             {
                 name:"Slim Denim",
                 price:550,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"G4 Sneaker",
                 price:650,
                 image:""
             },
+
             {
                 name:"Low Trainer",
                 price:700,
                 image:""
             },
+
             {
                 name:"Archive Runner",
                 price:720,
                 image:""
             }
+
         ]
 
     },
 
-    "Maison Margiela": {
 
-        top: [
+    "Maison Margiela":{
+
+        top:[
+
             {
                 name:"Replica Tee",
                 price:220,
                 image:""
             },
+
             {
                 name:"Numbering Sweatshirt",
                 price:450,
                 image:""
             },
+
             {
                 name:"Oversized Knit",
                 price:650,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Wide Wool Trousers",
                 price:550,
                 image:""
             },
+
             {
                 name:"Painted Denim",
                 price:620,
                 image:""
             },
+
             {
                 name:"Archive Trousers",
                 price:700,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Replica Sneakers",
                 price:450,
                 image:""
             },
+
             {
                 name:"Low Boot",
                 price:650,
                 image:""
             },
+
             {
                 name:"Tabi Shoes",
                 price:750,
                 image:""
             }
+
         ]
 
     },
 
-    "Nike": {
 
-        top: [
+    "Nike":{
+
+        top:[
+
             {
                 name:"Boxy Sports Tee",
                 price:45,
                 image:""
             },
+
             {
                 name:"Tech Fleece Hoodie",
                 price:120,
                 image:""
             },
+
             {
                 name:"Running Jacket",
                 price:150,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Tech Fleece Pants",
                 price:110,
                 image:""
             },
+
             {
                 name:"Loose Track Pants",
                 price:90,
                 image:""
             },
+
             {
                 name:"Utility Shorts",
                 price:70,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Air Max",
                 price:180,
                 image:""
             },
+
             {
                 name:"Air Force 1",
                 price:130,
                 image:""
             },
+
             {
                 name:"Vomero",
                 price:160,
                 image:""
             }
+
         ]
 
     },
 
-    "Prada": {
 
-        top: [
+    "Prada":{
+
+        top:[
+
             {
                 name:"Triangle Logo Tee",
                 price:550,
                 image:""
             },
+
             {
                 name:"Nylon Overshirt",
-                price950,
+                price:950,
                 image:""
             },
+
             {
                 name:"Technical Jacket",
-                price1200,
+                price:1200,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Technical Trousers",
-                price850,
+                price:850,
                 image:""
             },
+
             {
                 name:"Wide Wool Pants",
-                price900,
+                price:900,
                 image:""
             },
+
             {
                 name:"Nylon Cargo",
-                price950,
+                price:950,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"America's Cup",
-                price750,
+                price:750,
                 image:""
             },
+
             {
                 name:"Monolith Boot",
-                price1100,
+                price:1100,
                 image:""
             },
+
             {
                 name:"Cloudbust Sneaker",
-                price850,
+                price:850,
                 image:""
             }
+
         ]
 
     },
 
-    "Ralph Lauren": {
 
-        top: [
+    "Ralph Lauren":{
+
+        top:[
+
             {
                 name:"Classic Polo",
-                price110,
+                price:110,
                 image:""
             },
+
             {
                 name:"Oxford Shirt",
-                price120,
+                price:120,
                 image:""
             },
+
             {
                 name:"Cable Knit",
-                price180,
+                price:180,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Pleated Chino",
-                price130,
+                price:130,
                 image:""
             },
+
             {
                 name:"Straight Denim",
-                price120,
+                price:120,
                 image:""
             },
+
             {
                 name:"Wide Chino",
-                price140,
+                price:140,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Classic Sneaker",
-                price100,
+                price:100,
                 image:""
             },
+
             {
                 name:"Loafer",
-                price180,
+                price:180,
                 image:""
             },
+
             {
                 name:"Canvas Low",
-                price90,
+                price:90,
                 image:""
             }
+
         ]
 
     },
 
-    "Supreme": {
 
-        top: [
+    "Supreme":{
+
+        top:[
+
             {
                 name:"Box Logo Tee",
-                price100,
+                price:100,
                 image:""
             },
+
             {
                 name:"Box Logo Hoodie",
-                price180,
+                price:180,
                 image:""
             },
+
             {
                 name:"Work Jacket",
-                price300,
+                price:300,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Cargo Pant",
-                price190,
+                price:190,
                 image:""
             },
+
             {
                 name:"Baggy Jean",
-                price180,
+                price:180,
                 image:""
             },
+
             {
                 name:"Track Pant",
-                price160,
+                price:160,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Skate Sneaker",
-                price120,
+                price:120,
                 image:""
             },
+
             {
                 name:"Low Canvas",
-                price110,
+                price:110,
                 image:""
             },
+
             {
                 name:"Archive Trainer",
-                price160,
+                price:160,
                 image:""
             }
+
         ]
 
     },
 
-    "Stone Island": {
 
-        top: [
+    "Stone Island":{
+
+        top:[
+
             {
                 name:"Compass Tee",
-                price140,
+                price:140,
                 image:""
             },
+
             {
                 name:"Crewneck Sweatshirt",
-                price250,
+                price:250,
                 image:""
             },
+
             {
                 name:"Soft Shell Jacket",
-                price550,
+                price:550,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Cargo Trousers",
-                price280,
+                price:280,
                 image:""
             },
+
             {
                 name:"Parachute Pants",
-                price320,
+                price:320,
                 image:""
             },
+
             {
                 name:"Technical Shorts",
-                price190,
+                price:190,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Compass Sneaker",
-                price220,
+                price:220,
                 image:""
             },
+
             {
                 name:"Technical Trainer",
-                price260,
+                price:260,
                 image:""
             },
+
             {
                 name:"Low Runner",
-                price230,
+                price:230,
                 image:""
             }
+
         ]
 
     },
 
-    "Y-3": {
 
-        top: [
+    "Y-3":{
+
+        top:[
+
             {
                 name:"Logo Tee",
-                price180,
+                price:180,
                 image:""
             },
+
             {
                 name:"Oversized Hoodie",
-                price320,
+                price:320,
                 image:""
             },
+
             {
                 name:"Technical Jacket",
-                price500,
+                price:500,
                 image:""
             }
+
         ],
 
-        bottom: [
+        bottom:[
+
             {
                 name:"Wide Track Pants",
-                price300,
+                price:300,
                 image:""
             },
+
             {
                 name:"Technical Trousers",
-                price350,
+                price:350,
                 image:""
             },
+
             {
                 name:"Cargo Pants",
-                price330,
+                price:330,
                 image:""
             }
+
         ],
 
-        shoes: [
+        shoes:[
+
             {
                 name:"Y-3 Runner",
-                price350,
+                price:350,
                 image:""
             },
+
             {
                 name:"Hicho",
-                price400,
+                price:400,
                 image:""
             },
+
             {
                 name:"Kaiwa",
-                price380,
+                price:380,
                 image:""
             }
+
         ]
 
     }
@@ -2559,20 +3830,25 @@ const catalog = {
    STATE
 ========================================================= */
 
-const categories = [
+const categories=[
     "top",
     "bottom",
     "shoes"
 ];
 
-const state = {
+
+const state={
+
     selected:{
         top:null,
         bottom:null,
         shoes:null
     },
 
-    rating:null
+    rating:null,
+
+    audioIndex:0
+
 };
 
 
@@ -2582,21 +3858,25 @@ const state = {
 
 function getAllItems(){
 
-    const items = [];
+    const items=[];
 
     Object.entries(catalog).forEach(
-        ([brand,data]) => {
+        ([brand,data])=>{
 
             categories.forEach(
-                category => {
+                category=>{
 
                     data[category].forEach(
-                        item => {
+                        item=>{
 
                             items.push({
+
                                 ...item,
+
                                 brand,
+
                                 category
+
                             });
 
                         }
@@ -2609,15 +3889,30 @@ function getAllItems(){
     );
 
     return items;
+
+}
+
+
+function getCategoryItems(category){
+
+    return getAllItems().filter(
+        item =>
+            item.category === category
+    );
+
 }
 
 
 function getCategoryLabel(category){
 
-    const labels = {
+    const labels={
+
         top:"Top",
+
         bottom:"Bottom",
+
         shoes:"Shoes"
+
     };
 
     return labels[category] || category;
@@ -2627,123 +3922,258 @@ function getCategoryLabel(category){
 
 function formatPrice(value){
 
-    return "€" + Number(value).toLocaleString("en-US");
+    return "€" +
+        Number(value)
+            .toLocaleString("en-US");
 
 }
 
 
-/* =========================================================
-   PLACEHOLDER IMAGE
-========================================================= */
+function escapeHTML(value){
 
-function imageMarkup(item, extraClass=""){
+    return String(value)
+        .replace(
+            /[&<>"']/g,
+            char => ({
+
+                "&":"&amp;",
+                "<":"&lt;",
+                ">":"&gt;",
+                '"':"&quot;",
+                "'":"&#039;"
+
+            }[char])
+
+        );
+
+}
+
+
+function imageMarkup(item){
 
     if(item.image){
 
         return `
+
             <img
-                class="${extraClass}"
-                src="${item.image}"
-                alt="${item.name}"
+                src="${escapeHTML(item.image)}"
+                alt="${escapeHTML(item.name)}"
                 loading="lazy"
             >
+
         `;
 
     }
 
+
     return `
-        <div
-            style="
-                width:100%;
-                height:100%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                color:#333;
-                font-size:9px;
-                letter-spacing:.15em;
-                text-transform:uppercase;
-            "
-        >
-            ${item.brand}
+
+        <div class="placeholder">
+
+            ${escapeHTML(item.brand)}
+
         </div>
+
     `;
 
 }
 
 
-/* =========================================================
-   RANDOM ITEM
-========================================================= */
-
-function randomItem(category){
-
-    const all = getAllItems().filter(
-        item => item.category === category
-    );
-
-    return all[
-        Math.floor(
-            Math.random() * all.length
-        )
-    ];
-
-}
-
-
-/* =========================================================
-   FIND CURRENT ITEM
-========================================================= */
-
 function getSelectedItem(category){
 
-    const index = state.selected[category];
+    const index =
+        state.selected[category];
 
     if(index === null){
+
         return null;
+
     }
 
-    const all = getAllItems().filter(
-        item => item.category === category
-    );
-
-    return all[index] || null;
+    return getCategoryItems(category)[index]
+        || null;
 
 }
 
 
 /* =========================================================
-   RENDER BUILDER
+   STORAGE
+========================================================= */
+
+function saveState(){
+
+    try{
+
+        localStorage.setItem(
+            "creaturemeza_fit",
+            JSON.stringify(
+                state.selected
+            )
+        );
+
+        localStorage.setItem(
+            "creaturemeza_rating",
+            state.rating === null
+                ? ""
+                : String(state.rating)
+        );
+
+    }catch(error){
+
+        console.warn(
+            "CreatureMeza storage unavailable."
+        );
+
+    }
+
+}
+
+
+function loadState(){
+
+    try{
+
+        const saved =
+            JSON.parse(
+                localStorage.getItem(
+                    "creaturemeza_fit"
+                ) || "null"
+            );
+
+
+        if(saved){
+
+            categories.forEach(
+                category=>{
+
+                    const list =
+                        getCategoryItems(
+                            category
+                        );
+
+                    const value =
+                        Number(
+                            saved[category]
+                        );
+
+                    state.selected[category] =
+                        Number.isInteger(value) &&
+                        value >= 0 &&
+                        value < list.length
+                            ? value
+                            : null;
+
+                }
+            );
+
+        }else{
+
+            setInitialFit(false);
+
+        }
+
+
+        const rating =
+            localStorage.getItem(
+                "creaturemeza_rating"
+            );
+
+
+        if(rating){
+
+            state.rating =
+                Number(rating);
+
+        }
+
+    }catch(error){
+
+        setInitialFit(false);
+
+    }
+
+
+    renderBuilder();
+
+    syncRatingButtons();
+
+}
+
+
+/* =========================================================
+   INITIAL FIT
+========================================================= */
+
+function setInitialFit(save=true){
+
+    categories.forEach(
+        category=>{
+
+            state.selected[category]=0;
+
+        }
+    );
+
+    state.rating=null;
+
+    if(save){
+
+        saveState();
+
+    }
+
+    renderBuilder();
+
+}
+
+
+/* =========================================================
+   BUILDER
 ========================================================= */
 
 function renderBuilder(){
 
     const grid =
-        document.getElementById("fitGrid");
+        document.getElementById(
+            "fitGrid"
+        );
 
-    grid.innerHTML = "";
 
-    let total = 0;
+    grid.innerHTML="";
+
+
+    let total=0;
+
 
     categories.forEach(
-        (category,index) => {
+        (category,index)=>{
 
             const item =
-                getSelectedItem(category);
+                getSelectedItem(
+                    category
+                );
+
 
             const card =
-                document.createElement("article");
+                document.createElement(
+                    "article"
+                );
 
-            card.className = "fit-card";
+
+            card.className =
+                "fit-card";
+
 
             if(item){
 
-                total += Number(item.price);
+                total +=
+                    Number(item.price);
 
-                card.innerHTML = `
+
+                card.innerHTML=`
 
                     <div class="fit-card-number">
-                        0${index + 1}
+                        0${index+1}
                     </div>
 
                     <div class="fit-card-category">
@@ -2751,19 +4181,17 @@ function renderBuilder(){
                     </div>
 
                     <div class="fit-image">
-
                         ${imageMarkup(item)}
-
                     </div>
 
                     <div class="fit-info">
 
                         <div class="fit-brand">
-                            ${item.brand}
+                            ${escapeHTML(item.brand)}
                         </div>
 
                         <div class="fit-name">
-                            ${item.name}
+                            ${escapeHTML(item.name)}
                         </div>
 
                         <div class="fit-price">
@@ -2776,10 +4204,10 @@ function renderBuilder(){
 
             }else{
 
-                card.innerHTML = `
+                card.innerHTML=`
 
                     <div class="fit-card-number">
-                        0${index + 1}
+                        0${index+1}
                     </div>
 
                     <div class="fit-card-category">
@@ -2788,14 +4216,7 @@ function renderBuilder(){
 
                     <div class="fit-image">
 
-                        <div
-                            style="
-                                color:#292929;
-                                font-size:9px;
-                                letter-spacing:.2em;
-                                text-transform:uppercase;
-                            "
-                        >
+                        <div class="placeholder">
                             Select object
                         </div>
 
@@ -2817,13 +4238,17 @@ function renderBuilder(){
 
             }
 
+
             grid.appendChild(card);
 
         }
     );
 
-    document.getElementById("totalValue")
-        .textContent = formatPrice(total);
+
+    document.getElementById(
+        "totalValue"
+    ).textContent =
+        formatPrice(total);
 
 }
 
@@ -2835,42 +4260,35 @@ function renderBuilder(){
 function randomFit(){
 
     categories.forEach(
-        category => {
+        category=>{
 
-            const all =
-                getAllItems()
-                    .filter(
-                        item =>
-                            item.category === category
-                    );
+            const list =
+                getCategoryItems(
+                    category
+                );
 
-            const selected =
-                all[
-                    Math.floor(
-                        Math.random() * all.length
-                    )
-                ];
-
-            const categoryItems =
-                getAllItems()
-                    .filter(
-                        item =>
-                            item.category === category
-                    );
 
             state.selected[category] =
-                categoryItems.indexOf(selected);
+                Math.floor(
+                    Math.random() *
+                    list.length
+                );
 
         }
     );
 
-    state.rating = null;
+
+    state.rating=null;
+
+    saveState();
 
     renderBuilder();
 
-    document.getElementById("status")
-        .textContent =
-        "Random fit generated.";
+    syncRatingButtons();
+
+    setStatus(
+        "Random fit generated."
+    );
 
 }
 
@@ -2882,86 +4300,73 @@ function randomFit(){
 function resetFit(){
 
     categories.forEach(
-        category => {
-            state.selected[category] = null;
+        category=>{
+
+            state.selected[category]=null;
+
         }
     );
 
-    state.rating = null;
 
-    document.querySelectorAll(
-        ".rating-button"
-    ).forEach(
-        button =>
-            button.classList.remove("active")
-    );
+    state.rating=null;
+
+    saveState();
 
     renderBuilder();
 
-    document.getElementById("status")
-        .textContent =
-        "Fit reset.";
+    syncRatingButtons();
+
+    setStatus(
+        "Fit reset."
+    );
 
 }
 
 
 /* =========================================================
-   INITIAL FIT
+   STATUS
 ========================================================= */
 
-function setInitialFit(){
+function setStatus(text){
 
-    categories.forEach(
-        category => {
-
-            const all =
-                getAllItems()
-                    .filter(
-                        item =>
-                            item.category === category
-                    );
-
-            const first =
-                all[0];
-
-            const categoryItems =
-                getAllItems()
-                    .filter(
-                        item =>
-                            item.category === category
-                    );
-
-            state.selected[category] =
-                categoryItems.indexOf(first);
-
-        }
-    );
-
-    renderBuilder();
+    document.getElementById(
+        "status"
+    ).textContent=text;
 
 }
 
 
 /* =========================================================
-   ARCHIVE RENDER
+   ARCHIVE
 ========================================================= */
 
 function renderArchive(){
 
     const grid =
-        document.getElementById("archiveGrid");
+        document.getElementById(
+            "archiveGrid"
+        );
+
 
     const search =
-        document.getElementById("archiveSearch")
-            .value
-            .trim()
-            .toLowerCase();
+        document.getElementById(
+            "archiveSearch"
+        )
+        .value
+        .trim()
+        .toLowerCase();
+
 
     const filter =
-        document.getElementById("categoryFilter")
-            .value;
+        document.getElementById(
+            "categoryFilter"
+        )
+        .value;
 
-    let items = getAllItems();
+
+    let items =
+        getAllItems();
+
 
     if(filter !== "all"){
 
@@ -2973,48 +4378,43 @@ function renderArchive(){
 
     }
 
+
     if(search){
 
         items =
             items.filter(
                 item => {
 
-                    const haystack =
-                        (
-                            item.name +
-                            " " +
-                            item.brand +
-                            " " +
-                            item.category
-                        ).toLowerCase();
+                    const text = `
 
-                    return haystack.includes(search);
+                        ${item.name}
+                        ${item.brand}
+                        ${item.category}
+
+                    `.toLowerCase();
+
+
+                    return text.includes(
+                        search
+                    );
 
                 }
             );
 
     }
 
-    grid.innerHTML = "";
 
-    if(items.length === 0){
+    grid.innerHTML="";
 
-        grid.innerHTML = `
 
-            <div
-                style="
-                    grid-column:1/-1;
-                    min-height:240px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    color:#444;
-                    font-size:9px;
-                    letter-spacing:.2em;
-                    text-transform:uppercase;
-                "
-            >
+    if(!items.length){
+
+        grid.innerHTML=`
+
+            <div class="archive-empty">
+
                 Nothing found.
+
             </div>
 
         `;
@@ -3023,16 +4423,25 @@ function renderArchive(){
 
     }
 
+
     items.forEach(
-        (item,index) => {
+        (item,index)=>{
 
             const article =
-                document.createElement("article");
+                document.createElement(
+                    "article"
+                );
+
 
             article.className =
                 "archive-item";
 
-            article.innerHTML = `
+
+            article.innerHTML=`
+
+                <div class="archive-item-index">
+                    ${String(index+1).padStart(3,"0")}
+                </div>
 
                 <div class="archive-item-image">
 
@@ -3043,11 +4452,11 @@ function renderArchive(){
                 <div class="archive-item-meta">
 
                     <div class="archive-item-brand">
-                        ${item.brand}
+                        ${escapeHTML(item.brand)}
                     </div>
 
                     <div class="archive-item-name">
-                        ${item.name}
+                        ${escapeHTML(item.name)}
                     </div>
 
                     <div class="archive-item-bottom">
@@ -3066,6 +4475,7 @@ function renderArchive(){
 
             `;
 
+
             grid.appendChild(article);
 
         }
@@ -3075,65 +4485,171 @@ function renderArchive(){
 
 
 /* =========================================================
-   RATING PANEL
+   CATALOG
 ========================================================= */
+
+function renderCatalog(){
+
+    const list =
+        document.getElementById(
+            "catalogList"
+        );
+
+
+    list.innerHTML="";
+
+
+    Object.entries(catalog)
+        .forEach(
+            ([brand,data])=>{
+
+                const total =
+                    data.top.length +
+                    data.bottom.length +
+                    data.shoes.length;
+
+
+                const item =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                item.className =
+                    "catalog-brand";
+
+
+                item.innerHTML=`
+
+                    <div class="catalog-brand-name">
+                        ${escapeHTML(brand)}
+                    </div>
+
+                    <div class="catalog-brand-count">
+                        ${total} objects
+                    </div>
+
+                `;
+
+
+                list.appendChild(item);
+
+            }
+        );
+
+}
+
+
+function openCatalog(){
+
+    document.getElementById(
+        "catalogOverlay"
+    )
+    .classList
+    .add("open");
+
+
+    document.body.classList.add(
+        "locked"
+    );
+
+}
+
+
+function closeCatalog(){
+
+    document.getElementById(
+        "catalogOverlay"
+    )
+    .classList
+    .remove("open");
+
+
+    document.body.classList.remove(
+        "locked"
+    );
+
+}
+
+
+/* =========================================================
+   RATING
+========================================================= */
+
+function syncRatingButtons(){
+
+    document
+        .querySelectorAll(
+            ".rating-button"
+        )
+        .forEach(
+            button=>{
+
+                button.classList.toggle(
+
+                    "active",
+
+                    Number(
+                        button.dataset.rating
+                    ) === state.rating
+
+                );
+
+            }
+        );
+
+}
+
 
 function setupRating(){
 
-    const rateButton =
-        document.getElementById(
-            "rateFitButton"
-        );
-
-    const panel =
-        document.getElementById(
-            "ratingPanel"
-        );
-
-    rateButton.addEventListener(
+    document.getElementById(
+        "rateFitButton"
+    )
+    .addEventListener(
         "click",
-        () => {
+        ()=>{
 
-            panel.classList.toggle("open");
+            document.getElementById(
+                "ratingPanel"
+            )
+            .classList
+            .toggle("open");
 
         }
     );
 
 
-    document.querySelectorAll(
-        ".rating-button"
-    ).forEach(
-        button => {
+    document
+        .querySelectorAll(
+            ".rating-button"
+        )
+        .forEach(
+            button=>{
 
-            button.addEventListener(
-                "click",
-                () => {
+                button.addEventListener(
+                    "click",
+                    ()=>{
 
-                    state.rating =
-                        Number(
-                            button.dataset.rating
+                        state.rating =
+                            Number(
+                                button.dataset.rating
+                            );
+
+
+                        saveState();
+
+                        syncRatingButtons();
+
+                        setStatus(
+                            `Fit rating: ${state.rating}/10`
                         );
 
-                    document.querySelectorAll(
-                        ".rating-button"
-                    ).forEach(
-                        other =>
-                            other.classList.remove(
-                                "active"
-                            )
-                    );
+                    }
+                );
 
-                    button.classList.add("active");
-
-                    document.getElementById("status")
-                        .textContent =
-                        `Fit rating: ${state.rating}/10`;
-
-                }
-            );
-
-        }
-    );
+            }
+        );
 
 }
 
@@ -3147,143 +4663,40 @@ function confirmFit(){
     const selected =
         categories.map(
             category =>
-                getSelectedItem(category)
+                getSelectedItem(
+                    category
+                )
         );
 
-    if(selected.some(item => !item)){
 
-        document.getElementById("status")
-            .textContent =
-            "Complete all three slots first.";
+    if(
+        selected.some(
+            item => !item
+        )
+    ){
+
+        setStatus(
+            "Complete all three slots first."
+        );
 
         return;
 
     }
 
-    document.getElementById("status")
-        .textContent =
-        "Fit confirmed. Saved to your selection.";
 
-}
+    saveState();
 
 
-/* =========================================================
-   CATALOG PANEL
-========================================================= */
-
-function renderCatalog(){
-
-    const list =
-        document.getElementById(
-            "catalogList"
-        );
-
-    list.innerHTML = "";
-
-    Object.entries(catalog)
-        .forEach(
-            ([brand,data]) => {
-
-                const total =
-                    data.top.length +
-                    data.bottom.length +
-                    data.shoes.length;
-
-                const item =
-                    document.createElement("div");
-
-                item.className =
-                    "catalog-brand";
-
-                item.innerHTML = `
-
-                    <div class="catalog-brand-name">
-                        ${brand}
-                    </div>
-
-                    <div class="catalog-brand-count">
-                        ${total} objects
-                    </div>
-
-                `;
-
-                list.appendChild(item);
-
-            }
-        );
-
-}
-
-
-function setupCatalog(){
-
-    const button =
-        document.getElementById(
-            "catalogButton"
-        );
-
-    const close =
-        document.getElementById(
-            "catalogClose"
-        );
-
-    const overlay =
-        document.getElementById(
-            "catalogOverlay"
+    const total =
+        selected.reduce(
+            (sum,item)=>
+                sum + Number(item.price),
+            0
         );
 
 
-    button.addEventListener(
-        "click",
-        () => {
-
-            overlay.classList.add("open");
-
-        }
-    );
-
-
-    close.addEventListener(
-        "click",
-        () => {
-
-            overlay.classList.remove("open");
-
-        }
-    );
-
-
-    overlay.addEventListener(
-        "click",
-        event => {
-
-            if(event.target === overlay){
-
-                overlay.classList.remove(
-                    "open"
-                );
-
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if(
-                event.key === "Escape"
-            ){
-
-                overlay.classList.remove(
-                    "open"
-                );
-
-            }
-
-        }
+    setStatus(
+        `Fit confirmed. Value ${formatPrice(total)}.`
     );
 
 }
@@ -3300,6 +4713,7 @@ function setupReveal(){
             ".reveal"
         );
 
+
     if(
         !("IntersectionObserver" in window)
     ){
@@ -3315,18 +4729,25 @@ function setupReveal(){
 
     }
 
+
     const observer =
         new IntersectionObserver(
-            entries => {
+
+            entries=>{
 
                 entries.forEach(
-                    entry => {
+                    entry=>{
 
-                        if(entry.isIntersecting){
+                        if(
+                            entry.isIntersecting
+                        ){
 
                             entry.target
                                 .classList
-                                .add("visible");
+                                .add(
+                                    "visible"
+                                );
+
 
                             observer.unobserve(
                                 entry.target
@@ -3338,9 +4759,11 @@ function setupReveal(){
                 );
 
             },
+
             {
                 threshold:.08
             }
+
         );
 
 
@@ -3360,7 +4783,8 @@ function setupSearch(){
 
     document.getElementById(
         "archiveSearch"
-    ).addEventListener(
+    )
+    .addEventListener(
         "input",
         renderArchive
     );
@@ -3368,7 +4792,8 @@ function setupSearch(){
 
     document.getElementById(
         "categoryFilter"
-    ).addEventListener(
+    )
+    .addEventListener(
         "change",
         renderArchive
     );
@@ -3384,7 +4809,8 @@ function setupButtons(){
 
     document.getElementById(
         "randomFitButton"
-    ).addEventListener(
+    )
+    .addEventListener(
         "click",
         randomFit
     );
@@ -3392,7 +4818,8 @@ function setupButtons(){
 
     document.getElementById(
         "resetFitButton"
-    ).addEventListener(
+    )
+    .addEventListener(
         "click",
         resetFit
     );
@@ -3400,9 +4827,592 @@ function setupButtons(){
 
     document.getElementById(
         "confirmFitButton"
-    ).addEventListener(
+    )
+    .addEventListener(
         "click",
         confirmFit
+    );
+
+}
+
+
+/* =========================================================
+   CATALOG EVENTS
+========================================================= */
+
+function setupCatalog(){
+
+    document.getElementById(
+        "catalogButton"
+    )
+    .addEventListener(
+        "click",
+        openCatalog
+    );
+
+
+    document.getElementById(
+        "catalogClose"
+    )
+    .addEventListener(
+        "click",
+        closeCatalog
+    );
+
+
+    document.getElementById(
+        "catalogOverlay"
+    )
+    .addEventListener(
+        "click",
+        event=>{
+
+            if(
+                event.target ===
+                event.currentTarget
+            ){
+
+                closeCatalog();
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        "keydown",
+        event=>{
+
+            if(
+                event.key === "Escape"
+            ){
+
+                closeCatalog();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   AUDIO
+========================================================= */
+
+const tracks=[
+
+    {
+        name:"Track 01",
+        file:"music/track-01.mp3"
+    },
+
+    {
+        name:"Track 02",
+        file:"music/track-02.mp3"
+    },
+
+    {
+        name:"Track 03",
+        file:"music/track-03.mp3"
+    }
+
+];
+
+
+let audio=null;
+
+let audioReady=false;
+
+
+/* =========================================================
+   AUDIO TIME
+========================================================= */
+
+function formatTime(seconds){
+
+    if(
+        !Number.isFinite(seconds) ||
+        seconds < 0
+    ){
+
+        return "0:00";
+
+    }
+
+
+    const minutes =
+        Math.floor(
+            seconds / 60
+        );
+
+
+    const secs =
+        Math.floor(
+            seconds % 60
+        )
+        .toString()
+        .padStart(2,"0");
+
+
+    return `${minutes}:${secs}`;
+
+}
+
+
+/* =========================================================
+   AUDIO UI
+========================================================= */
+
+function updateAudioUI(){
+
+    const track =
+        tracks[
+            state.audioIndex
+        ];
+
+
+    document.getElementById(
+        "audioName"
+    )
+    .textContent =
+        track.name;
+
+
+    document.getElementById(
+        "audioSub"
+    )
+    .textContent =
+        audioReady
+            ? "CreatureMeza archive"
+            : "Add MP3 files to /music";
+
+
+    document.getElementById(
+        "audioState"
+    )
+    .textContent =
+        audioReady
+            ? (
+                audio?.paused
+                    ? "Paused"
+                    : "Playing"
+            )
+            : "Ready";
+
+
+    document.getElementById(
+        "playTrack"
+    )
+    .textContent =
+        audioReady &&
+        audio &&
+        !audio.paused
+            ? "Ⅱ"
+            : "▶";
+
+
+    document.getElementById(
+        "audioDisc"
+    )
+    .classList
+    .toggle(
+        "playing",
+        audioReady &&
+        audio &&
+        !audio.paused
+    );
+
+
+    if(audio){
+
+        const percent =
+            audio.duration
+                ? (
+                    audio.currentTime /
+                    audio.duration *
+                    100
+                )
+                : 0;
+
+
+        document.getElementById(
+            "audioProgressFill"
+        )
+        .style
+        .width =
+            `${percent}%`;
+
+
+        document.getElementById(
+            "audioTime"
+        )
+        .textContent =
+            `${formatTime(audio.currentTime)}
+             /
+             ${formatTime(audio.duration)}`;
+
+    }else{
+
+        document.getElementById(
+            "audioProgressFill"
+        )
+        .style
+        .width="0%";
+
+
+        document.getElementById(
+            "audioTime"
+        )
+        .textContent =
+            "0:00 / 0:00";
+
+    }
+
+}
+
+
+/* =========================================================
+   LOAD AUDIO
+========================================================= */
+
+function loadTrack(
+    index,
+    autoplay=false
+){
+
+    state.audioIndex =
+        (
+            index +
+            tracks.length
+        )
+        %
+        tracks.length;
+
+
+    const track =
+        tracks[
+            state.audioIndex
+        ];
+
+
+    if(audio){
+
+        audio.pause();
+
+        audio.removeAttribute(
+            "src"
+        );
+
+        audio.load();
+
+    }
+
+
+    audio =
+        new Audio();
+
+
+    audio.preload =
+        "metadata";
+
+
+    audio.volume =
+        Number(
+            document.getElementById(
+                "audioVolume"
+            ).value
+        );
+
+
+    audio.src =
+        track.file;
+
+
+    audio.addEventListener(
+        "loadedmetadata",
+        ()=>{
+
+            audioReady=true;
+
+            updateAudioUI();
+
+
+            if(autoplay){
+
+                playAudio();
+
+            }
+
+        }
+    );
+
+
+    audio.addEventListener(
+        "timeupdate",
+        updateAudioUI
+    );
+
+
+    audio.addEventListener(
+        "play",
+        updateAudioUI
+    );
+
+
+    audio.addEventListener(
+        "pause",
+        updateAudioUI
+    );
+
+
+    audio.addEventListener(
+        "ended",
+        ()=>{
+
+            loadTrack(
+                state.audioIndex + 1,
+                true
+            );
+
+        }
+    );
+
+
+    audio.addEventListener(
+        "error",
+        ()=>{
+
+            audioReady=false;
+
+
+            document.getElementById(
+                "audioState"
+            )
+            .textContent =
+                "No file";
+
+
+            document.getElementById(
+                "audioSub"
+            )
+            .textContent =
+                "Add the MP3 to /music";
+
+
+            document.getElementById(
+                "playTrack"
+            )
+            .textContent =
+                "▶";
+
+
+            document.getElementById(
+                "audioDisc"
+            )
+            .classList
+            .remove(
+                "playing"
+            );
+
+        }
+    );
+
+
+    audioReady=false;
+
+    updateAudioUI();
+
+}
+
+
+/* =========================================================
+   PLAY
+========================================================= */
+
+function playAudio(){
+
+    if(!audio){
+
+        loadTrack(
+            state.audioIndex,
+            false
+        );
+
+    }
+
+
+    if(!audio){
+
+        return;
+
+    }
+
+
+    audio.play()
+        .catch(
+            ()=>{
+
+                document.getElementById(
+                    "audioState"
+                )
+                .textContent =
+                    "Tap play";
+
+            }
+        );
+
+}
+
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+
+function toggleAudio(){
+
+    if(!audio){
+
+        loadTrack(
+            state.audioIndex,
+            true
+        );
+
+        return;
+
+    }
+
+
+    if(audio.paused){
+
+        playAudio();
+
+    }else{
+
+        audio.pause();
+
+    }
+
+}
+
+
+/* =========================================================
+   AUDIO SETUP
+========================================================= */
+
+function setupAudio(){
+
+    document.getElementById(
+        "playTrack"
+    )
+    .addEventListener(
+        "click",
+        toggleAudio
+    );
+
+
+    document.getElementById(
+        "prevTrack"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            loadTrack(
+                state.audioIndex - 1,
+                true
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "nextTrack"
+    )
+    .addEventListener(
+        "click",
+        ()=>{
+
+            loadTrack(
+                state.audioIndex + 1,
+                true
+            );
+
+        }
+    );
+
+
+    document.getElementById(
+        "audioVolume"
+    )
+    .addEventListener(
+        "input",
+        event=>{
+
+            if(audio){
+
+                audio.volume =
+                    Number(
+                        event.target.value
+                    );
+
+            }
+
+        }
+    );
+
+
+    document.getElementById(
+        "audioProgress"
+    )
+    .addEventListener(
+        "click",
+        event=>{
+
+            if(
+                !audio ||
+                !audio.duration
+            ){
+
+                return;
+
+            }
+
+
+            const rect =
+                event.currentTarget
+                    .getBoundingClientRect();
+
+
+            const ratio =
+                (
+                    event.clientX -
+                    rect.left
+                )
+                /
+                rect.width;
+
+
+            audio.currentTime =
+                Math.max(
+                    0,
+                    Math.min(
+                        audio.duration,
+                        ratio *
+                        audio.duration
+                    )
+                );
+
+        }
+    );
+
+
+    loadTrack(
+        0,
+        false
     );
 
 }
@@ -3412,27 +5422,33 @@ function setupButtons(){
    LOADER
 ========================================================= */
 
-function setupLoader(){
+function hideLoader(){
 
     const loader =
-        document.getElementById("loader");
+        document.getElementById(
+            "loader"
+        );
 
-    window.addEventListener(
-        "load",
-        () => {
 
-            setTimeout(
-                () => {
+    if(!loader){
 
-                    loader.classList.add(
-                        "hide"
-                    );
+        return;
 
-                },
-                400
+    }
+
+
+    /*
+       Loader больше не зависит
+       от window.load.
+    */
+
+    setTimeout(
+        ()=>{
+            loader.classList.add(
+                "hide"
             );
-
-        }
+        },
+        1300
     );
 
 }
@@ -3444,7 +5460,7 @@ function setupLoader(){
 
 function init(){
 
-    setInitialFit();
+    loadState();
 
     renderArchive();
 
@@ -3460,15 +5476,35 @@ function init(){
 
     setupReveal();
 
-    setupLoader();
+    setupAudio();
+
+    hideLoader();
 
 }
 
 
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
+/* =========================================================
+   START
+========================================================= */
+
+if(
+    document.readyState ===
+    "loading"
+){
+
+    document.addEventListener(
+        "DOMContentLoaded",
+        init,
+        {
+            once:true
+        }
+    );
+
+}else{
+
+    init();
+
+}
 
 </script>
 
