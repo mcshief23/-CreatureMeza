@@ -1,471 +1,683 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>CreatureMeza — Fashion</title>
+<title>CreatureMeza — Outfit Builder</title>
 
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+<style>
 
-        html {
-            scroll-behavior: smooth;
-        }
+* {
+    box-sizing: border-box;
+}
 
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            background: #0a0a0a;
-            color: #fff;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        /* Шапка */
+body {
+    margin: 0;
+    background: #070707;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+}
 
-        header {
-            height: 75px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 7%;
-            border-bottom: 1px solid #222;
-            position: sticky;
-            top: 0;
-            background: rgba(10, 10, 10, 0.92);
-            backdrop-filter: blur(15px);
-            z-index: 10;
-        }
+/* HEADER */
 
-        .logo {
-            font-size: 24px;
-            font-weight: 800;
-            letter-spacing: -1px;
-        }
+header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    height: 70px;
 
-        .logo span {
-            color: #888;
-        }
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
-        .cart {
-            font-size: 14px;
-            color: #aaa;
-        }
+    padding: 0 24px;
 
-        /* Главный экран */
+    background: rgba(7,7,7,.88);
+    backdrop-filter: blur(20px);
 
-        .hero {
-            min-height: 650px;
-            padding: 90px 7% 70px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            text-align: center;
-        }
+    border-bottom: 1px solid #222;
+}
 
-        .label {
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
+.logo {
+    font-size: 23px;
+    font-weight: 900;
+    letter-spacing: -1px;
+}
 
-        .hero h1 {
-            margin: 0;
-            font-size: clamp(50px, 12vw, 130px);
-            line-height: 0.85;
-            letter-spacing: -7px;
-        }
+.logo span {
+    color: #666;
+}
 
-        .hero p {
-            color: #999;
-            max-width: 500px;
-            margin: 35px auto;
-            font-size: 16px;
-            line-height: 1.6;
-        }
+.header-text {
+    color: #777;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
 
-        .start {
-            width: fit-content;
-            margin: 0 auto;
-            padding: 15px 30px;
-            border: 1px solid #fff;
-            border-radius: 100px;
-            background: #fff;
-            color: #000;
-            text-decoration: none;
-            font-weight: bold;
-            transition: 0.2s;
-        }
+/* HERO */
 
-        .start:hover {
-            transform: scale(1.04);
-        }
+.hero {
+    min-height: 82vh;
 
-        /* Конструктор */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
-        .builder {
-            padding: 90px 7%;
-            border-top: 1px solid #222;
-        }
+    text-align: center;
 
-        .section-title {
-            text-align: center;
-            margin-bottom: 60px;
-        }
+    padding: 60px 20px;
 
-        .section-title h2 {
-            font-size: 42px;
-            margin: 0 0 12px;
-            letter-spacing: -2px;
-        }
+    background:
+        radial-gradient(
+            circle at 50% 30%,
+            #292929 0%,
+            #111 28%,
+            #070707 65%
+        );
+}
 
-        .section-title p {
-            color: #777;
-            margin: 0;
-        }
+.hero-content {
+    max-width: 850px;
+}
 
-        .category {
-            margin-bottom: 70px;
-        }
+.hero h1 {
+    margin: 0;
 
-        .category-name {
-            text-align: center;
-            color: #777;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 12px;
-            margin-bottom: 20px;
-        }
+    font-size: clamp(55px, 15vw, 150px);
 
-        .selector {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 25px;
-        }
+    line-height: .8;
 
-        .arrow {
-            width: 48px;
-            height: 48px;
-            border: 1px solid #333;
-            border-radius: 50%;
-            background: #111;
-            color: #fff;
-            font-size: 22px;
-            cursor: pointer;
-            transition: 0.2s;
-            flex-shrink: 0;
-        }
+    letter-spacing: -8px;
 
-        .arrow:hover {
-            background: #fff;
-            color: #000;
-        }
+    font-weight: 900;
+}
 
-        .item {
-            width: min(360px, 65vw);
-            min-height: 390px;
-            border: 1px solid #252525;
-            border-radius: 24px;
-            background: #111;
-            padding: 25px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
+.hero-subtitle {
+    margin: 35px auto;
 
-        .item-image {
-            height: 270px;
-            border-radius: 16px;
-            background:
-                radial-gradient(circle at 50% 35%, #444 0%, #222 30%, #111 70%);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 70px;
-        }
+    max-width: 500px;
 
-        .item-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: end;
-            gap: 15px;
-            margin-top: 20px;
-            text-align: left;
-        }
+    color: #888;
 
-        .item-name {
-            font-size: 18px;
-            font-weight: bold;
-        }
+    line-height: 1.6;
+}
 
-        .item-price {
-            color: #aaa;
-            margin-top: 6px;
-            font-size: 14px;
-        }
+.start-button {
+    display: inline-block;
 
-        /* Итог */
+    padding: 16px 30px;
 
-        .total {
-            max-width: 500px;
-            margin: 0 auto;
-            padding: 30px;
-            border: 1px solid #333;
-            border-radius: 24px;
-            background: #111;
-            text-align: center;
-        }
+    border-radius: 100px;
 
-        .total-title {
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            font-size: 11px;
-        }
+    background: white;
+    color: black;
 
-        .total-price {
-            font-size: 42px;
-            font-weight: bold;
-            margin: 12px 0 20px;
-        }
+    text-decoration: none;
 
-        .choose {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 12px;
-            background: #fff;
-            color: #000;
-            font-weight: bold;
-            font-size: 15px;
-            cursor: pointer;
-        }
+    font-weight: 800;
 
-        footer {
-            padding: 50px 7%;
-            border-top: 1px solid #222;
-            text-align: center;
-            color: #555;
-            font-size: 13px;
-        }
+    transition: .2s;
+}
 
-        @media (max-width: 600px) {
+.start-button:hover {
+    transform: scale(1.05);
+}
 
-            header {
-                padding: 0 20px;
-            }
+/* BUILDER */
 
-            .hero {
-                padding: 70px 20px;
-            }
+.builder {
+    max-width: 1150px;
 
-            .hero h1 {
-                letter-spacing: -4px;
-            }
+    margin: auto;
 
-            .builder {
-                padding: 70px 20px;
-            }
+    padding: 90px 18px;
+}
 
-            .selector {
-                gap: 10px;
-            }
+.title {
+    text-align: center;
 
-            .arrow {
-                width: 42px;
-                height: 42px;
-            }
+    margin-bottom: 45px;
+}
 
-            .item {
-                width: 65vw;
-            }
-        }
-    </style>
+.title h2 {
+    margin: 0;
+
+    font-size: 42px;
+}
+
+.title p {
+    color: #777;
+}
+
+/* BRAND FILTER */
+
+.brand-filter {
+    display: flex;
+
+    gap: 9px;
+
+    overflow-x: auto;
+
+    padding-bottom: 15px;
+
+    margin-bottom: 50px;
+
+    scrollbar-width: none;
+}
+
+.brand-filter::-webkit-scrollbar {
+    display: none;
+}
+
+.brand {
+    flex-shrink: 0;
+
+    border: 1px solid #292929;
+
+    background: #101010;
+
+    color: #888;
+
+    padding: 11px 16px;
+
+    border-radius: 100px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+.brand:hover {
+    border-color: #555;
+    color: white;
+}
+
+.brand.active {
+    background: white;
+    color: black;
+
+    border-color: white;
+}
+
+/* CATEGORY */
+
+.category {
+    margin-bottom: 80px;
+}
+
+.category-header {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 17px;
+}
+
+.category-title {
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.category-number {
+    color: #555;
+    font-size: 12px;
+}
+
+/* PRODUCT */
+
+.product-wrapper {
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+}
+
+.product {
+    flex: 1;
+
+    overflow: hidden;
+
+    background: #101010;
+
+    border: 1px solid #262626;
+
+    border-radius: 25px;
+}
+
+.product-image {
+    width: 100%;
+
+    height: 470px;
+
+    object-fit: cover;
+
+    display: block;
+
+    background: #171717;
+}
+
+.product-info {
+    padding: 20px;
+}
+
+.product-brand {
+    color: #777;
+
+    font-size: 11px;
+
+    letter-spacing: 1.5px;
+
+    text-transform: uppercase;
+}
+
+.product-name {
+    margin-top: 7px;
+
+    font-size: 20px;
+
+    font-weight: 800;
+}
+
+.product-price {
+    margin-top: 12px;
+
+    color: #aaa;
+
+    font-size: 14px;
+}
+
+/* ARROWS */
+
+.arrow {
+    flex-shrink: 0;
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 50%;
+
+    border: 1px solid #333;
+
+    background: #111;
+
+    color: white;
+
+    font-size: 22px;
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.arrow:hover {
+    background: white;
+    color: black;
+}
+
+.arrow:active {
+    transform: scale(.9);
+}
+
+/* TOTAL */
+
+.total {
+    position: sticky;
+
+    bottom: 15px;
+
+    z-index: 50;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 20px;
+
+    padding: 20px 23px;
+
+    border: 1px solid #333;
+
+    border-radius: 22px;
+
+    background: rgba(18,18,18,.93);
+
+    backdrop-filter: blur(20px);
+}
+
+.total-small {
+    color: #777;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+}
+
+.total-price {
+    margin-top: 4px;
+
+    font-size: 25px;
+
+    font-weight: 900;
+}
+
+.selected {
+    color: #aaa;
+
+    font-size: 12px;
+
+    text-align: right;
+}
+
+/* FOOTER */
+
+footer {
+    padding: 70px 20px;
+
+    border-top: 1px solid #202020;
+
+    text-align: center;
+
+    color: #444;
+}
+
+footer strong {
+    color: #777;
+}
+
+
+/* MOBILE */
+
+@media(max-width:600px) {
+
+    header {
+        padding: 0 16px;
+    }
+
+    .header-text {
+        display: none;
+    }
+
+    .hero {
+        min-height: 75vh;
+    }
+
+    .hero h1 {
+        letter-spacing: -5px;
+    }
+
+    .builder {
+        padding: 70px 12px;
+    }
+
+    .title h2 {
+        font-size: 34px;
+    }
+
+    .product-image {
+        height: 390px;
+    }
+
+    .arrow {
+        width: 43px;
+        height: 43px;
+    }
+
+    .product-info {
+        padding: 16px;
+    }
+
+}
+
+</style>
 </head>
+
 
 <body>
 
+
 <header>
-    <div class="logo">Creature<span>Meza</span></div>
-    <div class="cart">YOUR OUTFIT</div>
+
+    <div class="logo">
+        Creature<span>Meza</span>
+    </div>
+
+    <div class="header-text">
+        OUTFIT BUILDER
+    </div>
+
 </header>
+
+
 
 <section class="hero">
 
-    <div class="label">CreatureMeza / 2026</div>
+    <div class="hero-content">
 
-    <h1>CREATE<br>YOUR FIT.</h1>
+        <h1>
+            CREATURE<br>
+            MEZA
+        </h1>
 
-    <p>
-        Собери свой образ из вещей, которые подходят именно тебе.
-        Выбирай верх, низ и обувь.
-    </p>
+        <p class="hero-subtitle">
+            Собери свой образ из любимых fashion и streetwear брендов.
+            Выбирай вещи, комбинируй их и смотри итоговую стоимость.
+        </p>
 
-    <a href="#builder" class="start">Начать →</a>
+        <a
+            href="#builder"
+            class="start-button"
+        >
+            СОБРАТЬ АУТФИТ
+        </a>
+
+    </div>
 
 </section>
 
-<section class="builder" id="builder">
 
-    <div class="section-title">
-        <h2>BUILD YOUR OUTFIT</h2>
-        <p>Переключай вещи стрелками</p>
+
+<main
+    class="builder"
+    id="builder"
+>
+
+
+<div class="title">
+
+    <h2>
+        OUTFIT BUILDER
+    </h2>
+
+    <p>
+        Выбери бренд или листай весь каталог
+    </p>
+
+</div>
+
+
+
+<!-- БРЕНДЫ -->
+
+<div class="brand-filter">
+
+    <button
+        class="brand active"
+        onclick="selectBrand('ALL', this)"
+    >
+        ВСЕ
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('MASTERMIND', this)"
+    >
+        MASTERMIND
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('ERD', this)"
+    >
+        ERD
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('STONE ISLAND', this)"
+    >
+        STONE ISLAND
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('RICK OWENS', this)"
+    >
+        RICK OWENS
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('STUSSY', this)"
+    >
+        STÜSSY
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('SUPREME', this)"
+    >
+        SUPREME
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('NIKE', this)"
+    >
+        NIKE
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('ADIDAS', this)"
+    >
+        ADIDAS
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('CARHARTT WIP', this)"
+    >
+        CARHARTT WIP
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('BAPE', this)"
+    >
+        BAPE
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('OFF-WHITE', this)"
+    >
+        OFF-WHITE
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('PALACE', this)"
+    >
+        PALACE
+    </button>
+
+    <button
+        class="brand"
+        onclick="selectBrand('BALENCIAGA', this)"
+    >
+        BALENCIAGA
+    </button>
+
+</div>
+
+
+
+<!-- ВЕРХ -->
+
+<section class="category">
+
+    <div class="category-header">
+
+        <div class="category-title">
+            01 — ВЕРХ
+        </div>
+
+        <div
+            class="category-number"
+            id="topCounter"
+        >
+            1 / 1
+        </div>
+
     </div>
 
 
-    <!-- ВЕРХ -->
+    <div class="product-wrapper">
 
-    <div class="category">
+        <button
+            class="arrow"
+            onclick="change('top', -1)"
+        >
+            ←
+        </button>
 
-        <div class="category-name">
-            Верхняя одежда
-        </div>
 
-        <div class="selector">
+        <div class="product">
 
-            <button class="arrow" onclick="changeItem('top', -1)">
-                ←
-            </button>
+            <img
+                id="topImage"
+                class="product-image"
+                src=""
+                alt="Одежда"
+            >
 
-            <div class="item">
+            <div class="product-info">
 
-                <div class="item-image" id="top-image">
-                    🧥
-                </div>
+                <div
+                    id="topBrand"
+                    class="product-brand"
+                ></div>
 
-                <div class="item-info">
+                <div
+                    id="topName"
+                    class="product-name"
+                ></div>
 
-                    <div>
-                        <div class="item-name" id="top-name">
-                            Black Bomber
-                        </div>
-
-                        <div class="item-price" id="top-price">
-                            8 990 ₽
-                        </div>
-                    </div>
-
-                </div>
+                <div
+                    id="topPrice"
+                    class="product-price"
+                ></div>
 
             </div>
 
-            <button class="arrow" onclick="changeItem('top', 1)">
-                →
-            </button>
-
         </div>
 
-    </div>
 
-
-    <!-- НИЗ -->
-
-    <div class="category">
-
-        <div class="category-name">
-            Низ
-        </div>
-
-        <div class="selector">
-
-            <button class="arrow" onclick="changeItem('bottom', -1)">
-                ←
-            </button>
-
-            <div class="item">
-
-                <div class="item-image" id="bottom-image">
-                    👖
-                </div>
-
-                <div class="item-info">
-
-                    <div>
-                        <div class="item-name" id="bottom-name">
-                            Wide Denim
-                        </div>
-
-                        <div class="item-price" id="bottom-price">
-                            7 490 ₽
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button class="arrow" onclick="changeItem('bottom', 1)">
-                →
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- ОБУВЬ -->
-
-    <div class="category">
-
-        <div class="category-name">
-            Обувь
-        </div>
-
-        <div class="selector">
-
-            <button class="arrow" onclick="changeItem('shoes', -1)">
-                ←
-            </button>
-
-            <div class="item">
-
-                <div class="item-image" id="shoes-image">
-                    👟
-                </div>
-
-                <div class="item-info">
-
-                    <div>
-                        <div class="item-name" id="shoes-name">
-                            Runner 01
-                        </div>
-
-                        <div class="item-price" id="shoes-price">
-                            11 990 ₽
-                        </div>
-                    </div>
-
-                </div>
-
-            </div>
-
-            <button class="arrow" onclick="changeItem('shoes', 1)">
-                →
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- ИТОГ -->
-
-    <div class="total">
-
-        <div class="total-title">
-            Total outfit
-        </div>
-
-        <div class="total-price" id="total">
-            28 470 ₽
-        </div>
-
-        <button class="choose" onclick="alert('Образ выбран!')">
-            Выбрать этот образ
+        <button
+            class="arrow"
+            onclick="change('top', 1)"
+        >
+            →
         </button>
 
     </div>
@@ -473,124 +685,758 @@
 </section>
 
 
+
+<!-- НИЗ -->
+
+<section class="category">
+
+    <div class="category-header">
+
+        <div class="category-title">
+            02 — НИЗ
+        </div>
+
+        <div
+            class="category-number"
+            id="bottomCounter"
+        >
+            1 / 1
+        </div>
+
+    </div>
+
+
+    <div class="product-wrapper">
+
+        <button
+            class="arrow"
+            onclick="change('bottom', -1)"
+        >
+            ←
+        </button>
+
+
+        <div class="product">
+
+            <img
+                id="bottomImage"
+                class="product-image"
+                src=""
+                alt="Брюки"
+            >
+
+            <div class="product-info">
+
+                <div
+                    id="bottomBrand"
+                    class="product-brand"
+                ></div>
+
+                <div
+                    id="bottomName"
+                    class="product-name"
+                ></div>
+
+                <div
+                    id="bottomPrice"
+                    class="product-price"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="arrow"
+            onclick="change('bottom', 1)"
+        >
+            →
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- ОБУВЬ -->
+
+<section class="category">
+
+    <div class="category-header">
+
+        <div class="category-title">
+            03 — ОБУВЬ
+        </div>
+
+        <div
+            class="category-number"
+            id="shoesCounter"
+        >
+            1 / 1
+        </div>
+
+    </div>
+
+
+    <div class="product-wrapper">
+
+        <button
+            class="arrow"
+            onclick="change('shoes', -1)"
+        >
+            ←
+        </button>
+
+
+        <div class="product">
+
+            <img
+                id="shoesImage"
+                class="product-image"
+                src=""
+                alt="Обувь"
+            >
+
+            <div class="product-info">
+
+                <div
+                    id="shoesBrand"
+                    class="product-brand"
+                ></div>
+
+                <div
+                    id="shoesName"
+                    class="product-name"
+                ></div>
+
+                <div
+                    id="shoesPrice"
+                    class="product-price"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="arrow"
+            onclick="change('shoes', 1)"
+        >
+            →
+        </button>
+
+    </div>
+
+</section>
+
+
+
+<!-- TOTAL -->
+
+<div class="total">
+
+    <div>
+
+        <div class="total-small">
+            TOTAL OUTFIT
+        </div>
+
+        <div
+            class="total-price"
+            id="totalPrice"
+        >
+            $0
+        </div>
+
+    </div>
+
+
+    <div
+        class="selected"
+        id="selectedText"
+    >
+        3 items selected
+    </div>
+
+</div>
+
+
+</main>
+
+
+
 <footer>
-    CreatureMeza © 2026
+
+    <strong>
+        CREATUREMEZA
+    </strong>
+
+    <br><br>
+
+    Fashion • Streetwear • Culture
+
 </footer>
+
 
 
 <script>
 
-    const clothes = {
 
-        top: [
-            {
-                name: "Black Bomber",
-                price: 8990,
-                image: "🧥"
-            },
-            {
-                name: "Denim Jacket",
-                price: 10990,
-                image: "🧥"
-            },
-            {
-                name: "Oversized Hoodie",
-                price: 6990,
-                image: "👕"
-            }
-        ],
-
-        bottom: [
-            {
-                name: "Wide Denim",
-                price: 7490,
-                image: "👖"
-            },
-            {
-                name: "Cargo Pants",
-                price: 8990,
-                image: "👖"
-            },
-            {
-                name: "Black Jeans",
-                price: 6490,
-                image: "👖"
-            }
-        ],
-
-        shoes: [
-            {
-                name: "Runner 01",
-                price: 11990,
-                image: "👟"
-            },
-            {
-                name: "Classic Sneakers",
-                price: 9990,
-                image: "👟"
-            },
-            {
-                name: "Street Runner",
-                price: 13990,
-                image: "🥾"
-            }
-        ]
-
-    };
+/* =========================
+   КАТАЛОГ
+========================= */
 
 
-    const selected = {
-        top: 0,
-        bottom: 0,
-        shoes: 0
-    };
+const clothes = {
 
 
-    function changeItem(category, direction) {
+top: [
 
-        selected[category] += direction;
+{
+brand:"MASTERMIND",
+name:"Black Oversized Hoodie",
+price:850,
+image:"https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=900&q=85"
+},
 
-        if (selected[category] < 0) {
-            selected[category] = clothes[category].length - 1;
-        }
+{
+brand:"ERD",
+name:"Graphic Black Jacket",
+price:620,
+image:"https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=900&q=85"
+},
 
-        if (selected[category] >= clothes[category].length) {
-            selected[category] = 0;
-        }
+{
+brand:"STONE ISLAND",
+name:"Technical Jacket",
+price:720,
+image:"https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=900&q=85"
+},
 
-        updateItem(category);
-        updateTotal();
+{
+brand:"RICK OWENS",
+name:"Oversized Black Coat",
+price:1450,
+image:"https://images.unsplash.com/photo-1539533018447-63fcce2678e3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"STUSSY",
+name:"Classic Zip Hoodie",
+price:180,
+image:"https://images.unsplash.com/photo-1578681994506-b8f463449011?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"SUPREME",
+name:"Box Logo Hoodie",
+price:320,
+image:"https://images.unsplash.com/photo-1576566588028-4147f3842f27?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"NIKE",
+name:"Tech Fleece Hoodie",
+price:160,
+image:"https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"ADIDAS",
+name:"Oversized Track Jacket",
+price:140,
+image:"https://images.unsplash.com/photo-1551488831-00ddcb6c6bd3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"CARHARTT WIP",
+name:"Detroit Work Jacket",
+price:250,
+image:"https://images.unsplash.com/photo-1544966503-7cc5ac882d5f?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"BAPE",
+name:"Shark Hoodie",
+price:480,
+image:"https://images.unsplash.com/photo-1611312449408-fcece27cdbb7?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"OFF-WHITE",
+name:"Industrial Jacket",
+price:790,
+image:"https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"PALACE",
+name:"Tri-Ferg Jacket",
+price:260,
+image:"https://images.unsplash.com/photo-1544022613-e87ca75a784a?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"BALENCIAGA",
+name:"Oversized Puffer",
+price:1100,
+image:"https://images.unsplash.com/photo-1605763240000-7e93b172d754?auto=format&fit=crop&w=900&q=85"
+}
+
+],
+
+
+
+bottom: [
+
+{
+brand:"MASTERMIND",
+name:"Black Wide Trousers",
+price:520,
+image:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"ERD",
+name:"Distressed Denim",
+price:430,
+image:"https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"STONE ISLAND",
+name:"Cargo Trousers",
+price:390,
+image:"https://images.unsplash.com/photo-1517445312882-bc9910d016b5?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"RICK OWENS",
+name:"Wide Black Pants",
+price:850,
+image:"https://images.unsplash.com/photo-1506629905607-d9c297d6c0e6?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"STUSSY",
+name:"Relaxed Jeans",
+price:210,
+image:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"SUPREME",
+name:"Baggy Denim",
+price:290,
+image:"https://images.unsplash.com/photo-1604176354204-9268737828e4?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"NIKE",
+name:"Tech Fleece Pants",
+price:120,
+image:"https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"ADIDAS",
+name:"Track Pants",
+price:110,
+image:"https://images.unsplash.com/photo-1552902865-b72c031ac5ea?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"CARHARTT WIP",
+name:"Double Knee Pants",
+price:180,
+image:"https://images.unsplash.com/photo-1473966968600-fa801b869a1a?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"BAPE",
+name:"Camo Pants",
+price:300,
+image:"https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"OFF-WHITE",
+name:"Diagonal Denim",
+price:650,
+image:"https://images.unsplash.com/photo-1542272604-787c3835535d?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"PALACE",
+name:"Baggy Jeans",
+price:240,
+image:"https://images.unsplash.com/photo-1602293589930-45aad59ba3ab?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"BALENCIAGA",
+name:"Wide Leg Denim",
+price:850,
+image:"https://images.unsplash.com/photo-1541099649105-f69ad21f3246?auto=format&fit=crop&w=900&q=85"
+}
+
+],
+
+
+
+shoes: [
+
+{
+brand:"MASTERMIND",
+name:"Black Leather Sneakers",
+price:420,
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"ERD",
+name:"Black Platform Sneakers",
+price:390,
+image:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"STONE ISLAND",
+name:"Technical Sneakers",
+price:360,
+image:"https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"RICK OWENS",
+name:"Abstract Runner",
+price:950,
+image:"https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"STUSSY",
+name:"Canvas Sneakers",
+price:130,
+image:"https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"SUPREME",
+name:"Street Sneakers",
+price:220,
+image:"https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"NIKE",
+name:"Air Force 1",
+price:120,
+image:"https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"ADIDAS",
+name:"Campus Sneakers",
+price:110,
+image:"https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"CARHARTT WIP",
+name:"Work Sneakers",
+price:150,
+image:"https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"BAPE",
+name:"Bapesta",
+price:330,
+image:"https://images.unsplash.com/photo-1549298916-b41d501d3772?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"OFF-WHITE",
+name:"Out Of Office",
+price:590,
+image:"https://images.unsplash.com/photo-1552346154-21d32810aba3?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"PALACE",
+name:"P-Trainer",
+price:190,
+image:"https://images.unsplash.com/photo-1543508282-6319a3e2621f?auto=format&fit=crop&w=900&q=85"
+},
+
+{
+brand:"BALENCIAGA",
+name:"Triple S",
+price:980,
+image:"https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=900&q=85"
+}
+
+]
+
+};
+
+
+
+/* =========================
+   СОСТОЯНИЕ
+========================= */
+
+let current = {
+
+    top: 0,
+
+    bottom: 0,
+
+    shoes: 0
+
+};
+
+
+let activeBrand = "ALL";
+
+
+
+/* =========================
+   ПОЛУЧЕНИЕ СПИСКА
+========================= */
+
+function getItems(type) {
+
+    let items = clothes[type];
+
+    if (activeBrand === "ALL") {
+
+        return items;
+
+    }
+
+    return items.filter(
+        item => item.brand === activeBrand
+    );
+
+}
+
+
+
+/* =========================
+   ПОКАЗ ТОВАРА
+========================= */
+
+function render(type) {
+
+    let items = getItems(type);
+
+    if (items.length === 0) {
+
+        return;
+
+    }
+
+    if (current[type] >= items.length) {
+
+        current[type] = 0;
+
+    }
+
+    if (current[type] < 0) {
+
+        current[type] = items.length - 1;
 
     }
 
 
-    function updateItem(category) {
+    let item = items[current[type]];
 
-        const item = clothes[category][selected[category]];
 
-        document.getElementById(category + "-name").textContent =
-            item.name;
+    document.getElementById(
+        type + "Image"
+    ).src = item.image;
 
-        document.getElementById(category + "-price").textContent =
-            item.price.toLocaleString("ru-RU") + " ₽";
 
-        document.getElementById(category + "-image").textContent =
-            item.image;
+    document.getElementById(
+        type + "Brand"
+    ).textContent = item.brand;
+
+
+    document.getElementById(
+        type + "Name"
+    ).textContent = item.name;
+
+
+    document.getElementById(
+        type + "Price"
+    ).textContent = "$" + item.price;
+
+
+    document.getElementById(
+        type + "Counter"
+    ).textContent =
+        (current[type] + 1)
+        + " / "
+        + items.length;
+
+
+    updateTotal();
+
+}
+
+
+
+/* =========================
+   СТРЕЛКИ
+========================= */
+
+function change(type, direction) {
+
+    let items = getItems(type);
+
+    if (items.length === 0) {
+
+        return;
+
+    }
+
+    current[type] += direction;
+
+    if (current[type] >= items.length) {
+
+        current[type] = 0;
+
+    }
+
+    if (current[type] < 0) {
+
+        current[type] = items.length - 1;
+
+    }
+
+    render(type);
+
+}
+
+
+
+/* =========================
+   БРЕНД
+========================= */
+
+function selectBrand(brand, button) {
+
+    activeBrand = brand;
+
+
+    document
+        .querySelectorAll(".brand")
+        .forEach(
+            b => b.classList.remove("active")
+        );
+
+
+    button.classList.add("active");
+
+
+    current.top = 0;
+
+    current.bottom = 0;
+
+    current.shoes = 0;
+
+
+    render("top");
+
+    render("bottom");
+
+    render("shoes");
+
+}
+
+
+
+/* =========================
+   ЦЕНА
+========================= */
+
+function getCurrentItem(type) {
+
+    let items = getItems(type);
+
+    if (!items.length) {
+
+        return null;
+
+    }
+
+    return items[current[type]];
+
+}
+
+
+function updateTotal() {
+
+    let top = getCurrentItem("top");
+
+    let bottom = getCurrentItem("bottom");
+
+    let shoes = getCurrentItem("shoes");
+
+
+    let total = 0;
+
+
+    if (top) {
+
+        total += top.price;
 
     }
 
 
-    function updateTotal() {
+    if (bottom) {
 
-        const total =
-            clothes.top[selected.top].price +
-            clothes.bottom[selected.bottom].price +
-            clothes.shoes[selected.shoes].price;
-
-        document.getElementById("total").textContent =
-            total.toLocaleString("ru-RU") + " ₽";
+        total += bottom.price;
 
     }
+
+
+    if (shoes) {
+
+        total += shoes.price;
+
+    }
+
+
+    document.getElementById(
+        "totalPrice"
+    ).textContent = "$" + total;
+
+
+    document.getElementById(
+        "selectedText"
+    ).textContent =
+        "3 items • " + activeBrand;
+
+}
+
+
+
+/* =========================
+   ЗАПУСК
+========================= */
+
+render("top");
+
+render("bottom");
+
+render("shoes");
+
 
 </script>
 
