@@ -1,1067 +1,1914 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
+
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050505">
-<title>CreatureMeza — Archive</title>
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<meta
+    name="theme-color"
+    content="#050505"
+>
+
+<title>CreatureMeza — Архив</title>
 
 <style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
 :root{
+
     --bg:#050505;
     --panel:#0b0b0b;
     --panel2:#101010;
+
     --line:#252525;
     --line2:#343434;
+
     --text:#f3f3f3;
     --muted:#858585;
     --soft:#bdbdbd;
     --white:#fff;
+
 }
 
 *{
+
     box-sizing:border-box;
+
     margin:0;
     padding:0;
+
 }
 
 html{
+
     scroll-behavior:smooth;
+
 }
 
 body{
+
     background:var(--bg);
+
     color:var(--text);
-    font-family:Arial, Helvetica, sans-serif;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
     overflow-x:hidden;
+
 }
 
 button,
 input{
+
     font:inherit;
+
 }
 
 button{
+
     color:inherit;
+
 }
 
 a{
+
     color:inherit;
+
     text-decoration:none;
+
 }
 
-/* =========================
+
+/* =========================================================
    HEADER
-========================= */
+========================================================= */
 
 header{
+
     position:fixed;
+
     top:0;
     left:0;
     right:0;
+
     height:76px;
+
     z-index:1000;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     padding:0 34px;
-    border-bottom:1px solid rgba(255,255,255,.12);
-    background:rgba(5,5,5,.9);
-    backdrop-filter:blur(18px);
+
+    border-bottom:
+        1px solid rgba(255,255,255,.12);
+
+    background:
+        rgba(5,5,5,.9);
+
+    backdrop-filter:
+        blur(18px);
+
 }
 
 .logo{
+
     font-size:15px;
+
     font-weight:900;
+
     letter-spacing:.18em;
+
     text-transform:uppercase;
+
 }
 
 .header-right{
+
     display:flex;
+
     align-items:center;
+
     gap:10px;
+
 }
 
 .header-index{
+
     color:#777;
+
     font-size:10px;
+
     letter-spacing:.18em;
+
     margin-right:8px;
+
 }
 
 .header-btn{
-    border:1px solid #343434;
+
+    border:
+        1px solid #343434;
+
     background:#0c0c0c;
+
     color:#ddd;
-    padding:11px 17px;
+
+    padding:
+        11px 17px;
+
     font-size:10px;
+
     letter-spacing:.18em;
+
     text-transform:uppercase;
+
     cursor:pointer;
+
     transition:.2s ease;
+
 }
 
 .header-btn:hover{
+
     background:#fff;
+
     color:#000;
+
 }
 
-/* =========================
+
+/* =========================================================
    HERO
-========================= */
+========================================================= */
 
 .hero{
+
     min-height:100vh;
+
     position:relative;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
-    padding:130px 25px 90px;
+
+    padding:
+        130px 25px 90px;
+
     overflow:hidden;
+
 }
 
 .hero-grid{
+
     position:absolute;
+
     inset:0;
+
     opacity:.17;
+
     background-image:
-        linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),
-        linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);
+
+        linear-gradient(
+            rgba(255,255,255,.12)
+            1px,
+            transparent 1px
+        ),
+
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.12)
+            1px,
+            transparent 1px
+        );
+
     background-size:80px 80px;
-    mask-image:linear-gradient(to bottom,transparent,#000 25%,#000 70%,transparent);
+
+    mask-image:
+        linear-gradient(
+            to bottom,
+            transparent,
+            #000 25%,
+            #000 70%,
+            transparent
+        );
+
 }
 
 .hero-content{
+
     position:relative;
+
     z-index:2;
+
     text-align:center;
+
     max-width:1000px;
+
 }
 
 .hero-kicker{
+
     color:#858585;
+
     font-size:10px;
+
     letter-spacing:.38em;
+
     text-transform:uppercase;
+
     margin-bottom:28px;
+
 }
 
 .hero-name{
-    font-size:clamp(20px,3vw,36px);
+
+    font-size:
+        clamp(20px,3vw,36px);
+
     font-weight:900;
+
     letter-spacing:.3em;
+
     text-transform:uppercase;
+
     margin-bottom:30px;
+
 }
 
 .hero-title{
-    font-size:clamp(62px,11vw,150px);
+
+    font-size:
+        clamp(62px,11vw,150px);
+
     line-height:.82;
+
     font-weight:900;
+
     letter-spacing:-.065em;
+
     text-transform:uppercase;
+
 }
 
 .hero-title span{
+
     display:block;
+
 }
 
 .hero-sub{
+
     max-width:500px;
-    margin:38px auto 0;
+
+    margin:
+        38px auto 0;
+
     color:#858585;
+
     font-size:12px;
+
     line-height:1.8;
+
 }
 
 .hero-orbit{
+
     position:absolute;
+
     width:min(65vw,720px);
+
     height:min(65vw,720px);
-    border:1px solid rgba(255,255,255,.08);
+
+    border:
+        1px solid rgba(255,255,255,.08);
+
     border-radius:50%;
-    animation:spin 35s linear infinite;
+
+    animation:
+        spin 35s linear infinite;
+
 }
 
 .hero-orbit:before,
 .hero-orbit:after{
+
     content:"";
+
     position:absolute;
+
     border-radius:50%;
-    border:1px solid rgba(255,255,255,.06);
+
+    border:
+        1px solid rgba(255,255,255,.06);
+
 }
 
 .hero-orbit:before{
+
     inset:10%;
+
 }
 
 .hero-orbit:after{
+
     inset:25%;
+
 }
 
 @keyframes spin{
+
     to{
+
         transform:rotate(360deg);
+
     }
+
 }
 
-/* =========================
+
+/* =========================================================
    MARQUEE
-========================= */
+========================================================= */
 
 .marquee{
+
     overflow:hidden;
-    border-top:1px solid var(--line);
-    border-bottom:1px solid var(--line);
+
+    border-top:
+        1px solid var(--line);
+
+    border-bottom:
+        1px solid var(--line);
+
     padding:17px 0;
+
     white-space:nowrap;
+
 }
 
 .marquee-track{
+
     display:inline-block;
-    animation:marquee 24s linear infinite;
+
+    animation:
+        marquee 24s linear infinite;
+
 }
 
 .marquee span{
-    margin:0 32px;
+
+    margin:
+        0 32px;
+
     font-size:10px;
+
     letter-spacing:.35em;
+
     color:#777;
+
     text-transform:uppercase;
+
 }
 
 @keyframes marquee{
-    from{transform:translateX(0)}
-    to{transform:translateX(-50%)}
+
+    from{
+
+        transform:translateX(0);
+
+    }
+
+    to{
+
+        transform:translateX(-50%);
+
+    }
+
 }
 
-/* =========================
+
+/* =========================================================
    GENERAL
-========================= */
+========================================================= */
 
 .section{
-    padding:110px 34px;
+
+    padding:
+        110px 34px;
+
     max-width:1500px;
+
     margin:auto;
+
 }
 
 .section-head{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:flex-end;
+
     gap:30px;
+
     margin-bottom:45px;
+
 }
 
 .section-kicker{
+
     color:#777;
+
     font-size:9px;
+
     letter-spacing:.3em;
+
     text-transform:uppercase;
+
     margin-bottom:12px;
+
 }
 
 .section-title{
-    font-size:clamp(35px,6vw,80px);
+
+    font-size:
+        clamp(35px,6vw,80px);
+
     font-weight:900;
+
     letter-spacing:-.06em;
+
     text-transform:uppercase;
+
 }
 
 .section-description{
+
     max-width:380px;
+
     color:#777;
+
     font-size:11px;
+
     line-height:1.8;
+
 }
 
-/* =========================
+
+/* =========================================================
    BUILDER
-========================= */
+========================================================= */
 
 .builder{
-    border-top:1px solid var(--line);
+
+    border-top:
+        1px solid var(--line);
+
 }
 
 .builder-grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:14px;
+
 }
 
 .fit-card{
+
     min-height:580px;
+
     position:relative;
-    background:linear-gradient(145deg,#0c0c0c,#070707);
-    border:1px solid var(--line);
+
+    background:
+        linear-gradient(
+            145deg,
+            #0c0c0c,
+            #070707
+        );
+
+    border:
+        1px solid var(--line);
+
     overflow:hidden;
+
+    transition:.2s ease;
+
 }
 
 .fit-card:hover{
+
     border-color:#444;
+
 }
 
 .fit-label{
+
     position:absolute;
+
     top:20px;
     left:20px;
+
     z-index:5;
+
     font-size:9px;
+
     color:#777;
+
     letter-spacing:.25em;
+
     text-transform:uppercase;
+
 }
 
 .fit-number{
+
     position:absolute;
+
     top:20px;
     right:20px;
+
     z-index:5;
+
     color:#444;
+
     font-size:10px;
+
 }
 
 .fit-image{
+
     position:absolute;
-    inset:55px 30px 105px;
+
+    inset:
+        55px 30px 105px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
 }
 
 .fit-image img{
+
     width:100%;
     height:100%;
+
     object-fit:contain;
+
     display:block;
+
 }
 
 .fit-placeholder{
+
     width:100%;
     height:100%;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     color:#333;
+
     font-size:11px;
+
     letter-spacing:.18em;
+
     text-transform:uppercase;
+
     text-align:center;
-    border:1px dashed #202020;
+
+    border:
+        1px dashed #202020;
+
 }
 
 .fit-info{
+
     position:absolute;
+
     bottom:0;
+
     left:0;
     right:0;
+
     min-height:100px;
-    padding:18px 20px;
-    border-top:1px solid var(--line);
-    background:rgba(5,5,5,.92);
+
+    padding:
+        18px 20px;
+
+    border-top:
+        1px solid var(--line);
+
+    background:
+        rgba(5,5,5,.92);
+
 }
 
 .fit-brand{
+
     color:#777;
+
     font-size:8px;
+
     letter-spacing:.2em;
+
     text-transform:uppercase;
+
     margin-bottom:7px;
+
 }
 
 .fit-name{
+
     font-size:14px;
+
     font-weight:800;
+
     text-transform:uppercase;
+
 }
 
 .fit-price{
+
     margin-top:6px;
+
     color:#888;
+
     font-size:10px;
+
 }
 
-/* ARROWS */
+
+/* =========================================================
+   ARROWS
+========================================================= */
 
 .fit-arrows{
+
     position:absolute;
+
     bottom:20px;
     right:20px;
+
     z-index:10;
+
     display:flex;
+
     gap:5px;
+
 }
 
 .arrow-btn{
+
     width:38px;
     height:38px;
-    border:1px solid #333;
+
+    border:
+        1px solid #333;
+
     background:#0b0b0b;
+
     cursor:pointer;
+
     font-size:17px;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     transition:.2s ease;
+
 }
 
 .arrow-btn:hover{
+
     background:#fff;
+
     color:#000;
+
     border-color:#fff;
+
 }
 
 .builder-controls{
+
     margin-top:14px;
+
     display:flex;
+
     gap:10px;
+
     flex-wrap:wrap;
+
 }
 
 .control-btn{
-    border:1px solid #333;
+
+    border:
+        1px solid #333;
+
     background:#0b0b0b;
-    padding:14px 22px;
+
+    padding:
+        14px 22px;
+
     font-size:9px;
+
     letter-spacing:.2em;
+
     text-transform:uppercase;
+
     cursor:pointer;
+
     transition:.2s;
+
 }
 
 .control-btn:hover{
+
     background:#fff;
+
     color:#000;
+
 }
 
-/* =========================
+
+/* =========================================================
    TOTAL
-========================= */
+========================================================= */
 
 .total-bar{
+
     margin-top:14px;
-    border:1px solid var(--line);
+
+    border:
+        1px solid var(--line);
+
     min-height:86px;
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
-    padding:20px 25px;
+
+    padding:
+        20px 25px;
+
 }
 
 .total-label{
+
     color:#777;
+
     font-size:9px;
+
     letter-spacing:.25em;
+
     text-transform:uppercase;
+
 }
 
 .total-value{
+
     font-size:24px;
+
     font-weight:900;
+
 }
 
-/* =========================
+
+/* =========================================================
    RATING
-========================= */
+========================================================= */
 
 .rating-panel{
+
     margin-top:14px;
-    border:1px solid var(--line);
+
+    border:
+        1px solid var(--line);
+
     padding:25px;
+
 }
 
 .rating-title{
+
     font-size:10px;
+
     letter-spacing:.2em;
+
     text-transform:uppercase;
+
     color:#888;
+
     margin-bottom:17px;
+
 }
 
 .rating-buttons{
+
     display:grid;
-    grid-template-columns:repeat(10,1fr);
+
+    grid-template-columns:
+        repeat(10,1fr);
+
     gap:5px;
+
 }
 
 .rating-btn{
+
     height:45px;
-    border:1px solid #2d2d2d;
+
+    border:
+        1px solid #2d2d2d;
+
     background:#0b0b0b;
+
     cursor:pointer;
+
 }
 
 .rating-btn:hover,
 .rating-btn.active{
+
     background:#fff;
+
     color:#000;
+
 }
 
 .status{
+
     margin-top:15px;
+
     color:#777;
+
     font-size:10px;
+
     letter-spacing:.1em;
+
 }
 
-/* =========================
+
+/* =========================================================
    CATALOG
-========================= */
+========================================================= */
 
 .catalog-overlay{
+
     position:fixed;
+
     inset:0;
+
     z-index:2000;
+
     display:none;
-    background:rgba(0,0,0,.72);
-    backdrop-filter:blur(20px);
+
+    background:
+        rgba(0,0,0,.72);
+
+    backdrop-filter:
+        blur(20px);
+
     overflow-y:auto;
+
 }
 
 .catalog-overlay.open{
+
     display:block;
+
 }
 
 .catalog-window{
-    width:min(1100px,calc(100% - 30px));
-    margin:90px auto 40px;
-    border:1px solid #292929;
+
+    width:
+        min(1100px,calc(100% - 30px));
+
+    margin:
+        90px auto 40px;
+
+    border:
+        1px solid #292929;
+
     background:#080808;
-    box-shadow:0 30px 100px rgba(0,0,0,.7);
+
+    box-shadow:
+        0 30px 100px
+        rgba(0,0,0,.7);
+
 }
 
 .catalog-top{
+
     padding:25px;
-    border-bottom:1px solid var(--line);
+
+    border-bottom:
+        1px solid var(--line);
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
 }
 
 .catalog-heading{
+
     font-size:25px;
+
     font-weight:900;
+
     letter-spacing:-.04em;
+
     text-transform:uppercase;
+
 }
 
 .close-btn{
+
     width:40px;
     height:40px;
-    border:1px solid #333;
+
+    border:
+        1px solid #333;
+
     background:#0b0b0b;
+
     cursor:pointer;
+
     font-size:20px;
+
 }
 
 .close-btn:hover{
+
     background:#fff;
+
     color:#000;
+
 }
 
 .catalog-list{
+
     display:grid;
-    grid-template-columns:repeat(2,1fr);
+
+    grid-template-columns:
+        repeat(2,1fr);
+
 }
 
 .catalog-brand{
+
     min-height:110px;
+
     padding:24px;
-    border-right:1px solid var(--line);
-    border-bottom:1px solid var(--line);
+
+    border-right:
+        1px solid var(--line);
+
+    border-bottom:
+        1px solid var(--line);
+
     cursor:pointer;
+
     transition:.2s;
+
 }
 
 .catalog-brand:nth-child(even){
+
     border-right:none;
+
 }
 
 .catalog-brand:hover{
+
     background:#111;
+
 }
 
 .catalog-brand.active{
+
     background:#fff;
+
     color:#000;
+
 }
 
 .brand-top{
+
     display:flex;
+
     justify-content:space-between;
+
     gap:20px;
+
     align-items:center;
+
 }
 
 .brand-name{
+
     font-size:17px;
+
     font-weight:900;
+
     text-transform:uppercase;
+
 }
 
 .brand-arrow{
+
     font-size:18px;
+
+    transition:.2s;
+
+}
+
+.catalog-brand.active
+.brand-arrow{
+
+    transform:rotate(90deg);
+
 }
 
 .brand-meta{
+
     margin-top:12px;
+
     color:#777;
+
     font-size:9px;
+
     letter-spacing:.16em;
+
     text-transform:uppercase;
+
 }
 
-.catalog-brand.active .brand-meta{
+.catalog-brand.active
+.brand-meta{
+
     color:#555;
+
 }
 
-/* BRAND ITEMS */
+
+/* =========================================================
+   BRAND ITEMS
+========================================================= */
 
 .brand-items{
+
     display:none;
-    border-top:1px solid var(--line);
-    padding:25px;
-    background:#050505;
+
+    border-top:
+        1px solid var(--line);
+
+    margin-top:22px;
+
+    padding-top:22px;
+
 }
 
 .brand-items.open{
+
     display:block;
+
 }
 
 .brand-items-head{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
+    gap:15px;
+
     margin-bottom:20px;
+
 }
 
 .brand-items-title{
+
     font-size:12px;
+
     font-weight:900;
+
     letter-spacing:.15em;
+
     text-transform:uppercase;
+
 }
 
 .brand-items-note{
+
     color:#666;
+
     font-size:9px;
+
 }
 
 .brand-item-grid{
+
     display:grid;
-    grid-template-columns:repeat(3,1fr);
+
+    grid-template-columns:
+        repeat(3,1fr);
+
     gap:10px;
+
 }
 
 .catalog-item{
-    border:1px solid #222;
+
+    border:
+        1px solid #222;
+
     background:#0a0a0a;
+
     padding:12px;
+
     cursor:pointer;
+
     transition:.2s;
+
 }
 
 .catalog-item:hover{
+
     border-color:#777;
-    transform:translateY(-2px);
+
+    transform:
+        translateY(-2px);
+
 }
 
 .catalog-item-image{
-    aspect-ratio:1/1.1;
-    border:1px dashed #202020;
+
+    aspect-ratio:
+        1/1.1;
+
+    border:
+        1px dashed #202020;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     margin-bottom:12px;
+
+    overflow:hidden;
+
 }
 
 .catalog-item-image img{
+
     width:100%;
     height:100%;
+
     object-fit:contain;
+
 }
 
 .catalog-item-placeholder{
+
     color:#333;
+
     font-size:8px;
+
     text-align:center;
+
     letter-spacing:.15em;
+
     text-transform:uppercase;
+
 }
 
 .catalog-item-category{
+
     color:#666;
+
     font-size:8px;
+
     letter-spacing:.18em;
+
     text-transform:uppercase;
+
     margin-bottom:5px;
+
 }
 
 .catalog-item-name{
+
     font-size:11px;
+
     font-weight:800;
+
     text-transform:uppercase;
+
 }
 
 .catalog-item-price{
+
     margin-top:6px;
+
     color:#777;
+
     font-size:9px;
+
 }
 
-/* =========================
+
+/* =========================================================
    ARCHIVE
-========================= */
+========================================================= */
 
 .archive{
-    border-top:1px solid var(--line);
+
+    border-top:
+        1px solid var(--line);
+
 }
 
 .archive-tools{
+
     display:flex;
+
     gap:8px;
+
     margin-bottom:25px;
+
 }
 
 .search{
+
     flex:1;
+
     background:#0a0a0a;
-    border:1px solid #292929;
+
+    border:
+        1px solid #292929;
+
     color:#fff;
-    padding:15px 17px;
+
+    padding:
+        15px 17px;
+
     outline:none;
+
     font-size:11px;
+
 }
 
 .search:focus{
+
     border-color:#666;
+
 }
 
 .filter-btn{
+
     min-width:80px;
-    border:1px solid #292929;
+
+    border:
+        1px solid #292929;
+
     background:#0a0a0a;
+
     color:#777;
+
     cursor:pointer;
+
     font-size:9px;
+
     letter-spacing:.1em;
+
 }
 
 .filter-btn.active,
 .filter-btn:hover{
+
     background:#fff;
+
     color:#000;
+
 }
 
 .archive-grid{
+
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+
+    grid-template-columns:
+        repeat(4,1fr);
+
     gap:10px;
+
 }
 
 .archive-card{
-    border:1px solid #202020;
+
+    border:
+        1px solid #202020;
+
     background:#090909;
+
     padding:12px;
+
     cursor:pointer;
+
     transition:.2s;
+
 }
 
 .archive-card:hover{
+
     border-color:#666;
-    transform:translateY(-3px);
+
+    transform:
+        translateY(-3px);
+
 }
 
 .archive-image{
-    aspect-ratio:1/1.15;
-    border:1px dashed #202020;
+
+    aspect-ratio:
+        1/1.15;
+
+    border:
+        1px dashed #202020;
+
     display:flex;
+
     align-items:center;
     justify-content:center;
+
     margin-bottom:14px;
+
+    overflow:hidden;
+
 }
 
 .archive-image img{
+
     width:100%;
     height:100%;
+
     object-fit:contain;
+
 }
 
 .archive-placeholder{
+
     color:#333;
+
     font-size:8px;
+
     text-transform:uppercase;
+
     letter-spacing:.15em;
+
     text-align:center;
+
 }
 
 .archive-brand{
+
     color:#666;
+
     font-size:8px;
+
     letter-spacing:.18em;
+
     text-transform:uppercase;
+
     margin-bottom:5px;
+
 }
 
 .archive-name{
+
     font-size:11px;
+
     font-weight:800;
+
     text-transform:uppercase;
+
 }
 
 .archive-bottom{
+
     margin-top:8px;
+
     display:flex;
+
     justify-content:space-between;
+
     gap:10px;
+
 }
 
 .archive-category,
 .archive-price{
+
     color:#777;
+
     font-size:9px;
+
 }
 
-/* =========================
+
+/* =========================================================
    INFO
-========================= */
+========================================================= */
 
 .info{
-    border-top:1px solid var(--line);
+
+    border-top:
+        1px solid var(--line);
+
 }
 
 .info-grid{
+
     display:grid;
-    grid-template-columns:1fr 1fr;
+
+    grid-template-columns:
+        1fr 1fr;
+
     gap:70px;
+
 }
 
 .info-big{
-    font-size:clamp(30px,5vw,65px);
+
+    font-size:
+        clamp(30px,5vw,65px);
+
     line-height:.95;
+
     font-weight:900;
+
     letter-spacing:-.055em;
+
     text-transform:uppercase;
+
 }
 
 .info-text{
+
     color:#777;
+
     font-size:12px;
+
     line-height:2;
+
 }
 
-/* =========================
+
+/* =========================================================
    FOOTER
-========================= */
+========================================================= */
 
 footer{
-    border-top:1px solid var(--line);
+
+    border-top:
+        1px solid var(--line);
+
     padding:35px;
+
     display:flex;
+
     justify-content:space-between;
+
     gap:20px;
+
     color:#666;
+
     font-size:9px;
+
     letter-spacing:.18em;
+
     text-transform:uppercase;
+
 }
 
 .footer-link:hover{
+
     color:#fff;
+
 }
 
-/* =========================
+
+/* =========================================================
    LOADER
-========================= */
+========================================================= */
 
 .loader{
+
     position:fixed;
+
     inset:0;
+
     z-index:5000;
+
     background:#050505;
+
     display:flex;
+
     align-items:center;
+
     justify-content:center;
+
     transition:.7s ease;
+
 }
 
 .loader.hide{
+
     opacity:0;
+
     pointer-events:none;
+
 }
 
 .loader-inner{
+
     text-align:center;
+
 }
 
 .loader-logo{
+
     font-size:24px;
+
     font-weight:900;
+
     letter-spacing:.35em;
+
     text-transform:uppercase;
+
 }
 
 .loader-line{
+
     width:180px;
+
     height:1px;
+
     background:#222;
+
     margin:25px auto 0;
+
     overflow:hidden;
+
 }
 
 .loader-progress{
+
     width:0;
+
     height:100%;
+
     background:#fff;
-    animation:loading 1.5s ease forwards;
+
+    animation:
+        loading 1.5s ease forwards;
+
 }
 
 @keyframes loading{
-    to{width:100%}
+
+    to{
+
+        width:100%;
+
+    }
+
 }
 
-/* =========================
+
+/* =========================================================
    RESPONSIVE
-========================= */
+========================================================= */
 
 @media(max-width:900px){
 
     header{
+
         padding:0 18px;
+
         height:68px;
+
     }
 
     .header-index{
+
         display:none;
+
     }
 
     .hero{
+
         padding-left:18px;
+
         padding-right:18px;
+
     }
 
     .hero-title{
-        font-size:clamp(55px,15vw,100px);
+
+        font-size:
+            clamp(55px,15vw,100px);
+
     }
 
     .section{
-        padding:80px 18px;
+
+        padding:
+            80px 18px;
+
     }
 
     .section-head{
+
         display:block;
+
     }
 
     .section-description{
+
         margin-top:20px;
+
     }
 
     .builder-grid{
+
         grid-template-columns:1fr;
+
     }
 
     .fit-card{
+
         min-height:500px;
+
     }
 
     .archive-grid{
-        grid-template-columns:repeat(2,1fr);
+
+        grid-template-columns:
+            repeat(2,1fr);
+
     }
 
     .info-grid{
+
         grid-template-columns:1fr;
+
         gap:35px;
+
     }
+
+    .brand-item-grid{
+
+        grid-template-columns:
+            repeat(3,1fr);
+
+    }
+
 }
 
 @media(max-width:600px){
 
     .logo{
+
         font-size:12px;
+
     }
 
     .header-btn{
-        padding:10px 12px;
+
+        padding:
+            10px 12px;
+
         font-size:8px;
+
     }
 
     .hero-name{
+
         letter-spacing:.18em;
+
     }
 
     .hero-sub{
+
         font-size:11px;
+
     }
 
     .catalog-window{
-        width:calc(100% - 16px);
+
+        width:
+            calc(100% - 16px);
+
         margin-top:76px;
+
     }
 
     .catalog-list{
+
         grid-template-columns:1fr;
+
     }
 
     .catalog-brand,
     .catalog-brand:nth-child(even){
+
         border-right:none;
+
     }
 
     .brand-item-grid{
-        grid-template-columns:1fr 1fr;
+
+        grid-template-columns:
+            1fr 1fr;
+
     }
 
     .rating-buttons{
-        grid-template-columns:repeat(5,1fr);
+
+        grid-template-columns:
+            repeat(5,1fr);
+
     }
 
     .archive-tools{
+
         flex-wrap:wrap;
+
     }
 
     .search{
+
         flex-basis:100%;
+
     }
 
     footer{
-        padding:25px 18px;
+
+        padding:
+            25px 18px;
+
         flex-direction:column;
+
     }
+
 }
+
 </style>
+
 </head>
+
 
 <body>
 
-<!-- LOADER -->
 
-<div class="loader" id="loader">
+<!-- =====================================================
+     LOADER
+===================================================== -->
+
+<div
+    class="loader"
+    id="loader"
+>
+
     <div class="loader-inner">
-        <div class="loader-logo">CreatureMeza</div>
-        <div class="loader-line">
-            <div class="loader-progress"></div>
+
+        <div class="loader-logo">
+            CreatureMeza
         </div>
+
+        <div class="loader-line">
+
+            <div
+                class="loader-progress"
+            ></div>
+
+        </div>
+
     </div>
+
 </div>
 
-<!-- HEADER -->
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
 
 <header>
 
-    <div class="logo">CreatureMeza</div>
+    <div class="logo">
+        CreatureMeza
+    </div>
 
     <div class="header-right">
-        <div class="header-index">CM / 001</div>
 
-        <button class="header-btn" id="catalogButton">
-            Catalog
+        <div class="header-index">
+            CM / 001
+        </div>
+
+        <button
+            class="header-btn"
+            id="catalogButton"
+        >
+            Каталог
         </button>
+
     </div>
 
 </header>
 
-<!-- HERO -->
+
+<!-- =====================================================
+     HERO
+===================================================== -->
 
 <section class="hero">
 
@@ -1072,7 +1919,7 @@ footer{
     <div class="hero-content">
 
         <div class="hero-kicker">
-            Independent fashion archive
+            Независимый архив моды
         </div>
 
         <div class="hero-name">
@@ -1080,88 +1927,133 @@ footer{
         </div>
 
         <h1 class="hero-title">
-            <span>Build</span>
-            <span>Your</span>
-            <span>Fit.</span>
+
+            <span>Собери</span>
+
+            <span>свой</span>
+
+            <span>образ.</span>
+
         </h1>
 
         <p class="hero-sub">
-            Select objects from the archive.
-            Construct your own combination.
-            No rules. Just objects.
+
+            Выбирай вещи из архива.
+            Создавай собственные сочетания.
+            Никаких правил. Только вещи.
+
         </p>
 
     </div>
 
 </section>
 
-<!-- MARQUEE -->
+
+<!-- =====================================================
+     MARQUEE
+===================================================== -->
 
 <div class="marquee">
+
     <div class="marquee-track">
 
         <span>CreatureMeza</span>
-        <span>Independent Fashion Archive</span>
-        <span>Build Your Fit</span>
-        <span>Objects / 001</span>
+
+        <span>Независимый архив моды</span>
+
+        <span>Собери свой образ</span>
+
+        <span>Объекты / 001</span>
+
         <span>CreatureMeza</span>
-        <span>Independent Fashion Archive</span>
-        <span>Build Your Fit</span>
-        <span>Objects / 001</span>
+
+        <span>Независимый архив моды</span>
+
+        <span>Собери свой образ</span>
+
+        <span>Объекты / 001</span>
 
     </div>
+
 </div>
 
-<!-- BUILDER -->
 
-<section class="section builder" id="builder">
+<!-- =====================================================
+     BUILDER
+===================================================== -->
+
+<section
+    class="section builder"
+    id="builder"
+>
 
     <div class="section-head">
 
         <div>
+
             <div class="section-kicker">
-                001 / Builder
+                001 / Конструктор
             </div>
 
             <h2 class="section-title">
-                Your Fit
+                Твой образ
             </h2>
+
         </div>
 
         <p class="section-description">
-            Choose a brand from the catalog or use the arrows
-            to move through the pieces. Each layer can be changed independently.
+
+            Выбирай бренд в каталоге или
+            переключай вещи стрелками.
+            Каждый слой изменяется отдельно.
+
         </p>
 
     </div>
 
+
     <div class="builder-grid">
 
-        <!-- TOP -->
+
+        <!-- =================================================
+             TOP
+        ================================================== -->
 
         <div class="fit-card">
 
             <div class="fit-label">
-                Upper
+                Верх
             </div>
 
             <div class="fit-number">
                 01
             </div>
 
-            <div class="fit-image" id="topImage"></div>
+            <div
+                class="fit-image"
+                id="topImage"
+            ></div>
 
             <div class="fit-info">
 
-                <div class="fit-brand" id="topBrand">
+                <div
+                    class="fit-brand"
+                    id="topBrand"
+                >
                     —
                 </div>
 
-                <div class="fit-name" id="topName">
-                    Select an object
+                <div
+                    class="fit-name"
+                    id="topName"
+                >
+                    Выберите вещь
                 </div>
 
-                <div class="fit-price" id="topPrice">
+                <div
+                    class="fit-price"
+                    id="topPrice"
+                >
                     —
                 </div>
 
@@ -1172,7 +2064,7 @@ footer{
                 <button
                     class="arrow-btn"
                     id="topPrev"
-                    aria-label="Previous upper item"
+                    aria-label="Предыдущая верхняя вещь"
                 >
                     ←
                 </button>
@@ -1180,7 +2072,7 @@ footer{
                 <button
                     class="arrow-btn"
                     id="topNext"
-                    aria-label="Next upper item"
+                    aria-label="Следующая верхняя вещь"
                 >
                     →
                 </button>
@@ -1189,31 +2081,46 @@ footer{
 
         </div>
 
-        <!-- BOTTOM -->
+
+        <!-- =================================================
+             BOTTOM
+        ================================================== -->
 
         <div class="fit-card">
 
             <div class="fit-label">
-                Lower
+                Низ
             </div>
 
             <div class="fit-number">
                 02
             </div>
 
-            <div class="fit-image" id="bottomImage"></div>
+            <div
+                class="fit-image"
+                id="bottomImage"
+            ></div>
 
             <div class="fit-info">
 
-                <div class="fit-brand" id="bottomBrand">
+                <div
+                    class="fit-brand"
+                    id="bottomBrand"
+                >
                     —
                 </div>
 
-                <div class="fit-name" id="bottomName">
-                    Select an object
+                <div
+                    class="fit-name"
+                    id="bottomName"
+                >
+                    Выберите вещь
                 </div>
 
-                <div class="fit-price" id="bottomPrice">
+                <div
+                    class="fit-price"
+                    id="bottomPrice"
+                >
                     —
                 </div>
 
@@ -1224,7 +2131,7 @@ footer{
                 <button
                     class="arrow-btn"
                     id="bottomPrev"
-                    aria-label="Previous lower item"
+                    aria-label="Предыдущая нижняя вещь"
                 >
                     ←
                 </button>
@@ -1232,7 +2139,7 @@ footer{
                 <button
                     class="arrow-btn"
                     id="bottomNext"
-                    aria-label="Next lower item"
+                    aria-label="Следующая нижняя вещь"
                 >
                     →
                 </button>
@@ -1241,31 +2148,46 @@ footer{
 
         </div>
 
-        <!-- SHOES -->
+
+        <!-- =================================================
+             SHOES
+        ================================================== -->
 
         <div class="fit-card">
 
             <div class="fit-label">
-                Footwear
+                Обувь
             </div>
 
             <div class="fit-number">
                 03
             </div>
 
-            <div class="fit-image" id="shoesImage"></div>
+            <div
+                class="fit-image"
+                id="shoesImage"
+            ></div>
 
             <div class="fit-info">
 
-                <div class="fit-brand" id="shoesBrand">
+                <div
+                    class="fit-brand"
+                    id="shoesBrand"
+                >
                     —
                 </div>
 
-                <div class="fit-name" id="shoesName">
-                    Select an object
+                <div
+                    class="fit-name"
+                    id="shoesName"
+                >
+                    Выберите вещь
                 </div>
 
-                <div class="fit-price" id="shoesPrice">
+                <div
+                    class="fit-price"
+                    id="shoesPrice"
+                >
                     —
                 </div>
 
@@ -1276,7 +2198,7 @@ footer{
                 <button
                     class="arrow-btn"
                     id="shoesPrev"
-                    aria-label="Previous footwear"
+                    aria-label="Предыдущая обувь"
                 >
                     ←
                 </button>
@@ -1284,7 +2206,7 @@ footer{
                 <button
                     class="arrow-btn"
                     id="shoesNext"
-                    aria-label="Next footwear"
+                    aria-label="Следующая обувь"
                 >
                     →
                 </button>
@@ -1295,85 +2217,150 @@ footer{
 
     </div>
 
+
+    <!-- CONTROLS -->
+
     <div class="builder-controls">
 
-        <button class="control-btn" id="randomButton">
-            Random Fit
+        <button
+            class="control-btn"
+            id="randomButton"
+        >
+            Случайный образ
         </button>
 
-        <button class="control-btn" id="resetButton">
-            Reset
+        <button
+            class="control-btn"
+            id="resetButton"
+        >
+            Сбросить
         </button>
 
-        <button class="control-btn" id="confirmButton">
-            Confirm Fit
+        <button
+            class="control-btn"
+            id="confirmButton"
+        >
+            Подтвердить образ
         </button>
 
     </div>
 
+
+    <!-- TOTAL -->
+
     <div class="total-bar">
 
         <div class="total-label">
-            Total
+            Общая стоимость
         </div>
 
-        <div class="total-value" id="totalPrice">
+        <div
+            class="total-value"
+            id="totalPrice"
+        >
             $0
         </div>
 
     </div>
 
+
+    <!-- RATING -->
+
     <div class="rating-panel">
 
         <div class="rating-title">
-            Rate this fit
+            Оцени этот образ
         </div>
 
         <div class="rating-buttons">
 
-            <button class="rating-btn" data-rating="1">1</button>
-            <button class="rating-btn" data-rating="2">2</button>
-            <button class="rating-btn" data-rating="3">3</button>
-            <button class="rating-btn" data-rating="4">4</button>
-            <button class="rating-btn" data-rating="5">5</button>
-            <button class="rating-btn" data-rating="6">6</button>
-            <button class="rating-btn" data-rating="7">7</button>
-            <button class="rating-btn" data-rating="8">8</button>
-            <button class="rating-btn" data-rating="9">9</button>
-            <button class="rating-btn" data-rating="10">10</button>
+            <button class="rating-btn" data-rating="1">
+                1
+            </button>
+
+            <button class="rating-btn" data-rating="2">
+                2
+            </button>
+
+            <button class="rating-btn" data-rating="3">
+                3
+            </button>
+
+            <button class="rating-btn" data-rating="4">
+                4
+            </button>
+
+            <button class="rating-btn" data-rating="5">
+                5
+            </button>
+
+            <button class="rating-btn" data-rating="6">
+                6
+            </button>
+
+            <button class="rating-btn" data-rating="7">
+                7
+            </button>
+
+            <button class="rating-btn" data-rating="8">
+                8
+            </button>
+
+            <button class="rating-btn" data-rating="9">
+                9
+            </button>
+
+            <button class="rating-btn" data-rating="10">
+                10
+            </button>
 
         </div>
 
-        <div class="status" id="status">
-            Select all three pieces to confirm your fit.
+        <div
+            class="status"
+            id="status"
+        >
+            Выберите все три вещи, чтобы подтвердить образ.
         </div>
 
     </div>
 
 </section>
 
-<!-- ARCHIVE -->
 
-<section class="section archive" id="archive">
+<!-- =====================================================
+     ARCHIVE
+===================================================== -->
+
+<section
+    class="section archive"
+    id="archive"
+>
 
     <div class="section-head">
 
         <div>
+
             <div class="section-kicker">
-                002 / Archive
+                002 / Архив
             </div>
 
             <h2 class="section-title">
-                Objects
+                Вещи
             </h2>
+
         </div>
 
         <p class="section-description">
-            Click any object to put it directly into the corresponding
-            position of your fit.
+
+            Нажмите на любую вещь,
+            чтобы поставить её
+            в соответствующий раздел образа.
+
         </p>
 
     </div>
+
 
     <div class="archive-tools">
 
@@ -1381,7 +2368,7 @@ footer{
             class="search"
             id="searchInput"
             type="text"
-            placeholder="Search brand or object..."
+            placeholder="Поиск бренда или вещи..."
             autocomplete="off"
         >
 
@@ -1389,67 +2376,88 @@ footer{
             class="filter-btn active"
             data-filter="all"
         >
-            All
+            Все
         </button>
 
         <button
             class="filter-btn"
             data-filter="top"
         >
-            Top
+            Верх
         </button>
 
         <button
             class="filter-btn"
             data-filter="bottom"
         >
-            Bottom
+            Низ
         </button>
 
         <button
             class="filter-btn"
             data-filter="shoes"
         >
-            Shoes
+            Обувь
         </button>
 
     </div>
 
-    <div class="archive-grid" id="archiveGrid"></div>
+
+    <div
+        class="archive-grid"
+        id="archiveGrid"
+    ></div>
 
 </section>
 
-<!-- INFO -->
+
+<!-- =====================================================
+     INFO
+===================================================== -->
 
 <section class="section info">
 
     <div class="info-grid">
 
         <div class="info-big">
-            No rules.<br>
-            Just objects.
+
+            Никаких правил.<br>
+            Только вещи.
+
         </div>
 
         <div class="info-text">
-            CreatureMeza is an independent fashion archive
-            built around objects, brands and combinations.
-            Select a piece, move through the archive,
-            construct a fit and rate the result.
+
+            CreatureMeza — независимый
+            архив моды, построенный вокруг
+            вещей, брендов и сочетаний.
+
             <br><br>
-            Everything is treated as an object.
-            The combination is yours.
+
+            Выбери вещь, собери образ,
+            измени его стрелками
+            и оцени результат.
+
+            <br><br>
+
+            Каждая вещь — это объект.
+            Комбинация принадлежит тебе.
+
         </div>
 
     </div>
 
 </section>
 
-<!-- FOOTER -->
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
 
 <footer>
 
     <div>
-        CreatureMeza / Archive
+        CreatureMeza / Архив
     </div>
 
     <a
@@ -1463,38 +2471,48 @@ footer{
 
 </footer>
 
-<!-- CATALOG OVERLAY -->
 
-<div class="catalog-overlay" id="catalogOverlay">
+<!-- =====================================================
+     CATALOG OVERLAY
+===================================================== -->
+
+<div
+    class="catalog-overlay"
+    id="catalogOverlay"
+>
 
     <div class="catalog-window">
 
         <div class="catalog-top">
 
             <div class="catalog-heading">
-                Catalog
+                Каталог
             </div>
 
             <button
                 class="close-btn"
                 id="catalogClose"
-                aria-label="Close catalog"
+                aria-label="Закрыть каталог"
             >
                 ×
             </button>
 
         </div>
 
-        <div class="catalog-list" id="catalogList"></div>
+        <div
+            class="catalog-list"
+            id="catalogList"
+        ></div>
 
     </div>
 
 </div>
 
+
 <script>
 
 /* =========================================================
-   CATALOG DATA
+   ДАННЫЕ КАТАЛОГА
 ========================================================= */
 
 const catalog = {
@@ -1502,753 +2520,921 @@ const catalog = {
     "Ader Error": {
 
         top: [
+
             {
                 name:"Ader Logo Tee",
                 price:180,
                 image:""
             },
+
             {
                 name:"Ader Oversized Hoodie",
                 price:320,
                 image:""
             },
+
             {
                 name:"Ader Distressed Knit",
                 price:290,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Ader Wide Trousers",
                 price:250,
                 image:""
             },
+
             {
                 name:"Ader Cargo Pants",
                 price:280,
                 image:""
             },
+
             {
                 name:"Ader Denim",
                 price:230,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Ader Platform Sneakers",
                 price:300,
                 image:""
             },
+
             {
                 name:"Ader Runner",
                 price:275,
                 image:""
             },
+
             {
                 name:"Ader Black Derby",
                 price:330,
                 image:""
             }
+
         ]
 
     },
 
+
     "Balenciaga": {
 
         top: [
+
             {
                 name:"Balenciaga Logo Tee",
                 price:550,
                 image:""
             },
+
             {
                 name:"Balenciaga Zip Hoodie",
                 price:950,
                 image:""
             },
+
             {
                 name:"Balenciaga Oversized Shirt",
                 price:850,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Balenciaga Baggy Jeans",
                 price:900,
                 image:""
             },
+
             {
                 name:"Balenciaga Track Pants",
                 price:800,
                 image:""
             },
+
             {
                 name:"Balenciaga Cargo",
                 price:780,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Triple S",
                 price:1100,
                 image:""
             },
+
             {
                 name:"Runner Sneaker",
                 price:1050,
                 image:""
             },
+
             {
                 name:"3XL Sneaker",
                 price:1200,
                 image:""
             }
+
         ]
 
     },
 
+
     "Carhartt WIP": {
 
         top: [
+
             {
                 name:"Carhartt Pocket Tee",
                 price:75,
                 image:""
             },
+
             {
                 name:"Carhartt Detroit Jacket",
                 price:190,
                 image:""
             },
+
             {
                 name:"Carhartt Work Shirt",
                 price:120,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Carhartt Double Knee",
                 price:130,
                 image:""
             },
+
             {
                 name:"Carhartt Cargo",
                 price:140,
                 image:""
             },
+
             {
                 name:"Carhartt Denim",
                 price:120,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Carhartt Canvas Sneaker",
                 price:110,
                 image:""
             },
+
             {
                 name:"Carhartt Work Shoe",
                 price:150,
                 image:""
             },
+
             {
                 name:"Carhartt High Top",
                 price:135,
                 image:""
             }
+
         ]
 
     },
 
+
     "Comme des Garçons": {
 
         top: [
+
             {
                 name:"CDG Heart Tee",
                 price:150,
                 image:""
             },
+
             {
                 name:"CDG Knit",
                 price:420,
                 image:""
             },
+
             {
                 name:"CDG Shirt",
                 price:500,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"CDG Wide Pants",
                 price:380,
                 image:""
             },
+
             {
                 name:"CDG Wool Trousers",
                 price:520,
                 image:""
             },
+
             {
                 name:"CDG Cargo",
                 price:450,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"CDG Converse",
                 price:180,
                 image:""
             },
+
             {
                 name:"CDG Derby",
                 price:600,
                 image:""
             },
+
             {
                 name:"CDG Platform",
                 price:480,
                 image:""
             }
+
         ]
 
     },
 
+
     "Diesel": {
 
         top: [
+
             {
                 name:"Diesel Logo Tee",
                 price:120,
                 image:""
             },
+
             {
                 name:"Diesel Denim Jacket",
                 price:350,
                 image:""
             },
+
             {
                 name:"Diesel Graphic Top",
                 price:180,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Diesel D-Sire Jeans",
                 price:300,
                 image:""
             },
+
             {
                 name:"Diesel Cargo",
                 price:280,
                 image:""
             },
+
             {
                 name:"Diesel Flared Denim",
                 price:320,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Diesel D-Rise",
                 price:350,
                 image:""
             },
+
             {
                 name:"Diesel S-Athos",
                 price:300,
                 image:""
             },
+
             {
                 name:"Diesel Runner",
                 price:290,
                 image:""
             }
+
         ]
 
     },
 
+
     "Givenchy": {
 
         top: [
+
             {
                 name:"Givenchy Signature Tee",
                 price:500,
                 image:""
             },
+
             {
                 name:"Givenchy Hoodie",
                 price:800,
                 image:""
             },
+
             {
                 name:"Givenchy Wool Jacket",
                 price:1200,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Givenchy Tailored Pants",
                 price:700,
                 image:""
             },
+
             {
                 name:"Givenchy Cargo",
                 price:650,
                 image:""
             },
+
             {
                 name:"Givenchy Denim",
                 price:600,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Givenchy Giv 1",
                 price:850,
                 image:""
             },
+
             {
                 name:"Givenchy Runner",
                 price:900,
                 image:""
             },
+
             {
                 name:"Givenchy Derby",
                 price:950,
                 image:""
             }
+
         ]
 
     },
 
+
     "Maison Margiela": {
 
         top: [
+
             {
                 name:"Margiela Logo Tee",
                 price:260,
                 image:""
             },
+
             {
                 name:"Margiela Knit",
                 price:650,
                 image:""
             },
+
             {
                 name:"Margiela Replica Jacket",
                 price:900,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Margiela Wide Trousers",
                 price:600,
                 image:""
             },
+
             {
                 name:"Margiela Denim",
                 price:550,
                 image:""
             },
+
             {
                 name:"Margiela Painter Pants",
                 price:580,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Replica Sneakers",
                 price:600,
                 image:""
             },
+
             {
                 name:"Replica Low Top",
                 price:650,
                 image:""
             },
+
             {
                 name:"Tabi Boots",
                 price:900,
                 image:""
             }
+
         ]
 
     },
 
+
     "Nike": {
 
         top: [
+
             {
                 name:"Nike Sportswear Tee",
                 price:45,
                 image:""
             },
+
             {
                 name:"Nike Tech Fleece",
                 price:130,
                 image:""
             },
+
             {
                 name:"Nike ACG Jacket",
                 price:190,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Nike Tech Pants",
                 price:110,
                 image:""
             },
+
             {
                 name:"Nike ACG Cargo",
                 price:150,
                 image:""
             },
+
             {
                 name:"Nike Track Pants",
                 price:90,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Air Force 1",
                 price:120,
                 image:""
             },
+
             {
                 name:"Air Max 95",
                 price:180,
                 image:""
             },
+
             {
                 name:"Air Jordan 1",
                 price:200,
                 image:""
             }
+
         ]
 
     },
 
+
     "Prada": {
 
         top: [
+
             {
                 name:"Prada Triangle Tee",
                 price:500,
                 image:""
             },
+
             {
                 name:"Prada Nylon Jacket",
                 price:1300,
                 image:""
             },
+
             {
                 name:"Prada Knit",
                 price:900,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Prada Nylon Pants",
                 price:750,
                 image:""
             },
+
             {
                 name:"Prada Tailored Trousers",
                 price:850,
                 image:""
             },
+
             {
                 name:"Prada Cargo",
                 price:800,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Prada America's Cup",
                 price:950,
                 image:""
             },
+
             {
                 name:"Prada Monolith",
                 price:1100,
                 image:""
             },
+
             {
                 name:"Prada Derby",
                 price:1000,
                 image:""
             }
+
         ]
 
     },
 
+
     "Ralph Lauren": {
 
         top: [
+
             {
                 name:"Polo Classic Tee",
                 price:80,
                 image:""
             },
+
             {
                 name:"Polo Oxford Shirt",
                 price:130,
                 image:""
             },
+
             {
                 name:"Polo Cable Knit",
                 price:160,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Polo Chino",
                 price:110,
                 image:""
             },
+
             {
                 name:"Polo Pleated Pants",
                 price:140,
                 image:""
             },
+
             {
                 name:"Polo Denim",
                 price:120,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Polo Sneaker",
                 price:100,
                 image:""
             },
+
             {
                 name:"Polo Loafer",
                 price:150,
                 image:""
             },
+
             {
                 name:"Polo Canvas",
                 price:90,
                 image:""
             }
+
         ]
 
     },
 
+
     "Supreme": {
 
         top: [
+
             {
                 name:"Supreme Box Logo",
                 price:100,
                 image:""
             },
+
             {
                 name:"Supreme Hoodie",
                 price:190,
                 image:""
             },
+
             {
                 name:"Supreme Work Jacket",
                 price:250,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Supreme Cargo",
                 price:180,
                 image:""
             },
+
             {
                 name:"Supreme Denim",
                 price:170,
                 image:""
             },
+
             {
                 name:"Supreme Work Pant",
                 price:160,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Supreme AF1",
                 price:130,
                 image:""
             },
+
             {
                 name:"Supreme Dunk",
                 price:180,
                 image:""
             },
+
             {
                 name:"Supreme Vans",
                 price:120,
                 image:""
             }
+
         ]
 
     },
 
+
     "Stone Island": {
 
         top: [
+
             {
                 name:"Stone Island Tee",
                 price:160,
                 image:""
             },
+
             {
                 name:"Stone Island Overshirt",
                 price:350,
                 image:""
             },
+
             {
                 name:"Stone Island Shell",
                 price:700,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Stone Island Cargo",
                 price:300,
                 image:""
             },
+
             {
                 name:"Stone Island Nylon Pants",
                 price:350,
                 image:""
             },
+
             {
                 name:"Stone Island Denim",
                 price:260,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Stone Island Runner",
                 price:250,
                 image:""
             },
+
             {
                 name:"Stone Island Sneaker",
                 price:300,
                 image:""
             },
+
             {
                 name:"Stone Island Boot",
                 price:350,
                 image:""
             }
+
         ]
 
     },
 
+
     "Y-3": {
 
         top: [
+
             {
                 name:"Y-3 Logo Tee",
                 price:180,
                 image:""
             },
+
             {
                 name:"Y-3 Hoodie",
                 price:350,
                 image:""
             },
+
             {
                 name:"Y-3 Bomber",
                 price:600,
                 image:""
             }
+
         ],
 
         bottom: [
+
             {
                 name:"Y-3 Wide Pants",
                 price:300,
                 image:""
             },
+
             {
                 name:"Y-3 Cargo",
                 price:330,
                 image:""
             },
+
             {
                 name:"Y-3 Track Pants",
                 price:280,
                 image:""
             }
+
         ],
 
         shoes: [
+
             {
                 name:"Y-3 Superstar",
                 price:350,
                 image:""
             },
+
             {
                 name:"Y-3 Kaiwa",
                 price:400,
                 image:""
             },
+
             {
                 name:"Y-3 Runner",
                 price:380,
                 image:""
             }
+
         ]
 
     }
@@ -2257,34 +3443,38 @@ const catalog = {
 
 
 /* =========================================================
-   STATE
+   СОСТОЯНИЕ
 ========================================================= */
 
 const categories = [
+
     "top",
     "bottom",
     "shoes"
+
 ];
 
 const state = {
 
     selected:{
+
         top:null,
         bottom:null,
         shoes:null
+
     },
 
     rating:null,
 
-    activeBrand:null,
+    filter:"all",
 
-    filter:"all"
+    activeBrand:null
 
 };
 
 
 /* =========================================================
-   HELPERS
+   ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
 ========================================================= */
 
 function getAllItems(){
@@ -2295,30 +3485,42 @@ function getAllItems(){
 
         categories.forEach(category => {
 
-            catalog[brand][category].forEach((item,index) => {
+            catalog[brand][category]
+                .forEach((item,index) => {
 
-                result.push({
-                    ...item,
-                    brand,
-                    category,
-                    index
+                    result.push({
+
+                        ...item,
+
+                        brand,
+
+                        category,
+
+                        index
+
+                    });
+
                 });
-
-            });
 
         });
 
     });
 
     return result;
+
 }
 
 
 function getCategoryLabel(category){
 
-    if(category === "top") return "Upper";
-    if(category === "bottom") return "Lower";
-    if(category === "shoes") return "Footwear";
+    if(category === "top")
+        return "Верх";
+
+    if(category === "bottom")
+        return "Низ";
+
+    if(category === "shoes")
+        return "Обувь";
 
     return category;
 
@@ -2327,92 +3529,166 @@ function getCategoryLabel(category){
 
 function formatPrice(price){
 
-    return "$" + Number(price).toLocaleString();
+    return "$" +
+        Number(price)
+            .toLocaleString();
 
 }
 
 
-function imageMarkup(item, small=false){
+function imageMarkup(item,small=false){
 
     if(item && item.image){
 
         return `
+
             <img
                 src="${item.image}"
                 alt="${item.name}"
                 loading="lazy"
             >
+
         `;
 
     }
 
     return `
-        <div class="${small ? "catalog-item-placeholder" : "fit-placeholder"}">
-            Image coming soon
+
+        <div class="${
+            small
+            ? "catalog-item-placeholder"
+            : "fit-placeholder"
+        }">
+
+            Изображение скоро появится
+
         </div>
+
     `;
 
 }
 
 
 /* =========================================================
-   BUILDER
+   ПОЛУЧЕНИЕ ВЫБРАННОЙ ВЕЩИ
 ========================================================= */
 
 function getSelectedItem(category){
 
-    const selected = state.selected[category];
+    const selected =
+        state.selected[category];
 
     if(!selected){
+
         return null;
+
     }
 
-    return catalog[selected.brand][category][selected.index] || null;
+    if(
+        !catalog[selected.brand] ||
+        !catalog[selected.brand][category]
+    ){
+
+        return null;
+
+    }
+
+    return catalog
+        [selected.brand]
+        [category]
+        [selected.index] || null;
 
 }
 
+
+/* =========================================================
+   ОТРИСОВКА ОБРАЗА
+========================================================= */
 
 function renderBuilder(){
 
     categories.forEach(category => {
 
-        const selected = state.selected[category];
+        const selected =
+            state.selected[category];
 
-        const image = document.getElementById(category + "Image");
-        const brand = document.getElementById(category + "Brand");
-        const name = document.getElementById(category + "Name");
-        const price = document.getElementById(category + "Price");
+        const image =
+            document.getElementById(
+                category + "Image"
+            );
+
+        const brand =
+            document.getElementById(
+                category + "Brand"
+            );
+
+        const name =
+            document.getElementById(
+                category + "Name"
+            );
+
+        const price =
+            document.getElementById(
+                category + "Price"
+            );
+
 
         if(!selected){
 
             image.innerHTML = `
+
                 <div class="fit-placeholder">
-                    Select ${getCategoryLabel(category)}
+
+                    Выберите ${
+                        getCategoryLabel(category)
+                    }
+
                 </div>
+
             `;
 
             brand.textContent = "—";
-            name.textContent = "Select an object";
+
+            name.textContent =
+                "Выберите вещь";
+
             price.textContent = "—";
 
             return;
 
         }
 
-        const item = catalog[selected.brand][category][selected.index];
 
-        image.innerHTML = imageMarkup(item);
+        const item =
+            catalog
+                [selected.brand]
+                [category]
+                [selected.index];
 
-        brand.textContent = selected.brand;
-        name.textContent = item.name;
-        price.textContent = formatPrice(item.price);
+
+        image.innerHTML =
+            imageMarkup(item);
+
+        brand.textContent =
+            selected.brand;
+
+        name.textContent =
+            item.name;
+
+        price.textContent =
+            formatPrice(item.price);
 
     });
+
 
     renderTotal();
 
 }
 
+
+/* =========================================================
+   ОБЩАЯ ЦЕНА
+========================================================= */
 
 function renderTotal(){
 
@@ -2420,192 +3696,381 @@ function renderTotal(){
 
     categories.forEach(category => {
 
-        const item = getSelectedItem(category);
+        const item =
+            getSelectedItem(category);
 
         if(item){
-            total += Number(item.price);
+
+            total +=
+                Number(item.price);
+
         }
 
     });
 
-    document.getElementById("totalPrice").textContent =
+    document.getElementById(
+        "totalPrice"
+    ).textContent =
         formatPrice(total);
 
 }
 
 
-function selectItem(brand,category,index){
+/* =========================================================
+   ВЫБОР ВЕЩИ
+========================================================= */
+
+function selectItem(
+    brand,
+    category,
+    index
+){
 
     state.selected[category] = {
-        brand,
-        index
+
+        brand:brand,
+
+        index:index
+
     };
 
     state.rating = null;
 
-    document.querySelectorAll(".rating-btn")
-        .forEach(btn => btn.classList.remove("active"));
+
+    document
+        .querySelectorAll(".rating-btn")
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
 
     renderBuilder();
 
-    const item = catalog[brand][category][index];
 
-    document.getElementById("status").textContent =
-        `${getCategoryLabel(category)} changed to ${item.name}.`;
+    const item =
+        catalog
+            [brand]
+            [category]
+            [index];
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+
+        `${getCategoryLabel(category)} выбрано: ${item.name}.`;
 
 }
 
 
-function moveItem(category,direction){
+/* =========================================================
+   ПЕРЕКЛЮЧЕНИЕ СТРЕЛКАМИ
+========================================================= */
 
-    let selected = state.selected[category];
+function moveItem(
+    category,
+    direction
+){
+
+    let selected =
+        state.selected[category];
+
+
+    /*
+        Если ничего не выбрано,
+        начинаем с первой вещи
+        первого бренда.
+    */
 
     if(!selected){
 
-        const firstBrand = Object.keys(catalog)[0];
+        const firstBrand =
+            Object.keys(catalog)[0];
 
         state.selected[category] = {
+
             brand:firstBrand,
+
             index:0
+
         };
 
         renderBuilder();
+
+        document.getElementById(
+            "status"
+        ).textContent =
+
+            `${getCategoryLabel(category)} выбрано.`;
 
         return;
 
     }
 
-    const brandItems = catalog[selected.brand][category];
+
+    /*
+        Получаем текущий бренд.
+    */
+
+    const brandItems =
+        catalog
+            [selected.brand]
+            [category];
+
 
     let nextIndex =
         selected.index + direction;
 
+
+    /*
+        Стрелка влево
+        с первого элемента
+        переносит на последний.
+    */
+
     if(nextIndex < 0){
-        nextIndex = brandItems.length - 1;
+
+        nextIndex =
+            brandItems.length - 1;
+
     }
 
-    if(nextIndex >= brandItems.length){
+
+    /*
+        Стрелка вправо
+        с последнего элемента
+        переносит на первый.
+    */
+
+    if(
+        nextIndex >=
+        brandItems.length
+    ){
+
         nextIndex = 0;
+
     }
 
-    state.selected[category].index = nextIndex;
+
+    state.selected[category].index =
+        nextIndex;
+
 
     renderBuilder();
 
-    const item = brandItems[nextIndex];
 
-    document.getElementById("status").textContent =
+    const item =
+        brandItems[nextIndex];
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+
         `${selected.brand} / ${item.name}`;
 
 }
 
 
+/* =========================================================
+   СЛУЧАЙНЫЙ ОБРАЗ
+========================================================= */
+
 function randomFit(){
 
     categories.forEach(category => {
 
-        const brands = Object.keys(catalog);
+        const brands =
+            Object.keys(catalog);
 
         const randomBrand =
-            brands[Math.floor(Math.random() * brands.length)];
+            brands[
+                Math.floor(
+                    Math.random() *
+                    brands.length
+                )
+            ];
 
         const items =
-            catalog[randomBrand][category];
+            catalog
+                [randomBrand]
+                [category];
 
         const randomIndex =
-            Math.floor(Math.random() * items.length);
+            Math.floor(
+                Math.random() *
+                items.length
+            );
+
 
         state.selected[category] = {
+
             brand:randomBrand,
+
             index:randomIndex
+
         };
 
     });
 
-    state.rating = null;
-
-    document.querySelectorAll(".rating-btn")
-        .forEach(btn => btn.classList.remove("active"));
-
-    renderBuilder();
-
-    document.getElementById("status").textContent =
-        "Random fit generated.";
-
-}
-
-
-function resetFit(){
-
-    state.selected = {
-        top:null,
-        bottom:null,
-        shoes:null
-    };
 
     state.rating = null;
 
-    document.querySelectorAll(".rating-btn")
-        .forEach(btn => btn.classList.remove("active"));
+
+    document
+        .querySelectorAll(".rating-btn")
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
 
     renderBuilder();
 
-    document.getElementById("status").textContent =
-        "Fit reset.";
 
-}
+    document.getElementById(
+        "status"
+    ).textContent =
 
-
-function confirmFit(){
-
-    const complete =
-        categories.every(category => state.selected[category]);
-
-    if(!complete){
-
-        document.getElementById("status").textContent =
-            "Select all three pieces first.";
-
-        return;
-
-    }
-
-    document.getElementById("status").textContent =
-        "Fit confirmed. Now rate it.";
+        "Случайный образ создан.";
 
 }
 
 
 /* =========================================================
-   RATING
+   СБРОС
+========================================================= */
+
+function resetFit(){
+
+    state.selected = {
+
+        top:null,
+
+        bottom:null,
+
+        shoes:null
+
+    };
+
+
+    state.rating = null;
+
+
+    document
+        .querySelectorAll(".rating-btn")
+        .forEach(button => {
+
+            button.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    renderBuilder();
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+
+        "Образ сброшен.";
+
+}
+
+
+/* =========================================================
+   ПОДТВЕРЖДЕНИЕ
+========================================================= */
+
+function confirmFit(){
+
+    const complete =
+        categories.every(
+            category =>
+                state.selected[category]
+        );
+
+
+    if(!complete){
+
+        document.getElementById(
+            "status"
+        ).textContent =
+
+            "Сначала выберите все три вещи.";
+
+        return;
+
+    }
+
+
+    document.getElementById(
+        "status"
+    ).textContent =
+
+        "Образ подтверждён. Теперь оцени его.";
+
+}
+
+
+/* =========================================================
+   РЕЙТИНГ
 ========================================================= */
 
 function setupRating(){
 
-    document.querySelectorAll(".rating-btn")
+    document
+        .querySelectorAll(".rating-btn")
         .forEach(button => {
 
-            button.addEventListener("click", () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-                const rating =
-                    Number(button.dataset.rating);
-
-                state.rating = rating;
-
-                document.querySelectorAll(".rating-btn")
-                    .forEach(btn => {
-
-                        btn.classList.toggle(
-                            "active",
-                            Number(btn.dataset.rating) === rating
+                    const rating =
+                        Number(
+                            button.dataset.rating
                         );
 
-                    });
 
-                document.getElementById("status").textContent =
-                    `Fit rated ${rating}/10.`;
+                    state.rating =
+                        rating;
 
-            });
+
+                    document
+                        .querySelectorAll(".rating-btn")
+                        .forEach(btn => {
+
+                            btn.classList.toggle(
+
+                                "active",
+
+                                Number(
+                                    btn.dataset.rating
+                                ) === rating
+
+                            );
+
+                        });
+
+
+                    document.getElementById(
+                        "status"
+                    ).textContent =
+
+                        `Оценка образа: ${rating}/10.`;
+
+                }
+            );
 
         });
 
@@ -2613,359 +4078,617 @@ function setupRating(){
 
 
 /* =========================================================
-   CATALOG
+   КАТАЛОГ
 ========================================================= */
 
 function renderCatalog(){
 
     const container =
-        document.getElementById("catalogList");
+        document.getElementById(
+            "catalogList"
+        );
+
 
     container.innerHTML = "";
 
-    Object.keys(catalog).forEach(brand => {
 
-        const brandData = catalog[brand];
+    Object.keys(catalog)
+        .forEach(brand => {
 
-        const total =
-            brandData.top.length +
-            brandData.bottom.length +
-            brandData.shoes.length;
+            const brandElement =
+                document.createElement(
+                    "div"
+                );
 
-        const brandElement =
-            document.createElement("div");
 
-        brandElement.className = "catalog-brand";
+            brandElement.className =
+                "catalog-brand";
 
-        brandElement.innerHTML = `
 
-            <div class="brand-top">
+            brandElement.innerHTML = `
 
-                <div class="brand-name">
-                    ${brand}
-                </div>
+                <div class="brand-top">
 
-                <div class="brand-arrow">
-                    →
-                </div>
+                    <div class="brand-name">
 
-            </div>
+                        ${brand}
 
-            <div class="brand-meta">
-                ${total} objects / click to open
-            </div>
-
-            <div class="brand-items">
-
-                <div class="brand-items-head">
-
-                    <div class="brand-items-title">
-                        ${brand} Objects
                     </div>
 
-                    <div class="brand-items-note">
-                        Click an object to wear it
+                    <div class="brand-arrow">
+
+                        →
+
                     </div>
 
                 </div>
 
-                <div class="brand-item-grid"></div>
+                <div class="brand-meta">
 
-            </div>
+                    Нажмите, чтобы открыть вещи
 
-        `;
+                </div>
 
-        const itemGrid =
-            brandElement.querySelector(".brand-item-grid");
+                <div class="brand-items">
 
-        categories.forEach(category => {
+                    <div class="brand-items-head">
 
-            catalog[brand][category].forEach((item,index) => {
+                        <div class="brand-items-title">
 
-                const itemElement =
-                    document.createElement("div");
+                            ${brand}
 
-                itemElement.className =
-                    "catalog-item";
+                        </div>
 
-                itemElement.innerHTML = `
+                        <div class="brand-items-note">
 
-                    <div class="catalog-item-image">
-                        ${imageMarkup(item,true)}
+                            Нажмите на вещь, чтобы выбрать
+
+                        </div>
+
                     </div>
 
-                    <div class="catalog-item-category">
-                        ${getCategoryLabel(category)}
-                    </div>
+                    <div class="brand-item-grid"></div>
 
-                    <div class="catalog-item-name">
-                        ${item.name}
-                    </div>
+                </div>
 
-                    <div class="catalog-item-price">
-                        ${formatPrice(item.price)}
-                    </div>
+            `;
 
-                `;
 
-                itemElement.addEventListener("click", event => {
+            const itemGrid =
+                brandElement.querySelector(
+                    ".brand-item-grid"
+                );
 
-                    event.stopPropagation();
 
-                    selectItem(
-                        brand,
-                        category,
-                        index
-                    );
+            /*
+                Добавляем вещи
+                этого бренда.
+            */
 
-                    closeCatalog();
+            categories.forEach(category => {
 
-                    document
-                        .getElementById("builder")
-                        .scrollIntoView({
-                            behavior:"smooth"
-                        });
+                catalog[brand][category]
+                    .forEach((item,index) => {
 
-                });
+                        const itemElement =
+                            document.createElement(
+                                "div"
+                            );
 
-                itemGrid.appendChild(itemElement);
+
+                        itemElement.className =
+                            "catalog-item";
+
+
+                        itemElement.innerHTML = `
+
+                            <div class="catalog-item-image">
+
+                                ${imageMarkup(
+                                    item,
+                                    true
+                                )}
+
+                            </div>
+
+                            <div class="catalog-item-category">
+
+                                ${getCategoryLabel(
+                                    category
+                                )}
+
+                            </div>
+
+                            <div class="catalog-item-name">
+
+                                ${item.name}
+
+                            </div>
+
+                            <div class="catalog-item-price">
+
+                                ${formatPrice(
+                                    item.price
+                                )}
+
+                            </div>
+
+                        `;
+
+
+                        /*
+                            Клик по вещи.
+                        */
+
+                        itemElement.addEventListener(
+                            "click",
+                            event => {
+
+                                event.stopPropagation();
+
+
+                                selectItem(
+                                    brand,
+                                    category,
+                                    index
+                                );
+
+
+                                closeCatalog();
+
+
+                                document
+                                    .getElementById(
+                                        "builder"
+                                    )
+                                    .scrollIntoView({
+
+                                        behavior:
+                                            "smooth"
+
+                                    });
+
+                            }
+                        );
+
+
+                        itemGrid.appendChild(
+                            itemElement
+                        );
+
+                    });
 
             });
 
-        });
+
+            /*
+                Клик по бренду.
+            */
+
+            brandElement.addEventListener(
+                "click",
+                () => {
+
+                    const items =
+                        brandElement.querySelector(
+                            ".brand-items"
+                        );
 
 
-        brandElement.addEventListener("click", () => {
+                    const isOpen =
+                        items.classList.contains(
+                            "open"
+                        );
 
-            const currentlyOpen =
+
+                    /*
+                        Закрываем остальные.
+                    */
+
+                    document
+                        .querySelectorAll(
+                            ".brand-items"
+                        )
+                        .forEach(element => {
+
+                            element.classList.remove(
+                                "open"
+                            );
+
+                        });
+
+
+                    document
+                        .querySelectorAll(
+                            ".catalog-brand"
+                        )
+                        .forEach(element => {
+
+                            element.classList.remove(
+                                "active"
+                            );
+
+                        });
+
+
+                    /*
+                        Открываем выбранный.
+                    */
+
+                    if(!isOpen){
+
+                        items.classList.add(
+                            "open"
+                        );
+
+                        brandElement.classList.add(
+                            "active"
+                        );
+
+                    }
+
+                }
+            );
+
+
+            container.appendChild(
                 brandElement
-                    .querySelector(".brand-items")
-                    .classList.contains("open");
-
-            document
-                .querySelectorAll(".brand-items")
-                .forEach(element => {
-                    element.classList.remove("open");
-                });
-
-            document
-                .querySelectorAll(".catalog-brand")
-                .forEach(element => {
-                    element.classList.remove("active");
-                });
-
-            if(!currentlyOpen){
-
-                brandElement
-                    .querySelector(".brand-items")
-                    .classList.add("open");
-
-                brandElement.classList.add("active");
-
-            }
+            );
 
         });
-
-
-        container.appendChild(brandElement);
-
-    });
-
-}
-
-
-function openCatalog(){
-
-    document
-        .getElementById("catalogOverlay")
-        .classList.add("open");
-
-    document.body.style.overflow = "hidden";
-
-}
-
-
-function closeCatalog(){
-
-    document
-        .getElementById("catalogOverlay")
-        .classList.remove("open");
-
-    document.body.style.overflow = "";
-
-}
-
-
-function setupCatalog(){
-
-    document
-        .getElementById("catalogButton")
-        .addEventListener("click", openCatalog);
-
-    document
-        .getElementById("catalogClose")
-        .addEventListener("click", closeCatalog);
-
-    document
-        .getElementById("catalogOverlay")
-        .addEventListener("click", event => {
-
-            if(event.target.id === "catalogOverlay"){
-                closeCatalog();
-            }
-
-        });
-
-    document.addEventListener("keydown", event => {
-
-        if(event.key === "Escape"){
-            closeCatalog();
-        }
-
-    });
 
 }
 
 
 /* =========================================================
-   ARCHIVE
+   ОТКРЫТИЕ КАТАЛОГА
+========================================================= */
+
+function openCatalog(){
+
+    document
+        .getElementById(
+            "catalogOverlay"
+        )
+        .classList.add(
+            "open"
+        );
+
+
+    document.body.style.overflow =
+        "hidden";
+
+}
+
+
+/* =========================================================
+   ЗАКРЫТИЕ КАТАЛОГА
+========================================================= */
+
+function closeCatalog(){
+
+    document
+        .getElementById(
+            "catalogOverlay"
+        )
+        .classList.remove(
+            "open"
+        );
+
+
+    document.body.style.overflow =
+        "";
+
+}
+
+
+/* =========================================================
+   НАСТРОЙКА КАТАЛОГА
+========================================================= */
+
+function setupCatalog(){
+
+    document
+        .getElementById(
+            "catalogButton"
+        )
+        .addEventListener(
+            "click",
+            openCatalog
+        );
+
+
+    document
+        .getElementById(
+            "catalogClose"
+        )
+        .addEventListener(
+            "click",
+            closeCatalog
+        );
+
+
+    document
+        .getElementById(
+            "catalogOverlay"
+        )
+        .addEventListener(
+            "click",
+            event => {
+
+                if(
+                    event.target.id ===
+                    "catalogOverlay"
+                ){
+
+                    closeCatalog();
+
+                }
+
+            }
+        );
+
+
+    document.addEventListener(
+        "keydown",
+        event => {
+
+            if(event.key === "Escape"){
+
+                closeCatalog();
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   АРХИВ
 ========================================================= */
 
 function renderArchive(){
 
     const grid =
-        document.getElementById("archiveGrid");
+        document.getElementById(
+            "archiveGrid"
+        );
+
+
+    const input =
+        document.getElementById(
+            "searchInput"
+        );
+
 
     const query =
-        document
-            .getElementById("searchInput")
-            .value
+        input.value
             .trim()
             .toLowerCase();
 
+
     const items =
-        getAllItems().filter(item => {
+        getAllItems()
+            .filter(item => {
 
-            const matchesFilter =
-                state.filter === "all" ||
-                item.category === state.filter;
+                const matchesFilter =
 
-            const matchesSearch =
-                !query ||
-                item.name.toLowerCase().includes(query) ||
-                item.brand.toLowerCase().includes(query);
+                    state.filter === "all" ||
 
-            return matchesFilter && matchesSearch;
+                    item.category ===
+                        state.filter;
 
-        });
+
+                const matchesSearch =
+
+                    !query ||
+
+                    item.name
+                        .toLowerCase()
+                        .includes(query) ||
+
+                    item.brand
+                        .toLowerCase()
+                        .includes(query);
+
+
+                return (
+                    matchesFilter &&
+                    matchesSearch
+                );
+
+            });
+
 
     grid.innerHTML = "";
+
 
     if(items.length === 0){
 
         grid.innerHTML = `
+
             <div style="
+
                 grid-column:1/-1;
+
                 padding:60px 20px;
+
                 border:1px solid #202020;
+
                 color:#555;
+
                 text-align:center;
+
                 font-size:10px;
+
                 letter-spacing:.2em;
+
                 text-transform:uppercase;
+
             ">
-                Nothing found
+
+                Ничего не найдено
+
             </div>
+
         `;
 
         return;
 
     }
 
+
     items.forEach(item => {
 
         const card =
-            document.createElement("div");
+            document.createElement(
+                "div"
+            );
 
-        card.className = "archive-card";
+
+        card.className =
+            "archive-card";
+
 
         card.innerHTML = `
 
             <div class="archive-image">
-                ${imageMarkup(item,true)}
+
+                ${imageMarkup(
+                    item,
+                    true
+                )}
+
             </div>
 
             <div class="archive-brand">
+
                 ${item.brand}
+
             </div>
 
             <div class="archive-name">
+
                 ${item.name}
+
             </div>
 
             <div class="archive-bottom">
 
                 <div class="archive-category">
-                    ${getCategoryLabel(item.category)}
+
+                    ${getCategoryLabel(
+                        item.category
+                    )}
+
                 </div>
 
                 <div class="archive-price">
-                    ${formatPrice(item.price)}
+
+                    ${formatPrice(
+                        item.price
+                    )}
+
                 </div>
 
             </div>
 
         `;
 
-        card.addEventListener("click", () => {
 
-            selectItem(
-                item.brand,
-                item.category,
-                item.index
-            );
+        /*
+            Клик по карточке архива
+            сразу надевает вещь.
+        */
 
-            document
-                .getElementById("builder")
-                .scrollIntoView({
-                    behavior:"smooth"
-                });
+        card.addEventListener(
+            "click",
+            () => {
 
-        });
+                selectItem(
+                    item.brand,
+                    item.category,
+                    item.index
+                );
 
-        grid.appendChild(card);
+
+                document
+                    .getElementById(
+                        "builder"
+                    )
+                    .scrollIntoView({
+
+                        behavior:"smooth"
+
+                    });
+
+            }
+        );
+
+
+        grid.appendChild(
+            card
+        );
 
     });
 
 }
 
 
+/* =========================================================
+   ПОИСК И ФИЛЬТРЫ
+========================================================= */
+
 function setupSearch(){
 
     document
-        .getElementById("searchInput")
-        .addEventListener("input", renderArchive);
+        .getElementById(
+            "searchInput"
+        )
+        .addEventListener(
+            "input",
+            renderArchive
+        );
+
 
     document
-        .querySelectorAll(".filter-btn")
+        .querySelectorAll(
+            ".filter-btn"
+        )
         .forEach(button => {
 
-            button.addEventListener("click", () => {
+            button.addEventListener(
+                "click",
+                () => {
 
-                state.filter =
-                    button.dataset.filter;
+                    state.filter =
+                        button.dataset.filter;
 
-                document
-                    .querySelectorAll(".filter-btn")
-                    .forEach(btn => {
-                        btn.classList.remove("active");
-                    });
 
-                button.classList.add("active");
+                    document
+                        .querySelectorAll(
+                            ".filter-btn"
+                        )
+                        .forEach(btn => {
 
-                renderArchive();
+                            btn.classList.remove(
+                                "active"
+                            );
 
-            });
+                        });
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    renderArchive();
+
+                }
+            );
 
         });
 
@@ -2973,67 +4696,147 @@ function setupSearch(){
 
 
 /* =========================================================
-   BUTTONS
+   КНОПКИ BUILDER
 ========================================================= */
 
 function setupButtons(){
 
     document
-        .getElementById("topPrev")
-        .addEventListener("click", () => {
-            moveItem("top",-1);
-        });
+        .getElementById(
+            "topPrev"
+        )
+        .addEventListener(
+            "click",
+            () => {
 
-    document
-        .getElementById("topNext")
-        .addEventListener("click", () => {
-            moveItem("top",1);
-        });
+                moveItem(
+                    "top",
+                    -1
+                );
 
-
-    document
-        .getElementById("bottomPrev")
-        .addEventListener("click", () => {
-            moveItem("bottom",-1);
-        });
-
-    document
-        .getElementById("bottomNext")
-        .addEventListener("click", () => {
-            moveItem("bottom",1);
-        });
+            }
+        );
 
 
     document
-        .getElementById("shoesPrev")
-        .addEventListener("click", () => {
-            moveItem("shoes",-1);
-        });
+        .getElementById(
+            "topNext"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                moveItem(
+                    "top",
+                    1
+                );
+
+            }
+        );
+
 
     document
-        .getElementById("shoesNext")
-        .addEventListener("click", () => {
-            moveItem("shoes",1);
-        });
+        .getElementById(
+            "bottomPrev"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                moveItem(
+                    "bottom",
+                    -1
+                );
+
+            }
+        );
 
 
     document
-        .getElementById("randomButton")
-        .addEventListener("click", randomFit);
+        .getElementById(
+            "bottomNext"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                moveItem(
+                    "bottom",
+                    1
+                );
+
+            }
+        );
+
 
     document
-        .getElementById("resetButton")
-        .addEventListener("click", resetFit);
+        .getElementById(
+            "shoesPrev"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                moveItem(
+                    "shoes",
+                    -1
+                );
+
+            }
+        );
+
 
     document
-        .getElementById("confirmButton")
-        .addEventListener("click", confirmFit);
+        .getElementById(
+            "shoesNext"
+        )
+        .addEventListener(
+            "click",
+            () => {
+
+                moveItem(
+                    "shoes",
+                    1
+                );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "randomButton"
+        )
+        .addEventListener(
+            "click",
+            randomFit
+        );
+
+
+    document
+        .getElementById(
+            "resetButton"
+        )
+        .addEventListener(
+            "click",
+            resetFit
+        );
+
+
+    document
+        .getElementById(
+            "confirmButton"
+        )
+        .addEventListener(
+            "click",
+            confirmFit
+        );
 
 }
 
 
 /* =========================================================
-   INITIAL FIT
+   НАЧАЛЬНЫЙ ОБРАЗ
 ========================================================= */
 
 function setInitialFit(){
@@ -3041,14 +4844,21 @@ function setInitialFit(){
     const firstBrand =
         Object.keys(catalog)[0];
 
-    categories.forEach(category => {
 
-        state.selected[category] = {
-            brand:firstBrand,
-            index:0
-        };
+    categories.forEach(
+        category => {
 
-    });
+            state.selected[category] = {
+
+                brand:firstBrand,
+
+                index:0
+
+            };
+
+        }
+    );
+
 
     renderBuilder();
 
@@ -3061,17 +4871,27 @@ function setInitialFit(){
 
 function setupLoader(){
 
-    window.addEventListener("load", () => {
+    window.addEventListener(
+        "load",
+        () => {
 
-        setTimeout(() => {
+            setTimeout(
+                () => {
 
-            document
-                .getElementById("loader")
-                .classList.add("hide");
+                    document
+                        .getElementById(
+                            "loader"
+                        )
+                        .classList.add(
+                            "hide"
+                        );
 
-        },1600);
+                },
+                1600
+            );
 
-    });
+        }
+    );
 
 }
 
@@ -3100,9 +4920,15 @@ function init(){
 
 }
 
+
+/* =========================================================
+   START
+========================================================= */
+
 init();
 
 </script>
 
 </body>
+
 </html>
