@@ -7,7 +7,7 @@
 
 <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    content="width=device-width, initial-scale=1.0"
 >
 
 <meta
@@ -15,37 +15,9 @@
     content="#050505"
 >
 
-<meta
-    name="description"
-    content="CreatureMeza — Independent fashion archive"
->
-
 <title>CreatureMeza — Archive</title>
 
-
 <style>
-
-/* =========================================================
-   ROOT
-========================================================= */
-
-:root{
-
-    --bg:#050505;
-    --panel:#080808;
-    --panel-light:#0d0d0d;
-
-    --line:#1c1c1c;
-    --line-light:#292929;
-
-    --white:#f4f4f4;
-    --muted:#666;
-    --dark:#333;
-
-    --header-height:78px;
-
-}
-
 
 /* =========================================================
    RESET
@@ -58,35 +30,17 @@
 }
 
 html{
-    background:var(--bg);
     scroll-behavior:smooth;
 }
 
 body{
-
-    min-height:100vh;
-
-    background:
-        radial-gradient(
-            circle at 50% 10%,
-            #111 0,
-            transparent 34rem
-        ),
-        var(--bg);
-
-    color:var(--white);
-
+    background:#050505;
+    color:#f2f2f2;
     font-family:
         Arial,
         Helvetica,
         sans-serif;
-
     overflow-x:hidden;
-
-}
-
-body.locked{
-    overflow:hidden;
 }
 
 button,
@@ -104,145 +58,87 @@ a{
     text-decoration:none;
 }
 
-::selection{
-    background:#fff;
-    color:#050505;
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar{
-    width:6px;
-}
-
-::-webkit-scrollbar-track{
-    background:#050505;
-}
-
-::-webkit-scrollbar-thumb{
-    background:#252525;
-}
-
-::-webkit-scrollbar-thumb:hover{
-    background:#444;
-}
-
 
 /* =========================================================
    LOADER
 ========================================================= */
 
 .loader{
-
     position:fixed;
-
     inset:0;
-
-    z-index:99999;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
+    z-index:9999;
 
     background:#050505;
 
-    opacity:1;
-
-    visibility:visible;
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
     transition:
         opacity .7s ease,
         visibility .7s ease;
-
 }
 
 .loader.hide{
-
     opacity:0;
-
     visibility:hidden;
-
-    pointer-events:none;
-
 }
 
 .loader-inner{
-
-    width:min(360px,80vw);
-
     text-align:center;
-
 }
 
 .loader-title{
-
     font-size:
         clamp(
-            32px,
-            7vw,
-            70px
+            28px,
+            5vw,
+            64px
         );
-
-    line-height:.9;
 
     font-weight:900;
 
-    letter-spacing:-.07em;
+    letter-spacing:-.06em;
 
     text-transform:uppercase;
-
 }
 
 .loader-line{
-
-    width:100%;
-
+    width:180px;
     height:1px;
 
-    margin:
-        22px
-        0
-        14px;
+    background:#333;
+
+    margin:18px auto;
 
     overflow:hidden;
-
-    background:#222;
-
 }
 
 .loader-progress{
-
     width:0;
-
     height:100%;
 
     background:#fff;
 
     animation:
-        loaderProgress
-        1.25s
-        cubic-bezier(.4,0,.2,1)
-        forwards;
-
+        loaderProgress 1.5s ease forwards;
 }
 
 .loader-small{
+    color:#666;
 
-    color:#555;
+    font-size:9px;
 
-    font-size:8px;
-
-    letter-spacing:.25em;
+    letter-spacing:.2em;
 
     text-transform:uppercase;
-
 }
 
 @keyframes loaderProgress{
+
+    from{
+        width:0;
+    }
 
     to{
         width:100%;
@@ -256,54 +152,34 @@ a{
 ========================================================= */
 
 .header{
-
     position:fixed;
 
     top:0;
     left:0;
 
     width:100%;
+    height:76px;
 
-    height:var(--header-height);
-
-    z-index:5000;
+    z-index:1000;
 
     display:flex;
-
     align-items:center;
-
     justify-content:space-between;
 
-    padding:
-        0
-        5vw;
+    padding:0 5vw;
 
     background:
         linear-gradient(
             to bottom,
-            rgba(5,5,5,.98),
-            rgba(5,5,5,.78),
+            rgba(5,5,5,.96),
+            rgba(5,5,5,.72),
             transparent
         );
 
-    backdrop-filter:blur(12px);
-
-    -webkit-backdrop-filter:blur(12px);
-
-}
-
-.logo-wrap{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
+    backdrop-filter:blur(10px);
 }
 
 .logo{
-
     font-size:14px;
 
     font-weight:900;
@@ -311,123 +187,59 @@ a{
     letter-spacing:.04em;
 
     text-transform:uppercase;
-
 }
 
-.logo-dot{
-
-    width:7px;
-    height:7px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    box-shadow:
-        0 0 15px
-        rgba(255,255,255,.8);
-
-    animation:
-        logoPulse
-        2s
-        ease-in-out
-        infinite;
-
-}
-
-@keyframes logoPulse{
-
-    0%,
-    100%{
-        transform:scale(.75);
-        opacity:.45;
-    }
-
-    50%{
-        transform:scale(1);
-        opacity:1;
-    }
-
-}
-
-.header-right{
-
+.header-meta{
     display:flex;
 
     align-items:center;
 
-    gap:9px;
-
+    gap:8px;
 }
 
 .header-index{
-
     color:#555;
 
-    font-size:8px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-}
-
-.header-button{
-
-    border:1px solid #303030;
-
-    background:#090909;
-
-    color:#fff;
-
-    padding:
-        11px
-        15px;
-
-    font-size:8px;
+    font-size:9px;
 
     letter-spacing:.18em;
 
     text-transform:uppercase;
 
-    transition:.25s ease;
-
+    margin-right:16px;
 }
 
-.header-button:hover{
 
-    background:#fff;
+/* =========================================================
+   HEADER BUTTONS
+========================================================= */
 
-    color:#050505;
-
-    border-color:#fff;
-
-    transform:translateY(-2px);
-
-}
-
+.catalog-button,
 .music-button{
 
-    border:1px solid #303030;
+    border:1px solid #333;
 
     background:#090909;
 
     color:#fff;
 
-    padding:
-        11px
-        15px;
+    padding:11px 16px;
 
-    font-size:8px;
+    font-size:9px;
 
-    letter-spacing:.18em;
+    letter-spacing:.16em;
 
     text-transform:uppercase;
 
-    transition:.25s ease;
+    transition:
+        background .2s ease,
+        border-color .2s ease,
+        color .2s ease,
+        transform .2s ease;
 
 }
 
+.catalog-button:hover,
 .music-button:hover{
 
     background:#fff;
@@ -436,331 +248,7 @@ a{
 
     border-color:#fff;
 
-}
-
-
-/* =========================================================
-   MUSIC PANEL
-========================================================= */
-
-.music-panel{
-
-    position:fixed;
-
-    top:88px;
-
-    right:5vw;
-
-    z-index:4900;
-
-    width:300px;
-
-    border:1px solid #292929;
-
-    background:
-        rgba(8,8,8,.97);
-
-    box-shadow:
-        0 25px 80px
-        rgba(0,0,0,.55);
-
-    backdrop-filter:blur(18px);
-
-    -webkit-backdrop-filter:blur(18px);
-
-    opacity:0;
-
-    visibility:hidden;
-
-    pointer-events:none;
-
-    transform:
-        translateY(-10px)
-        scale(.97);
-
-    transform-origin:top right;
-
-    transition:
-        opacity .25s ease,
-        visibility .25s ease,
-        transform .25s ease;
-
-}
-
-.music-panel.open{
-
-    opacity:1;
-
-    visibility:visible;
-
-    pointer-events:auto;
-
-    transform:
-        translateY(0)
-        scale(1);
-
-}
-
-.music-head{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:
-        13px
-        14px;
-
-    border-bottom:1px solid #1c1c1c;
-
-}
-
-.music-title{
-
-    font-size:8px;
-
-    font-weight:900;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-}
-
-.music-close{
-
-    width:25px;
-    height:25px;
-
-    border:1px solid #292929;
-
-    background:#080808;
-
-    color:#777;
-
-    transition:.2s ease;
-
-}
-
-.music-close:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-}
-
-.music-body{
-
-    padding:15px;
-
-}
-
-.music-track{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:11px;
-
-}
-
-.music-disc{
-
-    width:40px;
-    height:40px;
-
-    flex:0 0 40px;
-
-    border:1px solid #333;
-
-    border-radius:50%;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    font-size:7px;
-
-    letter-spacing:.05em;
-
-    color:#888;
-
-}
-
-.music-disc.playing{
-
-    animation:
-        audioSpin
-        4s
-        linear
-        infinite;
-
-}
-
-@keyframes audioSpin{
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
-.music-info{
-
-    min-width:0;
-
-}
-
-.music-name{
-
-    font-size:10px;
-
-    font-weight:900;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-    text-transform:uppercase;
-
-}
-
-.music-artist{
-
-    margin-top:5px;
-
-    color:#555;
-
-    font-size:7px;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
-.music-controls{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:5px;
-
-    margin-top:14px;
-
-}
-
-.music-control{
-
-    width:34px;
-    height:30px;
-
-    border:1px solid #292929;
-
-    background:#0b0b0b;
-
-    color:#aaa;
-
-    font-size:10px;
-
-    transition:.2s ease;
-
-}
-
-.music-control.main{
-
-    width:54px;
-
-    color:#fff;
-
-}
-
-.music-control:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-    border-color:#fff;
-
-}
-
-.music-progress{
-
-    width:100%;
-
-    height:2px;
-
-    margin-top:13px;
-
-    background:#222;
-
-    cursor:pointer;
-
-}
-
-.music-progress-fill{
-
-    width:0;
-
-    height:100%;
-
-    background:#fff;
-
-}
-
-.music-bottom{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:9px;
-
-    margin-top:9px;
-
-}
-
-.music-time{
-
-    color:#555;
-
-    font-size:7px;
-
-    white-space:nowrap;
-
-}
-
-.music-volume{
-
-    flex:1;
-
-    accent-color:#fff;
-
-}
-
-.music-credit{
-
-    margin-top:11px;
-
-    color:#3f3f3f;
-
-    font-size:6px;
-
-    line-height:1.6;
-
-    letter-spacing:.09em;
-
-    text-transform:uppercase;
+    transform:translateY(-2px);
 
 }
 
@@ -775,7 +263,9 @@ a{
 
     inset:0;
 
-    z-index:8000;
+    z-index:2000;
+
+    background:rgba(5,5,5,.94);
 
     display:flex;
 
@@ -783,22 +273,13 @@ a{
 
     justify-content:center;
 
-    padding:30px;
-
-    background:
-        rgba(0,0,0,.78);
-
-    backdrop-filter:blur(14px);
-
-    -webkit-backdrop-filter:blur(14px);
-
     opacity:0;
 
     visibility:hidden;
 
-    pointer-events:none;
-
-    transition:.3s ease;
+    transition:
+        opacity .3s ease,
+        visibility .3s ease;
 
 }
 
@@ -808,35 +289,25 @@ a{
 
     visibility:visible;
 
-    pointer-events:auto;
-
 }
 
 .catalog-panel{
 
-    width:min(950px,94vw);
+    width:min(900px,90vw);
 
-    max-height:86vh;
+    max-height:85vh;
 
     overflow:auto;
 
     border:1px solid #292929;
 
-    background:#080808;
+    background:#090909;
 
-    box-shadow:
-        0 30px 100px
-        rgba(0,0,0,.6);
+    padding:35px;
 
 }
 
 .catalog-panel-head{
-
-    position:sticky;
-
-    top:0;
-
-    z-index:2;
 
     display:flex;
 
@@ -844,23 +315,17 @@ a{
 
     justify-content:space-between;
 
-    padding:
-        22px
-        25px;
-
-    border-bottom:1px solid #202020;
-
-    background:#080808;
+    margin-bottom:30px;
 
 }
 
 .catalog-panel-title{
 
-    font-size:10px;
+    font-size:12px;
 
     font-weight:900;
 
-    letter-spacing:.2em;
+    letter-spacing:.14em;
 
     text-transform:uppercase;
 
@@ -868,16 +333,17 @@ a{
 
 .catalog-close{
 
-    width:34px;
-    height:34px;
-
     border:1px solid #333;
 
     background:transparent;
 
     color:#aaa;
 
-    font-size:18px;
+    width:36px;
+
+    height:36px;
+
+    font-size:20px;
 
     transition:.2s ease;
 
@@ -896,21 +362,23 @@ a{
     display:grid;
 
     grid-template-columns:
-        repeat(2,1fr);
+        repeat(2,minmax(0,1fr));
 
     gap:1px;
 
-    background:#242424;
+    background:#292929;
 
 }
 
 .catalog-brand{
 
-    padding:22px;
-
     background:#090909;
 
+    padding:20px;
+
     transition:.2s ease;
+
+    cursor:pointer;
 
 }
 
@@ -922,7 +390,308 @@ a{
 
 .catalog-brand-name{
 
-    font-size:11px;
+    font-size:12px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    margin-bottom:7px;
+
+}
+
+.catalog-brand-count{
+
+    color:#555;
+
+    font-size:9px;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   MUSIC OVERLAY
+========================================================= */
+
+.music-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:2100;
+
+    background:rgba(5,5,5,.95);
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    opacity:0;
+
+    visibility:hidden;
+
+    transition:
+        opacity .3s ease,
+        visibility .3s ease;
+
+}
+
+.music-overlay.open{
+
+    opacity:1;
+
+    visibility:visible;
+
+}
+
+.music-panel{
+
+    width:min(620px,90vw);
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    border:1px solid #292929;
+
+    background:#090909;
+
+    padding:35px;
+
+}
+
+.music-panel-head{
+
+    display:flex;
+
+    align-items:flex-start;
+
+    justify-content:space-between;
+
+    margin-bottom:25px;
+
+}
+
+.music-label{
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.2em;
+
+    text-transform:uppercase;
+
+    margin-bottom:8px;
+
+}
+
+.music-panel-title{
+
+    font-size:22px;
+
+    font-weight:900;
+
+    letter-spacing:-.04em;
+
+    text-transform:uppercase;
+
+}
+
+.music-close{
+
+    width:36px;
+
+    height:36px;
+
+    border:1px solid #333;
+
+    background:transparent;
+
+    color:#aaa;
+
+    font-size:20px;
+
+    transition:.2s ease;
+
+}
+
+.music-close:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+}
+
+
+/* =========================================================
+   MUSIC ART
+========================================================= */
+
+.music-art{
+
+    position:relative;
+
+    height:280px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #202020 0%,
+            #0d0d0d 38%,
+            #080808 70%,
+            #050505 100%
+        );
+
+    border:1px solid #1c1c1c;
+
+}
+
+.music-art::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:210px;
+
+    height:210px;
+
+    border:1px solid #292929;
+
+    border-radius:50%;
+
+}
+
+.music-art::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:150px;
+
+    height:150px;
+
+    border:1px solid #1c1c1c;
+
+    border-radius:50%;
+
+}
+
+.music-art-circle{
+
+    position:absolute;
+
+    width:75px;
+
+    height:75px;
+
+    border:1px solid #3a3a3a;
+
+    border-radius:50%;
+
+    animation:
+        musicOrbit 8s linear infinite;
+
+    animation-play-state:paused;
+
+}
+
+.music-overlay.playing
+.music-art-circle{
+
+    animation-play-state:running;
+
+}
+
+@keyframes musicOrbit{
+
+    from{
+        transform:rotate(0deg);
+    }
+
+    to{
+        transform:rotate(360deg);
+    }
+
+}
+
+.music-art-title{
+
+    position:relative;
+
+    z-index:2;
+
+    font-size:
+        clamp(
+            32px,
+            8vw,
+            64px
+        );
+
+    font-weight:900;
+
+    letter-spacing:-.07em;
+
+}
+
+.music-art-subtitle{
+
+    position:relative;
+
+    z-index:2;
+
+    margin-top:10px;
+
+    color:#666;
+
+    font-size:8px;
+
+    letter-spacing:.3em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   MUSIC INFO
+========================================================= */
+
+.music-info{
+
+    display:flex;
+
+    align-items:flex-end;
+
+    justify-content:space-between;
+
+    margin-top:25px;
+
+}
+
+.music-track-name{
+
+    font-size:13px;
 
     font-weight:900;
 
@@ -930,15 +699,226 @@ a{
 
 }
 
-.catalog-brand-count{
-
-    margin-top:7px;
+.music-artist{
 
     color:#555;
 
-    font-size:7px;
+    margin-top:5px;
+
+    font-size:8px;
+
+    letter-spacing:.16em;
+
+    text-transform:uppercase;
+
+}
+
+.music-status{
+
+    color:#555;
+
+    font-size:8px;
 
     letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+}
+
+
+/* =========================================================
+   MUSIC PROGRESS
+========================================================= */
+
+.music-progress-wrap{
+
+    margin-top:22px;
+
+}
+
+.music-progress,
+.music-volume-input{
+
+    width:100%;
+
+    height:2px;
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    background:#292929;
+
+    outline:none;
+
+}
+
+.music-progress::-webkit-slider-thumb,
+.music-volume-input::-webkit-slider-thumb{
+
+    appearance:none;
+
+    -webkit-appearance:none;
+
+    width:10px;
+
+    height:10px;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    cursor:pointer;
+
+}
+
+.music-progress::-moz-range-thumb,
+.music-volume-input::-moz-range-thumb{
+
+    width:10px;
+
+    height:10px;
+
+    border:0;
+
+    border-radius:50%;
+
+    background:#fff;
+
+    cursor:pointer;
+
+}
+
+.music-time{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:8px;
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.1em;
+
+}
+
+
+/* =========================================================
+   MUSIC CONTROLS
+========================================================= */
+
+.music-controls{
+
+    display:flex;
+
+    gap:1px;
+
+    margin-top:20px;
+
+    background:#222;
+
+}
+
+.music-control,
+.music-play{
+
+    border:1px solid #222;
+
+    background:#090909;
+
+    color:#fff;
+
+    padding:16px;
+
+    font-size:9px;
+
+    font-weight:900;
+
+    letter-spacing:.18em;
+
+    text-transform:uppercase;
+
+    transition:.2s ease;
+
+}
+
+.music-control{
+
+    width:80px;
+
+}
+
+.music-play{
+
+    flex:1;
+
+    background:#f2f2f2;
+
+    color:#050505;
+
+}
+
+.music-control:hover{
+
+    background:#fff;
+
+    color:#050505;
+
+}
+
+.music-play:hover{
+
+    background:#ccc;
+
+}
+
+
+/* =========================================================
+   MUSIC VOLUME
+========================================================= */
+
+.music-volume{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    margin-top:22px;
+
+    color:#555;
+
+    font-size:8px;
+
+    letter-spacing:.15em;
+
+}
+
+.music-volume-input{
+
+    flex:1;
+
+}
+
+.music-credit{
+
+    margin-top:25px;
+
+    padding-top:20px;
+
+    border-top:1px solid #181818;
+
+    color:#444;
+
+    font-size:7px;
+
+    line-height:1.7;
+
+    letter-spacing:.08em;
 
     text-transform:uppercase;
 
@@ -953,7 +933,7 @@ a{
 
     position:relative;
 
-    min-height:100svh;
+    min-height:100vh;
 
     display:flex;
 
@@ -964,9 +944,8 @@ a{
     overflow:hidden;
 
     padding:
-        140px
-        5vw
-        100px;
+        120px 5vw
+        80px;
 
 }
 
@@ -977,17 +956,13 @@ a{
     inset:0;
 
     background-image:
-
         linear-gradient(
-            rgba(255,255,255,.025)
-            1px,
+            rgba(255,255,255,.025) 1px,
             transparent 1px
         ),
-
         linear-gradient(
             90deg,
-            rgba(255,255,255,.025)
-            1px,
+            rgba(255,255,255,.025) 1px,
             transparent 1px
         );
 
@@ -996,15 +971,8 @@ a{
     mask-image:
         radial-gradient(
             ellipse at center,
-            black 10%,
-            transparent 72%
-        );
-
-    -webkit-mask-image:
-        radial-gradient(
-            ellipse at center,
-            black 10%,
-            transparent 72%
+            black 20%,
+            transparent 75%
         );
 
 }
@@ -1013,38 +981,19 @@ a{
 
     position:absolute;
 
-    width:min(62vw,760px);
+    width:55vw;
 
-    height:min(62vw,760px);
+    height:55vw;
+
+    max-width:700px;
+
+    max-height:700px;
 
     border:1px solid #171717;
 
     border-radius:50%;
 
     transform:rotate(-18deg);
-
-    animation:
-        orbitFloat
-        12s
-        ease-in-out
-        infinite;
-
-}
-
-@keyframes orbitFloat{
-
-    0%,
-    100%{
-        transform:
-            rotate(-18deg)
-            scale(1);
-    }
-
-    50%{
-        transform:
-            rotate(-12deg)
-            scale(1.025);
-    }
 
 }
 
@@ -1055,15 +1004,11 @@ a{
 
     position:absolute;
 
+    inset:9%;
+
     border:1px solid #111;
 
     border-radius:50%;
-
-}
-
-.hero-orbit::before{
-
-    inset:9%;
 
 }
 
@@ -1072,27 +1017,6 @@ a{
     inset:20%;
 
     border-color:#1b1b1b;
-
-}
-
-.hero-orbit-dot{
-
-    position:absolute;
-
-    width:7px;
-    height:7px;
-
-    background:#fff;
-
-    border-radius:50%;
-
-    top:13%;
-
-    left:72%;
-
-    box-shadow:
-        0 0 20px
-        rgba(255,255,255,.8);
 
 }
 
@@ -1108,9 +1032,9 @@ a{
 
 .hero-kicker{
 
-    color:#666;
+    color:#777;
 
-    font-size:8px;
+    font-size:9px;
 
     letter-spacing:.35em;
 
@@ -1124,16 +1048,16 @@ a{
 
     font-size:
         clamp(
-            55px,
-            12vw,
-            175px
+            60px,
+            13vw,
+            190px
         );
 
     line-height:.78;
 
     font-weight:900;
 
-    letter-spacing:-.095em;
+    letter-spacing:-.09em;
 
     text-transform:uppercase;
 
@@ -1145,57 +1069,19 @@ a{
 
 }
 
-.hero-title span:nth-child(2){
-
-    transform:
-        translateX(5vw);
-
-}
-
-.hero-title span:nth-child(3){
-
-    transform:
-        translateX(-3vw);
-
-}
-
 .hero-subtitle{
 
-    max-width:510px;
+    max-width:500px;
 
-    margin:
-        38px
-        auto
-        0;
+    margin:35px auto 0;
 
-    color:#666;
+    color:#777;
 
-    font-size:9px;
+    font-size:10px;
 
-    line-height:1.9;
+    line-height:1.8;
 
-    letter-spacing:.15em;
-
-    text-transform:uppercase;
-
-}
-
-.hero-scroll{
-
-    position:absolute;
-
-    bottom:30px;
-
-    left:50%;
-
-    transform:
-        translateX(-50%);
-
-    color:#444;
-
-    font-size:7px;
-
-    letter-spacing:.2em;
+    letter-spacing:.12em;
 
     text-transform:uppercase;
 
@@ -1208,19 +1094,19 @@ a{
 
 .marquee{
 
+    border-top:1px solid #161616;
+
+    border-bottom:1px solid #161616;
+
     overflow:hidden;
 
     white-space:nowrap;
 
-    border-top:1px solid #171717;
+    padding:15px 0;
 
-    border-bottom:1px solid #171717;
+    color:#666;
 
-    padding:14px 0;
-
-    color:#555;
-
-    font-size:8px;
+    font-size:9px;
 
     letter-spacing:.25em;
 
@@ -1230,49 +1116,47 @@ a{
 
 .marquee-track{
 
-    display:inline-flex;
-
-    width:max-content;
+    display:inline-block;
 
     animation:
-        marquee
-        28s
-        linear
-        infinite;
+        marquee 25s linear infinite;
 
 }
 
 .marquee-track span{
 
-    margin-right:70px;
+    margin-right:60px;
 
 }
 
 @keyframes marquee{
 
+    from{
+        transform:translateX(0);
+    }
+
     to{
-        transform:
-            translateX(-50%);
+        transform:translateX(-50%);
     }
 
 }
 
 
 /* =========================================================
-   GENERAL
+   GENERAL LABELS
 ========================================================= */
 
 .section-label{
 
     color:#555;
 
-    font-size:8px;
+    font-size:9px;
 
     letter-spacing:.25em;
 
     text-transform:uppercase;
 
-    margin-bottom:15px;
+    margin-bottom:16px;
 
 }
 
@@ -1280,14 +1164,14 @@ a{
 
     font-size:
         clamp(
-            38px,
+            34px,
             6vw,
-            82px
+            80px
         );
 
-    line-height:.86;
+    line-height:.9;
 
-    letter-spacing:-.07em;
+    letter-spacing:-.06em;
 
     text-transform:uppercase;
 
@@ -1301,9 +1185,9 @@ a{
 .builder{
 
     padding:
-        105px
+        100px
         5vw
-        45px;
+        35px;
 
 }
 
@@ -1311,27 +1195,25 @@ a{
 
     display:flex;
 
-    align-items:flex-end;
-
     justify-content:space-between;
 
-    gap:40px;
+    align-items:flex-end;
 
-    margin-bottom:42px;
+    margin-bottom:45px;
 
 }
 
 .builder-head-right{
 
-    max-width:390px;
+    max-width:330px;
 
     color:#555;
 
-    font-size:8px;
+    font-size:9px;
 
-    line-height:1.9;
+    line-height:1.8;
 
-    letter-spacing:.13em;
+    letter-spacing:.12em;
 
     text-transform:uppercase;
 
@@ -1339,7 +1221,7 @@ a{
 
 
 /* =========================================================
-   FIT GRID
+   PRODUCT CARDS
 ========================================================= */
 
 .fit-grid{
@@ -1351,7 +1233,7 @@ a{
 
     gap:1px;
 
-    background:#242424;
+    background:#222;
 
 }
 
@@ -1359,25 +1241,28 @@ a{
 
     position:relative;
 
-    min-height:580px;
+    min-height:500px;
 
     background:#080808;
 
-    overflow:hidden;
-
     border:1px solid transparent;
 
+    overflow:hidden;
+
     transition:
-        background .3s ease,
-        border-color .3s ease;
+        background .25s ease,
+        border-color .25s ease,
+        transform .25s ease;
 
 }
 
 .fit-card:hover{
 
-    background:#0e0e0e;
+    background:#0d0d0d;
 
-    border-color:#363636;
+    border-color:#333;
+
+    transform:translateY(-4px);
 
 }
 
@@ -1389,13 +1274,11 @@ a{
 
     left:18px;
 
-    color:#444;
+    color:#555;
 
-    font-size:8px;
+    font-size:9px;
 
-    letter-spacing:.2em;
-
-    z-index:4;
+    letter-spacing:.18em;
 
 }
 
@@ -1407,33 +1290,21 @@ a{
 
     right:18px;
 
-    color:#555;
+    color:#666;
 
-    font-size:7px;
+    font-size:8px;
 
-    letter-spacing:.17em;
+    letter-spacing:.15em;
 
     text-transform:uppercase;
 
-    z-index:4;
-
 }
-
-
-/* =========================================================
-   FIT IMAGE
-========================================================= */
 
 .fit-image{
 
     position:absolute;
 
-    inset:
-        55px
-        28px
-        125px;
-
-    background:#0b0b0b;
+    inset:55px 30px 100px;
 
     display:flex;
 
@@ -1442,6 +1313,8 @@ a{
     justify-content:center;
 
     overflow:hidden;
+
+    background:#0b0b0b;
 
 }
 
@@ -1454,71 +1327,16 @@ a{
     object-fit:contain;
 
     transition:
-        transform .45s ease,
-        opacity .25s ease;
+        transform .5s ease;
 
 }
 
 .fit-card:hover
 .fit-image img{
 
-    transform:
-        scale(1.045);
+    transform:scale(1.04);
 
 }
-
-.placeholder{
-
-    color:#282828;
-
-    font-size:8px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    text-align:center;
-
-    padding:20px;
-
-}
-
-
-/* =========================================================
-   ITEM SWITCH
-========================================================= */
-
-.item-changing{
-
-    animation:
-        itemChange
-        .28s
-        ease;
-
-}
-
-@keyframes itemChange{
-
-    0%{
-        opacity:.2;
-        transform:
-            translateX(12px)
-            scale(.985);
-    }
-
-    100%{
-        opacity:1;
-        transform:
-            translateX(0)
-            scale(1);
-    }
-
-}
-
-
-/* =========================================================
-   CARD INFO
-========================================================= */
 
 .fit-info{
 
@@ -1528,15 +1346,15 @@ a{
 
     right:20px;
 
-    bottom:59px;
+    bottom:20px;
 
 }
 
 .fit-brand{
 
-    color:#555;
+    color:#666;
 
-    font-size:7px;
+    font-size:8px;
 
     letter-spacing:.18em;
 
@@ -1548,13 +1366,13 @@ a{
 
 .fit-name{
 
-    font-size:13px;
+    font-size:14px;
 
     font-weight:900;
 
     text-transform:uppercase;
 
-    max-width:75%;
+    max-width:80%;
 
 }
 
@@ -1568,73 +1386,7 @@ a{
 
     color:#999;
 
-    font-size:9px;
-
-}
-
-
-/* =========================================================
-   CARD NAVIGATION
-========================================================= */
-
-.fit-navigation{
-
-    position:absolute;
-
-    left:18px;
-
-    right:18px;
-
-    bottom:17px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    z-index:5;
-
-}
-
-.item-arrow{
-
-    width:36px;
-    height:30px;
-
-    border:1px solid #292929;
-
-    background:#090909;
-
-    color:#777;
-
-    font-size:14px;
-
-    line-height:1;
-
-    transition:.2s ease;
-
-}
-
-.item-arrow:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-    border-color:#fff;
-
-}
-
-.item-position{
-
-    color:#444;
-
-    font-size:7px;
-
-    letter-spacing:.16em;
-
-    text-transform:uppercase;
+    font-size:10px;
 
 }
 
@@ -1651,17 +1403,13 @@ a{
 
     justify-content:space-between;
 
-    padding:
-        20px
-        24px;
-
-    background:#080808;
-
-    border:
-        1px solid
-        #202020;
+    border:1px solid #202020;
 
     border-top:0;
+
+    padding:22px 24px;
+
+    background:#080808;
 
 }
 
@@ -1669,7 +1417,7 @@ a{
 
     color:#555;
 
-    font-size:7px;
+    font-size:8px;
 
     letter-spacing:.2em;
 
@@ -1679,7 +1427,7 @@ a{
 
 .total-value{
 
-    font-size:23px;
+    font-size:24px;
 
     font-weight:900;
 
@@ -1689,39 +1437,34 @@ a{
 
 
 /* =========================================================
-   ACTIONS
+   FIT ACTIONS
 ========================================================= */
 
 .fit-actions{
 
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
+    display:flex;
 
     gap:1px;
 
-    background:#242424;
-
     margin-top:18px;
+
+    background:#222;
 
 }
 
 .fit-action{
 
-    border:
-        1px solid
-        #242424;
+    flex:1;
+
+    border:1px solid #222;
 
     background:#090909;
 
     color:#fff;
 
-    padding:
-        17px
-        20px;
+    padding:17px 20px;
 
-    font-size:8px;
+    font-size:9px;
 
     font-weight:900;
 
@@ -1751,7 +1494,7 @@ a{
 
 .fit-action.primary:hover{
 
-    background:#cfcfcf;
+    background:#ccc;
 
 }
 
@@ -1762,15 +1505,15 @@ a{
 
 .rating-panel{
 
-    display:none;
-
     margin-top:18px;
-
-    padding:24px;
 
     border:1px solid #202020;
 
     background:#080808;
+
+    padding:25px;
+
+    display:none;
 
 }
 
@@ -1782,13 +1525,13 @@ a{
 
 .rating-title{
 
-    font-size:9px;
+    font-size:10px;
 
     font-weight:900;
 
     text-transform:uppercase;
 
-    margin-bottom:16px;
+    margin-bottom:18px;
 
 }
 
@@ -1796,17 +1539,17 @@ a{
 
     display:flex;
 
-    flex-wrap:wrap;
+    gap:8px;
 
-    gap:7px;
+    flex-wrap:wrap;
 
 }
 
 .rating-button{
 
-    min-width:42px;
+    min-width:45px;
 
-    height:38px;
+    height:40px;
 
     border:1px solid #292929;
 
@@ -1814,7 +1557,7 @@ a{
 
     color:#777;
 
-    font-size:9px;
+    font-size:10px;
 
     transition:.2s ease;
 
@@ -1831,15 +1574,20 @@ a{
 
 }
 
+
+/* =========================================================
+   STATUS
+========================================================= */
+
 .status{
 
-    min-height:18px;
+    min-height:20px;
 
-    margin-top:15px;
+    margin-top:16px;
 
     color:#666;
 
-    font-size:8px;
+    font-size:9px;
 
     letter-spacing:.12em;
 
@@ -1858,9 +1606,9 @@ a{
 
     justify-content:flex-end;
 
-    gap:7px;
+    gap:8px;
 
-    margin-top:18px;
+    margin-top:20px;
 
 }
 
@@ -1870,13 +1618,11 @@ a{
 
     background:#080808;
 
-    color:#666;
+    color:#777;
 
-    padding:
-        11px
-        15px;
+    padding:12px 16px;
 
-    font-size:7px;
+    font-size:8px;
 
     letter-spacing:.16em;
 
@@ -1890,25 +1636,29 @@ a{
 
     color:#fff;
 
-    background:#111;
-
     border-color:#555;
+
+    background:#111;
 
 }
 
 
 /* =========================================================
-   ARCHIVE INFO
+   ARCHIVE
 ========================================================= */
 
 .archive{
 
     padding:
-        70px
+        45px
         5vw
-        110px;
+        100px;
 
     border-top:1px solid #111;
+
+    opacity:1 !important;
+
+    transform:none !important;
 
 }
 
@@ -1922,21 +1672,21 @@ a{
 
     gap:40px;
 
-    margin-bottom:45px;
+    margin-bottom:35px;
 
 }
 
 .archive-description{
 
-    max-width:430px;
+    max-width:340px;
 
     color:#555;
 
-    font-size:8px;
+    font-size:9px;
 
-    line-height:1.9;
+    line-height:1.8;
 
-    letter-spacing:.13em;
+    letter-spacing:.12em;
 
     text-transform:uppercase;
 
@@ -1944,37 +1694,118 @@ a{
 
 
 /* =========================================================
-   ARCHIVE CATEGORY PANELS
+   ARCHIVE CONTROLS
 ========================================================= */
 
-.archive-categories{
+.archive-controls{
+
+    display:flex;
+
+    gap:8px;
+
+    margin-bottom:20px;
+
+}
+
+.archive-search{
+
+    flex:1;
+
+    min-width:0;
+
+    border:1px solid #222;
+
+    outline:none;
+
+    background:#080808;
+
+    color:#fff;
+
+    padding:14px 16px;
+
+    font-size:10px;
+
+    transition:.2s ease;
+
+}
+
+.archive-search::placeholder{
+
+    color:#444;
+
+}
+
+.archive-search:focus{
+
+    border-color:#555;
+
+}
+
+.category-filter{
+
+    border:1px solid #222;
+
+    background:#080808;
+
+    color:#777;
+
+    padding:0 16px;
+
+    font-size:9px;
+
+    letter-spacing:.12em;
+
+    text-transform:uppercase;
+
+    outline:none;
+
+}
+
+
+/* =========================================================
+   ARCHIVE GRID
+========================================================= */
+
+.archive-grid{
 
     display:grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        repeat(4,minmax(0,1fr));
 
     gap:1px;
 
-    background:#222;
+    background:#202020;
 
 }
 
-.archive-category{
+.archive-item{
 
-    min-height:250px;
+    position:relative;
 
-    padding:25px;
+    min-height:290px;
 
     background:#080808;
 
     border:1px solid transparent;
 
-    transition:.25s ease;
+    padding:15px;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    overflow:hidden;
+
+    transition:
+        background .2s ease,
+        border-color .2s ease;
 
 }
 
-.archive-category:hover{
+.archive-item:hover{
 
     background:#101010;
 
@@ -1982,48 +1813,89 @@ a{
 
 }
 
-.archive-category-number{
+.archive-item-image{
 
-    color:#333;
+    height:190px;
 
-    font-size:7px;
+    display:flex;
 
-    letter-spacing:.2em;
+    align-items:center;
 
-}
+    justify-content:center;
 
-.archive-category-title{
+    background:#0b0b0b;
 
-    margin-top:60px;
-
-    font-size:
-        clamp(
-            32px,
-            4vw,
-            55px
-        );
-
-    font-weight:900;
-
-    line-height:.8;
-
-    letter-spacing:-.07em;
-
-    text-transform:uppercase;
+    overflow:hidden;
 
 }
 
-.archive-category-count{
+.archive-item-image img{
 
-    margin-top:30px;
+    width:100%;
+
+    height:100%;
+
+    object-fit:contain;
+
+    transition:
+        transform .4s ease;
+
+}
+
+.archive-item:hover
+.archive-item-image img{
+
+    transform:scale(1.04);
+
+}
+
+.archive-item-meta{
+
+    padding-top:14px;
+
+}
+
+.archive-item-brand{
 
     color:#555;
 
     font-size:7px;
 
-    letter-spacing:.16em;
+    letter-spacing:.17em;
 
     text-transform:uppercase;
+
+    margin-bottom:6px;
+
+}
+
+.archive-item-name{
+
+    font-size:10px;
+
+    font-weight:900;
+
+    text-transform:uppercase;
+
+    white-space:nowrap;
+
+    overflow:hidden;
+
+    text-overflow:ellipsis;
+
+}
+
+.archive-item-bottom{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:8px;
+
+    color:#666;
+
+    font-size:8px;
 
 }
 
@@ -2042,7 +1914,7 @@ a{
     gap:80px;
 
     padding:
-        95px
+        90px
         5vw;
 
     border-top:1px solid #181818;
@@ -2053,14 +1925,14 @@ a{
 
     font-size:
         clamp(
-            45px,
+            42px,
             7vw,
-            100px
+            95px
         );
 
-    line-height:.82;
+    line-height:.83;
 
-    letter-spacing:-.075em;
+    letter-spacing:-.07em;
 
     text-transform:uppercase;
 
@@ -2072,7 +1944,7 @@ a{
 
     color:#666;
 
-    font-size:9px;
+    font-size:10px;
 
     line-height:1.9;
 
@@ -2109,7 +1981,7 @@ a{
 
     color:#444;
 
-    font-size:7px;
+    font-size:8px;
 
     letter-spacing:.15em;
 
@@ -2138,12 +2010,11 @@ a{
 
     opacity:0;
 
-    transform:
-        translateY(24px);
+    transform:translateY(25px);
 
     transition:
-        opacity .8s ease,
-        transform .8s ease;
+        opacity .7s ease,
+        transform .7s ease;
 
 }
 
@@ -2170,51 +2041,41 @@ a{
 
     .fit-card{
 
-        min-height:560px;
+        min-height:430px;
 
     }
 
-    .archive-categories{
+    .archive-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+    }
+
+    .info{
 
         grid-template-columns:1fr;
 
-    }
-
-    .archive-category{
-
-        min-height:190px;
+        gap:40px;
 
     }
 
-    .archive-category-title{
+    .catalog-list{
 
-        margin-top:40px;
+        grid-template-columns:1fr;
 
     }
 
 }
 
 
-@media(max-width:800px){
-
-    .music-panel{
-
-        top:82px;
-
-        right:14px;
-
-        width:
-            calc(
-                100vw - 28px
-            );
-
-    }
+@media(max-width:600px){
 
     .header{
 
-        padding:
-            0
-            16px;
+        height:64px;
+
+        padding:0 16px;
 
     }
 
@@ -2224,44 +2085,52 @@ a{
 
     }
 
-    .header-right{
+    .header-meta{
 
         gap:5px;
 
     }
 
-    .header-button,
+    .catalog-button,
     .music-button{
 
         padding:
-            10px
-            11px;
+            10px 11px;
+
+        font-size:8px;
 
     }
 
     .hero{
 
+        min-height:90vh;
+
         padding:
-            120px
-            16px
-            80px;
+            100px 16px
+            60px;
 
     }
 
     .hero-orbit{
 
-        width:100vw;
+        width:120vw;
 
-        height:100vw;
+        height:120vw;
+
+    }
+
+    .hero-title{
+
+        font-size:20vw;
 
     }
 
     .builder{
 
         padding:
-            75px
+            70px
             16px
-            35px;
+            20px;
 
     }
 
@@ -2279,117 +2148,21 @@ a{
 
     }
 
-    .archive{
-
-        padding:
-            55px
-            16px
-            80px;
-
-    }
-
-    .archive-head{
-
-        display:block;
-
-        margin-bottom:30px;
-
-    }
-
-    .archive-description{
-
-        margin-top:18px;
-
-    }
-
-    .info{
-
-        grid-template-columns:1fr;
-
-        gap:45px;
-
-        padding:
-            75px
-            16px;
-
-    }
-
-    .footer{
-
-        padding:
-            24px
-            16px;
-
-    }
-
-}
-
-
-@media(max-width:520px){
-
-    .logo{
-
-        font-size:12px;
-
-    }
-
-    .logo-dot{
-
-        width:6px;
-        height:6px;
-
-    }
-
-    .hero-title{
-
-        font-size:19vw;
-
-    }
-
-    .hero-title span:nth-child(2){
-
-        transform:
-            translateX(5vw);
-
-    }
-
-    .hero-title span:nth-child(3){
-
-        transform:
-            translateX(-2vw);
-
-    }
-
     .fit-card{
 
-        min-height:500px;
+        min-height:390px;
 
     }
 
-    .fit-image{
+    .total-bar{
 
-        inset:
-            55px
-            18px
-            120px;
+        padding:18px;
 
-    }
-
-    .fit-info{
-
-        left:18px;
-        right:18px;
-    }
-
-    .fit-navigation{
-
-        left:18px;
-        right:18px;
     }
 
     .fit-actions{
 
-        grid-template-columns:1fr;
+        flex-direction:column;
 
     }
 
@@ -2405,17 +2178,154 @@ a{
 
     }
 
-    .catalog-overlay{
+    .archive{
 
-        padding:12px;
+        padding:
+            25px
+            16px
+            70px;
+
+    }
+
+    .archive-head{
+
+        display:block;
+
+        margin-bottom:25px;
 
     }
 
-    .catalog-list{
+    .archive-description{
 
-        grid-template-columns:1fr;
+        margin-top:18px;
 
     }
+
+    .archive-controls{
+
+        flex-direction:column;
+
+    }
+
+    .category-filter{
+
+        height:44px;
+
+    }
+
+    .archive-grid{
+
+        grid-template-columns:
+            repeat(2,minmax(0,1fr));
+
+    }
+
+    .archive-item{
+
+        min-height:240px;
+
+        padding:10px;
+
+    }
+
+    .archive-item-image{
+
+        height:150px;
+
+    }
+
+    .archive-item-name{
+
+        font-size:8px;
+
+    }
+
+    .info{
+
+        padding:
+            65px
+            16px;
+
+    }
+
+    .footer{
+
+        padding:
+            24px 16px;
+
+        gap:20px;
+
+    }
+
+    .music-panel{
+
+        padding:20px;
+
+    }
+
+    .music-art{
+
+        height:230px;
+
+    }
+
+    .music-art::before{
+
+        width:175px;
+
+        height:175px;
+
+    }
+
+    .music-art::after{
+
+        width:125px;
+
+        height:125px;
+
+    }
+
+}
+
+
+/* =========================================================
+   SELECTION
+========================================================= */
+
+::selection{
+
+    background:#fff;
+
+    color:#050505;
+
+}
+
+
+/* =========================================================
+   SCROLLBAR
+========================================================= */
+
+::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+::-webkit-scrollbar-track{
+
+    background:#050505;
+
+}
+
+::-webkit-scrollbar-thumb{
+
+    background:#252525;
+
+}
+
+::-webkit-scrollbar-thumb:hover{
+
+    background:#444;
 
 }
 
@@ -2463,18 +2373,11 @@ a{
 
 <header class="header">
 
-    <div class="logo-wrap">
-
-        <div class="logo">
-            CreatureMeza
-        </div>
-
-        <div class="logo-dot"></div>
-
+    <div class="logo">
+        CreatureMeza
     </div>
 
-
-    <div class="header-right">
+    <div class="header-meta">
 
         <div class="header-index">
             CM / 001
@@ -2488,7 +2391,7 @@ a{
         </button>
 
         <button
-            class="header-button"
+            class="catalog-button"
             id="catalogButton"
         >
             Catalog
@@ -2497,135 +2400,6 @@ a{
     </div>
 
 </header>
-
-
-<!-- =======================================================
-     MUSIC PANEL
-======================================================= -->
-
-<div
-    class="music-panel"
-    id="musicPanel"
->
-
-    <div class="music-head">
-
-        <div class="music-title">
-            CM / Audio
-        </div>
-
-        <button
-            class="music-close"
-            id="musicClose"
-        >
-            ×
-        </button>
-
-    </div>
-
-
-    <div class="music-body">
-
-        <div class="music-track">
-
-            <div
-                class="music-disc"
-                id="musicDisc"
-            >
-                CM
-            </div>
-
-            <div class="music-info">
-
-                <div
-                    class="music-name"
-                    id="musicName"
-                >
-                    Nightfall
-                </div>
-
-                <div
-                    class="music-artist"
-                    id="musicArtist"
-                >
-                    Scott Buckley
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <div class="music-controls">
-
-            <button
-                class="music-control"
-                id="prevTrack"
-            >
-                ‹
-            </button>
-
-            <button
-                class="music-control main"
-                id="playTrack"
-            >
-                ▶
-            </button>
-
-            <button
-                class="music-control"
-                id="nextTrack"
-            >
-                ›
-            </button>
-
-        </div>
-
-
-        <div
-            class="music-progress"
-            id="musicProgress"
-        >
-
-            <div
-                class="music-progress-fill"
-                id="musicProgressFill"
-            ></div>
-
-        </div>
-
-
-        <div class="music-bottom">
-
-            <div
-                class="music-time"
-                id="musicTime"
-            >
-                0:00 / 0:00
-            </div>
-
-            <input
-                class="music-volume"
-                id="musicVolume"
-                type="range"
-                min="0"
-                max="1"
-                step="0.01"
-                value=".8"
-            >
-
-        </div>
-
-
-        <div class="music-credit">
-
-            Scott Buckley — Nightfall
-
-        </div>
-
-    </div>
-
-</div>
 
 
 <!-- =======================================================
@@ -2665,6 +2439,178 @@ a{
 
 
 <!-- =======================================================
+     MUSIC
+======================================================= -->
+
+<div
+    class="music-overlay"
+    id="musicOverlay"
+>
+
+    <div class="music-panel">
+
+        <div class="music-panel-head">
+
+            <div>
+
+                <div class="music-label">
+                    003 / Music
+                </div>
+
+                <div class="music-panel-title">
+                    Nightfall
+                </div>
+
+            </div>
+
+            <button
+                class="music-close"
+                id="musicClose"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="music-art">
+
+            <div class="music-art-circle"></div>
+
+            <div class="music-art-title">
+                NIGHTFALL
+            </div>
+
+            <div class="music-art-subtitle">
+                SCOTT BUCKLEY
+            </div>
+
+        </div>
+
+
+        <div class="music-info">
+
+            <div>
+
+                <div class="music-track-name">
+                    Nightfall
+                </div>
+
+                <div class="music-artist">
+                    Scott Buckley
+                </div>
+
+            </div>
+
+            <div
+                class="music-status"
+                id="musicStatus"
+            >
+                PAUSED
+            </div>
+
+        </div>
+
+
+        <div class="music-progress-wrap">
+
+            <input
+                type="range"
+                id="musicProgress"
+                class="music-progress"
+                min="0"
+                max="100"
+                value="0"
+            >
+
+        </div>
+
+
+        <div class="music-time">
+
+            <span id="musicCurrent">
+                00:00
+            </span>
+
+            <span id="musicDuration">
+                00:00
+            </span>
+
+        </div>
+
+
+        <div class="music-controls">
+
+            <button
+                class="music-control"
+                id="musicBack"
+            >
+                −10
+            </button>
+
+            <button
+                class="music-play"
+                id="musicPlay"
+            >
+                PLAY
+            </button>
+
+            <button
+                class="music-control"
+                id="musicForward"
+            >
+                +10
+            </button>
+
+        </div>
+
+
+        <div class="music-volume">
+
+            <span>
+                VOL
+            </span>
+
+            <input
+                type="range"
+                id="musicVolume"
+                class="music-volume-input"
+                min="0"
+                max="1"
+                step="0.01"
+                value="0.7"
+            >
+
+        </div>
+
+
+        <div class="music-credit">
+
+            'Nightfall' by Scott Buckley -
+            released under CC-BY 4.0.
+            www.scottbuckley.com.au
+
+        </div>
+
+
+        <audio
+            id="nightfallAudio"
+            preload="metadata"
+        >
+
+            <source
+                src="Nightfall.mp3"
+                type="audio/mpeg"
+            >
+
+        </audio>
+
+    </div>
+
+</div>
+
+
+<!-- =======================================================
      HERO
 ======================================================= -->
 
@@ -2672,13 +2618,7 @@ a{
 
     <div class="hero-grid"></div>
 
-
-    <div class="hero-orbit">
-
-        <div class="hero-orbit-dot"></div>
-
-    </div>
-
+    <div class="hero-orbit"></div>
 
     <div class="hero-content">
 
@@ -2686,31 +2626,21 @@ a{
             Independent fashion archive
         </div>
 
-
         <h1 class="hero-title">
 
             <span>Creature</span>
-
-            <span>Meza</span>
-
-            <span>Archive.</span>
+            <span>Meza.</span>
 
         </h1>
 
-
         <p class="hero-subtitle">
 
-            Select objects from the archive.
-            Build your own combination.
-            Three categories. No rules.
+            Independent fashion archive.
+            Select objects.
+            Build your own fit.
 
         </p>
 
-    </div>
-
-
-    <div class="hero-scroll">
-        Scroll / Explore
     </div>
 
 </section>
@@ -2730,7 +2660,7 @@ a{
 
         <span>Independent Archive</span>
 
-        <span>Build Your Fit</span>
+        <span>Built For The Archive</span>
 
         <span>CreatureMeza</span>
 
@@ -2738,7 +2668,7 @@ a{
 
         <span>Independent Archive</span>
 
-        <span>Build Your Fit</span>
+        <span>Built For The Archive</span>
 
     </div>
 
@@ -2763,20 +2693,16 @@ a{
             </div>
 
             <h2 class="section-title">
-                Build<br>
-                Your Fit.
+                Outfit
             </h2>
 
         </div>
 
-
         <div class="builder-head-right">
 
-            Browse through the archive
-            using the arrows.
-            Choose one object for the top,
-            one for the bottom and one
-            for the shoes.
+            Three categories.
+            One combination.
+            Select one object from each category.
 
         </div>
 
@@ -2832,7 +2758,6 @@ a{
         <div class="rating-title">
             Rate this combination
         </div>
-
 
         <div
             class="rating-buttons"
@@ -2946,7 +2871,7 @@ a{
 ======================================================= -->
 
 <section
-    class="archive reveal"
+    class="archive"
     id="archive"
 >
 
@@ -2959,84 +2884,65 @@ a{
             </div>
 
             <h2 class="section-title">
+
                 Selected<br>
                 Objects.
+
             </h2>
 
         </div>
 
-
         <div class="archive-description">
 
-            The full archive contains
-            117 selected objects across
-            13 brands and three categories.
-
-            <br><br>
-
-            Objects are not displayed
-            as a continuous product wall.
-            Browse them through the
-            Outfit Builder above.
+            A growing collection of pieces,
+            objects and references selected
+            from the CreatureMeza archive.
 
         </div>
 
     </div>
 
 
-    <div class="archive-categories">
+    <div class="archive-controls">
 
-        <div class="archive-category">
+        <input
+            class="archive-search"
+            id="archiveSearch"
+            type="text"
+            placeholder="SEARCH OBJECTS..."
+            autocomplete="off"
+        >
 
-            <div class="archive-category-number">
-                01
-            </div>
+        <select
+            class="category-filter"
+            id="categoryFilter"
+        >
 
-            <div class="archive-category-title">
+            <option value="all">
+                All categories
+            </option>
+
+            <option value="top">
                 Top
-            </div>
+            </option>
 
-            <div class="archive-category-count">
-                39 objects
-            </div>
-
-        </div>
-
-
-        <div class="archive-category">
-
-            <div class="archive-category-number">
-                02
-            </div>
-
-            <div class="archive-category-title">
+            <option value="bottom">
                 Bottom
-            </div>
+            </option>
 
-            <div class="archive-category-count">
-                39 objects
-            </div>
-
-        </div>
-
-
-        <div class="archive-category">
-
-            <div class="archive-category-number">
-                03
-            </div>
-
-            <div class="archive-category-title">
+            <option value="shoes">
                 Shoes
-            </div>
+            </option>
 
-            <div class="archive-category-count">
-                39 objects
-            </div>
-
-        </div>
+        </select>
 
     </div>
+
+
+    <div
+        class="archive-grid"
+        id="archiveGrid"
+    ></div>
 
 </section>
 
@@ -3060,7 +2966,6 @@ a{
         </h2>
 
     </div>
-
 
     <div class="info-copy">
 
@@ -3105,16 +3010,14 @@ a{
 <script>
 
 /* =========================================================
-   CATALOG
-   13 BRANDS / 117 OBJECTS
+   CATALOG DATA
 ========================================================= */
 
 const catalog = {
 
+    "Ader Error": {
 
-    "Ader Error":{
-
-        top:[
+        top: [
 
             {
                 name:"Oversized Logo Tee",
@@ -3136,7 +3039,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Wide Cargo Trousers",
@@ -3158,7 +3061,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Chunky Runner",
@@ -3183,9 +3086,9 @@ const catalog = {
     },
 
 
-    "Balenciaga":{
+    "Balenciaga": {
 
-        top:[
+        top: [
 
             {
                 name:"Logo T-Shirt",
@@ -3207,7 +3110,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Wide Leg Jeans",
@@ -3229,7 +3132,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Runner Sneaker",
@@ -3254,9 +3157,9 @@ const catalog = {
     },
 
 
-    "Carhartt WIP":{
+    "Carhartt WIP": {
 
-        top:[
+        top: [
 
             {
                 name:"Pocket Tee",
@@ -3278,7 +3181,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Single Knee Pant",
@@ -3300,7 +3203,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Canvas Sneaker",
@@ -3325,9 +3228,9 @@ const catalog = {
     },
 
 
-    "Comme des Garçons":{
+    "Comme des Garçons": {
 
-        top:[
+        top: [
 
             {
                 name:"Play Tee",
@@ -3349,7 +3252,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Wide Trousers",
@@ -3371,7 +3274,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Converse Play",
@@ -3396,9 +3299,9 @@ const catalog = {
     },
 
 
-    "Diesel":{
+    "Diesel": {
 
-        top:[
+        top: [
 
             {
                 name:"Washed Tee",
@@ -3420,7 +3323,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Bootcut Denim",
@@ -3442,7 +3345,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"D-Rise Sneaker",
@@ -3467,9 +3370,9 @@ const catalog = {
     },
 
 
-    "Givenchy":{
+    "Givenchy": {
 
-        top:[
+        top: [
 
             {
                 name:"Star Logo Polo",
@@ -3491,7 +3394,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Wide Trousers",
@@ -3513,7 +3416,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"G4 Sneaker",
@@ -3538,9 +3441,9 @@ const catalog = {
     },
 
 
-    "Maison Margiela":{
+    "Maison Margiela": {
 
-        top:[
+        top: [
 
             {
                 name:"Replica Tee",
@@ -3562,7 +3465,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Wide Wool Trousers",
@@ -3584,7 +3487,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Replica Sneakers",
@@ -3609,9 +3512,9 @@ const catalog = {
     },
 
 
-    "Nike":{
+    "Nike": {
 
-        top:[
+        top: [
 
             {
                 name:"Boxy Sports Tee",
@@ -3633,7 +3536,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Tech Fleece Pants",
@@ -3655,7 +3558,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Air Max",
@@ -3680,9 +3583,9 @@ const catalog = {
     },
 
 
-    "Prada":{
+    "Prada": {
 
-        top:[
+        top: [
 
             {
                 name:"Triangle Logo Tee",
@@ -3704,7 +3607,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Technical Trousers",
@@ -3726,7 +3629,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"America's Cup",
@@ -3751,9 +3654,9 @@ const catalog = {
     },
 
 
-    "Ralph Lauren":{
+    "Ralph Lauren": {
 
-        top:[
+        top: [
 
             {
                 name:"Classic Polo",
@@ -3775,7 +3678,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Pleated Chino",
@@ -3797,7 +3700,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Classic Sneaker",
@@ -3822,9 +3725,9 @@ const catalog = {
     },
 
 
-    "Supreme":{
+    "Supreme": {
 
-        top:[
+        top: [
 
             {
                 name:"Box Logo Tee",
@@ -3846,7 +3749,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Cargo Pant",
@@ -3868,7 +3771,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Skate Sneaker",
@@ -3893,9 +3796,9 @@ const catalog = {
     },
 
 
-    "Stone Island":{
+    "Stone Island": {
 
-        top:[
+        top: [
 
             {
                 name:"Compass Tee",
@@ -3917,7 +3820,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Cargo Trousers",
@@ -3939,7 +3842,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Compass Sneaker",
@@ -3964,9 +3867,9 @@ const catalog = {
     },
 
 
-    "Y-3":{
+    "Y-3": {
 
-        top:[
+        top: [
 
             {
                 name:"Logo Tee",
@@ -3988,7 +3891,7 @@ const catalog = {
 
         ],
 
-        bottom:[
+        bottom: [
 
             {
                 name:"Wide Track Pants",
@@ -4010,7 +3913,7 @@ const catalog = {
 
         ],
 
-        shoes:[
+        shoes: [
 
             {
                 name:"Y-3 Runner",
@@ -4041,14 +3944,13 @@ const catalog = {
    STATE
 ========================================================= */
 
-const categories=[
+const categories = [
     "top",
     "bottom",
     "shoes"
 ];
 
-
-const state={
+const state = {
 
     selected:{
         top:null,
@@ -4058,29 +3960,9 @@ const state={
 
     rating:null,
 
-    audioIndex:0
+    confirmed:false
 
 };
-
-
-/* =========================================================
-   AUDIO
-========================================================= */
-
-const tracks=[
-
-    {
-        name:"Nightfall",
-        artist:"Scott Buckley",
-        file:"music/nightfall.mp3"
-    }
-
-];
-
-
-let audio=null;
-
-let audioReady=false;
 
 
 /* =========================================================
@@ -4089,16 +3971,16 @@ let audioReady=false;
 
 function getAllItems(){
 
-    const items=[];
+    const items = [];
 
     Object.entries(catalog).forEach(
-        ([brand,data])=>{
+        ([brand,data]) => {
 
             categories.forEach(
-                category=>{
+                category => {
 
                     data[category].forEach(
-                        item=>{
+                        item => {
 
                             items.push({
 
@@ -4124,19 +4006,9 @@ function getAllItems(){
 }
 
 
-function getCategoryItems(category){
-
-    return getAllItems().filter(
-        item =>
-            item.category === category
-    );
-
-}
-
-
 function getCategoryLabel(category){
 
-    const labels={
+    const labels = {
 
         top:"Top",
 
@@ -4160,25 +4032,9 @@ function formatPrice(value){
 }
 
 
-function escapeHTML(value){
-
-    return String(value)
-        .replace(
-            /[&<>"']/g,
-            char => ({
-
-                "&":"&amp;",
-                "<":"&lt;",
-                ">":"&gt;",
-                '"':"&quot;",
-                "'":"&#039;"
-
-            }[char])
-
-        );
-
-}
-
+/* =========================================================
+   IMAGE
+========================================================= */
 
 function imageMarkup(item){
 
@@ -4187,24 +4043,34 @@ function imageMarkup(item){
         return `
 
             <img
-                src="${escapeHTML(item.image)}"
-                alt="${escapeHTML(item.name)}"
+                src="${item.image}"
+                alt="${item.name}"
+                loading="lazy"
             >
 
         `;
 
     }
 
-
     return `
 
-        <div class="placeholder">
+        <div
+            style="
+                width:100%;
+                height:100%;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+                color:#333;
+                font-size:9px;
+                letter-spacing:.15em;
+                text-transform:uppercase;
+                text-align:center;
+                padding:20px;
+            "
+        >
 
-            ${escapeHTML(item.brand)}
-
-            <br><br>
-
-            IMAGE / SOON
+            ${item.brand}
 
         </div>
 
@@ -4212,6 +4078,10 @@ function imageMarkup(item){
 
 }
 
+
+/* =========================================================
+   SELECTED ITEM
+========================================================= */
 
 function getSelectedItem(category){
 
@@ -4224,137 +4094,14 @@ function getSelectedItem(category){
 
     }
 
-    return getCategoryItems(category)[index]
-        || null;
-
-}
-
-
-/* =========================================================
-   STORAGE
-========================================================= */
-
-function saveState(){
-
-    try{
-
-        localStorage.setItem(
-            "creaturemeza_fit",
-            JSON.stringify(
-                state.selected
-            )
-        );
-
-        localStorage.setItem(
-            "creaturemeza_rating",
-            state.rating === null
-                ? ""
-                : String(state.rating)
-        );
-
-    }catch(error){
-
-        console.warn(
-            "CreatureMeza storage unavailable."
-        );
-
-    }
-
-}
-
-
-function loadState(){
-
-    try{
-
-        const saved =
-            JSON.parse(
-                localStorage.getItem(
-                    "creaturemeza_fit"
-                ) || "null"
+    const all =
+        getAllItems()
+            .filter(
+                item =>
+                    item.category === category
             );
 
-
-        if(saved){
-
-            categories.forEach(
-                category=>{
-
-                    const list =
-                        getCategoryItems(
-                            category
-                        );
-
-                    const value =
-                        Number(
-                            saved[category]
-                        );
-
-                    state.selected[category] =
-                        Number.isInteger(value) &&
-                        value >= 0 &&
-                        value < list.length
-                            ? value
-                            : null;
-
-                }
-            );
-
-        }else{
-
-            setInitialFit(false);
-
-        }
-
-
-        const rating =
-            localStorage.getItem(
-                "creaturemeza_rating"
-            );
-
-
-        if(
-            rating &&
-            Number.isFinite(
-                Number(rating)
-            )
-        ){
-
-            state.rating =
-                Number(rating);
-
-        }
-
-    }catch(error){
-
-        setInitialFit(false);
-
-    }
-
-}
-
-
-/* =========================================================
-   INITIAL FIT
-========================================================= */
-
-function setInitialFit(save=true){
-
-    categories.forEach(
-        category=>{
-
-            state.selected[category]=0;
-
-        }
-    );
-
-    state.rating=null;
-
-    if(save){
-
-        saveState();
-
-    }
+    return all[index] || null;
 
 }
 
@@ -4363,93 +4110,55 @@ function setInitialFit(save=true){
    RENDER BUILDER
 ========================================================= */
 
-function renderBuilder(
-    changedCategory=null,
-    direction=0
-){
+function renderBuilder(){
 
     const grid =
-        document.getElementById(
-            "fitGrid"
-        );
+        document.getElementById("fitGrid");
 
+    grid.innerHTML = "";
 
-    grid.innerHTML="";
-
-
-    let total=0;
-
+    let total = 0;
 
     categories.forEach(
-        (category,index)=>{
-
-            const list =
-                getCategoryItems(
-                    category
-                );
-
-
-            const selectedIndex =
-                state.selected[category];
-
+        (category,index) => {
 
             const item =
-                getSelectedItem(
-                    category
-                );
-
+                getSelectedItem(category);
 
             const card =
-                document.createElement(
-                    "article"
-                );
-
+                document.createElement("article");
 
             card.className =
                 "fit-card";
 
-
             if(item){
 
-                total +=
-                    Number(item.price);
+                total += Number(item.price);
 
-
-                const changing =
-                    changedCategory === category
-                        ? " item-changing"
-                        : "";
-
-
-                card.innerHTML=`
+                card.innerHTML = `
 
                     <div class="fit-card-number">
-                        0${index+1}
+                        0${index + 1}
                     </div>
-
 
                     <div class="fit-card-category">
                         ${getCategoryLabel(category)}
                     </div>
 
-
-                    <div
-                        class="fit-image${changing}"
-                    >
+                    <div class="fit-image">
 
                         ${imageMarkup(item)}
 
                     </div>
 
-
                     <div class="fit-info">
 
                         <div class="fit-brand">
-                            ${escapeHTML(item.brand)}
+                            ${item.brand}
                         </div>
 
                         <div class="fit-name">
-                            ${escapeHTML(item.name)}
+                            ${item.name}
                         </div>
 
                         <div class="fit-price">
@@ -4458,63 +4167,34 @@ function renderBuilder(
 
                     </div>
 
-
-                    <div class="fit-navigation">
-
-                        <button
-                            class="item-arrow"
-                            data-category="${category}"
-                            data-direction="-1"
-                            aria-label="Previous ${getCategoryLabel(category)}"
-                        >
-                            ←
-                        </button>
-
-
-                        <div class="item-position">
-
-                            ${String(selectedIndex + 1).padStart(2,"0")}
-                            /
-                            ${String(list.length).padStart(2,"0")}
-
-                        </div>
-
-
-                        <button
-                            class="item-arrow"
-                            data-category="${category}"
-                            data-direction="1"
-                            aria-label="Next ${getCategoryLabel(category)}"
-                        >
-                            →
-
-                        </button>
-
-                    </div>
-
                 `;
 
             }else{
 
-                card.innerHTML=`
+                card.innerHTML = `
 
                     <div class="fit-card-number">
-                        0${index+1}
+                        0${index + 1}
                     </div>
 
                     <div class="fit-card-category">
                         ${getCategoryLabel(category)}
                     </div>
 
-
                     <div class="fit-image">
 
-                        <div class="placeholder">
+                        <div
+                            style="
+                                color:#292929;
+                                font-size:9px;
+                                letter-spacing:.2em;
+                                text-transform:uppercase;
+                            "
+                        >
                             Select object
                         </div>
 
                     </div>
-
 
                     <div class="fit-info">
 
@@ -4528,161 +4208,18 @@ function renderBuilder(
 
                     </div>
 
-
-                    <div class="fit-navigation">
-
-                        <button
-                            class="item-arrow"
-                            data-category="${category}"
-                            data-direction="-1"
-                        >
-                            ←
-                        </button>
-
-                        <div class="item-position">
-                            00 / ${String(list.length).padStart(2,"0")}
-                        </div>
-
-                        <button
-                            class="item-arrow"
-                            data-category="${category}"
-                            data-direction="1"
-                        >
-                            →
-                        </button>
-
-                    </div>
-
                 `;
 
             }
-
 
             grid.appendChild(card);
 
         }
     );
 
-
-    document.getElementById(
-        "totalValue"
-    ).textContent =
+    document.getElementById("totalValue")
+        .textContent =
         formatPrice(total);
-
-
-    setupItemNavigation();
-
-}
-
-
-/* =========================================================
-   ITEM NAVIGATION
-========================================================= */
-
-function changeItem(
-    category,
-    direction
-){
-
-    const list =
-        getCategoryItems(
-            category
-        );
-
-
-    if(!list.length){
-
-        return;
-
-    }
-
-
-    let current =
-        state.selected[category];
-
-
-    if(
-        current === null ||
-        !Number.isInteger(current)
-    ){
-
-        current=0;
-
-    }
-
-
-    let next =
-        current + direction;
-
-
-    if(next < 0){
-
-        next =
-            list.length - 1;
-
-    }
-
-
-    if(next >= list.length){
-
-        next=0;
-
-    }
-
-
-    state.selected[category]=next;
-
-    state.rating=null;
-
-    saveState();
-
-    renderBuilder(
-        category,
-        direction
-    );
-
-    syncRatingButtons();
-
-}
-
-
-function setupItemNavigation(){
-
-    document
-        .querySelectorAll(
-            ".item-arrow"
-        )
-        .forEach(
-            button=>{
-
-                button.addEventListener(
-                    "click",
-                    event=>{
-
-                        const category =
-                            event.currentTarget
-                                .dataset
-                                .category;
-
-
-                        const direction =
-                            Number(
-                                event.currentTarget
-                                    .dataset
-                                    .direction
-                            );
-
-
-                        changeItem(
-                            category,
-                            direction
-                        );
-
-                    }
-                );
-
-            }
-        );
 
 }
 
@@ -4694,35 +4231,42 @@ function setupItemNavigation(){
 function randomFit(){
 
     categories.forEach(
-        category=>{
+        category => {
 
-            const list =
-                getCategoryItems(
-                    category
+            const all =
+                getAllItems()
+                    .filter(
+                        item =>
+                            item.category === category
+                    );
+
+            const randomIndex =
+                Math.floor(
+                    Math.random() * all.length
                 );
-
 
             state.selected[category] =
-                Math.floor(
-                    Math.random() *
-                    list.length
-                );
+                randomIndex;
 
         }
     );
 
+    state.rating = null;
 
-    state.rating=null;
+    state.confirmed = false;
 
-    saveState();
+    document.querySelectorAll(
+        ".rating-button"
+    ).forEach(
+        button =>
+            button.classList.remove("active")
+    );
 
     renderBuilder();
 
-    syncRatingButtons();
-
-    setStatus(
-        "Random fit generated."
-    );
+    document.getElementById("status")
+        .textContent =
+        "Random fit generated.";
 
 }
 
@@ -4734,38 +4278,291 @@ function randomFit(){
 function resetFit(){
 
     categories.forEach(
-        category=>{
+        category => {
 
-            state.selected[category]=null;
+            state.selected[category] =
+                null;
 
         }
     );
 
+    state.rating = null;
 
-    state.rating=null;
+    state.confirmed = false;
 
-    saveState();
+    document.querySelectorAll(
+        ".rating-button"
+    ).forEach(
+        button =>
+            button.classList.remove("active")
+    );
 
     renderBuilder();
 
-    syncRatingButtons();
+    document.getElementById("status")
+        .textContent =
+        "Fit reset.";
 
-    setStatus(
-        "Fit reset."
+}
+
+
+/* =========================================================
+   INITIAL FIT
+========================================================= */
+
+function setInitialFit(){
+
+    categories.forEach(
+        category => {
+
+            state.selected[category] = 0;
+
+        }
+    );
+
+    renderBuilder();
+
+}
+
+
+/* =========================================================
+   ARCHIVE
+========================================================= */
+
+function renderArchive(){
+
+    const grid =
+        document.getElementById("archiveGrid");
+
+    const search =
+        document.getElementById("archiveSearch")
+            .value
+            .trim()
+            .toLowerCase();
+
+    const filter =
+        document.getElementById("categoryFilter")
+            .value;
+
+    let items =
+        getAllItems();
+
+    if(filter !== "all"){
+
+        items =
+            items.filter(
+                item =>
+                    item.category === filter
+            );
+
+    }
+
+    if(search){
+
+        items =
+            items.filter(
+                item => {
+
+                    const haystack = (
+
+                        item.name +
+                        " " +
+                        item.brand +
+                        " " +
+                        item.category
+
+                    ).toLowerCase();
+
+                    return haystack.includes(
+                        search
+                    );
+
+                }
+            );
+
+    }
+
+    grid.innerHTML = "";
+
+    if(items.length === 0){
+
+        grid.innerHTML = `
+
+            <div
+                style="
+                    grid-column:1/-1;
+                    min-height:240px;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#444;
+                    font-size:9px;
+                    letter-spacing:.2em;
+                    text-transform:uppercase;
+                "
+            >
+                Nothing found.
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+    items.forEach(
+        item => {
+
+            const article =
+                document.createElement("article");
+
+            article.className =
+                "archive-item";
+
+            article.innerHTML = `
+
+                <div class="archive-item-image">
+
+                    ${imageMarkup(item)}
+
+                </div>
+
+                <div class="archive-item-meta">
+
+                    <div class="archive-item-brand">
+                        ${item.brand}
+                    </div>
+
+                    <div class="archive-item-name">
+                        ${item.name}
+                    </div>
+
+                    <div class="archive-item-bottom">
+
+                        <span>
+                            ${getCategoryLabel(item.category)}
+                        </span>
+
+                        <span>
+                            ${formatPrice(item.price)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+            grid.appendChild(article);
+
+        }
     );
 
 }
 
 
 /* =========================================================
-   STATUS
+   RATING
 ========================================================= */
 
-function setStatus(text){
+function setupRating(){
+
+    const rateButton =
+        document.getElementById(
+            "rateFitButton"
+        );
+
+    const panel =
+        document.getElementById(
+            "ratingPanel"
+        );
+
+    rateButton.addEventListener(
+        "click",
+        () => {
+
+            panel.classList.toggle(
+                "open"
+            );
+
+        }
+    );
+
+
+    document.querySelectorAll(
+        ".rating-button"
+    ).forEach(
+        button => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    state.rating =
+                        Number(
+                            button.dataset.rating
+                        );
+
+                    document.querySelectorAll(
+                        ".rating-button"
+                    ).forEach(
+                        other =>
+                            other.classList.remove(
+                                "active"
+                            )
+                    );
+
+                    button.classList.add(
+                        "active"
+                    );
+
+                    document.getElementById(
+                        "status"
+                    ).textContent =
+                        `Fit rating: ${state.rating}/10`;
+
+                }
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CONFIRM FIT
+========================================================= */
+
+function confirmFit(){
+
+    const selected =
+        categories.map(
+            category =>
+                getSelectedItem(category)
+        );
+
+    if(
+        selected.some(
+            item => !item
+        )
+    ){
+
+        document.getElementById(
+            "status"
+        ).textContent =
+            "Complete all three slots first.";
+
+        return;
+
+    }
+
+    state.confirmed = true;
 
     document.getElementById(
         "status"
-    ).textContent=text;
+    ).textContent =
+        "Fit confirmed. Saved to your selection.";
 
 }
 
@@ -4781,34 +4578,27 @@ function renderCatalog(){
             "catalogList"
         );
 
-
-    list.innerHTML="";
-
+    list.innerHTML = "";
 
     Object.entries(catalog)
         .forEach(
-            ([brand,data])=>{
+            ([brand,data]) => {
 
                 const total =
                     data.top.length +
                     data.bottom.length +
                     data.shoes.length;
 
-
                 const item =
-                    document.createElement(
-                        "div"
-                    );
-
+                    document.createElement("div");
 
                 item.className =
                     "catalog-brand";
 
-
-                item.innerHTML=`
+                item.innerHTML = `
 
                     <div class="catalog-brand-name">
-                        ${escapeHTML(brand)}
+                        ${brand}
                     </div>
 
                     <div class="catalog-brand-count">
@@ -4816,7 +4606,6 @@ function renderCatalog(){
                     </div>
 
                 `;
-
 
                 list.appendChild(item);
 
@@ -4826,163 +4615,417 @@ function renderCatalog(){
 }
 
 
-function openCatalog(){
+function setupCatalog(){
 
-    document.getElementById(
-        "catalogOverlay"
-    )
-    .classList
-    .add("open");
-
-
-    document.body.classList.add(
-        "locked"
-    );
-
-}
-
-
-function closeCatalog(){
-
-    document.getElementById(
-        "catalogOverlay"
-    )
-    .classList
-    .remove("open");
-
-
-    document.body.classList.remove(
-        "locked"
-    );
-
-}
-
-
-/* =========================================================
-   RATING
-========================================================= */
-
-function syncRatingButtons(){
-
-    document
-        .querySelectorAll(
-            ".rating-button"
-        )
-        .forEach(
-            button=>{
-
-                button.classList.toggle(
-
-                    "active",
-
-                    Number(
-                        button.dataset.rating
-                    ) === state.rating
-
-                );
-
-            }
+    const button =
+        document.getElementById(
+            "catalogButton"
         );
 
-}
+    const close =
+        document.getElementById(
+            "catalogClose"
+        );
+
+    const overlay =
+        document.getElementById(
+            "catalogOverlay"
+        );
 
 
-function setupRating(){
-
-    document.getElementById(
-        "rateFitButton"
-    )
-    .addEventListener(
+    button.addEventListener(
         "click",
-        ()=>{
+        () => {
 
-            document.getElementById(
-                "ratingPanel"
-            )
-            .classList
-            .toggle("open");
+            overlay.classList.add(
+                "open"
+            );
 
         }
     );
 
 
-    document
-        .querySelectorAll(
-            ".rating-button"
-        )
-        .forEach(
-            button=>{
+    close.addEventListener(
+        "click",
+        () => {
 
-                button.addEventListener(
-                    "click",
-                    ()=>{
+            overlay.classList.remove(
+                "open"
+            );
 
-                        state.rating =
-                            Number(
-                                button.dataset.rating
-                            );
+        }
+    );
 
 
-                        saveState();
+    overlay.addEventListener(
+        "click",
+        event => {
 
-                        syncRatingButtons();
+            if(
+                event.target === overlay
+            ){
 
-                        setStatus(
-                            `Fit rating: ${state.rating}/10`
-                        );
-
-                    }
+                overlay.classList.remove(
+                    "open"
                 );
 
             }
-        );
+
+        }
+    );
 
 }
 
 
 /* =========================================================
-   CONFIRM
+   MUSIC PLAYER
 ========================================================= */
 
-function confirmFit(){
+function setupMusic(){
 
-    const selected =
-        categories.map(
-            category =>
-                getSelectedItem(
-                    category
-                )
+    const button =
+        document.getElementById(
+            "musicButton"
+        );
+
+    const close =
+        document.getElementById(
+            "musicClose"
+        );
+
+    const overlay =
+        document.getElementById(
+            "musicOverlay"
+        );
+
+    const audio =
+        document.getElementById(
+            "nightfallAudio"
+        );
+
+    const play =
+        document.getElementById(
+            "musicPlay"
+        );
+
+    const back =
+        document.getElementById(
+            "musicBack"
+        );
+
+    const forward =
+        document.getElementById(
+            "musicForward"
+        );
+
+    const progress =
+        document.getElementById(
+            "musicProgress"
+        );
+
+    const volume =
+        document.getElementById(
+            "musicVolume"
+        );
+
+    const current =
+        document.getElementById(
+            "musicCurrent"
+        );
+
+    const duration =
+        document.getElementById(
+            "musicDuration"
+        );
+
+    const status =
+        document.getElementById(
+            "musicStatus"
         );
 
 
-    if(
-        selected.some(
-            item => !item
-        )
-    ){
+    audio.volume = 0.7;
 
-        setStatus(
-            "Complete all three slots first."
+
+    function formatTime(seconds){
+
+        if(
+            !Number.isFinite(seconds)
+        ){
+
+            return "00:00";
+
+        }
+
+        const minutes =
+            Math.floor(
+                seconds / 60
+            );
+
+        const secondsPart =
+            Math.floor(
+                seconds % 60
+            );
+
+        return (
+
+            String(minutes)
+                .padStart(2,"0")
+
+            +
+
+            ":" +
+
+            String(secondsPart)
+                .padStart(2,"0")
+
         );
-
-        return;
 
     }
 
 
-    saveState();
+    function updatePlayer(){
+
+        if(audio.paused){
+
+            play.textContent =
+                "PLAY";
+
+            status.textContent =
+                "PAUSED";
+
+            overlay.classList.remove(
+                "playing"
+            );
+
+        }else{
+
+            play.textContent =
+                "PAUSE";
+
+            status.textContent =
+                "PLAYING";
+
+            overlay.classList.add(
+                "playing"
+            );
+
+        }
+
+    }
 
 
-    const total =
-        selected.reduce(
-            (sum,item)=>
-                sum + Number(item.price),
-            0
-        );
+    button.addEventListener(
+        "click",
+        () => {
+
+            overlay.classList.add(
+                "open"
+            );
+
+        }
+    );
 
 
-    setStatus(
-        `Fit confirmed. Value ${formatPrice(total)}.`
+    close.addEventListener(
+        "click",
+        () => {
+
+            overlay.classList.remove(
+                "open"
+            );
+
+        }
+    );
+
+
+    overlay.addEventListener(
+        "click",
+        event => {
+
+            if(
+                event.target === overlay
+            ){
+
+                overlay.classList.remove(
+                    "open"
+                );
+
+            }
+
+        }
+    );
+
+
+    play.addEventListener(
+        "click",
+        async () => {
+
+            try{
+
+                if(audio.paused){
+
+                    await audio.play();
+
+                }else{
+
+                    audio.pause();
+
+                }
+
+                updatePlayer();
+
+            }catch(error){
+
+                status.textContent =
+                    "AUDIO FILE NOT FOUND";
+
+                console.error(
+                    "Nightfall audio error:",
+                    error
+                );
+
+            }
+
+        }
+    );
+
+
+    back.addEventListener(
+        "click",
+        () => {
+
+            audio.currentTime =
+                Math.max(
+                    0,
+                    audio.currentTime - 10
+                );
+
+        }
+    );
+
+
+    forward.addEventListener(
+        "click",
+        () => {
+
+            audio.currentTime =
+                Math.min(
+                    audio.duration || 0,
+                    audio.currentTime + 10
+                );
+
+        }
+    );
+
+
+    audio.addEventListener(
+        "loadedmetadata",
+        () => {
+
+            duration.textContent =
+                formatTime(
+                    audio.duration
+                );
+
+        }
+    );
+
+
+    audio.addEventListener(
+        "timeupdate",
+        () => {
+
+            if(audio.duration){
+
+                progress.value =
+                    (
+                        audio.currentTime /
+                        audio.duration
+                    ) * 100;
+
+            }
+
+            current.textContent =
+                formatTime(
+                    audio.currentTime
+                );
+
+        }
+    );
+
+
+    progress.addEventListener(
+        "input",
+        () => {
+
+            if(audio.duration){
+
+                audio.currentTime =
+                    (
+                        Number(
+                            progress.value
+                        ) / 100
+                    ) *
+                    audio.duration;
+
+            }
+
+        }
+    );
+
+
+    volume.addEventListener(
+        "input",
+        () => {
+
+            audio.volume =
+                Number(
+                    volume.value
+                );
+
+        }
+    );
+
+
+    audio.addEventListener(
+        "play",
+        updatePlayer
+    );
+
+
+    audio.addEventListener(
+        "pause",
+        updatePlayer
+    );
+
+
+    audio.addEventListener(
+        "ended",
+        () => {
+
+            progress.value = 0;
+
+            current.textContent =
+                "00:00";
+
+            updatePlayer();
+
+        }
+    );
+
+
+    audio.addEventListener(
+        "error",
+        () => {
+
+            status.textContent =
+                "NIGHTFALL.MP3 NOT FOUND";
+
+            play.textContent =
+                "PLAY";
+
+        }
     );
 
 }
@@ -4998,7 +5041,6 @@ function setupReveal(){
         document.querySelectorAll(
             ".reveal"
         );
-
 
     if(
         !("IntersectionObserver" in window)
@@ -5018,11 +5060,10 @@ function setupReveal(){
 
     const observer =
         new IntersectionObserver(
-
-            entries=>{
+            entries => {
 
                 entries.forEach(
-                    entry=>{
+                    entry => {
 
                         if(
                             entry.isIntersecting
@@ -5034,7 +5075,6 @@ function setupReveal(){
                                     "visible"
                                 );
 
-
                             observer.unobserve(
                                 entry.target
                             );
@@ -5045,17 +5085,41 @@ function setupReveal(){
                 );
 
             },
-
             {
                 threshold:.08
             }
-
         );
 
 
     elements.forEach(
         element =>
-            observer.observe(element)
+            observer.observe(
+                element
+            )
+    );
+
+}
+
+
+/* =========================================================
+   SEARCH
+========================================================= */
+
+function setupSearch(){
+
+    document.getElementById(
+        "archiveSearch"
+    ).addEventListener(
+        "input",
+        renderArchive
+    );
+
+
+    document.getElementById(
+        "categoryFilter"
+    ).addEventListener(
+        "change",
+        renderArchive
     );
 
 }
@@ -5069,8 +5133,7 @@ function setupButtons(){
 
     document.getElementById(
         "randomFitButton"
-    )
-    .addEventListener(
+    ).addEventListener(
         "click",
         randomFit
     );
@@ -5078,8 +5141,7 @@ function setupButtons(){
 
     document.getElementById(
         "resetFitButton"
-    )
-    .addEventListener(
+    ).addEventListener(
         "click",
         resetFit
     );
@@ -5087,8 +5149,7 @@ function setupButtons(){
 
     document.getElementById(
         "confirmFitButton"
-    )
-    .addEventListener(
+    ).addEventListener(
         "click",
         confirmFit
     );
@@ -5097,598 +5158,17 @@ function setupButtons(){
 
 
 /* =========================================================
-   CATALOG EVENTS
-========================================================= */
-
-function setupCatalog(){
-
-    document.getElementById(
-        "catalogButton"
-    )
-    .addEventListener(
-        "click",
-        openCatalog
-    );
-
-
-    document.getElementById(
-        "catalogClose"
-    )
-    .addEventListener(
-        "click",
-        closeCatalog
-    );
-
-
-    document.getElementById(
-        "catalogOverlay"
-    )
-    .addEventListener(
-        "click",
-        event=>{
-
-            if(
-                event.target ===
-                event.currentTarget
-            ){
-
-                closeCatalog();
-
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "keydown",
-        event=>{
-
-            if(
-                event.key === "Escape"
-            ){
-
-                closeCatalog();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   AUDIO HELPERS
-========================================================= */
-
-function formatTime(seconds){
-
-    if(
-        !Number.isFinite(seconds) ||
-        seconds < 0
-    ){
-
-        return "0:00";
-
-    }
-
-
-    const minutes =
-        Math.floor(
-            seconds / 60
-        );
-
-
-    const secs =
-        Math.floor(
-            seconds % 60
-        )
-        .toString()
-        .padStart(2,"0");
-
-
-    return `${minutes}:${secs}`;
-
-}
-
-
-/* =========================================================
-   AUDIO UI
-========================================================= */
-
-function updateAudioUI(){
-
-    const track =
-        tracks[
-            state.audioIndex
-        ];
-
-
-    document.getElementById(
-        "musicName"
-    )
-    .textContent =
-        track.name;
-
-
-    document.getElementById(
-        "musicArtist"
-    )
-    .textContent =
-        track.artist;
-
-
-    document.getElementById(
-        "playTrack"
-    )
-    .textContent =
-        audioReady &&
-        audio &&
-        !audio.paused
-            ? "Ⅱ"
-            : "▶";
-
-
-    document.getElementById(
-        "musicDisc"
-    )
-    .classList
-    .toggle(
-        "playing",
-        audioReady &&
-        audio &&
-        !audio.paused
-    );
-
-
-    if(audio){
-
-        const percent =
-            audio.duration
-                ? (
-                    audio.currentTime /
-                    audio.duration *
-                    100
-                )
-                : 0;
-
-
-        document.getElementById(
-            "musicProgressFill"
-        )
-        .style
-        .width =
-            `${percent}%`;
-
-
-        document.getElementById(
-            "musicTime"
-        )
-        .textContent =
-            `${formatTime(audio.currentTime)} / ${formatTime(audio.duration)}`;
-
-    }else{
-
-        document.getElementById(
-            "musicProgressFill"
-        )
-        .style
-        .width="0%";
-
-
-        document.getElementById(
-            "musicTime"
-        )
-        .textContent =
-            "0:00 / 0:00";
-
-    }
-
-}
-
-
-/* =========================================================
-   LOAD AUDIO
-========================================================= */
-
-function loadTrack(
-    index,
-    autoplay=false
-){
-
-    state.audioIndex =
-        (
-            index +
-            tracks.length
-        )
-        %
-        tracks.length;
-
-
-    const track =
-        tracks[
-            state.audioIndex
-        ];
-
-
-    if(audio){
-
-        audio.pause();
-
-        audio.removeAttribute(
-            "src"
-        );
-
-        audio.load();
-
-    }
-
-
-    audio =
-        new Audio();
-
-
-    audio.preload =
-        "metadata";
-
-
-    audio.volume =
-        Number(
-            document.getElementById(
-                "musicVolume"
-            ).value
-        );
-
-
-    audio.src =
-        track.file;
-
-
-    audio.addEventListener(
-        "loadedmetadata",
-        ()=>{
-
-            audioReady=true;
-
-            updateAudioUI();
-
-
-            if(autoplay){
-
-                playAudio();
-
-            }
-
-        }
-    );
-
-
-    audio.addEventListener(
-        "timeupdate",
-        updateAudioUI
-    );
-
-
-    audio.addEventListener(
-        "play",
-        updateAudioUI
-    );
-
-
-    audio.addEventListener(
-        "pause",
-        updateAudioUI
-    );
-
-
-    audio.addEventListener(
-        "ended",
-        ()=>{
-
-            loadTrack(
-                state.audioIndex + 1,
-                true
-            );
-
-        }
-    );
-
-
-    audio.addEventListener(
-        "error",
-        ()=>{
-
-            audioReady=false;
-
-            updateAudioUI();
-
-            document.getElementById(
-                "musicName"
-            )
-            .textContent =
-                track.name;
-
-            document.getElementById(
-                "musicArtist"
-            )
-            .textContent =
-                "Audio file not found";
-
-        }
-    );
-
-
-    audioReady=false;
-
-    updateAudioUI();
-
-}
-
-
-/* =========================================================
-   PLAY AUDIO
-========================================================= */
-
-function playAudio(){
-
-    if(!audio){
-
-        loadTrack(
-            state.audioIndex,
-            false
-        );
-
-    }
-
-
-    if(!audio){
-
-        return;
-
-    }
-
-
-    audio.play()
-        .catch(
-            ()=>{
-
-                document.getElementById(
-                    "musicArtist"
-                )
-                .textContent =
-                    "Tap play to start";
-
-            }
-        );
-
-}
-
-
-/* =========================================================
-   TOGGLE AUDIO
-========================================================= */
-
-function toggleAudio(){
-
-    if(!audio){
-
-        loadTrack(
-            state.audioIndex,
-            true
-        );
-
-        return;
-
-    }
-
-
-    if(audio.paused){
-
-        playAudio();
-
-    }else{
-
-        audio.pause();
-
-    }
-
-}
-
-
-/* =========================================================
-   MUSIC PANEL
-========================================================= */
-
-function openMusic(){
-
-    document.getElementById(
-        "musicPanel"
-    )
-    .classList
-    .add("open");
-
-}
-
-
-function closeMusic(){
-
-    document.getElementById(
-        "musicPanel"
-    )
-    .classList
-    .remove("open");
-
-}
-
-
-function setupMusicPanel(){
-
-    document.getElementById(
-        "musicButton"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-
-            document.getElementById(
-                "musicPanel"
-            )
-            .classList
-            .toggle("open");
-
-        }
-    );
-
-
-    document.getElementById(
-        "musicClose"
-    )
-    .addEventListener(
-        "click",
-        closeMusic
-    );
-
-}
-
-
-/* =========================================================
-   AUDIO SETUP
-========================================================= */
-
-function setupAudio(){
-
-    document.getElementById(
-        "playTrack"
-    )
-    .addEventListener(
-        "click",
-        toggleAudio
-    );
-
-
-    document.getElementById(
-        "prevTrack"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-
-            loadTrack(
-                state.audioIndex - 1,
-                true
-            );
-
-        }
-    );
-
-
-    document.getElementById(
-        "nextTrack"
-    )
-    .addEventListener(
-        "click",
-        ()=>{
-
-            loadTrack(
-                state.audioIndex + 1,
-                true
-            );
-
-        }
-    );
-
-
-    document.getElementById(
-        "musicVolume"
-    )
-    .addEventListener(
-        "input",
-        event=>{
-
-            if(audio){
-
-                audio.volume =
-                    Number(
-                        event.target.value
-                    );
-
-            }
-
-        }
-    );
-
-
-    document.getElementById(
-        "musicProgress"
-    )
-    .addEventListener(
-        "click",
-        event=>{
-
-            if(
-                !audio ||
-                !audio.duration
-            ){
-
-                return;
-
-            }
-
-
-            const rect =
-                event.currentTarget
-                    .getBoundingClientRect();
-
-
-            const ratio =
-                (
-                    event.clientX -
-                    rect.left
-                )
-                /
-                rect.width;
-
-
-            audio.currentTime =
-                Math.max(
-                    0,
-                    Math.min(
-                        audio.duration,
-                        ratio *
-                        audio.duration
-                    )
-                );
-
-        }
-    );
-
-
-    loadTrack(
-        0,
-        false
-    );
-
-}
-
-
-/* =========================================================
-   GLOBAL KEYBOARD
+   GLOBAL ESCAPE
 ========================================================= */
 
 function setupKeyboard(){
 
     document.addEventListener(
         "keydown",
-        event=>{
-
-            const tag =
-                document.activeElement?.tagName;
-
+        event => {
 
             if(
-                tag === "INPUT" ||
-                tag === "TEXTAREA"
+                event.key !== "Escape"
             ){
 
                 return;
@@ -5696,28 +5176,24 @@ function setupKeyboard(){
             }
 
 
-            if(
-                event.key === "ArrowLeft"
-            ){
-
-                changeItem(
-                    "top",
-                    -1
+            const catalogOverlay =
+                document.getElementById(
+                    "catalogOverlay"
                 );
 
-            }
-
-
-            if(
-                event.key === "ArrowRight"
-            ){
-
-                changeItem(
-                    "top",
-                    1
+            const musicOverlay =
+                document.getElementById(
+                    "musicOverlay"
                 );
 
-            }
+
+            catalogOverlay.classList.remove(
+                "open"
+            );
+
+            musicOverlay.classList.remove(
+                "open"
+            );
 
         }
     );
@@ -5729,30 +5205,29 @@ function setupKeyboard(){
    LOADER
 ========================================================= */
 
-function hideLoader(){
+function setupLoader(){
 
     const loader =
         document.getElementById(
             "loader"
         );
 
+    window.addEventListener(
+        "load",
+        () => {
 
-    if(!loader){
+            setTimeout(
+                () => {
 
-        return;
+                    loader.classList.add(
+                        "hide"
+                    );
 
-    }
-
-
-    setTimeout(
-        ()=>{
-
-            loader.classList.add(
-                "hide"
+                },
+                400
             );
 
-        },
-        1300
+        }
     );
 
 }
@@ -5764,9 +5239,9 @@ function hideLoader(){
 
 function init(){
 
-    loadState();
+    setInitialFit();
 
-    renderBuilder();
+    renderArchive();
 
     renderCatalog();
 
@@ -5774,45 +5249,25 @@ function init(){
 
     setupCatalog();
 
+    setupMusic();
+
+    setupSearch();
+
     setupButtons();
 
     setupReveal();
 
-    setupMusicPanel();
-
-    setupAudio();
-
     setupKeyboard();
 
-    syncRatingButtons();
-
-    hideLoader();
+    setupLoader();
 
 }
 
 
-/* =========================================================
-   START
-========================================================= */
-
-if(
-    document.readyState ===
-    "loading"
-){
-
-    document.addEventListener(
-        "DOMContentLoaded",
-        init,
-        {
-            once:true
-        }
-    );
-
-}else{
-
-    init();
-
-}
+document.addEventListener(
+    "DOMContentLoaded",
+    init
+);
 
 </script>
 
