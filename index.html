@@ -1,4119 +1,1512 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<meta
-    name="theme-color"
-    content="#050507"
->
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="theme-color" content="#050507">
 <title>CreatureMeza — Archive</title>
 
 <style>
-
-/* =========================================================
-   ROOT
-========================================================= */
-
 :root{
-
-    --bg:#050507;
-    --panel:#0b0b10;
-    --panel2:#10101a;
-
-    --line:#24242f;
-    --line2:#36364a;
-
-    --text:#f2f2f5;
-    --muted:#777783;
-    --soft:#b8b8c4;
-
-    --accent:#8b8be8;
-    --accent-soft:#5e5eb0;
-    --accent-bg:rgba(139,139,232,.09);
-
-    --white:#fff;
-
+  --bg:#050507;
+  --panel:#0b0b10;
+  --panel2:#10101a;
+  --line:#24242f;
+  --line2:#36364a;
+  --text:#f2f2f5;
+  --muted:#777783;
+  --soft:#b8b8c4;
+  --accent:#8b8be8;
+  --accent2:#b6a7ff;
+  --accent-bg:rgba(139,139,232,.09);
+  --glow:rgba(139,139,232,.35);
 }
 
-*{
-
-    box-sizing:border-box;
-
-    margin:0;
-    padding:0;
-
-}
-
-html{
-
-    scroll-behavior:smooth;
-
-}
-
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
 body{
-
-    background:var(--bg);
-
-    color:var(--text);
-
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
-
-    overflow-x:hidden;
-
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  overflow-x:hidden;
 }
+button,input,textarea{font:inherit}
+button,input,textarea{-webkit-tap-highlight-color:transparent}
+button{color:inherit}
+a{color:inherit;text-decoration:none}
 
-button,
-input{
-
-    font:inherit;
-
+body:before{
+  content:"";
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+  opacity:.35;
+  background:
+    radial-gradient(circle at 15% 20%,rgba(139,139,232,.08),transparent 28%),
+    radial-gradient(circle at 85% 70%,rgba(182,167,255,.05),transparent 25%);
 }
-
-button{
-
-    color:inherit;
-
-}
-
-button,
-input{
-
-    -webkit-tap-highlight-color:transparent;
-
-}
-
-a{
-
-    color:inherit;
-
-    text-decoration:none;
-
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
 
 header{
-
-    position:fixed;
-
-    top:0;
-    left:0;
-    right:0;
-
-    height:76px;
-
-    z-index:1000;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:0 34px;
-
-    border-bottom:
-        1px solid rgba(255,255,255,.12);
-
-    background:
-        rgba(5,5,7,.88);
-
-    backdrop-filter:
-        blur(18px);
-
+  position:fixed;
+  inset:0 0 auto;
+  height:76px;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 34px;
+  border-bottom:1px solid rgba(255,255,255,.12);
+  background:rgba(5,5,7,.88);
+  backdrop-filter:blur(18px);
 }
-
 .logo{
-
-    font-size:15px;
-
-    font-weight:900;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
+  font-size:15px;
+  font-weight:900;
+  letter-spacing:.18em;
+  text-transform:uppercase;
 }
-
 .header-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:10px;
-
+  display:flex;
+  align-items:center;
+  gap:20px;
 }
-
 .header-index{
-
-    color:#666675;
-
-    font-size:10px;
-
-    letter-spacing:.18em;
-
-    margin-right:8px;
-
+  color:#666675;
+  font-size:10px;
+  letter-spacing:.18em;
 }
-
+.header-btn,.control-btn,.arrow-btn,.rating-btn,.review-open,.review-close,.submit-review{
+  border:1px solid #343445;
+  background:#0c0c12;
+  cursor:pointer;
+  transition:.25s ease;
+}
 .header-btn{
-
-    border:
-        1px solid #343445;
-
-    background:#0c0c12;
-
-    color:#d5d5df;
-
-    padding:
-        11px 17px;
-
-    font-size:10px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    cursor:pointer;
-
-    transition:.25s ease;
-
+  padding:11px 17px;
+  font-size:10px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
 }
-
-.header-btn:hover{
-
-    background:var(--accent);
-
-    color:#050507;
-
-    border-color:var(--accent);
-
+.header-btn:hover,.control-btn:hover,.arrow-btn:hover,.rating-btn:hover,
+.rating-btn.active,.review-open:hover,.submit-review:hover{
+  background:var(--accent);
+  color:#050507;
+  border-color:var(--accent);
+  box-shadow:0 0 24px var(--glow);
 }
-
-
-/* =========================================================
-   HERO
-========================================================= */
 
 .hero{
-
-    min-height:100vh;
-
-    position:relative;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    padding:
-        130px 25px 90px;
-
-    overflow:hidden;
-
+  min-height:100vh;
+  position:relative;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:130px 25px 90px;
+  overflow:hidden;
 }
-
 .hero-grid{
-
-    position:absolute;
-
-    inset:0;
-
-    opacity:.15;
-
-    background-image:
-
-        linear-gradient(
-            rgba(255,255,255,.1)
-            1px,
-            transparent 1px
-        ),
-
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.1)
-            1px,
-            transparent 1px
-        );
-
-    background-size:80px 80px;
-
-    mask-image:
-        linear-gradient(
-            to bottom,
-            transparent,
-            #000 25%,
-            #000 70%,
-            transparent
-        );
-
+  position:absolute;
+  inset:0;
+  opacity:.15;
+  background-image:
+    linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);
+  background-size:80px 80px;
+  mask-image:linear-gradient(to bottom,transparent,#000 25%,#000 70%,transparent);
 }
-
 .hero-content{
-
-    position:relative;
-
-    z-index:2;
-
-    text-align:center;
-
-    max-width:1000px;
-
+  position:relative;
+  z-index:2;
+  text-align:center;
+  max-width:1000px;
+  animation:heroIn 1.2s ease both;
 }
-
-.hero-kicker{
-
-    color:var(--accent);
-
-    font-size:10px;
-
-    letter-spacing:.38em;
-
-    text-transform:uppercase;
-
-    margin-bottom:28px;
-
+.hero-kicker,.section-kicker{
+  color:var(--accent);
+  font-size:10px;
+  letter-spacing:.38em;
+  text-transform:uppercase;
 }
-
+.hero-kicker{margin-bottom:28px}
 .hero-name{
-
-    font-size:
-        clamp(20px,3vw,36px);
-
-    font-weight:900;
-
-    letter-spacing:.3em;
-
-    text-transform:uppercase;
-
-    margin-bottom:30px;
-
+  font-size:clamp(20px,3vw,36px);
+  font-weight:900;
+  letter-spacing:.3em;
+  text-transform:uppercase;
+  margin-bottom:30px;
 }
-
 .hero-title{
-
-    font-size:
-        clamp(62px,11vw,150px);
-
-    line-height:.82;
-
-    font-weight:900;
-
-    letter-spacing:-.065em;
-
-    text-transform:uppercase;
-
+  font-size:clamp(62px,11vw,150px);
+  line-height:.82;
+  font-weight:900;
+  letter-spacing:-.065em;
+  text-transform:uppercase;
 }
-
-.hero-title span{
-
-    display:block;
-
-}
-
+.hero-title span{display:block}
 .hero-sub{
-
-    max-width:500px;
-
-    margin:
-        38px auto 0;
-
-    color:#858592;
-
-    font-size:12px;
-
-    line-height:1.8;
-
+  max-width:500px;
+  margin:38px auto 0;
+  color:#858592;
+  font-size:12px;
+  line-height:1.8;
 }
-
 .hero-orbit{
-
-    position:absolute;
-
-    width:min(65vw,720px);
-
-    height:min(65vw,720px);
-
-    border:
-        1px solid rgba(139,139,232,.13);
-
-    border-radius:50%;
-
-    animation:
-        spin 35s linear infinite;
-
+  position:absolute;
+  width:min(65vw,720px);
+  height:min(65vw,720px);
+  border:1px solid rgba(139,139,232,.13);
+  border-radius:50%;
+  animation:spin 35s linear infinite;
 }
-
-.hero-orbit:before,
-.hero-orbit:after{
-
-    content:"";
-
-    position:absolute;
-
-    border-radius:50%;
-
-    border:
-        1px solid rgba(139,139,232,.09);
-
+.hero-orbit:before,.hero-orbit:after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  border:1px solid rgba(139,139,232,.09);
 }
-
-.hero-orbit:before{
-
-    inset:10%;
-
-}
-
-.hero-orbit:after{
-
-    inset:25%;
-
-}
-
-@keyframes spin{
-
-    to{
-
-        transform:rotate(360deg);
-
-    }
-
-}
-
-
-/* =========================================================
-   MARQUEE
-========================================================= */
+.hero-orbit:before{inset:10%}
+.hero-orbit:after{inset:25%}
 
 .marquee{
-
-    overflow:hidden;
-
-    border-top:
-        1px solid var(--line);
-
-    border-bottom:
-        1px solid var(--line);
-
-    padding:17px 0;
-
-    white-space:nowrap;
-
+  overflow:hidden;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:17px 0;
+  white-space:nowrap;
 }
-
 .marquee-track{
-
-    display:inline-block;
-
-    animation:
-        marquee 24s linear infinite;
-
+  display:inline-block;
+  animation:marquee 24s linear infinite;
 }
-
 .marquee span{
-
-    margin:
-        0 32px;
-
-    font-size:10px;
-
-    letter-spacing:.35em;
-
-    color:#696978;
-
-    text-transform:uppercase;
-
+  margin:0 32px;
+  font-size:10px;
+  letter-spacing:.35em;
+  color:#696978;
+  text-transform:uppercase;
 }
-
-.marquee span:nth-child(2){
-
-    color:var(--accent);
-
-}
-
-@keyframes marquee{
-
-    from{
-
-        transform:translateX(0);
-
-    }
-
-    to{
-
-        transform:translateX(-50%);
-
-    }
-
-}
-
-
-/* =========================================================
-   GENERAL
-========================================================= */
+.marquee span:nth-child(2){color:var(--accent)}
 
 .section{
-
-    padding:
-        110px 34px;
-
-    max-width:1500px;
-
-    margin:auto;
-
+  padding:110px 34px;
+  max-width:1500px;
+  margin:auto;
 }
-
 .section-head{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-end;
-
-    gap:30px;
-
-    margin-bottom:45px;
-
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:30px;
+  margin-bottom:45px;
 }
-
-.section-kicker{
-
-    color:var(--accent);
-
-    font-size:9px;
-
-    letter-spacing:.3em;
-
-    text-transform:uppercase;
-
-    margin-bottom:12px;
-
-}
-
+.section-kicker{font-size:9px;margin-bottom:12px}
 .section-title{
-
-    font-size:
-        clamp(35px,6vw,80px);
-
-    font-weight:900;
-
-    letter-spacing:-.06em;
-
-    text-transform:uppercase;
-
+  font-size:clamp(35px,6vw,80px);
+  font-weight:900;
+  letter-spacing:-.06em;
+  text-transform:uppercase;
 }
-
 .section-description{
-
-    max-width:380px;
-
-    color:#777783;
-
-    font-size:11px;
-
-    line-height:1.8;
-
+  max-width:380px;
+  color:#777783;
+  font-size:11px;
+  line-height:1.8;
 }
 
-
-/* =========================================================
-   BUILDER
-========================================================= */
-
-.builder{
-
-    border-top:
-        1px solid var(--line);
-
-}
-
+.builder{border-top:1px solid var(--line)}
 .builder-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:14px;
-
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
 }
-
 .fit-card{
-
-    min-height:580px;
-
-    position:relative;
-
-    background:
-        linear-gradient(
-            145deg,
-            #0d0d14,
-            #07070b
-        );
-
-    border:
-        1px solid var(--line);
-
-    overflow:hidden;
-
-    transition:.25s ease;
-
+  min-height:580px;
+  position:relative;
+  background:linear-gradient(145deg,#0d0d14,#07070b);
+  border:1px solid var(--line);
+  overflow:hidden;
+  transition:.35s ease;
 }
-
 .fit-card:hover{
-
-    border-color:var(--accent-soft);
-
+  border-color:var(--accent);
+  box-shadow:0 0 35px rgba(139,139,232,.12);
+  transform:translateY(-4px);
 }
-
-.fit-label{
-
-    position:absolute;
-
-    top:20px;
-    left:20px;
-
-    z-index:5;
-
-    font-size:9px;
-
-    color:#777783;
-
-    letter-spacing:.25em;
-
-    text-transform:uppercase;
-
+.fit-label,.fit-number{
+  position:absolute;
+  top:20px;
+  z-index:5;
+  font-size:9px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
 }
-
-.fit-number{
-
-    position:absolute;
-
-    top:20px;
-    right:20px;
-
-    z-index:5;
-
-    color:#454557;
-
-    font-size:10px;
-
-}
-
+.fit-label{left:20px;color:#777783}
+.fit-number{right:20px;color:#454557}
 .fit-image{
-
-    position:absolute;
-
-    inset:
-        55px 30px 105px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
+  position:absolute;
+  inset:55px 30px 105px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-
 .fit-image img{
-
-    width:100%;
-    height:100%;
-
-    object-fit:contain;
-
-    display:block;
-
+  width:100%;
+  height:100%;
+  object-fit:contain;
 }
-
 .fit-placeholder{
-
-    width:100%;
-    height:100%;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    color:#383847;
-
-    font-size:11px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    text-align:center;
-
-    border:
-        1px dashed #252535;
-
-    padding:20px;
-
+  width:100%;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#383847;
+  font-size:11px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  text-align:center;
+  border:1px dashed #252535;
+  padding:20px;
 }
-
 .fit-info{
-
-    position:absolute;
-
-    bottom:0;
-
-    left:0;
-    right:0;
-
-    min-height:100px;
-
-    padding:
-        18px 20px;
-
-    border-top:
-        1px solid var(--line);
-
-    background:
-        rgba(5,5,7,.94);
-
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  min-height:100px;
+  padding:18px 20px;
+  border-top:1px solid var(--line);
+  background:rgba(5,5,7,.94);
 }
-
 .fit-brand{
-
-    color:var(--accent);
-
-    font-size:8px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    margin-bottom:7px;
-
+  color:var(--accent);
+  font-size:8px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:7px;
 }
-
 .fit-name{
-
-    font-size:14px;
-
-    font-weight:800;
-
-    text-transform:uppercase;
-
+  font-size:14px;
+  font-weight:800;
+  text-transform:uppercase;
 }
-
-.fit-price{
-
-    margin-top:6px;
-
-    color:#888895;
-
-    font-size:10px;
-
-}
-
+.fit-price{margin-top:6px;color:#888895;font-size:10px}
 .fit-arrows{
-
-    position:absolute;
-
-    bottom:20px;
-    right:20px;
-
-    z-index:10;
-
-    display:flex;
-
-    gap:5px;
-
+  position:absolute;
+  bottom:20px;
+  right:20px;
+  z-index:10;
+  display:flex;
+  gap:5px;
 }
-
 .arrow-btn{
-
-    width:38px;
-    height:38px;
-
-    border:
-        1px solid #333346;
-
-    background:#0b0b11;
-
-    cursor:pointer;
-
-    font-size:17px;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    transition:.2s ease;
-
+  width:38px;
+  height:38px;
+  font-size:17px;
 }
-
-.arrow-btn:hover{
-
-    background:var(--accent);
-
-    color:#050507;
-
-    border-color:var(--accent);
-
-}
-
 .builder-controls{
-
-    margin-top:14px;
-
-    display:flex;
-
-    gap:10px;
-
-    flex-wrap:wrap;
-
+  margin-top:14px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
 }
-
 .control-btn{
-
-    border:
-        1px solid #333346;
-
-    background:#0b0b11;
-
-    padding:
-        14px 22px;
-
-    font-size:9px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    cursor:pointer;
-
-    transition:.25s;
-
+  padding:14px 22px;
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
 }
-
-.control-btn:hover{
-
-    background:var(--accent);
-
-    color:#050507;
-
-    border-color:var(--accent);
-
-}
-
-
-/* =========================================================
-   TOTAL
-========================================================= */
-
 .total-bar{
-
-    margin-top:14px;
-
-    border:
-        1px solid var(--line);
-
-    min-height:86px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    padding:
-        20px 25px;
-
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            rgba(139,139,232,.035)
-        );
-
+  margin-top:14px;
+  border:1px solid var(--line);
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:20px 25px;
+  background:linear-gradient(90deg,transparent,rgba(139,139,232,.035));
 }
-
 .total-label{
-
-    color:#777783;
-
-    font-size:9px;
-
-    letter-spacing:.25em;
-
-    text-transform:uppercase;
-
+  color:#777783;
+  font-size:9px;
+  letter-spacing:.25em;
+  text-transform:uppercase;
 }
-
 .total-value{
-
-    font-size:24px;
-
-    font-weight:900;
-
-    color:var(--accent);
-
+  font-size:24px;
+  font-weight:900;
+  color:var(--accent);
 }
-
-
-/* =========================================================
-   RATING
-========================================================= */
-
 .rating-panel{
-
-    margin-top:14px;
-
-    border:
-        1px solid var(--line);
-
-    padding:25px;
-
+  margin-top:14px;
+  border:1px solid var(--line);
+  padding:25px;
 }
-
 .rating-title{
-
-    font-size:10px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    color:#888895;
-
-    margin-bottom:17px;
-
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:#888895;
+  margin-bottom:17px;
 }
-
 .rating-buttons{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(10,1fr);
-
-    gap:5px;
-
+  display:grid;
+  grid-template-columns:repeat(10,1fr);
+  gap:5px;
 }
-
-.rating-btn{
-
-    height:45px;
-
-    border:
-        1px solid #2d2d3d;
-
-    background:#0b0b11;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.rating-btn:hover,
-.rating-btn.active{
-
-    background:var(--accent);
-
-    color:#050507;
-
-    border-color:var(--accent);
-
-}
-
+.rating-btn{height:45px}
 .status{
-
-    margin-top:15px;
-
-    color:#777783;
-
-    font-size:10px;
-
-    letter-spacing:.1em;
-
+  margin-top:15px;
+  color:#777783;
+  font-size:10px;
+  letter-spacing:.1em;
 }
 
-
-/* =========================================================
-   SEARCH ARCHIVE
-========================================================= */
-
-.archive{
-
-    border-top:
-        1px solid var(--line);
-
-}
-
-.archive-search-area{
-
-    position:relative;
-
-    max-width:1000px;
-
-}
-
+.archive{border-top:1px solid var(--line)}
+.archive-search-area{position:relative;max-width:1000px}
 .search-label{
-
-    display:block;
-
-    color:#777783;
-
-    font-size:9px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    margin-bottom:12px;
-
+  display:block;
+  color:#777783;
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:12px;
 }
-
-.search-wrap{
-
-    position:relative;
-
-}
-
+.search-wrap{position:relative}
 .search{
-
-    width:100%;
-
-    height:72px;
-
-    background:#0a0a10;
-
-    border:
-        1px solid #303044;
-
-    color:#fff;
-
-    padding:
-        0 24px;
-
-    outline:none;
-
-    font-size:16px;
-
-    transition:.25s;
-
+  width:100%;
+  height:72px;
+  background:#0a0a10;
+  border:1px solid #303044;
+  color:#fff;
+  padding:0 60px 0 24px;
+  outline:none;
+  font-size:16px;
+  transition:.25s;
 }
-
-.search::placeholder{
-
-    color:#555566;
-
-}
-
+.search::placeholder{color:#555566}
 .search:focus{
-
-    border-color:var(--accent);
-
-    box-shadow:
-        0 0 0 3px rgba(139,139,232,.07);
-
+  border-color:var(--accent);
+  box-shadow:0 0 0 3px rgba(139,139,232,.07),0 0 30px rgba(139,139,232,.1);
 }
-
 .search-icon{
-
-    position:absolute;
-
-    top:50%;
-
-    right:24px;
-
-    transform:translateY(-50%);
-
-    color:var(--accent);
-
-    font-size:20px;
-
-    pointer-events:none;
-
+  position:absolute;
+  top:50%;
+  right:24px;
+  transform:translateY(-50%);
+  color:var(--accent);
+  font-size:20px;
+  pointer-events:none;
 }
-
 .search-hint{
-
-    margin-top:15px;
-
-    color:#555566;
-
-    font-size:10px;
-
-    letter-spacing:.08em;
-
+  margin-top:15px;
+  color:#555566;
+  font-size:10px;
+  letter-spacing:.08em;
 }
-
 .search-results{
-
-    display:none;
-
-    margin-top:12px;
-
-    border:
-        1px solid #303044;
-
-    background:#09090e;
-
-    max-height:460px;
-
-    overflow-y:auto;
-
+  display:none;
+  margin-top:12px;
+  border:1px solid #303044;
+  background:#09090e;
+  max-height:460px;
+  overflow-y:auto;
 }
-
-.search-results.open{
-
-    display:block;
-
-}
-
+.search-results.open{display:block}
 .search-result{
-
-    width:100%;
-
-    border:0;
-
-    border-bottom:
-        1px solid #20202d;
-
-    background:transparent;
-
-    color:#dddde7;
-
-    padding:
-        18px 20px;
-
-    text-align:left;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    gap:20px;
-
-    cursor:pointer;
-
-    transition:.2s;
-
+  width:100%;
+  border:0;
+  border-bottom:1px solid #20202d;
+  background:transparent;
+  color:#dddde7;
+  padding:18px 20px;
+  text-align:left;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  cursor:pointer;
+  transition:.2s;
 }
-
-.search-result:last-child{
-
-    border-bottom:0;
-
-}
-
-.search-result:hover{
-
-    background:var(--accent-bg);
-
-}
-
-.search-result-main{
-
-    min-width:0;
-
-}
-
+.search-result:hover{background:var(--accent-bg)}
+.search-result-main{min-width:0}
 .search-result-brand{
-
-    color:var(--accent);
-
-    font-size:9px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    margin-bottom:7px;
-
+  color:var(--accent);
+  font-size:9px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  margin-bottom:7px;
 }
-
 .search-result-name{
-
-    color:#f1f1f5;
-
-    font-size:13px;
-
-    font-weight:800;
-
-    text-transform:uppercase;
-
+  color:#f1f1f5;
+  font-size:13px;
+  font-weight:800;
+  text-transform:uppercase;
 }
-
 .search-result-type{
-
-    color:#777783;
-
-    font-size:9px;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-
+  color:#777783;
+  font-size:9px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  white-space:nowrap;
 }
-
 .search-result-price{
-
-    color:#858594;
-
-    font-size:11px;
-
-    white-space:nowrap;
-
+  color:#858594;
+  font-size:11px;
+  white-space:nowrap;
 }
-
 .search-empty{
-
-    padding:30px 20px;
-
-    color:#666676;
-
-    font-size:10px;
-
-    letter-spacing:.16em;
-
-    text-align:center;
-
-    text-transform:uppercase;
-
+  padding:30px 20px;
+  color:#666676;
+  font-size:10px;
+  letter-spacing:.16em;
+  text-align:center;
+  text-transform:uppercase;
 }
-
 .search-selected{
-
-    display:none;
-
-    margin-top:12px;
-
-    padding:15px 18px;
-
-    border:
-        1px solid rgba(139,139,232,.35);
-
-    background:
-        rgba(139,139,232,.06);
-
-    color:#aaaac0;
-
-    font-size:10px;
-
-    line-height:1.7;
-
+  display:none;
+  margin-top:12px;
+  padding:15px 18px;
+  border:1px solid rgba(139,139,232,.35);
+  background:rgba(139,139,232,.06);
+  color:#aaaac0;
+  font-size:10px;
+  line-height:1.7;
 }
+.search-selected.show{display:block}
+.search-selected strong{color:var(--accent)}
 
-.search-selected.show{
-
-    display:block;
-
-}
-
-.search-selected strong{
-
-    color:var(--accent);
-
-}
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-.info{
-
-    border-top:
-        1px solid var(--line);
-
-}
-
+.info{border-top:1px solid var(--line)}
 .info-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:70px;
-
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
 }
-
 .info-big{
-
-    font-size:
-        clamp(30px,5vw,65px);
-
-    line-height:.95;
-
-    font-weight:900;
-
-    letter-spacing:-.055em;
-
-    text-transform:uppercase;
-
+  font-size:clamp(30px,5vw,65px);
+  line-height:.95;
+  font-weight:900;
+  letter-spacing:-.055em;
+  text-transform:uppercase;
 }
+.info-text{color:#777783;font-size:12px;line-height:2}
 
-.info-text{
-
-    color:#777783;
-
-    font-size:12px;
-
-    line-height:2;
-
+.reviews{
+  border-top:1px solid var(--line);
+  text-align:center;
 }
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
+.review-open{
+  padding:17px 28px;
+  font-size:10px;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.review-form{
+  display:none;
+  max-width:650px;
+  margin:35px auto 0;
+  text-align:left;
+  border:1px solid var(--line);
+  padding:25px;
+  background:linear-gradient(145deg,#0d0d14,#08080d);
+  animation:formIn .35s ease both;
+}
+.review-form.open{display:block}
+.review-form label{
+  display:block;
+  color:#777783;
+  font-size:9px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:9px;
+}
+.review-form input,.review-form textarea{
+  width:100%;
+  border:1px solid #303044;
+  background:#08080d;
+  color:#fff;
+  outline:none;
+  padding:14px;
+  margin-bottom:20px;
+}
+.review-form textarea{
+  min-height:120px;
+  resize:vertical;
+}
+.review-form input:focus,.review-form textarea:focus{
+  border-color:var(--accent);
+}
+.skull-rating{
+  display:flex;
+  gap:8px;
+  margin-bottom:20px;
+}
+.skull-rating button{
+  width:42px;
+  height:42px;
+  border:1px solid #333346;
+  background:#0b0b11;
+  color:#777783;
+  font-size:22px;
+  cursor:pointer;
+  transition:.2s;
+}
+.skull-rating button:hover,.skull-rating button.active{
+  color:var(--accent);
+  border-color:var(--accent);
+  box-shadow:0 0 18px var(--glow);
+}
+.review-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.submit-review,.review-close{
+  padding:13px 20px;
+  font-size:9px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.review-close{color:#888895}
+.review-error{
+  display:none;
+  margin-bottom:15px;
+  padding:12px;
+  border:1px solid #56343f;
+  color:#d99aaa;
+  font-size:10px;
+  line-height:1.5;
+}
+.review-error.show{display:block}
+.review-list{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:35px;
+  text-align:left;
+}
+.review-card{
+  border:1px solid var(--line);
+  padding:20px;
+  background:#0a0a10;
+  animation:cardIn .4s ease both;
+}
+.review-user{
+  color:var(--accent);
+  font-size:10px;
+  letter-spacing:.15em;
+  text-transform:uppercase;
+}
+.review-stars{
+  color:var(--accent2);
+  margin:12px 0;
+  letter-spacing:3px;
+}
+.review-comment{
+  color:#aaaaba;
+  font-size:12px;
+  line-height:1.7;
+  word-break:break-word;
+}
 
 footer{
-
-    border-top:
-        1px solid var(--line);
-
-    padding:35px;
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-end;
-
-    gap:20px;
-
-    color:#666675;
-
-    font-size:9px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
+  border-top:1px solid var(--line);
+  padding:35px;
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  gap:20px;
+  color:#666675;
+  font-size:9px;
+  letter-spacing:.18em;
+  text-transform:uppercase;
 }
-
 .footer-right{
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:flex-end;
-
-    gap:10px;
-
+  display:flex;
+  flex-direction:column;
+  align-items:flex-end;
+  gap:10px;
 }
-
-.footer-link{
-
-    color:#777783;
-
-    transition:.2s;
-
-}
-
-.footer-link:hover{
-
-    color:var(--accent);
-
-}
-
+.footer-link{color:#777783;transition:.2s}
+.footer-link:hover{color:var(--accent)}
 .footer-team{
-
-    color:#4e4e5c;
-
-    font-size:8px;
-
-    letter-spacing:.22em;
-
+  color:#4e4e5c;
+  font-size:8px;
+  letter-spacing:.22em;
 }
-
-
-/* =========================================================
-   CATALOG OVERLAY
-========================================================= */
-
-.catalog-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:2000;
-
-    display:none;
-
-    background:
-        rgba(0,0,0,.76);
-
-    backdrop-filter:
-        blur(20px);
-
-    overflow-y:auto;
-
-}
-
-.catalog-overlay.open{
-
-    display:block;
-
-}
-
-.catalog-window{
-
-    width:
-        min(1100px,calc(100% - 30px));
-
-    margin:
-        90px auto 40px;
-
-    border:
-        1px solid #29293a;
-
-    background:#08080d;
-
-    box-shadow:
-        0 30px 100px
-        rgba(0,0,0,.7);
-
-}
-
-.catalog-top{
-
-    padding:25px;
-
-    border-bottom:
-        1px solid var(--line);
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-}
-
-.catalog-heading{
-
-    font-size:25px;
-
-    font-weight:900;
-
-    letter-spacing:-.04em;
-
-    text-transform:uppercase;
-
-}
-
-.close-btn{
-
-    width:40px;
-    height:40px;
-
-    border:
-        1px solid #333346;
-
-    background:#0b0b11;
-
-    cursor:pointer;
-
-    font-size:20px;
-
-}
-
-.close-btn:hover{
-
-    background:var(--accent);
-
-    color:#050507;
-
-}
-
-.catalog-list{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,1fr);
-
-}
-
-.catalog-brand{
-
-    min-height:110px;
-
-    padding:24px;
-
-    border-right:
-        1px solid var(--line);
-
-    border-bottom:
-        1px solid var(--line);
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.catalog-brand:nth-child(even){
-
-    border-right:none;
-
-}
-
-.catalog-brand:hover{
-
-    background:#11111b;
-
-}
-
-.catalog-brand.active{
-
-    background:var(--accent);
-
-    color:#050507;
-
-}
-
-.brand-top{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    gap:20px;
-
-    align-items:center;
-
-}
-
-.brand-name{
-
-    font-size:17px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-}
-
-.brand-arrow{
-
-    font-size:18px;
-
-    transition:.2s;
-
-}
-
-.catalog-brand.active .brand-arrow{
-
-    transform:rotate(90deg);
-
-}
-
-.brand-meta{
-
-    margin-top:12px;
-
-    color:#777783;
-
-    font-size:9px;
-
-    letter-spacing:.16em;
-
-    text-transform:uppercase;
-
-}
-
-.catalog-brand.active .brand-meta{
-
-    color:#303044;
-
-}
-
-.brand-items{
-
-    display:none;
-
-    border-top:
-        1px solid var(--line);
-
-    margin-top:22px;
-
-    padding-top:22px;
-
-}
-
-.brand-items.open{
-
-    display:block;
-
-}
-
-.brand-items-head{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    gap:15px;
-
-    margin-bottom:20px;
-
-}
-
-.brand-items-title{
-
-    font-size:12px;
-
-    font-weight:900;
-
-    letter-spacing:.15em;
-
-    text-transform:uppercase;
-
-}
-
-.brand-items-note{
-
-    color:#666676;
-
-    font-size:9px;
-
-}
-
-.brand-item-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,1fr);
-
-    gap:10px;
-
-}
-
-.catalog-item{
-
-    border:
-        1px solid #222233;
-
-    background:#0a0a10;
-
-    padding:12px;
-
-    cursor:pointer;
-
-    transition:.2s;
-
-}
-
-.catalog-item:hover{
-
-    border-color:var(--accent);
-
-    transform:
-        translateY(-2px);
-
-}
-
-.catalog-item-image{
-
-    aspect-ratio:
-        1/1.1;
-
-    border:
-        1px dashed #252535;
-
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    margin-bottom:12px;
-
-    overflow:hidden;
-
-}
-
-.catalog-item-image img{
-
-    width:100%;
-    height:100%;
-
-    object-fit:contain;
-
-}
-
-.catalog-item-placeholder{
-
-    color:#3d3d4d;
-
-    font-size:8px;
-
-    text-align:center;
-
-    letter-spacing:.15em;
-
-    text-transform:uppercase;
-
-}
-
-.catalog-item-category{
-
-    color:var(--accent);
-
-    font-size:8px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    margin-bottom:5px;
-
-}
-
-.catalog-item-name{
-
-    font-size:11px;
-
-    font-weight:800;
-
-    text-transform:uppercase;
-
-}
-
-.catalog-item-price{
-
-    margin-top:6px;
-
-    color:#777783;
-
-    font-size:9px;
-
-}
-
-
-/* =========================================================
-   LOADER
-========================================================= */
 
 .loader{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:5000;
-
-    background:#050507;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    transition:.7s ease;
-
+  position:fixed;
+  inset:0;
+  z-index:5000;
+  background:#050507;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:.7s ease;
 }
-
-.loader.hide{
-
-    opacity:0;
-
-    pointer-events:none;
-
-}
-
-.loader-inner{
-
-    text-align:center;
-
-}
-
+.loader.hide{opacity:0;pointer-events:none}
+.loader-inner{text-align:center}
 .loader-logo{
-
-    font-size:24px;
-
-    font-weight:900;
-
-    letter-spacing:.35em;
-
-    text-transform:uppercase;
-
+  font-size:24px;
+  font-weight:900;
+  letter-spacing:.35em;
+  text-transform:uppercase;
 }
-
 .loader-line{
-
-    width:180px;
-
-    height:1px;
-
-    background:#222233;
-
-    margin:25px auto 0;
-
-    overflow:hidden;
-
+  width:180px;
+  height:1px;
+  background:#222233;
+  margin:25px auto 0;
+  overflow:hidden;
 }
-
 .loader-progress{
-
-    width:0;
-
-    height:100%;
-
-    background:var(--accent);
-
-    animation:
-        loading 1.5s ease forwards;
-
+  width:0;
+  height:100%;
+  background:var(--accent);
+  animation:loading 1.5s ease forwards;
 }
 
-@keyframes loading{
-
-    to{
-
-        width:100%;
-
-    }
-
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .8s ease,transform .8s ease;
 }
+.reveal.visible{opacity:1;transform:translateY(0)}
 
-
-/* =========================================================
-   RESPONSIVE
-========================================================= */
+@keyframes loading{to{width:100%}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes marquee{
+  from{transform:translateX(0)}
+  to{transform:translateX(-50%)}
+}
+@keyframes heroIn{
+  from{opacity:0;transform:translateY(25px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes formIn{
+  from{opacity:0;transform:translateY(15px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes cardIn{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
 
 @media(max-width:900px){
-
-    header{
-
-        padding:0 18px;
-
-        height:68px;
-
-    }
-
-    .header-index{
-
-        display:none;
-
-    }
-
-    .hero{
-
-        padding-left:18px;
-
-        padding-right:18px;
-
-    }
-
-    .hero-title{
-
-        font-size:
-            clamp(55px,15vw,100px);
-
-    }
-
-    .section{
-
-        padding:
-            80px 18px;
-
-    }
-
-    .section-head{
-
-        display:block;
-
-    }
-
-    .section-description{
-
-        margin-top:20px;
-
-    }
-
-    .builder-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .fit-card{
-
-        min-height:500px;
-
-    }
-
-    .info-grid{
-
-        grid-template-columns:1fr;
-
-        gap:35px;
-
-    }
-
-    .brand-item-grid{
-
-        grid-template-columns:
-            repeat(3,1fr);
-
-    }
-
+  header{padding:0 18px;height:68px}
+  .header-index{display:none}
+  .hero{padding-left:18px;padding-right:18px}
+  .hero-title{font-size:clamp(55px,15vw,100px)}
+  .section{padding:80px 18px}
+  .section-head{display:block}
+  .section-description{margin-top:20px}
+  .builder-grid{grid-template-columns:1fr}
+  .fit-card{min-height:500px}
+  .info-grid{grid-template-columns:1fr;gap:35px}
+  .review-list{grid-template-columns:1fr 1fr}
 }
 
 @media(max-width:600px){
-
-    .logo{
-
-        font-size:12px;
-
-    }
-
-    .header-btn{
-
-        padding:
-            10px 12px;
-
-        font-size:8px;
-
-    }
-
-    .hero-name{
-
-        letter-spacing:.18em;
-
-    }
-
-    .hero-sub{
-
-        font-size:11px;
-
-    }
-
-    .catalog-window{
-
-        width:
-            calc(100% - 16px);
-
-        margin-top:76px;
-
-    }
-
-    .catalog-list{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .catalog-brand,
-    .catalog-brand:nth-child(even){
-
-        border-right:none;
-
-    }
-
-    .brand-item-grid{
-
-        grid-template-columns:
-            1fr 1fr;
-
-    }
-
-    .rating-buttons{
-
-        grid-template-columns:
-            repeat(5,1fr);
-
-    }
-
-    .search{
-
-        height:62px;
-
-        font-size:14px;
-
-        padding:0 18px;
-
-    }
-
-    .search-icon{
-
-        right:18px;
-
-    }
-
-    .search-result{
-
-        align-items:flex-start;
-
-        flex-direction:column;
-
-        gap:9px;
-
-    }
-
-    .search-result-price{
-
-        position:absolute;
-
-        right:20px;
-
-        margin-top:2px;
-
-    }
-
-    footer{
-
-        padding:
-            25px 18px;
-
-        flex-direction:column;
-
-        align-items:flex-start;
-
-    }
-
-    .footer-right{
-
-        align-items:flex-start;
-
-    }
-
+  .logo{font-size:12px}
+  .header-btn{padding:10px 12px;font-size:8px}
+  .hero-name{letter-spacing:.18em}
+  .hero-sub{font-size:11px}
+  .rating-buttons{grid-template-columns:repeat(5,1fr)}
+  .search{height:62px;font-size:14px;padding:0 50px 0 18px}
+  .search-icon{right:18px}
+  .search-result{align-items:flex-start;flex-direction:column;gap:9px}
+  .search-result-price{position:absolute;right:20px;margin-top:2px}
+  .review-list{grid-template-columns:1fr}
+  footer{
+    padding:25px 18px;
+    flex-direction:column;
+    align-items:flex-start;
+  }
+  .footer-right{align-items:flex-start}
 }
-
-
-/* =========================================================
-   REDUCED MOTION
-========================================================= */
 
 @media(prefers-reduced-motion:reduce){
-
-    html{
-
-        scroll-behavior:auto;
-
-    }
-
-    .hero-orbit,
-    .marquee-track,
-    .loader-progress{
-
-        animation:none;
-
-    }
-
+  html{scroll-behavior:auto}
+  *,*:before,*:after{
+    animation-duration:.01ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.01ms!important;
+  }
 }
-
 </style>
-
 </head>
-
 
 <body>
 
-
-<!-- =====================================================
-     LOADER
-===================================================== -->
-
-<div
-    class="loader"
-    id="loader"
->
-
-    <div class="loader-inner">
-
-        <div class="loader-logo">
-            CreatureMeza
-        </div>
-
-        <div class="loader-line">
-
-            <div class="loader-progress"></div>
-
-        </div>
-
-    </div>
-
+<div class="loader" id="loader">
+  <div class="loader-inner">
+    <div class="loader-logo">CreatureMeza</div>
+    <div class="loader-line"><div class="loader-progress"></div></div>
+  </div>
 </div>
-
-
-<!-- =====================================================
-     HEADER
-===================================================== -->
 
 <header>
-
-    <div class="logo">
-        CreatureMeza
-    </div>
-
-    <div class="header-right">
-
-        <div class="header-index">
-            CM / 001
-        </div>
-
-        <button
-            class="header-btn"
-            id="catalogButton"
-        >
-            Каталог
-        </button>
-
-    </div>
-
+  <div class="logo">CreatureMeza</div>
+  <div class="header-right">
+    <div class="header-index">CM / 001</div>
+    <button class="header-btn" id="catalogButton">Найти вещь</button>
+  </div>
 </header>
 
-
-<!-- =====================================================
-     HERO
-===================================================== -->
-
 <section class="hero">
-
-    <div class="hero-grid"></div>
-
-    <div class="hero-orbit"></div>
-
-    <div class="hero-content">
-
-        <div class="hero-kicker">
-            Независимый архив моды
-        </div>
-
-        <div class="hero-name">
-            CreatureMeza
-        </div>
-
-        <h1 class="hero-title">
-
-            <span>Собери</span>
-
-            <span>свой</span>
-
-            <span>образ.</span>
-
-        </h1>
-
-        <p class="hero-sub">
-
-            Выбирай вещи из архива.
-            Создавай собственные сочетания.
-            Никаких правил. Только вещи.
-
-        </p>
-
-    </div>
-
+  <div class="hero-grid"></div>
+  <div class="hero-orbit"></div>
+  <div class="hero-content">
+    <div class="hero-kicker">Независимый архив моды</div>
+    <div class="hero-name">CreatureMeza</div>
+    <h1 class="hero-title">
+      <span>Собери</span>
+      <span>свой</span>
+      <span>образ.</span>
+    </h1>
+    <p class="hero-sub">
+      Выбирай вещи из архива. Создавай собственные сочетания.
+      Никаких правил. Только вещи.
+    </p>
+  </div>
 </section>
-
-
-<!-- =====================================================
-     MARQUEE
-===================================================== -->
 
 <div class="marquee">
-
-    <div class="marquee-track">
-
-        <span>CreatureMeza</span>
-
-        <span>Независимый архив моды</span>
-
-        <span>Собери свой образ</span>
-
-        <span>Объекты / 001</span>
-
-        <span>CreatureMeza</span>
-
-        <span>Независимый архив моды</span>
-
-        <span>Собери свой образ</span>
-
-        <span>Объекты / 001</span>
-
-    </div>
-
+  <div class="marquee-track">
+    <span>CreatureMeza</span>
+    <span>Независимый архив моды</span>
+    <span>Собери свой образ</span>
+    <span>Объекты / 001</span>
+    <span>CreatureMeza</span>
+    <span>Независимый архив моды</span>
+    <span>Собери свой образ</span>
+    <span>Объекты / 001</span>
+  </div>
 </div>
 
+<section class="section builder reveal" id="builder">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">001 / Конструктор</div>
+      <h2 class="section-title">Твой образ</h2>
+    </div>
+    <p class="section-description">
+      Найди вещь через поиск. Каждый слой изменяется отдельно.
+    </p>
+  </div>
 
-<!-- =====================================================
-     BUILDER
-===================================================== -->
-
-<section
-    class="section builder"
-    id="builder"
->
-
-    <div class="section-head">
-
-        <div>
-
-            <div class="section-kicker">
-                001 / Конструктор
-            </div>
-
-            <h2 class="section-title">
-                Твой образ
-            </h2>
-
-        </div>
-
-        <p class="section-description">
-
-            Найди вещь через поиск
-            или используй кнопку
-            каталога. Каждый слой
-            изменяется отдельно.
-
-        </p>
-
+  <div class="builder-grid">
+    <div class="fit-card">
+      <div class="fit-label">Верх</div>
+      <div class="fit-number">01</div>
+      <div class="fit-image" id="topImage"></div>
+      <div class="fit-info">
+        <div class="fit-brand" id="topBrand">—</div>
+        <div class="fit-name" id="topName">Выберите вещь</div>
+        <div class="fit-price" id="topPrice">—</div>
+      </div>
+      <div class="fit-arrows">
+        <button class="arrow-btn" id="topPrev">←</button>
+        <button class="arrow-btn" id="topNext">→</button>
+      </div>
     </div>
 
-
-    <div class="builder-grid">
-
-
-        <!-- TOP -->
-
-        <div class="fit-card">
-
-            <div class="fit-label">
-                Верх
-            </div>
-
-            <div class="fit-number">
-                01
-            </div>
-
-            <div
-                class="fit-image"
-                id="topImage"
-            ></div>
-
-            <div class="fit-info">
-
-                <div
-                    class="fit-brand"
-                    id="topBrand"
-                >
-                    —
-                </div>
-
-                <div
-                    class="fit-name"
-                    id="topName"
-                >
-                    Выберите вещь
-                </div>
-
-                <div
-                    class="fit-price"
-                    id="topPrice"
-                >
-                    —
-                </div>
-
-            </div>
-
-            <div class="fit-arrows">
-
-                <button
-                    class="arrow-btn"
-                    id="topPrev"
-                    aria-label="Предыдущая верхняя вещь"
-                >
-                    ←
-                </button>
-
-                <button
-                    class="arrow-btn"
-                    id="topNext"
-                    aria-label="Следующая верхняя вещь"
-                >
-                    →
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- BOTTOM -->
-
-        <div class="fit-card">
-
-            <div class="fit-label">
-                Низ
-            </div>
-
-            <div class="fit-number">
-                02
-            </div>
-
-            <div
-                class="fit-image"
-                id="bottomImage"
-            ></div>
-
-            <div class="fit-info">
-
-                <div
-                    class="fit-brand"
-                    id="bottomBrand"
-                >
-                    —
-                </div>
-
-                <div
-                    class="fit-name"
-                    id="bottomName"
-                >
-                    Выберите вещь
-                </div>
-
-                <div
-                    class="fit-price"
-                    id="bottomPrice"
-                >
-                    —
-                </div>
-
-            </div>
-
-            <div class="fit-arrows">
-
-                <button
-                    class="arrow-btn"
-                    id="bottomPrev"
-                    aria-label="Предыдущая нижняя вещь"
-                >
-                    ←
-                </button>
-
-                <button
-                    class="arrow-btn"
-                    id="bottomNext"
-                    aria-label="Следующая нижняя вещь"
-                >
-                    →
-                </button>
-
-            </div>
-
-        </div>
-
-
-        <!-- SHOES -->
-
-        <div class="fit-card">
-
-            <div class="fit-label">
-                Обувь
-            </div>
-
-            <div class="fit-number">
-                03
-            </div>
-
-            <div
-                class="fit-image"
-                id="shoesImage"
-            ></div>
-
-            <div class="fit-info">
-
-                <div
-                    class="fit-brand"
-                    id="shoesBrand"
-                >
-                    —
-                </div>
-
-                <div
-                    class="fit-name"
-                    id="shoesName"
-                >
-                    Выберите вещь
-                </div>
-
-                <div
-                    class="fit-price"
-                    id="shoesPrice"
-                >
-                    —
-                </div>
-
-            </div>
-
-            <div class="fit-arrows">
-
-                <button
-                    class="arrow-btn"
-                    id="shoesPrev"
-                    aria-label="Предыдущая обувь"
-                >
-                    ←
-                </button>
-
-                <button
-                    class="arrow-btn"
-                    id="shoesNext"
-                    aria-label="Следующая обувь"
-                >
-                    →
-                </button>
-
-            </div>
-
-        </div>
-
+    <div class="fit-card">
+      <div class="fit-label">Низ</div>
+      <div class="fit-number">02</div>
+      <div class="fit-image" id="bottomImage"></div>
+      <div class="fit-info">
+        <div class="fit-brand" id="bottomBrand">—</div>
+        <div class="fit-name" id="bottomName">Выберите вещь</div>
+        <div class="fit-price" id="bottomPrice">—</div>
+      </div>
+      <div class="fit-arrows">
+        <button class="arrow-btn" id="bottomPrev">←</button>
+        <button class="arrow-btn" id="bottomNext">→</button>
+      </div>
     </div>
 
-
-    <!-- CONTROLS -->
-
-    <div class="builder-controls">
-
-        <button
-            class="control-btn"
-            id="randomButton"
-        >
-            Случайный образ
-        </button>
-
-        <button
-            class="control-btn"
-            id="resetButton"
-        >
-            Сбросить
-        </button>
-
-        <button
-            class="control-btn"
-            id="confirmButton"
-        >
-            Подтвердить образ
-        </button>
-
+    <div class="fit-card">
+      <div class="fit-label">Обувь</div>
+      <div class="fit-number">03</div>
+      <div class="fit-image" id="shoesImage"></div>
+      <div class="fit-info">
+        <div class="fit-brand" id="shoesBrand">—</div>
+        <div class="fit-name" id="shoesName">Выберите вещь</div>
+        <div class="fit-price" id="shoesPrice">—</div>
+      </div>
+      <div class="fit-arrows">
+        <button class="arrow-btn" id="shoesPrev">←</button>
+        <button class="arrow-btn" id="shoesNext">→</button>
+      </div>
     </div>
+  </div>
 
+  <div class="builder-controls">
+    <button class="control-btn" id="randomButton">Случайный образ</button>
+    <button class="control-btn" id="resetButton">Сбросить</button>
+    <button class="control-btn" id="confirmButton">Подтвердить образ</button>
+  </div>
 
-    <!-- TOTAL -->
+  <div class="total-bar">
+    <div class="total-label">Общая стоимость</div>
+    <div class="total-value" id="totalPrice">$0</div>
+  </div>
 
-    <div class="total-bar">
-
-        <div class="total-label">
-            Общая стоимость
-        </div>
-
-        <div
-            class="total-value"
-            id="totalPrice"
-        >
-            $0
-        </div>
-
+  <div class="rating-panel">
+    <div class="rating-title">Оцени этот образ</div>
+    <div class="rating-buttons">
+      <button class="rating-btn" data-rating="1">1</button>
+      <button class="rating-btn" data-rating="2">2</button>
+      <button class="rating-btn" data-rating="3">3</button>
+      <button class="rating-btn" data-rating="4">4</button>
+      <button class="rating-btn" data-rating="5">5</button>
+      <button class="rating-btn" data-rating="6">6</button>
+      <button class="rating-btn" data-rating="7">7</button>
+      <button class="rating-btn" data-rating="8">8</button>
+      <button class="rating-btn" data-rating="9">9</button>
+      <button class="rating-btn" data-rating="10">10</button>
     </div>
-
-
-    <!-- RATING -->
-
-    <div class="rating-panel">
-
-        <div class="rating-title">
-            Оцени этот образ
-        </div>
-
-        <div class="rating-buttons">
-
-            <button class="rating-btn" data-rating="1">1</button>
-            <button class="rating-btn" data-rating="2">2</button>
-            <button class="rating-btn" data-rating="3">3</button>
-            <button class="rating-btn" data-rating="4">4</button>
-            <button class="rating-btn" data-rating="5">5</button>
-            <button class="rating-btn" data-rating="6">6</button>
-            <button class="rating-btn" data-rating="7">7</button>
-            <button class="rating-btn" data-rating="8">8</button>
-            <button class="rating-btn" data-rating="9">9</button>
-            <button class="rating-btn" data-rating="10">10</button>
-
-        </div>
-
-        <div
-            class="status"
-            id="status"
-        >
-            Выберите все три вещи, чтобы подтвердить образ.
-        </div>
-
+    <div class="status" id="status">
+      Выберите все три вещи, чтобы подтвердить образ.
     </div>
-
+  </div>
 </section>
 
+<section class="section archive reveal" id="archive">
+  <div class="section-head">
+    <div>
+      <div class="section-kicker">002 / Поиск</div>
+      <h2 class="section-title">Найти вещь</h2>
+    </div>
+    <p class="section-description">
+      Начни вводить название бренда или вещи.
+      Подсказки появятся автоматически.
+    </p>
+  </div>
 
-<!-- =====================================================
-     SEARCH
-===================================================== -->
+  <div class="archive-search-area">
+    <label class="search-label" for="searchInput">Поиск по архиву</label>
 
-<section
-    class="section archive"
-    id="archive"
->
-
-    <div class="section-head">
-
-        <div>
-
-            <div class="section-kicker">
-                002 / Поиск
-            </div>
-
-            <h2 class="section-title">
-                Найти вещь
-            </h2>
-
-        </div>
-
-        <p class="section-description">
-
-            Начни вводить название бренда
-            или вещи. Например:
-            Balenciaga, Nike, Bale, Hoodie.
-
-        </p>
-
+    <div class="search-wrap">
+      <input
+        class="search"
+        id="searchInput"
+        type="text"
+        placeholder="Найти вещь или бренд..."
+        autocomplete="off"
+        spellcheck="false"
+      >
+      <div class="search-icon">/</div>
     </div>
 
-
-    <div class="archive-search-area">
-
-        <label
-            class="search-label"
-            for="searchInput"
-        >
-            Поиск по архиву
-        </label>
-
-        <div class="search-wrap">
-
-            <input
-                class="search"
-                id="searchInput"
-                type="text"
-                placeholder="Введите бренд или название вещи..."
-                autocomplete="off"
-                spellcheck="false"
-            >
-
-            <div class="search-icon">
-                /
-            </div>
-
-        </div>
-
-        <div class="search-hint">
-
-            Результаты появятся автоматически после ввода.
-
-        </div>
-
-        <div
-            class="search-results"
-            id="searchResults"
-        ></div>
-
-        <div
-            class="search-selected"
-            id="searchSelected"
-        ></div>
-
+    <div class="search-hint">
+      Введи хотя бы одну букву, чтобы увидеть результаты.
     </div>
 
+    <div class="search-results" id="searchResults"></div>
+    <div class="search-selected" id="searchSelected"></div>
+  </div>
 </section>
 
-
-<!-- =====================================================
-     INFO
-===================================================== -->
-
-<section class="section info">
-
-    <div class="info-grid">
-
-        <div class="info-big">
-
-            Никаких правил.<br>
-            Только вещи.
-
-        </div>
-
-        <div class="info-text">
-
-            CreatureMeza — независимый
-            архив моды, построенный вокруг
-            вещей, брендов и сочетаний.
-
-            <br><br>
-
-            Найди нужную вещь через поиск,
-            добавь её в образ и измени
-            комбинацию стрелками.
-
-            <br><br>
-
-            Каждая вещь — это объект.
-            Комбинация принадлежит тебе.
-
-        </div>
-
+<section class="section info reveal">
+  <div class="info-grid">
+    <div class="info-big">
+      Никаких правил.<br>
+      Только вещи.
     </div>
-
+    <div class="info-text">
+      CreatureMeza — независимый архив моды,
+      построенный вокруг вещей, брендов и сочетаний.
+      <br><br>
+      Найди нужную вещь через поиск, добавь её
+      в образ и измени комбинацию стрелками.
+      <br><br>
+      Каждая вещь — это объект.
+      Комбинация принадлежит тебе.
+    </div>
+  </div>
 </section>
 
+<section class="section reviews reveal" id="reviews">
+  <div class="section-kicker">003 / Отзывы</div>
+  <h2 class="section-title">Мнение архива</h2>
+  <p class="section-description" style="margin:20px auto 30px">
+    Оставь короткий отзыв о CreatureMeza.
+  </p>
 
-<!-- =====================================================
-     FOOTER
-===================================================== -->
+  <button class="review-open" id="reviewOpen">Оставить отзыв</button>
+
+  <form class="review-form" id="reviewForm">
+    <div class="review-error" id="reviewError"></div>
+
+    <label for="reviewName">Имя пользователя</label>
+    <input
+      id="reviewName"
+      maxlength="32"
+      placeholder="Твоё имя"
+      autocomplete="off"
+    >
+
+    <label>Оценка</label>
+    <div class="skull-rating" id="skullRating">
+      <button type="button" data-value="1">☠</button>
+      <button type="button" data-value="2">☠</button>
+      <button type="button" data-value="3">☠</button>
+      <button type="button" data-value="4">☠</button>
+      <button type="button" data-value="5">☠</button>
+    </div>
+
+    <label for="reviewText">Комментарий</label>
+    <textarea
+      id="reviewText"
+      maxlength="500"
+      placeholder="Напиши, что думаешь..."
+    ></textarea>
+
+    <div class="review-actions">
+      <button class="submit-review" type="submit">Опубликовать</button>
+      <button class="review-close" type="button" id="reviewClose">Закрыть</button>
+    </div>
+  </form>
+
+  <div class="review-list" id="reviewList"></div>
+</section>
 
 <footer>
-
-    <div>
-        CreatureMeza / Архив
-    </div>
-
-    <div class="footer-right">
-
-        <a
-            class="footer-link"
-            href="https://t.me/"
-            target="_blank"
-            rel="noopener"
-        >
-            Telegram
-        </a>
-
-        <div class="footer-team">
-            made by Borov’s Team
-        </div>
-
-    </div>
-
+  <div>CreatureMeza / Архив</div>
+  <div class="footer-right">
+    <a class="footer-link" href="https://t.me/" target="_blank" rel="noopener">
+      Telegram
+    </a>
+    <div class="footer-team">made by Borov’s Team</div>
+  </div>
 </footer>
 
-
-<!-- =====================================================
-     CATALOG OVERLAY
-===================================================== -->
-
-<div
-    class="catalog-overlay"
-    id="catalogOverlay"
->
-
-    <div class="catalog-window">
-
-        <div class="catalog-top">
-
-            <div class="catalog-heading">
-                Каталог брендов
-            </div>
-
-            <button
-                class="close-btn"
-                id="catalogClose"
-                aria-label="Закрыть каталог"
-            >
-                ×
-            </button>
-
-        </div>
-
-        <div
-            class="catalog-list"
-            id="catalogList"
-        ></div>
-
-    </div>
-
-</div>
-
-
 <script>
-
-/* =========================================================
-   ДАННЫЕ КАТАЛОГА
-========================================================= */
-
-const catalog = {
-
-    "Ader Error": {
-
-        top: [
-            ["Ader Logo Tee",180],
-            ["Ader Oversized Hoodie",320],
-            ["Ader Distressed Knit",290]
-        ],
-
-        bottom: [
-            ["Ader Wide Trousers",250],
-            ["Ader Cargo Pants",280],
-            ["Ader Denim",230]
-        ],
-
-        shoes: [
-            ["Ader Platform Sneakers",300],
-            ["Ader Runner",275],
-            ["Ader Black Derby",330]
-        ]
-
-    },
-
-    "Balenciaga": {
-
-        top: [
-            ["Balenciaga Logo Tee",550],
-            ["Balenciaga Zip Hoodie",950],
-            ["Balenciaga Oversized Shirt",850]
-        ],
-
-        bottom: [
-            ["Balenciaga Baggy Jeans",900],
-            ["Balenciaga Track Pants",800],
-            ["Balenciaga Cargo",780]
-        ],
-
-        shoes: [
-            ["Triple S",1100],
-            ["Runner Sneaker",1050],
-            ["3XL Sneaker",1200]
-        ]
-
-    },
-
-    "Carhartt WIP": {
-
-        top: [
-            ["Carhartt Pocket Tee",75],
-            ["Carhartt Detroit Jacket",190],
-            ["Carhartt Work Shirt",120]
-        ],
-
-        bottom: [
-            ["Carhartt Double Knee",130],
-            ["Carhartt Cargo",140],
-            ["Carhartt Denim",120]
-        ],
-
-        shoes: [
-            ["Carhartt Canvas Sneaker",110],
-            ["Carhartt Work Shoe",150],
-            ["Carhartt High Top",135]
-        ]
-
-    },
-
-    "Comme des Garçons": {
-
-        top: [
-            ["CDG Heart Tee",150],
-            ["CDG Knit",420],
-            ["CDG Shirt",500]
-        ],
-
-        bottom: [
-            ["CDG Wide Pants",380],
-            ["CDG Wool Trousers",520],
-            ["CDG Cargo",450]
-        ],
-
-        shoes: [
-            ["CDG Converse",180],
-            ["CDG Derby",600],
-            ["CDG Platform",480]
-        ]
-
-    },
-
-    "Diesel": {
-
-        top: [
-            ["Diesel Logo Tee",120],
-            ["Diesel Denim Jacket",350],
-            ["Diesel Graphic Top",180]
-        ],
-
-        bottom: [
-            ["Diesel D-Sire Jeans",300],
-            ["Diesel Cargo",280],
-            ["Diesel Flared Denim",320]
-        ],
-
-        shoes: [
-            ["Diesel D-Rise",350],
-            ["Diesel S-Athos",300],
-            ["Diesel Runner",290]
-        ]
-
-    },
-
-    "Givenchy": {
-
-        top: [
-            ["Givenchy Signature Tee",500],
-            ["Givenchy Hoodie",800],
-            ["Givenchy Wool Jacket",1200]
-        ],
-
-        bottom: [
-            ["Givenchy Tailored Pants",700],
-            ["Givenchy Cargo",650],
-            ["Givenchy Denim",600]
-        ],
-
-        shoes: [
-            ["Givenchy Giv 1",850],
-            ["Givenchy Runner",900],
-            ["Givenchy Derby",950]
-        ]
-
-    },
-
-    "Maison Margiela": {
-
-        top: [
-            ["Margiela Logo Tee",260],
-            ["Margiela Knit",650],
-            ["Margiela Replica Jacket",900]
-        ],
-
-        bottom: [
-            ["Margiela Wide Trousers",600],
-            ["Margiela Denim",550],
-            ["Margiela Painter Pants",580]
-        ],
-
-        shoes: [
-            ["Replica Sneakers",600],
-            ["Replica Low Top",650],
-            ["Tabi Boots",900]
-        ]
-
-    },
-
-    "Nike": {
-
-        top: [
-            ["Nike Sportswear Tee",45],
-            ["Nike Tech Fleece",130],
-            ["Nike ACG Jacket",190]
-        ],
-
-        bottom: [
-            ["Nike Tech Pants",110],
-            ["Nike ACG Cargo",150],
-            ["Nike Track Pants",90]
-        ],
-
-        shoes: [
-            ["Air Force 1",120],
-            ["Air Max 95",180],
-            ["Air Jordan 1",200]
-        ]
-
-    },
-
-    "Prada": {
-
-        top: [
-            ["Prada Triangle Tee",500],
-            ["Prada Nylon Jacket",1300],
-            ["Prada Knit",900]
-        ],
-
-        bottom: [
-            ["Prada Nylon Pants",750],
-            ["Prada Tailored Trousers",850],
-            ["Prada Cargo",800]
-        ],
-
-        shoes: [
-            ["Prada America's Cup",950],
-            ["Prada Monolith",1100],
-            ["Prada Derby",1000]
-        ]
-
-    },
-
-    "Ralph Lauren": {
-
-        top: [
-            ["Polo Classic Tee",80],
-            ["Polo Oxford Shirt",130],
-            ["Polo Cable Knit",160]
-        ],
-
-        bottom: [
-            ["Polo Chino",110],
-            ["Polo Pleated Pants",140],
-            ["Polo Denim",120]
-        ],
-
-        shoes: [
-            ["Polo Sneaker",100],
-            ["Polo Loafer",150],
-            ["Polo Canvas",90]
-        ]
-
-    },
-
-    "Supreme": {
-
-        top: [
-            ["Supreme Box Logo",100],
-            ["Supreme Hoodie",190],
-            ["Supreme Work Jacket",250]
-        ],
-
-        bottom: [
-            ["Supreme Cargo",180],
-            ["Supreme Denim",170],
-            ["Supreme Work Pant",160]
-        ],
-
-        shoes: [
-            ["Supreme AF1",130],
-            ["Supreme Dunk",180],
-            ["Supreme Vans",120]
-        ]
-
-    },
-
-    "Stone Island": {
-
-        top: [
-            ["Stone Island Tee",160],
-            ["Stone Island Overshirt",350],
-            ["Stone Island Shell",700]
-        ],
-
-        bottom: [
-            ["Stone Island Cargo",300],
-            ["Stone Island Nylon Pants",350],
-            ["Stone Island Denim",260]
-        ],
-
-        shoes: [
-            ["Stone Island Runner",250],
-            ["Stone Island Sneaker",300],
-            ["Stone Island Boot",350]
-        ]
-
-    },
-
-    "Y-3": {
-
-        top: [
-            ["Y-3 Logo Tee",180],
-            ["Y-3 Hoodie",350],
-            ["Y-3 Bomber",600]
-        ],
-
-        bottom: [
-            ["Y-3 Wide Pants",300],
-            ["Y-3 Cargo",330],
-            ["Y-3 Track Pants",280]
-        ],
-
-        shoes: [
-            ["Y-3 Superstar",350],
-            ["Y-3 Kaiwa",400],
-            ["Y-3 Runner",380]
-        ]
-
-    }
-
+const catalog={
+  "Ader Error":{
+    top:[["Ader Logo Tee",180],["Ader Oversized Hoodie",320],["Ader Distressed Knit",290]],
+    bottom:[["Ader Wide Trousers",250],["Ader Cargo Pants",280],["Ader Denim",230]],
+    shoes:[["Ader Platform Sneakers",300],["Ader Runner",275],["Ader Black Derby",330]]
+  },
+  "Balenciaga":{
+    top:[["Balenciaga Logo Tee",550],["Balenciaga Zip Hoodie",950],["Balenciaga Oversized Shirt",850]],
+    bottom:[["Balenciaga Baggy Jeans",900],["Balenciaga Track Pants",800],["Balenciaga Cargo",780]],
+    shoes:[["Triple S",1100],["Runner Sneaker",1050],["3XL Sneaker",1200]]
+  },
+  "Carhartt WIP":{
+    top:[["Carhartt Pocket Tee",75],["Carhartt Detroit Jacket",190],["Carhartt Work Shirt",120]],
+    bottom:[["Carhartt Double Knee",130],["Carhartt Cargo",140],["Carhartt Denim",120]],
+    shoes:[["Carhartt Canvas Sneaker",110],["Carhartt Work Shoe",150],["Carhartt High Top",135]]
+  },
+  "Comme des Garçons":{
+    top:[["CDG Heart Tee",150],["CDG Knit",420],["CDG Shirt",500]],
+    bottom:[["CDG Wide Pants",380],["CDG Wool Trousers",520],["CDG Cargo",450]],
+    shoes:[["CDG Converse",180],["CDG Derby",600],["CDG Platform",480]]
+  },
+  "Diesel":{
+    top:[["Diesel Logo Tee",120],["Diesel Denim Jacket",350],["Diesel Graphic Top",180]],
+    bottom:[["Diesel D-Sire Jeans",300],["Diesel Cargo",280],["Diesel Flared Denim",320]],
+    shoes:[["Diesel D-Rise",350],["Diesel S-Athos",300],["Diesel Runner",290]]
+  },
+  "Givenchy":{
+    top:[["Givenchy Signature Tee",500],["Givenchy Hoodie",800],["Givenchy Wool Jacket",1200]],
+    bottom:[["Givenchy Tailored Pants",700],["Givenchy Cargo",650],["Givenchy Denim",600]],
+    shoes:[["Givenchy Giv 1",850],["Givenchy Runner",900],["Givenchy Derby",950]]
+  },
+  "Maison Margiela":{
+    top:[["Margiela Logo Tee",260],["Margiela Knit",650],["Margiela Replica Jacket",900]],
+    bottom:[["Margiela Wide Trousers",600],["Margiela Denim",550],["Margiela Painter Pants",580]],
+    shoes:[["Replica Sneakers",600],["Replica Low Top",650],["Tabi Boots",900]]
+  },
+  "Nike":{
+    top:[["Nike Sportswear Tee",45],["Nike Tech Fleece",130],["Nike ACG Jacket",190]],
+    bottom:[["Nike Tech Pants",110],["Nike ACG Cargo",150],["Nike Track Pants",90]],
+    shoes:[["Air Force 1",120],["Air Max 95",180],["Air Jordan 1",200]]
+  },
+  "Prada":{
+    top:[["Prada Triangle Tee",500],["Prada Nylon Jacket",1300],["Prada Knit",900]],
+    bottom:[["Prada Nylon Pants",750],["Prada Tailored Trousers",850],["Prada Cargo",800]],
+    shoes:[["Prada America's Cup",950],["Prada Monolith",1100],["Prada Derby",1000]]
+  },
+  "Ralph Lauren":{
+    top:[["Polo Classic Tee",80],["Polo Oxford Shirt",130],["Polo Cable Knit",160]],
+    bottom:[["Polo Chino",110],["Polo Pleated Pants",140],["Polo Denim",120]],
+    shoes:[["Polo Sneaker",100],["Polo Loafer",150],["Polo Canvas",90]]
+  },
+  "Supreme":{
+    top:[["Supreme Box Logo",100],["Supreme Hoodie",190],["Supreme Work Jacket",250]],
+    bottom:[["Supreme Cargo",180],["Supreme Denim",170],["Supreme Work Pant",160]],
+    shoes:[["Supreme AF1",130],["Supreme Dunk",180],["Supreme Vans",120]]
+  },
+  "Stone Island":{
+    top:[["Stone Island Tee",160],["Stone Island Overshirt",350],["Stone Island Shell",700]],
+    bottom:[["Stone Island Cargo",300],["Stone Island Nylon Pants",350],["Stone Island Denim",260]],
+    shoes:[["Stone Island Runner",250],["Stone Island Sneaker",300],["Stone Island Boot",350]]
+  },
+  "Y-3":{
+    top:[["Y-3 Logo Tee",180],["Y-3 Hoodie",350],["Y-3 Bomber",600]],
+    bottom:[["Y-3 Wide Pants",300],["Y-3 Cargo",330],["Y-3 Track Pants",280]],
+    shoes:[["Y-3 Superstar",350],["Y-3 Kaiwa",400],["Y-3 Runner",380]]
+  }
 };
 
-
-/* =========================================================
-   СОСТОЯНИЕ
-========================================================= */
-
-const categories = [
-    "top",
-    "bottom",
-    "shoes"
-];
-
-const state = {
-
-    selected:{
-        top:null,
-        bottom:null,
-        shoes:null
-    },
-
-    rating:null
-
+const categories=["top","bottom","shoes"];
+const state={
+  selected:{top:null,bottom:null,shoes:null},
+  rating:null
 };
 
+const $=id=>document.getElementById(id);
 
-/* =========================================================
-   ВСПОМОГАТЕЛЬНЫЕ ФУНКЦИИ
-========================================================= */
-
-function getCategoryLabel(category){
-
-    if(category === "top")
-        return "Верх";
-
-    if(category === "bottom")
-        return "Низ";
-
-    if(category === "shoes")
-        return "Обувь";
-
-    return category;
-
+function categoryLabel(category){
+  return category==="top"?"Верх":category==="bottom"?"Низ":"Обувь";
 }
 
-
-function formatPrice(price){
-
-    return "$" +
-        Number(price).toLocaleString();
-
+function price(value){
+  return "$"+Number(value).toLocaleString("en-US");
 }
 
-
-function createItem(
+function item(brand,category,index){
+  const data=catalog[brand][category][index];
+  return {
     brand,
     category,
-    index
-){
-
-    const data =
-        catalog[brand][category][index];
-
-    return {
-
-        name:data[0],
-
-        price:data[1],
-
-        image:"",
-
-        brand,
-
-        category,
-
-        index
-
-    };
-
+    index,
+    name:data[0],
+    price:data[1],
+    image:""
+  };
 }
 
-
-function getAllItems(){
-
-    const result = [];
-
-    Object.keys(catalog).forEach(brand => {
-
-        categories.forEach(category => {
-
-            catalog[brand][category]
-                .forEach((item,index) => {
-
-                    result.push(
-                        createItem(
-                            brand,
-                            category,
-                            index
-                        )
-                    );
-
-                });
-
-        });
-
+function allItems(){
+  const result=[];
+  Object.keys(catalog).forEach(brand=>{
+    categories.forEach(category=>{
+      catalog[brand][category].forEach((_,index)=>{
+        result.push(item(brand,category,index));
+      });
     });
-
-    return result;
-
+  });
+  return result;
 }
 
-
-function imageMarkup(item){
-
-    if(item && item.image){
-
-        return `
-
-            <img
-                src="${item.image}"
-                alt="${item.name}"
-                loading="lazy"
-            >
-
-        `;
-
-    }
-
-    return `
-
-        <div class="fit-placeholder">
-
-            Изображение скоро появится
-
-        </div>
-
-    `;
-
+function selectedItem(category){
+  const selected=state.selected[category];
+  return selected?item(selected.brand,category,selected.index):null;
 }
 
+function imageMarkup(current){
+  if(current && current.image){
+    const img=document.createElement("img");
+    img.src=current.image;
+    img.alt=current.name;
+    img.loading="lazy";
+    return img;
+  }
 
-/* =========================================================
-   SELECTED ITEM
-========================================================= */
-
-function getSelectedItem(category){
-
-    const selected =
-        state.selected[category];
-
-    if(!selected){
-
-        return null;
-
-    }
-
-    return createItem(
-        selected.brand,
-        category,
-        selected.index
-    );
-
+  const placeholder=document.createElement("div");
+  placeholder.className="fit-placeholder";
+  placeholder.textContent="Изображение скоро появится";
+  return placeholder;
 }
-
-
-/* =========================================================
-   BUILDER
-========================================================= */
 
 function renderBuilder(){
+  categories.forEach(category=>{
+    const current=selectedItem(category);
+    const image=$(category+"Image");
+    const brand=$(category+"Brand");
+    const name=$(category+"Name");
+    const cost=$(category+"Price");
 
-    categories.forEach(category => {
+    image.innerHTML="";
+    image.appendChild(imageMarkup(current));
 
-        const selected =
-            state.selected[category];
-
-        const image =
-            document.getElementById(
-                category + "Image"
-            );
-
-        const brand =
-            document.getElementById(
-                category + "Brand"
-            );
-
-        const name =
-            document.getElementById(
-                category + "Name"
-            );
-
-        const price =
-            document.getElementById(
-                category + "Price"
-            );
-
-        if(!selected){
-
-            image.innerHTML = `
-
-                <div class="fit-placeholder">
-
-                    Выберите ${getCategoryLabel(category)}
-
-                </div>
-
-            `;
-
-            brand.textContent = "—";
-
-            name.textContent =
-                "Выберите вещь";
-
-            price.textContent = "—";
-
-            return;
-
-        }
-
-        const item =
-            getSelectedItem(category);
-
-        image.innerHTML =
-            imageMarkup(item);
-
-        brand.textContent =
-            item.brand;
-
-        name.textContent =
-            item.name;
-
-        price.textContent =
-            formatPrice(item.price);
-
-    });
-
-    renderTotal();
-
-}
-
-
-function renderTotal(){
-
-    let total = 0;
-
-    categories.forEach(category => {
-
-        const item =
-            getSelectedItem(category);
-
-        if(item){
-
-            total += Number(item.price);
-
-        }
-
-    });
-
-    document.getElementById(
-        "totalPrice"
-    ).textContent =
-        formatPrice(total);
-
-}
-
-
-function selectItem(
-    brand,
-    category,
-    index
-){
-
-    state.selected[category] = {
-
-        brand,
-        index
-
-    };
-
-    state.rating = null;
-
-    document
-        .querySelectorAll(".rating-btn")
-        .forEach(button => {
-
-            button.classList.remove("active");
-
-        });
-
-    renderBuilder();
-
-    const item =
-        createItem(
-            brand,
-            category,
-            index
-        );
-
-    document.getElementById(
-        "status"
-    ).textContent =
-
-        `${getCategoryLabel(category)} выбрано: ${item.name}.`;
-
-    showSelectedMessage(
-        item
-    );
-
-}
-
-
-function moveItem(
-    category,
-    direction
-){
-
-    let selected =
-        state.selected[category];
-
-    if(!selected){
-
-        const firstBrand =
-            Object.keys(catalog)[0];
-
-        state.selected[category] = {
-
-            brand:firstBrand,
-
-            index:0
-
-        };
-
-        renderBuilder();
-
-        return;
-
+    if(current){
+      brand.textContent=current.brand;
+      name.textContent=current.name;
+      cost.textContent=price(current.price);
+    }else{
+      brand.textContent="—";
+      name.textContent="Выберите вещь";
+      cost.textContent="—";
     }
+  });
 
-    const items =
-        catalog[selected.brand][category];
-
-    let nextIndex =
-        selected.index + direction;
-
-    if(nextIndex < 0){
-
-        nextIndex =
-            items.length - 1;
-
-    }
-
-    if(nextIndex >= items.length){
-
-        nextIndex = 0;
-
-    }
-
-    state.selected[category].index =
-        nextIndex;
-
-    renderBuilder();
-
-    const item =
-        createItem(
-            selected.brand,
-            category,
-            nextIndex
-        );
-
-    document.getElementById(
-        "status"
-    ).textContent =
-
-        `${selected.brand} / ${item.name}`;
-
+  let total=0;
+  categories.forEach(category=>{
+    const current=selectedItem(category);
+    if(current)total+=current.price;
+  });
+  $("totalPrice").textContent=price(total);
 }
 
+function clearRating(){
+  state.rating=null;
+  document.querySelectorAll(".rating-btn").forEach(button=>{
+    button.classList.remove("active");
+  });
+}
+
+function selectItem(brand,category,index){
+  state.selected[category]={brand,index};
+  clearRating();
+  renderBuilder();
+
+  const current=item(brand,category,index);
+  $("status").textContent=
+    categoryLabel(category)+" выбрано: "+current.name+".";
+  showSelected(current);
+}
+
+function moveItem(category,direction){
+  let selected=state.selected[category];
+
+  if(!selected){
+    selected={brand:Object.keys(catalog)[0],index:0};
+    state.selected[category]=selected;
+  }
+
+  const list=catalog[selected.brand][category];
+  let next=selected.index+direction;
+
+  if(next<0)next=list.length-1;
+  if(next>=list.length)next=0;
+
+  selected.index=next;
+  renderBuilder();
+
+  $("status").textContent=
+    selected.brand+" / "+list[next][0];
+}
 
 function randomFit(){
+  const brands=Object.keys(catalog);
 
-    categories.forEach(category => {
+  categories.forEach(category=>{
+    const brand=brands[Math.floor(Math.random()*brands.length)];
+    const list=catalog[brand][category];
+    const index=Math.floor(Math.random()*list.length);
+    state.selected[category]={brand,index};
+  });
 
-        const brands =
-            Object.keys(catalog);
-
-        const randomBrand =
-            brands[
-                Math.floor(
-                    Math.random() *
-                    brands.length
-                )
-            ];
-
-        const items =
-            catalog[randomBrand][category];
-
-        const randomIndex =
-            Math.floor(
-                Math.random() *
-                items.length
-            );
-
-        state.selected[category] = {
-
-            brand:randomBrand,
-
-            index:randomIndex
-
-        };
-
-    });
-
-    state.rating = null;
-
-    document
-        .querySelectorAll(".rating-btn")
-        .forEach(button => {
-
-            button.classList.remove("active");
-
-        });
-
-    renderBuilder();
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        "Случайный образ создан.";
-
+  clearRating();
+  renderBuilder();
+  $("status").textContent="Случайный образ создан.";
 }
-
 
 function resetFit(){
-
-    state.selected = {
-
-        top:null,
-
-        bottom:null,
-
-        shoes:null
-
-    };
-
-    state.rating = null;
-
-    document
-        .querySelectorAll(".rating-btn")
-        .forEach(button => {
-
-            button.classList.remove("active");
-
-        });
-
-    renderBuilder();
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        "Образ сброшен.";
-
+  state.selected={top:null,bottom:null,shoes:null};
+  clearRating();
+  renderBuilder();
+  $("status").textContent="Образ сброшен.";
 }
-
 
 function confirmFit(){
+  const complete=categories.every(category=>state.selected[category]);
 
-    const complete =
-        categories.every(
-            category =>
-                state.selected[category]
-        );
+  if(!complete){
+    $("status").textContent="Сначала выберите все три вещи.";
+    return;
+  }
 
-    if(!complete){
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            "Сначала выберите все три вещи.";
-
-        return;
-
-    }
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        "Образ подтверждён. Теперь оцени его.";
-
+  $("status").textContent="Образ подтверждён. Теперь оцени его.";
 }
 
-
-/* =========================================================
-   RATING
-========================================================= */
-
-function setupRating(){
-
-    document
-        .querySelectorAll(".rating-btn")
-        .forEach(button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    const rating =
-                        Number(
-                            button.dataset.rating
-                        );
-
-                    state.rating =
-                        rating;
-
-                    document
-                        .querySelectorAll(".rating-btn")
-                        .forEach(btn => {
-
-                            btn.classList.toggle(
-
-                                "active",
-
-                                Number(
-                                    btn.dataset.rating
-                                ) === rating
-
-                            );
-
-                        });
-
-                    document.getElementById(
-                        "status"
-                    ).textContent =
-                        `Оценка образа: ${rating}/10.`;
-
-                }
-            );
-
-        });
-
+function showSelected(current){
+  $("searchSelected").innerHTML=
+    "Выбрано: <strong>"+current.brand+"</strong> / "+
+    current.name+" — "+categoryLabel(current.category)+".";
+  $("searchSelected").classList.add("show");
 }
 
+function renderSearch(){
+  const query=$("searchInput").value.trim().toLowerCase();
+  const results=$("searchResults");
+  results.innerHTML="";
 
-/* =========================================================
-   SEARCH
-========================================================= */
+  if(!query){
+    results.classList.remove("open");
+    return;
+  }
 
-function showSelectedMessage(item){
+  const found=allItems().filter(current=>{
+    return (current.brand+" "+current.name)
+      .toLowerCase()
+      .includes(query);
+  }).slice(0,30);
 
-    const selected =
-        document.getElementById(
-            "searchSelected"
-        );
+  if(!found.length){
+    const empty=document.createElement("div");
+    empty.className="search-empty";
+    empty.textContent="Ничего не найдено";
+    results.appendChild(empty);
+    results.classList.add("open");
+    return;
+  }
 
-    selected.innerHTML =
+  found.forEach(current=>{
+    const button=document.createElement("button");
+    button.className="search-result";
 
-        `Выбрано: <strong>${item.brand}</strong>
-        / ${item.name}
-        — ${getCategoryLabel(item.category)}.`;
+    const main=document.createElement("div");
+    main.className="search-result-main";
 
-    selected.classList.add("show");
+    const brand=document.createElement("div");
+    brand.className="search-result-brand";
+    brand.textContent=current.brand;
 
-}
+    const name=document.createElement("div");
+    name.className="search-result-name";
+    name.textContent=current.name;
 
+    const type=document.createElement("div");
+    type.className="search-result-type";
+    type.textContent=categoryLabel(current.category);
 
-function renderSearchResults(){
+    const cost=document.createElement("div");
+    cost.className="search-result-price";
+    cost.textContent=price(current.price);
 
-    const input =
-        document.getElementById(
-            "searchInput"
-        );
+    main.append(brand,name);
+    button.append(main,type,cost);
 
-    const results =
-        document.getElementById(
-            "searchResults"
-        );
-
-    const query =
-        input.value
-            .trim()
-            .toLowerCase();
-
-    results.innerHTML = "";
-
-    if(!query){
-
-        results.classList.remove("open");
-
-        return;
-
-    }
-
-    const items =
-        getAllItems()
-            .filter(item => {
-
-                const fullText =
-                    `${item.brand} ${item.name}`
-                        .toLowerCase();
-
-                return fullText.includes(query);
-
-            })
-            .slice(0,30);
-
-    if(items.length === 0){
-
-        results.innerHTML = `
-
-            <div class="search-empty">
-
-                Ничего не найдено
-
-            </div>
-
-        `;
-
-        results.classList.add("open");
-
-        return;
-
-    }
-
-    items.forEach(item => {
-
-        const result =
-            document.createElement("button");
-
-        result.className =
-            "search-result";
-
-        result.innerHTML = `
-
-            <div class="search-result-main">
-
-                <div class="search-result-brand">
-
-                    ${item.brand}
-
-                </div>
-
-                <div class="search-result-name">
-
-                    ${item.name}
-
-                </div>
-
-            </div>
-
-            <div class="search-result-type">
-
-                ${getCategoryLabel(item.category)}
-
-            </div>
-
-            <div class="search-result-price">
-
-                ${formatPrice(item.price)}
-
-            </div>
-
-        `;
-
-        result.addEventListener(
-            "click",
-            () => {
-
-                selectItem(
-                    item.brand,
-                    item.category,
-                    item.index
-                );
-
-                input.value =
-                    item.name;
-
-                results.classList.remove("open");
-
-                document
-                    .getElementById("builder")
-                    .scrollIntoView({
-                        behavior:"smooth"
-                    });
-
-            }
-        );
-
-        results.appendChild(result);
-
+    button.addEventListener("click",()=>{
+      selectItem(current.brand,current.category,current.index);
+      $("searchInput").value=current.name;
+      results.classList.remove("open");
+      $("builder").scrollIntoView({behavior:"smooth"});
     });
 
-    results.classList.add("open");
+    results.appendChild(button);
+  });
 
+  results.classList.add("open");
 }
-
-
-function setupSearch(){
-
-    document
-        .getElementById("searchInput")
-        .addEventListener(
-            "input",
-            renderSearchResults
-        );
-
-    document.addEventListener(
-        "click",
-        event => {
-
-            const area =
-                document.querySelector(
-                    ".archive-search-area"
-                );
-
-            if(!area.contains(event.target)){
-
-                document
-                    .getElementById(
-                        "searchResults"
-                    )
-                    .classList.remove("open");
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CATALOG
-========================================================= */
-
-function renderCatalog(){
-
-    const container =
-        document.getElementById(
-            "catalogList"
-        );
-
-    container.innerHTML = "";
-
-    Object.keys(catalog)
-        .forEach(brand => {
-
-            const brandElement =
-                document.createElement("div");
-
-            brandElement.className =
-                "catalog-brand";
-
-            brandElement.innerHTML = `
-
-                <div class="brand-top">
-
-                    <div class="brand-name">
-                        ${brand}
-                    </div>
-
-                    <div class="brand-arrow">
-                        →
-                    </div>
-
-                </div>
-
-                <div class="brand-meta">
-
-                    Нажмите, чтобы открыть вещи
-
-                </div>
-
-                <div class="brand-items">
-
-                    <div class="brand-items-head">
-
-                        <div class="brand-items-title">
-                            ${brand}
-                        </div>
-
-                        <div class="brand-items-note">
-                            Нажмите на вещь, чтобы выбрать
-                        </div>
-
-                    </div>
-
-                    <div class="brand-item-grid"></div>
-
-                </div>
-
-            `;
-
-            const itemGrid =
-                brandElement.querySelector(
-                    ".brand-item-grid"
-                );
-
-            categories.forEach(category => {
-
-                catalog[brand][category]
-                    .forEach((item,index) => {
-
-                        const data =
-                            createItem(
-                                brand,
-                                category,
-                                index
-                            );
-
-                        const itemElement =
-                            document.createElement("div");
-
-                        itemElement.className =
-                            "catalog-item";
-
-                        itemElement.innerHTML = `
-
-                            <div class="catalog-item-image">
-
-                                <div class="catalog-item-placeholder">
-
-                                    Изображение скоро появится
-
-                                </div>
-
-                            </div>
-
-                            <div class="catalog-item-category">
-
-                                ${getCategoryLabel(category)}
-
-                            </div>
-
-                            <div class="catalog-item-name">
-
-                                ${data.name}
-
-                            </div>
-
-                            <div class="catalog-item-price">
-
-                                ${formatPrice(data.price)}
-
-                            </div>
-
-                        `;
-
-                        itemElement.addEventListener(
-                            "click",
-                            event => {
-
-                                event.stopPropagation();
-
-                                selectItem(
-                                    brand,
-                                    category,
-                                    index
-                                );
-
-                                closeCatalog();
-
-                                document
-                                    .getElementById("builder")
-                                    .scrollIntoView({
-                                        behavior:"smooth"
-                                    });
-
-                            }
-                        );
-
-                        itemGrid.appendChild(
-                            itemElement
-                        );
-
-                    });
-
-            });
-
-            brandElement.addEventListener(
-                "click",
-                () => {
-
-                    const items =
-                        brandElement.querySelector(
-                            ".brand-items"
-                        );
-
-                    const isOpen =
-                        items.classList.contains("open");
-
-                    document
-                        .querySelectorAll(".brand-items")
-                        .forEach(element => {
-
-                            element.classList.remove("open");
-
-                        });
-
-                    document
-                        .querySelectorAll(".catalog-brand")
-                        .forEach(element => {
-
-                            element.classList.remove("active");
-
-                        });
-
-                    if(!isOpen){
-
-                        items.classList.add("open");
-
-                        brandElement.classList.add("active");
-
-                    }
-
-                }
-            );
-
-            container.appendChild(
-                brandElement
-            );
-
-        });
-
-}
-
-
-function openCatalog(){
-
-    document
-        .getElementById("catalogOverlay")
-        .classList.add("open");
-
-    document.body.style.overflow =
-        "hidden";
-
-}
-
-
-function closeCatalog(){
-
-    document
-        .getElementById("catalogOverlay")
-        .classList.remove("open");
-
-    document.body.style.overflow =
-        "";
-
-}
-
-
-function setupCatalog(){
-
-    document
-        .getElementById("catalogButton")
-        .addEventListener(
-            "click",
-            openCatalog
-        );
-
-    document
-        .getElementById("catalogClose")
-        .addEventListener(
-            "click",
-            closeCatalog
-        );
-
-    document
-        .getElementById("catalogOverlay")
-        .addEventListener(
-            "click",
-            event => {
-
-                if(
-                    event.target.id ===
-                    "catalogOverlay"
-                ){
-
-                    closeCatalog();
-
-                }
-
-            }
-        );
-
-    document.addEventListener(
-        "keydown",
-        event => {
-
-            if(event.key === "Escape"){
-
-                closeCatalog();
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   BUTTONS
-========================================================= */
 
 function setupButtons(){
+  $("topPrev").onclick=()=>moveItem("top",-1);
+  $("topNext").onclick=()=>moveItem("top",1);
+  $("bottomPrev").onclick=()=>moveItem("bottom",-1);
+  $("bottomNext").onclick=()=>moveItem("bottom",1);
+  $("shoesPrev").onclick=()=>moveItem("shoes",-1);
+  $("shoesNext").onclick=()=>moveItem("shoes",1);
 
-    document
-        .getElementById("topPrev")
-        .addEventListener(
-            "click",
-            () => moveItem("top",-1)
+  $("randomButton").onclick=randomFit;
+  $("resetButton").onclick=resetFit;
+  $("confirmButton").onclick=confirmFit;
+
+  document.querySelectorAll(".rating-btn").forEach(button=>{
+    button.onclick=()=>{
+      state.rating=Number(button.dataset.rating);
+      document.querySelectorAll(".rating-btn").forEach(other=>{
+        other.classList.toggle(
+          "active",
+          Number(other.dataset.rating)===state.rating
         );
-
-    document
-        .getElementById("topNext")
-        .addEventListener(
-            "click",
-            () => moveItem("top",1)
-        );
-
-    document
-        .getElementById("bottomPrev")
-        .addEventListener(
-            "click",
-            () => moveItem("bottom",-1)
-        );
-
-    document
-        .getElementById("bottomNext")
-        .addEventListener(
-            "click",
-            () => moveItem("bottom",1)
-        );
-
-    document
-        .getElementById("shoesPrev")
-        .addEventListener(
-            "click",
-            () => moveItem("shoes",-1)
-        );
-
-    document
-        .getElementById("shoesNext")
-        .addEventListener(
-            "click",
-            () => moveItem("shoes",1)
-        );
-
-    document
-        .getElementById("randomButton")
-        .addEventListener(
-            "click",
-            randomFit
-        );
-
-    document
-        .getElementById("resetButton")
-        .addEventListener(
-            "click",
-            resetFit
-        );
-
-    document
-        .getElementById("confirmButton")
-        .addEventListener(
-            "click",
-            confirmFit
-        );
-
+      });
+      $("status").textContent="Оценка образа: "+state.rating+"/10.";
+    };
+  });
 }
 
+function setupSearch(){
+  $("searchInput").addEventListener("input",renderSearch);
 
-/* =========================================================
-   INITIAL FIT
-========================================================= */
+  document.addEventListener("click",event=>{
+    if(!event.target.closest(".archive-search-area")){
+      $("searchResults").classList.remove("open");
+    }
+  });
 
-function setInitialFit(){
+  $("catalogButton").onclick=()=>{
+    $("archive").scrollIntoView({behavior:"smooth"});
+    setTimeout(()=>$("searchInput").focus(),500);
+  };
+}
 
-    const firstBrand =
-        Object.keys(catalog)[0];
+function normalize(value){
+  return value
+    .toLowerCase()
+    .replaceAll("ё","е")
+    .replace(/[^a-zа-я0-9]+/g," ")
+    .trim();
+}
 
-    categories.forEach(category => {
+const bannedWords=[
+  "хуй","хуи","хуйн","пизд","ебл","еба","ебу","ебан",
+  "бля","бляд","сука","сучк","мраз","гандон","мудак",
+  "дебил","идиот","fuck","shit","bitch","asshole"
+];
 
-        state.selected[category] = {
+function hasBadWords(value){
+  const text=normalize(value);
+  return bannedWords.some(word=>text.includes(word));
+}
 
-            brand:firstBrand,
+let reviewRating=0;
 
-            index:0
+function showReviewError(message){
+  $("reviewError").textContent=message;
+  $("reviewError").classList.add("show");
+}
 
-        };
+function hideReviewError(){
+  $("reviewError").classList.remove("show");
+}
 
+function loadReviews(){
+  let reviews=[];
+
+  try{
+    reviews=JSON.parse(localStorage.getItem("creaturemeza_reviews")||"[]");
+  }catch{
+    reviews=[];
+  }
+
+  $("reviewList").innerHTML="";
+
+  reviews.slice().reverse().forEach(review=>{
+    const card=document.createElement("div");
+    card.className="review-card";
+
+    const user=document.createElement("div");
+    user.className="review-user";
+    user.textContent=review.name;
+
+    const stars=document.createElement("div");
+    stars.className="review-stars";
+    stars.textContent="☠".repeat(review.rating);
+
+    const comment=document.createElement("div");
+    comment.className="review-comment";
+    comment.textContent=review.text;
+
+    card.append(user,stars,comment);
+    $("reviewList").appendChild(card);
+  });
+}
+
+function setupReviews(){
+  $("reviewOpen").onclick=()=>{
+    $("reviewForm").classList.add("open");
+    $("reviewOpen").style.display="none";
+  };
+
+  $("reviewClose").onclick=()=>{
+    $("reviewForm").classList.remove("open");
+    $("reviewOpen").style.display="inline-block";
+    hideReviewError();
+  };
+
+  document.querySelectorAll("#skullRating button").forEach(button=>{
+    button.onclick=()=>{
+      reviewRating=Number(button.dataset.value);
+
+      document.querySelectorAll("#skullRating button").forEach(other=>{
+        other.classList.toggle(
+          "active",
+          Number(other.dataset.value)<=reviewRating
+        );
+      });
+    };
+  });
+
+  $("reviewForm").addEventListener("submit",event=>{
+    event.preventDefault();
+    hideReviewError();
+
+    const name=$("reviewName").value.trim();
+    const text=$("reviewText").value.trim();
+
+    if(name.length<2){
+      showReviewError("Введи имя пользователя.");
+      return;
+    }
+
+    if(text.length<3){
+      showReviewError("Комментарий слишком короткий.");
+      return;
+    }
+
+    if(!reviewRating){
+      showReviewError("Выбери оценку черепами.");
+      return;
+    }
+
+    if(hasBadWords(name)||hasBadWords(text)){
+      showReviewError("Отзыв содержит запрещённые выражения.");
+      return;
+    }
+
+    let reviews=[];
+
+    try{
+      reviews=JSON.parse(localStorage.getItem("creaturemeza_reviews")||"[]");
+    }catch{
+      reviews=[];
+    }
+
+    reviews.push({
+      name:name.replace(/[<>]/g,""),
+      text:text.replace(/[<>]/g,""),
+      rating:reviewRating
     });
 
-    renderBuilder();
-
-}
-
-
-/* =========================================================
-   LOADER
-========================================================= */
-
-function setupLoader(){
-
-    window.addEventListener(
-        "load",
-        () => {
-
-            setTimeout(
-                () => {
-
-                    document
-                        .getElementById("loader")
-                        .classList.add("hide");
-
-                },
-                1600
-            );
-
-        }
+    localStorage.setItem(
+      "creaturemeza_reviews",
+      JSON.stringify(reviews.slice(-30))
     );
 
+    $("reviewName").value="";
+    $("reviewText").value="";
+    reviewRating=0;
+
+    document.querySelectorAll("#skullRating button")
+      .forEach(button=>button.classList.remove("active"));
+
+    $("reviewForm").classList.remove("open");
+    $("reviewOpen").style.display="inline-block";
+
+    loadReviews();
+  });
 }
 
+function setupReveal(){
+  const observer=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add("visible");
+        observer.unobserve(entry.target);
+      }
+    });
+  },{threshold:.12});
 
-/* =========================================================
-   INIT
-========================================================= */
+  document.querySelectorAll(".reveal").forEach(element=>{
+    observer.observe(element);
+  });
+}
+
+function setupLoader(){
+  window.addEventListener("load",()=>{
+    setTimeout(()=>$("loader").classList.add("hide"),1600);
+  });
+}
 
 function init(){
-
-    renderCatalog();
-
-    setupCatalog();
-
-    setupSearch();
-
-    setupButtons();
-
-    setupRating();
-
-    setInitialFit();
-
-    setupLoader();
-
+  setupButtons();
+  setupSearch();
+  setupReviews();
+  setupReveal();
+  setupLoader();
+  loadReviews();
+  renderBuilder();
 }
 
 init();
-
 </script>
-
 </body>
-
 </html>
