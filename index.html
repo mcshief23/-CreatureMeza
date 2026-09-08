@@ -1,27 +1,23 @@
 <!DOCTYPE html>
-<html lang="ru">
-
+<html lang="en">
 <head>
-
 <meta charset="UTF-8">
-
-<meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
->
-
-<meta
-    name="theme-color"
-    content="#050505"
->
-
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#050505">
 <title>CreatureMeza — Archive</title>
 
 <style>
-
-/* =========================================================
-   RESET
-========================================================= */
+:root{
+    --bg:#050505;
+    --panel:#0b0b0b;
+    --panel2:#101010;
+    --line:#252525;
+    --line2:#343434;
+    --text:#f3f3f3;
+    --muted:#858585;
+    --soft:#bdbdbd;
+    --white:#fff;
+}
 
 *{
     box-sizing:border-box;
@@ -34,23 +30,19 @@ html{
 }
 
 body{
-    background:#050505;
-    color:#f2f2f2;
-    font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    font-family:Arial, Helvetica, sans-serif;
     overflow-x:hidden;
 }
 
 button,
-input,
-select{
+input{
     font:inherit;
 }
 
 button{
-    cursor:pointer;
+    color:inherit;
 }
 
 a{
@@ -58,2561 +50,1018 @@ a{
     text-decoration:none;
 }
 
+/* =========================
+   HEADER
+========================= */
 
-/* =========================================================
+header{
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    height:76px;
+    z-index:1000;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 34px;
+    border-bottom:1px solid rgba(255,255,255,.12);
+    background:rgba(5,5,5,.9);
+    backdrop-filter:blur(18px);
+}
+
+.logo{
+    font-size:15px;
+    font-weight:900;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+
+.header-right{
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.header-index{
+    color:#777;
+    font-size:10px;
+    letter-spacing:.18em;
+    margin-right:8px;
+}
+
+.header-btn{
+    border:1px solid #343434;
+    background:#0c0c0c;
+    color:#ddd;
+    padding:11px 17px;
+    font-size:10px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:.2s ease;
+}
+
+.header-btn:hover{
+    background:#fff;
+    color:#000;
+}
+
+/* =========================
+   HERO
+========================= */
+
+.hero{
+    min-height:100vh;
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:130px 25px 90px;
+    overflow:hidden;
+}
+
+.hero-grid{
+    position:absolute;
+    inset:0;
+    opacity:.17;
+    background-image:
+        linear-gradient(rgba(255,255,255,.12) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.12) 1px,transparent 1px);
+    background-size:80px 80px;
+    mask-image:linear-gradient(to bottom,transparent,#000 25%,#000 70%,transparent);
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
+    text-align:center;
+    max-width:1000px;
+}
+
+.hero-kicker{
+    color:#858585;
+    font-size:10px;
+    letter-spacing:.38em;
+    text-transform:uppercase;
+    margin-bottom:28px;
+}
+
+.hero-name{
+    font-size:clamp(20px,3vw,36px);
+    font-weight:900;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    margin-bottom:30px;
+}
+
+.hero-title{
+    font-size:clamp(62px,11vw,150px);
+    line-height:.82;
+    font-weight:900;
+    letter-spacing:-.065em;
+    text-transform:uppercase;
+}
+
+.hero-title span{
+    display:block;
+}
+
+.hero-sub{
+    max-width:500px;
+    margin:38px auto 0;
+    color:#858585;
+    font-size:12px;
+    line-height:1.8;
+}
+
+.hero-orbit{
+    position:absolute;
+    width:min(65vw,720px);
+    height:min(65vw,720px);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:50%;
+    animation:spin 35s linear infinite;
+}
+
+.hero-orbit:before,
+.hero-orbit:after{
+    content:"";
+    position:absolute;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.06);
+}
+
+.hero-orbit:before{
+    inset:10%;
+}
+
+.hero-orbit:after{
+    inset:25%;
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+/* =========================
+   MARQUEE
+========================= */
+
+.marquee{
+    overflow:hidden;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    padding:17px 0;
+    white-space:nowrap;
+}
+
+.marquee-track{
+    display:inline-block;
+    animation:marquee 24s linear infinite;
+}
+
+.marquee span{
+    margin:0 32px;
+    font-size:10px;
+    letter-spacing:.35em;
+    color:#777;
+    text-transform:uppercase;
+}
+
+@keyframes marquee{
+    from{transform:translateX(0)}
+    to{transform:translateX(-50%)}
+}
+
+/* =========================
+   GENERAL
+========================= */
+
+.section{
+    padding:110px 34px;
+    max-width:1500px;
+    margin:auto;
+}
+
+.section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:30px;
+    margin-bottom:45px;
+}
+
+.section-kicker{
+    color:#777;
+    font-size:9px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    margin-bottom:12px;
+}
+
+.section-title{
+    font-size:clamp(35px,6vw,80px);
+    font-weight:900;
+    letter-spacing:-.06em;
+    text-transform:uppercase;
+}
+
+.section-description{
+    max-width:380px;
+    color:#777;
+    font-size:11px;
+    line-height:1.8;
+}
+
+/* =========================
+   BUILDER
+========================= */
+
+.builder{
+    border-top:1px solid var(--line);
+}
+
+.builder-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:14px;
+}
+
+.fit-card{
+    min-height:580px;
+    position:relative;
+    background:linear-gradient(145deg,#0c0c0c,#070707);
+    border:1px solid var(--line);
+    overflow:hidden;
+}
+
+.fit-card:hover{
+    border-color:#444;
+}
+
+.fit-label{
+    position:absolute;
+    top:20px;
+    left:20px;
+    z-index:5;
+    font-size:9px;
+    color:#777;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+}
+
+.fit-number{
+    position:absolute;
+    top:20px;
+    right:20px;
+    z-index:5;
+    color:#444;
+    font-size:10px;
+}
+
+.fit-image{
+    position:absolute;
+    inset:55px 30px 105px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.fit-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    display:block;
+}
+
+.fit-placeholder{
+    width:100%;
+    height:100%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#333;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    text-align:center;
+    border:1px dashed #202020;
+}
+
+.fit-info{
+    position:absolute;
+    bottom:0;
+    left:0;
+    right:0;
+    min-height:100px;
+    padding:18px 20px;
+    border-top:1px solid var(--line);
+    background:rgba(5,5,5,.92);
+}
+
+.fit-brand{
+    color:#777;
+    font-size:8px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-bottom:7px;
+}
+
+.fit-name{
+    font-size:14px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.fit-price{
+    margin-top:6px;
+    color:#888;
+    font-size:10px;
+}
+
+/* ARROWS */
+
+.fit-arrows{
+    position:absolute;
+    bottom:20px;
+    right:20px;
+    z-index:10;
+    display:flex;
+    gap:5px;
+}
+
+.arrow-btn{
+    width:38px;
+    height:38px;
+    border:1px solid #333;
+    background:#0b0b0b;
+    cursor:pointer;
+    font-size:17px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.2s ease;
+}
+
+.arrow-btn:hover{
+    background:#fff;
+    color:#000;
+    border-color:#fff;
+}
+
+.builder-controls{
+    margin-top:14px;
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+}
+
+.control-btn{
+    border:1px solid #333;
+    background:#0b0b0b;
+    padding:14px 22px;
+    font-size:9px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.control-btn:hover{
+    background:#fff;
+    color:#000;
+}
+
+/* =========================
+   TOTAL
+========================= */
+
+.total-bar{
+    margin-top:14px;
+    border:1px solid var(--line);
+    min-height:86px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:20px 25px;
+}
+
+.total-label{
+    color:#777;
+    font-size:9px;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+}
+
+.total-value{
+    font-size:24px;
+    font-weight:900;
+}
+
+/* =========================
+   RATING
+========================= */
+
+.rating-panel{
+    margin-top:14px;
+    border:1px solid var(--line);
+    padding:25px;
+}
+
+.rating-title{
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:#888;
+    margin-bottom:17px;
+}
+
+.rating-buttons{
+    display:grid;
+    grid-template-columns:repeat(10,1fr);
+    gap:5px;
+}
+
+.rating-btn{
+    height:45px;
+    border:1px solid #2d2d2d;
+    background:#0b0b0b;
+    cursor:pointer;
+}
+
+.rating-btn:hover,
+.rating-btn.active{
+    background:#fff;
+    color:#000;
+}
+
+.status{
+    margin-top:15px;
+    color:#777;
+    font-size:10px;
+    letter-spacing:.1em;
+}
+
+/* =========================
+   CATALOG
+========================= */
+
+.catalog-overlay{
+    position:fixed;
+    inset:0;
+    z-index:2000;
+    display:none;
+    background:rgba(0,0,0,.72);
+    backdrop-filter:blur(20px);
+    overflow-y:auto;
+}
+
+.catalog-overlay.open{
+    display:block;
+}
+
+.catalog-window{
+    width:min(1100px,calc(100% - 30px));
+    margin:90px auto 40px;
+    border:1px solid #292929;
+    background:#080808;
+    box-shadow:0 30px 100px rgba(0,0,0,.7);
+}
+
+.catalog-top{
+    padding:25px;
+    border-bottom:1px solid var(--line);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.catalog-heading{
+    font-size:25px;
+    font-weight:900;
+    letter-spacing:-.04em;
+    text-transform:uppercase;
+}
+
+.close-btn{
+    width:40px;
+    height:40px;
+    border:1px solid #333;
+    background:#0b0b0b;
+    cursor:pointer;
+    font-size:20px;
+}
+
+.close-btn:hover{
+    background:#fff;
+    color:#000;
+}
+
+.catalog-list{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+}
+
+.catalog-brand{
+    min-height:110px;
+    padding:24px;
+    border-right:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    cursor:pointer;
+    transition:.2s;
+}
+
+.catalog-brand:nth-child(even){
+    border-right:none;
+}
+
+.catalog-brand:hover{
+    background:#111;
+}
+
+.catalog-brand.active{
+    background:#fff;
+    color:#000;
+}
+
+.brand-top{
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    align-items:center;
+}
+
+.brand-name{
+    font-size:17px;
+    font-weight:900;
+    text-transform:uppercase;
+}
+
+.brand-arrow{
+    font-size:18px;
+}
+
+.brand-meta{
+    margin-top:12px;
+    color:#777;
+    font-size:9px;
+    letter-spacing:.16em;
+    text-transform:uppercase;
+}
+
+.catalog-brand.active .brand-meta{
+    color:#555;
+}
+
+/* BRAND ITEMS */
+
+.brand-items{
+    display:none;
+    border-top:1px solid var(--line);
+    padding:25px;
+    background:#050505;
+}
+
+.brand-items.open{
+    display:block;
+}
+
+.brand-items-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.brand-items-title{
+    font-size:12px;
+    font-weight:900;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+}
+
+.brand-items-note{
+    color:#666;
+    font-size:9px;
+}
+
+.brand-item-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:10px;
+}
+
+.catalog-item{
+    border:1px solid #222;
+    background:#0a0a0a;
+    padding:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.catalog-item:hover{
+    border-color:#777;
+    transform:translateY(-2px);
+}
+
+.catalog-item-image{
+    aspect-ratio:1/1.1;
+    border:1px dashed #202020;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:12px;
+}
+
+.catalog-item-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.catalog-item-placeholder{
+    color:#333;
+    font-size:8px;
+    text-align:center;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+}
+
+.catalog-item-category{
+    color:#666;
+    font-size:8px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    margin-bottom:5px;
+}
+
+.catalog-item-name{
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.catalog-item-price{
+    margin-top:6px;
+    color:#777;
+    font-size:9px;
+}
+
+/* =========================
+   ARCHIVE
+========================= */
+
+.archive{
+    border-top:1px solid var(--line);
+}
+
+.archive-tools{
+    display:flex;
+    gap:8px;
+    margin-bottom:25px;
+}
+
+.search{
+    flex:1;
+    background:#0a0a0a;
+    border:1px solid #292929;
+    color:#fff;
+    padding:15px 17px;
+    outline:none;
+    font-size:11px;
+}
+
+.search:focus{
+    border-color:#666;
+}
+
+.filter-btn{
+    min-width:80px;
+    border:1px solid #292929;
+    background:#0a0a0a;
+    color:#777;
+    cursor:pointer;
+    font-size:9px;
+    letter-spacing:.1em;
+}
+
+.filter-btn.active,
+.filter-btn:hover{
+    background:#fff;
+    color:#000;
+}
+
+.archive-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:10px;
+}
+
+.archive-card{
+    border:1px solid #202020;
+    background:#090909;
+    padding:12px;
+    cursor:pointer;
+    transition:.2s;
+}
+
+.archive-card:hover{
+    border-color:#666;
+    transform:translateY(-3px);
+}
+
+.archive-image{
+    aspect-ratio:1/1.15;
+    border:1px dashed #202020;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    margin-bottom:14px;
+}
+
+.archive-image img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+}
+
+.archive-placeholder{
+    color:#333;
+    font-size:8px;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+    text-align:center;
+}
+
+.archive-brand{
+    color:#666;
+    font-size:8px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    margin-bottom:5px;
+}
+
+.archive-name{
+    font-size:11px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.archive-bottom{
+    margin-top:8px;
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.archive-category,
+.archive-price{
+    color:#777;
+    font-size:9px;
+}
+
+/* =========================
+   INFO
+========================= */
+
+.info{
+    border-top:1px solid var(--line);
+}
+
+.info-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:70px;
+}
+
+.info-big{
+    font-size:clamp(30px,5vw,65px);
+    line-height:.95;
+    font-weight:900;
+    letter-spacing:-.055em;
+    text-transform:uppercase;
+}
+
+.info-text{
+    color:#777;
+    font-size:12px;
+    line-height:2;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    border-top:1px solid var(--line);
+    padding:35px;
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+    color:#666;
+    font-size:9px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+}
+
+.footer-link:hover{
+    color:#fff;
+}
+
+/* =========================
    LOADER
-========================================================= */
+========================= */
 
 .loader{
     position:fixed;
     inset:0;
-    z-index:9999;
-
+    z-index:5000;
     background:#050505;
-
     display:flex;
     align-items:center;
     justify-content:center;
-
-    transition:
-        opacity .7s ease,
-        visibility .7s ease;
+    transition:.7s ease;
 }
 
 .loader.hide{
     opacity:0;
-    visibility:hidden;
+    pointer-events:none;
 }
 
 .loader-inner{
     text-align:center;
 }
 
-.loader-title{
-    font-size:
-        clamp(
-            28px,
-            5vw,
-            64px
-        );
-
+.loader-logo{
+    font-size:24px;
     font-weight:900;
-
-    letter-spacing:-.06em;
-
+    letter-spacing:.35em;
     text-transform:uppercase;
 }
 
 .loader-line{
     width:180px;
     height:1px;
-
-    background:#333;
-
-    margin:18px auto;
-
+    background:#222;
+    margin:25px auto 0;
     overflow:hidden;
 }
 
 .loader-progress{
     width:0;
     height:100%;
-
     background:#fff;
-
-    animation:
-        loaderProgress 1.5s ease forwards;
-}
-
-.loader-small{
-    color:#666;
-
-    font-size:9px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-}
-
-@keyframes loaderProgress{
-
-    from{
-        width:0;
-    }
-
-    to{
-        width:100%;
-    }
-
-}
-
-
-/* =========================================================
-   HEADER
-========================================================= */
-
-.header{
-    position:fixed;
-
-    top:0;
-    left:0;
-
-    width:100%;
-    height:76px;
-
-    z-index:1000;
-
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-
-    padding:0 5vw;
-
-    background:
-        linear-gradient(
-            to bottom,
-            rgba(5,5,5,.96),
-            rgba(5,5,5,.72),
-            transparent
-        );
-
-    backdrop-filter:blur(10px);
-}
-
-.logo{
-    font-size:14px;
-
-    font-weight:900;
-
-    letter-spacing:.04em;
-
-    text-transform:uppercase;
-}
-
-.header-meta{
-    display:flex;
-
-    align-items:center;
-
-    gap:8px;
-}
-
-.header-index{
-    color:#555;
-
-    font-size:9px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    margin-right:16px;
-}
-
-
-/* =========================================================
-   HEADER BUTTONS
-========================================================= */
-
-.catalog-button,
-.music-button{
-
-    border:1px solid #333;
-
-    background:#090909;
-
-    color:#fff;
-
-    padding:11px 16px;
-
-    font-size:9px;
-
-    letter-spacing:.16em;
-
-    text-transform:uppercase;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease,
-        color .2s ease,
-        transform .2s ease;
-
-}
-
-.catalog-button:hover,
-.music-button:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-    border-color:#fff;
-
-    transform:translateY(-2px);
-
-}
-
-
-/* =========================================================
-   CATALOG OVERLAY
-========================================================= */
-
-.catalog-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:2000;
-
-    background:rgba(5,5,5,.94);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:
-        opacity .3s ease,
-        visibility .3s ease;
-
-}
-
-.catalog-overlay.open{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-.catalog-panel{
-
-    width:min(900px,90vw);
-
-    max-height:85vh;
-
-    overflow:auto;
-
-    border:1px solid #292929;
-
-    background:#090909;
-
-    padding:35px;
-
-}
-
-.catalog-panel-head{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    margin-bottom:30px;
-
-}
-
-.catalog-panel-title{
-
-    font-size:12px;
-
-    font-weight:900;
-
-    letter-spacing:.14em;
-
-    text-transform:uppercase;
-
-}
-
-.catalog-close{
-
-    border:1px solid #333;
-
-    background:transparent;
-
-    color:#aaa;
-
-    width:36px;
-
-    height:36px;
-
-    font-size:20px;
-
-    transition:.2s ease;
-
-}
-
-.catalog-close:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-}
-
-.catalog-list{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(2,minmax(0,1fr));
-
-    gap:1px;
-
-    background:#292929;
-
-}
-
-.catalog-brand{
-
-    background:#090909;
-
-    padding:20px;
-
-    transition:.2s ease;
-
-    cursor:pointer;
-
-}
-
-.catalog-brand:hover{
-
-    background:#111;
-
-}
-
-.catalog-brand-name{
-
-    font-size:12px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    margin-bottom:7px;
-
-}
-
-.catalog-brand-count{
-
-    color:#555;
-
-    font-size:9px;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   MUSIC OVERLAY
-========================================================= */
-
-.music-overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    z-index:2100;
-
-    background:rgba(5,5,5,.95);
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    opacity:0;
-
-    visibility:hidden;
-
-    transition:
-        opacity .3s ease,
-        visibility .3s ease;
-
-}
-
-.music-overlay.open{
-
-    opacity:1;
-
-    visibility:visible;
-
-}
-
-.music-panel{
-
-    width:min(620px,90vw);
-
-    max-height:90vh;
-
-    overflow:auto;
-
-    border:1px solid #292929;
-
-    background:#090909;
-
-    padding:35px;
-
-}
-
-.music-panel-head{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    justify-content:space-between;
-
-    margin-bottom:25px;
-
-}
-
-.music-label{
-
-    color:#555;
-
-    font-size:8px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-    margin-bottom:8px;
-
-}
-
-.music-panel-title{
-
-    font-size:22px;
-
-    font-weight:900;
-
-    letter-spacing:-.04em;
-
-    text-transform:uppercase;
-
-}
-
-.music-close{
-
-    width:36px;
-
-    height:36px;
-
-    border:1px solid #333;
-
-    background:transparent;
-
-    color:#aaa;
-
-    font-size:20px;
-
-    transition:.2s ease;
-
-}
-
-.music-close:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-}
-
-
-/* =========================================================
-   MUSIC ART
-========================================================= */
-
-.music-art{
-
-    position:relative;
-
-    height:280px;
-
-    overflow:hidden;
-
-    display:flex;
-
-    flex-direction:column;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:
-        radial-gradient(
-            circle at center,
-            #202020 0%,
-            #0d0d0d 38%,
-            #080808 70%,
-            #050505 100%
-        );
-
-    border:1px solid #1c1c1c;
-
-}
-
-.music-art::before{
-
-    content:"";
-
-    position:absolute;
-
-    width:210px;
-
-    height:210px;
-
-    border:1px solid #292929;
-
-    border-radius:50%;
-
-}
-
-.music-art::after{
-
-    content:"";
-
-    position:absolute;
-
-    width:150px;
-
-    height:150px;
-
-    border:1px solid #1c1c1c;
-
-    border-radius:50%;
-
-}
-
-.music-art-circle{
-
-    position:absolute;
-
-    width:75px;
-
-    height:75px;
-
-    border:1px solid #3a3a3a;
-
-    border-radius:50%;
-
-    animation:
-        musicOrbit 8s linear infinite;
-
-    animation-play-state:paused;
-
-}
-
-.music-overlay.playing
-.music-art-circle{
-
-    animation-play-state:running;
-
-}
-
-@keyframes musicOrbit{
-
-    from{
-        transform:rotate(0deg);
-    }
-
-    to{
-        transform:rotate(360deg);
-    }
-
-}
-
-.music-art-title{
-
-    position:relative;
-
-    z-index:2;
-
-    font-size:
-        clamp(
-            32px,
-            8vw,
-            64px
-        );
-
-    font-weight:900;
-
-    letter-spacing:-.07em;
-
-}
-
-.music-art-subtitle{
-
-    position:relative;
-
-    z-index:2;
-
-    margin-top:10px;
-
-    color:#666;
-
-    font-size:8px;
-
-    letter-spacing:.3em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   MUSIC INFO
-========================================================= */
-
-.music-info{
-
-    display:flex;
-
-    align-items:flex-end;
-
-    justify-content:space-between;
-
-    margin-top:25px;
-
-}
-
-.music-track-name{
-
-    font-size:13px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-}
-
-.music-artist{
-
-    color:#555;
-
-    margin-top:5px;
-
-    font-size:8px;
-
-    letter-spacing:.16em;
-
-    text-transform:uppercase;
-
-}
-
-.music-status{
-
-    color:#555;
-
-    font-size:8px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   MUSIC PROGRESS
-========================================================= */
-
-.music-progress-wrap{
-
-    margin-top:22px;
-
-}
-
-.music-progress,
-.music-volume-input{
-
-    width:100%;
-
-    height:2px;
-
-    appearance:none;
-
-    -webkit-appearance:none;
-
-    background:#292929;
-
-    outline:none;
-
-}
-
-.music-progress::-webkit-slider-thumb,
-.music-volume-input::-webkit-slider-thumb{
-
-    appearance:none;
-
-    -webkit-appearance:none;
-
-    width:10px;
-
-    height:10px;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    cursor:pointer;
-
-}
-
-.music-progress::-moz-range-thumb,
-.music-volume-input::-moz-range-thumb{
-
-    width:10px;
-
-    height:10px;
-
-    border:0;
-
-    border-radius:50%;
-
-    background:#fff;
-
-    cursor:pointer;
-
-}
-
-.music-time{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    margin-top:8px;
-
-    color:#555;
-
-    font-size:8px;
-
-    letter-spacing:.1em;
-
-}
-
-
-/* =========================================================
-   MUSIC CONTROLS
-========================================================= */
-
-.music-controls{
-
-    display:flex;
-
-    gap:1px;
-
-    margin-top:20px;
-
-    background:#222;
-
-}
-
-.music-control,
-.music-play{
-
-    border:1px solid #222;
-
-    background:#090909;
-
-    color:#fff;
-
-    padding:16px;
-
-    font-size:9px;
-
-    font-weight:900;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    transition:.2s ease;
-
-}
-
-.music-control{
-
-    width:80px;
-
-}
-
-.music-play{
-
-    flex:1;
-
-    background:#f2f2f2;
-
-    color:#050505;
-
-}
-
-.music-control:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-}
-
-.music-play:hover{
-
-    background:#ccc;
-
-}
-
-
-/* =========================================================
-   MUSIC VOLUME
-========================================================= */
-
-.music-volume{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:15px;
-
-    margin-top:22px;
-
-    color:#555;
-
-    font-size:8px;
-
-    letter-spacing:.15em;
-
-}
-
-.music-volume-input{
-
-    flex:1;
-
-}
-
-.music-credit{
-
-    margin-top:25px;
-
-    padding-top:20px;
-
-    border-top:1px solid #181818;
-
-    color:#444;
-
-    font-size:7px;
-
-    line-height:1.7;
-
-    letter-spacing:.08em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   HERO
-========================================================= */
-
-.hero{
-
-    position:relative;
-
-    min-height:100vh;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    overflow:hidden;
-
-    padding:
-        120px 5vw
-        80px;
-
-}
-
-.hero-grid{
-
-    position:absolute;
-
-    inset:0;
-
-    background-image:
-        linear-gradient(
-            rgba(255,255,255,.025) 1px,
-            transparent 1px
-        ),
-        linear-gradient(
-            90deg,
-            rgba(255,255,255,.025) 1px,
-            transparent 1px
-        );
-
-    background-size:70px 70px;
-
-    mask-image:
-        radial-gradient(
-            ellipse at center,
-            black 20%,
-            transparent 75%
-        );
-
-}
-
-.hero-orbit{
-
-    position:absolute;
-
-    width:55vw;
-
-    height:55vw;
-
-    max-width:700px;
-
-    max-height:700px;
-
-    border:1px solid #171717;
-
-    border-radius:50%;
-
-    transform:rotate(-18deg);
-
-}
-
-.hero-orbit::before,
-.hero-orbit::after{
-
-    content:"";
-
-    position:absolute;
-
-    inset:9%;
-
-    border:1px solid #111;
-
-    border-radius:50%;
-
-}
-
-.hero-orbit::after{
-
-    inset:20%;
-
-    border-color:#1b1b1b;
-
-}
-
-.hero-content{
-
-    position:relative;
-
-    z-index:2;
-
-    text-align:center;
-
-}
-
-.hero-kicker{
-
-    color:#777;
-
-    font-size:9px;
-
-    letter-spacing:.35em;
-
-    text-transform:uppercase;
-
-    margin-bottom:25px;
-
-}
-
-.hero-title{
-
-    font-size:
-        clamp(
-            60px,
-            13vw,
-            190px
-        );
-
-    line-height:.78;
-
-    font-weight:900;
-
-    letter-spacing:-.09em;
-
-    text-transform:uppercase;
-
-}
-
-.hero-title span{
-
-    display:block;
-
-}
-
-.hero-subtitle{
-
-    max-width:500px;
-
-    margin:35px auto 0;
-
-    color:#777;
-
-    font-size:10px;
-
-    line-height:1.8;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   MARQUEE
-========================================================= */
-
-.marquee{
-
-    border-top:1px solid #161616;
-
-    border-bottom:1px solid #161616;
-
-    overflow:hidden;
-
-    white-space:nowrap;
-
-    padding:15px 0;
-
-    color:#666;
-
-    font-size:9px;
-
-    letter-spacing:.25em;
-
-    text-transform:uppercase;
-
-}
-
-.marquee-track{
-
-    display:inline-block;
-
-    animation:
-        marquee 25s linear infinite;
-
-}
-
-.marquee-track span{
-
-    margin-right:60px;
-
-}
-
-@keyframes marquee{
-
-    from{
-        transform:translateX(0);
-    }
-
-    to{
-        transform:translateX(-50%);
-    }
-
-}
-
-
-/* =========================================================
-   GENERAL LABELS
-========================================================= */
-
-.section-label{
-
-    color:#555;
-
-    font-size:9px;
-
-    letter-spacing:.25em;
-
-    text-transform:uppercase;
-
-    margin-bottom:16px;
-
-}
-
-.section-title{
-
-    font-size:
-        clamp(
-            34px,
-            6vw,
-            80px
-        );
-
-    line-height:.9;
-
-    letter-spacing:-.06em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   BUILDER
-========================================================= */
-
-.builder{
-
-    padding:
-        100px
-        5vw
-        35px;
-
-}
-
-.builder-head{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:flex-end;
-
-    margin-bottom:45px;
-
-}
-
-.builder-head-right{
-
-    max-width:330px;
-
-    color:#555;
-
-    font-size:9px;
-
-    line-height:1.8;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   PRODUCT CARDS
-========================================================= */
-
-.fit-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(3,minmax(0,1fr));
-
-    gap:1px;
-
-    background:#222;
-
-}
-
-.fit-card{
-
-    position:relative;
-
-    min-height:500px;
-
-    background:#080808;
-
-    border:1px solid transparent;
-
-    overflow:hidden;
-
-    transition:
-        background .25s ease,
-        border-color .25s ease,
-        transform .25s ease;
-
-}
-
-.fit-card:hover{
-
-    background:#0d0d0d;
-
-    border-color:#333;
-
-    transform:translateY(-4px);
-
-}
-
-.fit-card-number{
-
-    position:absolute;
-
-    top:18px;
-
-    left:18px;
-
-    color:#555;
-
-    font-size:9px;
-
-    letter-spacing:.18em;
-
-}
-
-.fit-card-category{
-
-    position:absolute;
-
-    top:18px;
-
-    right:18px;
-
-    color:#666;
-
-    font-size:8px;
-
-    letter-spacing:.15em;
-
-    text-transform:uppercase;
-
-}
-
-.fit-image{
-
-    position:absolute;
-
-    inset:55px 30px 100px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    overflow:hidden;
-
-    background:#0b0b0b;
-
-}
-
-.fit-image img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:contain;
-
-    transition:
-        transform .5s ease;
-
-}
-
-.fit-card:hover
-.fit-image img{
-
-    transform:scale(1.04);
-
-}
-
-.fit-info{
-
-    position:absolute;
-
-    left:20px;
-
-    right:20px;
-
-    bottom:20px;
-
-}
-
-.fit-brand{
-
-    color:#666;
-
-    font-size:8px;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    margin-bottom:7px;
-
-}
-
-.fit-name{
-
-    font-size:14px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    max-width:80%;
-
-}
-
-.fit-price{
-
-    position:absolute;
-
-    right:0;
-
-    bottom:0;
-
-    color:#999;
-
-    font-size:10px;
-
-}
-
-
-/* =========================================================
-   TOTAL
-========================================================= */
-
-.total-bar{
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:space-between;
-
-    border:1px solid #202020;
-
-    border-top:0;
-
-    padding:22px 24px;
-
-    background:#080808;
-
-}
-
-.total-label{
-
-    color:#555;
-
-    font-size:8px;
-
-    letter-spacing:.2em;
-
-    text-transform:uppercase;
-
-}
-
-.total-value{
-
-    font-size:24px;
-
-    font-weight:900;
-
-    letter-spacing:-.04em;
-
-}
-
-
-/* =========================================================
-   FIT ACTIONS
-========================================================= */
-
-.fit-actions{
-
-    display:flex;
-
-    gap:1px;
-
-    margin-top:18px;
-
-    background:#222;
-
-}
-
-.fit-action{
-
-    flex:1;
-
-    border:1px solid #222;
-
-    background:#090909;
-
-    color:#fff;
-
-    padding:17px 20px;
-
-    font-size:9px;
-
-    font-weight:900;
-
-    letter-spacing:.18em;
-
-    text-transform:uppercase;
-
-    transition:.2s ease;
-
-}
-
-.fit-action:hover{
-
-    background:#fff;
-
-    color:#050505;
-
-}
-
-.fit-action.primary{
-
-    background:#f2f2f2;
-
-    color:#050505;
-
-}
-
-.fit-action.primary:hover{
-
-    background:#ccc;
-
-}
-
-
-/* =========================================================
-   RATING
-========================================================= */
-
-.rating-panel{
-
-    margin-top:18px;
-
-    border:1px solid #202020;
-
-    background:#080808;
-
-    padding:25px;
-
-    display:none;
-
-}
-
-.rating-panel.open{
-
-    display:block;
-
-}
-
-.rating-title{
-
-    font-size:10px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    margin-bottom:18px;
-
-}
-
-.rating-buttons{
-
-    display:flex;
-
-    gap:8px;
-
-    flex-wrap:wrap;
-
-}
-
-.rating-button{
-
-    min-width:45px;
-
-    height:40px;
-
-    border:1px solid #292929;
-
-    background:#0b0b0b;
-
-    color:#777;
-
-    font-size:10px;
-
-    transition:.2s ease;
-
-}
-
-.rating-button:hover,
-.rating-button.active{
-
-    background:#fff;
-
-    color:#050505;
-
-    border-color:#fff;
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-.status{
-
-    min-height:20px;
-
-    margin-top:16px;
-
-    color:#666;
-
-    font-size:9px;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   BUILDER TOOLS
-========================================================= */
-
-.builder-tools{
-
-    display:flex;
-
-    justify-content:flex-end;
-
-    gap:8px;
-
-    margin-top:20px;
-
-}
-
-.tool-button{
-
-    border:1px solid #292929;
-
-    background:#080808;
-
-    color:#777;
-
-    padding:12px 16px;
-
-    font-size:8px;
-
-    letter-spacing:.16em;
-
-    text-transform:uppercase;
-
-    transition:.2s ease;
-
-}
-
-.tool-button:hover{
-
-    color:#fff;
-
-    border-color:#555;
-
-    background:#111;
-
-}
-
-
-/* =========================================================
-   ARCHIVE
-========================================================= */
-
-.archive{
-
-    padding:
-        45px
-        5vw
-        100px;
-
-    border-top:1px solid #111;
-
-    opacity:1 !important;
-
-    transform:none !important;
-
-}
-
-.archive-head{
-
-    display:flex;
-
-    align-items:flex-end;
-
-    justify-content:space-between;
-
-    gap:40px;
-
-    margin-bottom:35px;
-
-}
-
-.archive-description{
-
-    max-width:340px;
-
-    color:#555;
-
-    font-size:9px;
-
-    line-height:1.8;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-}
-
-
-/* =========================================================
-   ARCHIVE CONTROLS
-========================================================= */
-
-.archive-controls{
-
-    display:flex;
-
-    gap:8px;
-
-    margin-bottom:20px;
-
-}
-
-.archive-search{
-
-    flex:1;
-
-    min-width:0;
-
-    border:1px solid #222;
-
-    outline:none;
-
-    background:#080808;
-
-    color:#fff;
-
-    padding:14px 16px;
-
-    font-size:10px;
-
-    transition:.2s ease;
-
-}
-
-.archive-search::placeholder{
-
-    color:#444;
-
-}
-
-.archive-search:focus{
-
-    border-color:#555;
-
-}
-
-.category-filter{
-
-    border:1px solid #222;
-
-    background:#080808;
-
-    color:#777;
-
-    padding:0 16px;
-
-    font-size:9px;
-
-    letter-spacing:.12em;
-
-    text-transform:uppercase;
-
-    outline:none;
-
-}
-
-
-/* =========================================================
-   ARCHIVE GRID
-========================================================= */
-
-.archive-grid{
-
-    display:grid;
-
-    grid-template-columns:
-        repeat(4,minmax(0,1fr));
-
-    gap:1px;
-
-    background:#202020;
-
-}
-
-.archive-item{
-
-    position:relative;
-
-    min-height:290px;
-
-    background:#080808;
-
-    border:1px solid transparent;
-
-    padding:15px;
-
-    display:flex;
-
-    flex-direction:column;
-
-    justify-content:space-between;
-
-    overflow:hidden;
-
-    transition:
-        background .2s ease,
-        border-color .2s ease;
-
-}
-
-.archive-item:hover{
-
-    background:#101010;
-
-    border-color:#333;
-
-}
-
-.archive-item-image{
-
-    height:190px;
-
-    display:flex;
-
-    align-items:center;
-
-    justify-content:center;
-
-    background:#0b0b0b;
-
-    overflow:hidden;
-
-}
-
-.archive-item-image img{
-
-    width:100%;
-
-    height:100%;
-
-    object-fit:contain;
-
-    transition:
-        transform .4s ease;
-
-}
-
-.archive-item:hover
-.archive-item-image img{
-
-    transform:scale(1.04);
-
-}
-
-.archive-item-meta{
-
-    padding-top:14px;
-
-}
-
-.archive-item-brand{
-
-    color:#555;
-
-    font-size:7px;
-
-    letter-spacing:.17em;
-
-    text-transform:uppercase;
-
-    margin-bottom:6px;
-
-}
-
-.archive-item-name{
-
-    font-size:10px;
-
-    font-weight:900;
-
-    text-transform:uppercase;
-
-    white-space:nowrap;
-
-    overflow:hidden;
-
-    text-overflow:ellipsis;
-
-}
-
-.archive-item-bottom{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    margin-top:8px;
-
-    color:#666;
-
-    font-size:8px;
-
-}
-
-
-/* =========================================================
-   INFO
-========================================================= */
-
-.info{
-
-    display:grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap:80px;
-
-    padding:
-        90px
-        5vw;
-
-    border-top:1px solid #181818;
-
-}
-
-.info-title{
-
-    font-size:
-        clamp(
-            42px,
-            7vw,
-            95px
-        );
-
-    line-height:.83;
-
-    letter-spacing:-.07em;
-
-    text-transform:uppercase;
-
-}
-
-.info-copy{
-
-    align-self:end;
-
-    color:#666;
-
-    font-size:10px;
-
-    line-height:1.9;
-
-    letter-spacing:.1em;
-
-    text-transform:uppercase;
-
-}
-
-.info-copy strong{
-
-    color:#aaa;
-
-}
-
-
-/* =========================================================
-   FOOTER
-========================================================= */
-
-.footer{
-
-    display:flex;
-
-    justify-content:space-between;
-
-    align-items:center;
-
-    padding:
-        28px
-        5vw;
-
-    border-top:1px solid #151515;
-
-    color:#444;
-
-    font-size:8px;
-
-    letter-spacing:.15em;
-
-    text-transform:uppercase;
-
-}
-
-.footer a{
-
-    transition:.2s ease;
-
-}
-
-.footer a:hover{
-
-    color:#fff;
-
-}
-
-
-/* =========================================================
-   REVEAL
-========================================================= */
-
-.reveal{
-
-    opacity:0;
-
-    transform:translateY(25px);
-
-    transition:
-        opacity .7s ease,
-        transform .7s ease;
-
+    animation:loading 1.5s ease forwards;
 }
-
-.reveal.visible{
 
-    opacity:1;
-
-    transform:none;
-
+@keyframes loading{
+    to{width:100%}
 }
-
 
-/* =========================================================
+/* =========================
    RESPONSIVE
-========================================================= */
+========================= */
 
 @media(max-width:900px){
 
-    .fit-grid{
-
-        grid-template-columns:1fr;
-
-    }
-
-    .fit-card{
-
-        min-height:430px;
-
-    }
-
-    .archive-grid{
-
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
-    }
-
-    .info{
-
-        grid-template-columns:1fr;
-
-        gap:40px;
-
-    }
-
-    .catalog-list{
-
-        grid-template-columns:1fr;
-
-    }
-
-}
-
-
-@media(max-width:600px){
-
-    .header{
-
-        height:64px;
-
-        padding:0 16px;
-
+    header{
+        padding:0 18px;
+        height:68px;
     }
 
     .header-index{
-
         display:none;
-
-    }
-
-    .header-meta{
-
-        gap:5px;
-
-    }
-
-    .catalog-button,
-    .music-button{
-
-        padding:
-            10px 11px;
-
-        font-size:8px;
-
     }
 
     .hero{
-
-        min-height:90vh;
-
-        padding:
-            100px 16px
-            60px;
-
-    }
-
-    .hero-orbit{
-
-        width:120vw;
-
-        height:120vw;
-
+        padding-left:18px;
+        padding-right:18px;
     }
 
     .hero-title{
-
-        font-size:20vw;
-
+        font-size:clamp(55px,15vw,100px);
     }
 
-    .builder{
-
-        padding:
-            70px
-            16px
-            20px;
-
+    .section{
+        padding:80px 18px;
     }
 
-    .builder-head{
-
+    .section-head{
         display:block;
-
-        margin-bottom:28px;
-
     }
 
-    .builder-head-right{
+    .section-description{
+        margin-top:20px;
+    }
 
-        margin-top:18px;
-
+    .builder-grid{
+        grid-template-columns:1fr;
     }
 
     .fit-card{
-
-        min-height:390px;
-
-    }
-
-    .total-bar{
-
-        padding:18px;
-
-    }
-
-    .fit-actions{
-
-        flex-direction:column;
-
-    }
-
-    .builder-tools{
-
-        justify-content:stretch;
-
-    }
-
-    .tool-button{
-
-        flex:1;
-
-    }
-
-    .archive{
-
-        padding:
-            25px
-            16px
-            70px;
-
-    }
-
-    .archive-head{
-
-        display:block;
-
-        margin-bottom:25px;
-
-    }
-
-    .archive-description{
-
-        margin-top:18px;
-
-    }
-
-    .archive-controls{
-
-        flex-direction:column;
-
-    }
-
-    .category-filter{
-
-        height:44px;
-
+        min-height:500px;
     }
 
     .archive-grid{
-
-        grid-template-columns:
-            repeat(2,minmax(0,1fr));
-
+        grid-template-columns:repeat(2,1fr);
     }
 
-    .archive-item{
+    .info-grid{
+        grid-template-columns:1fr;
+        gap:35px;
+    }
+}
 
-        min-height:240px;
+@media(max-width:600px){
 
-        padding:10px;
-
+    .logo{
+        font-size:12px;
     }
 
-    .archive-item-image{
-
-        height:150px;
-
-    }
-
-    .archive-item-name{
-
+    .header-btn{
+        padding:10px 12px;
         font-size:8px;
-
     }
 
-    .info{
-
-        padding:
-            65px
-            16px;
-
+    .hero-name{
+        letter-spacing:.18em;
     }
 
-    .footer{
-
-        padding:
-            24px 16px;
-
-        gap:20px;
-
+    .hero-sub{
+        font-size:11px;
     }
 
-    .music-panel{
-
-        padding:20px;
-
+    .catalog-window{
+        width:calc(100% - 16px);
+        margin-top:76px;
     }
 
-    .music-art{
-
-        height:230px;
-
+    .catalog-list{
+        grid-template-columns:1fr;
     }
 
-    .music-art::before{
-
-        width:175px;
-
-        height:175px;
-
+    .catalog-brand,
+    .catalog-brand:nth-child(even){
+        border-right:none;
     }
 
-    .music-art::after{
-
-        width:125px;
-
-        height:125px;
-
+    .brand-item-grid{
+        grid-template-columns:1fr 1fr;
     }
 
+    .rating-buttons{
+        grid-template-columns:repeat(5,1fr);
+    }
+
+    .archive-tools{
+        flex-wrap:wrap;
+    }
+
+    .search{
+        flex-basis:100%;
+    }
+
+    footer{
+        padding:25px 18px;
+        flex-direction:column;
+    }
 }
-
-
-/* =========================================================
-   SELECTION
-========================================================= */
-
-::selection{
-
-    background:#fff;
-
-    color:#050505;
-
-}
-
-
-/* =========================================================
-   SCROLLBAR
-========================================================= */
-
-::-webkit-scrollbar{
-
-    width:6px;
-
-}
-
-::-webkit-scrollbar-track{
-
-    background:#050505;
-
-}
-
-::-webkit-scrollbar-thumb{
-
-    background:#252525;
-
-}
-
-::-webkit-scrollbar-thumb:hover{
-
-    background:#444;
-
-}
-
 </style>
-
 </head>
-
 
 <body>
 
+<!-- LOADER -->
 
-<!-- =======================================================
-     LOADER
-======================================================= -->
-
-<div
-    class="loader"
-    id="loader"
->
-
+<div class="loader" id="loader">
     <div class="loader-inner">
-
-        <div class="loader-title">
-            CreatureMeza
-        </div>
-
+        <div class="loader-logo">CreatureMeza</div>
         <div class="loader-line">
-
             <div class="loader-progress"></div>
-
         </div>
-
-        <div class="loader-small">
-            Entering the archive
-        </div>
-
     </div>
-
 </div>
 
+<!-- HEADER -->
 
-<!-- =======================================================
-     HEADER
-======================================================= -->
+<header>
 
-<header class="header">
+    <div class="logo">CreatureMeza</div>
 
-    <div class="logo">
-        CreatureMeza
-    </div>
+    <div class="header-right">
+        <div class="header-index">CM / 001</div>
 
-    <div class="header-meta">
-
-        <div class="header-index">
-            CM / 001
-        </div>
-
-        <button
-            class="music-button"
-            id="musicButton"
-        >
-            Music
-        </button>
-
-        <button
-            class="catalog-button"
-            id="catalogButton"
-        >
+        <button class="header-btn" id="catalogButton">
             Catalog
         </button>
-
     </div>
 
 </header>
 
-
-<!-- =======================================================
-     CATALOG
-======================================================= -->
-
-<div
-    class="catalog-overlay"
-    id="catalogOverlay"
->
-
-    <div class="catalog-panel">
-
-        <div class="catalog-panel-head">
-
-            <div class="catalog-panel-title">
-                Archive / Brands
-            </div>
-
-            <button
-                class="catalog-close"
-                id="catalogClose"
-            >
-                ×
-            </button>
-
-        </div>
-
-        <div
-            class="catalog-list"
-            id="catalogList"
-        ></div>
-
-    </div>
-
-</div>
-
-
-<!-- =======================================================
-     MUSIC
-======================================================= -->
-
-<div
-    class="music-overlay"
-    id="musicOverlay"
->
-
-    <div class="music-panel">
-
-        <div class="music-panel-head">
-
-            <div>
-
-                <div class="music-label">
-                    003 / Music
-                </div>
-
-                <div class="music-panel-title">
-                    Nightfall
-                </div>
-
-            </div>
-
-            <button
-                class="music-close"
-                id="musicClose"
-            >
-                ×
-            </button>
-
-        </div>
-
-
-        <div class="music-art">
-
-            <div class="music-art-circle"></div>
-
-            <div class="music-art-title">
-                NIGHTFALL
-            </div>
-
-            <div class="music-art-subtitle">
-                SCOTT BUCKLEY
-            </div>
-
-        </div>
-
-
-        <div class="music-info">
-
-            <div>
-
-                <div class="music-track-name">
-                    Nightfall
-                </div>
-
-                <div class="music-artist">
-                    Scott Buckley
-                </div>
-
-            </div>
-
-            <div
-                class="music-status"
-                id="musicStatus"
-            >
-                PAUSED
-            </div>
-
-        </div>
-
-
-        <div class="music-progress-wrap">
-
-            <input
-                type="range"
-                id="musicProgress"
-                class="music-progress"
-                min="0"
-                max="100"
-                value="0"
-            >
-
-        </div>
-
-
-        <div class="music-time">
-
-            <span id="musicCurrent">
-                00:00
-            </span>
-
-            <span id="musicDuration">
-                00:00
-            </span>
-
-        </div>
-
-
-        <div class="music-controls">
-
-            <button
-                class="music-control"
-                id="musicBack"
-            >
-                −10
-            </button>
-
-            <button
-                class="music-play"
-                id="musicPlay"
-            >
-                PLAY
-            </button>
-
-            <button
-                class="music-control"
-                id="musicForward"
-            >
-                +10
-            </button>
-
-        </div>
-
-
-        <div class="music-volume">
-
-            <span>
-                VOL
-            </span>
-
-            <input
-                type="range"
-                id="musicVolume"
-                class="music-volume-input"
-                min="0"
-                max="1"
-                step="0.01"
-                value="0.7"
-            >
-
-        </div>
-
-
-        <div class="music-credit">
-
-            'Nightfall' by Scott Buckley -
-            released under CC-BY 4.0.
-            www.scottbuckley.com.au
-
-        </div>
-
-
-        <audio
-            id="nightfallAudio"
-            preload="metadata"
-        >
-
-            <source
-                src="Nightfall.mp3"
-                type="audio/mpeg"
-            >
-
-        </audio>
-
-    </div>
-
-</div>
-
-
-<!-- =======================================================
-     HERO
-======================================================= -->
+<!-- HERO -->
 
 <section class="hero">
 
@@ -2626,377 +1075,385 @@ a{
             Independent fashion archive
         </div>
 
+        <div class="hero-name">
+            CreatureMeza
+        </div>
+
         <h1 class="hero-title">
-
-            <span>Creature</span>
-            <span>Meza.</span>
-
+            <span>Build</span>
+            <span>Your</span>
+            <span>Fit.</span>
         </h1>
 
-        <p class="hero-subtitle">
-
-            Independent fashion archive.
-            Select objects.
-            Build your own fit.
-
+        <p class="hero-sub">
+            Select objects from the archive.
+            Construct your own combination.
+            No rules. Just objects.
         </p>
 
     </div>
 
 </section>
 
-
-<!-- =======================================================
-     MARQUEE
-======================================================= -->
+<!-- MARQUEE -->
 
 <div class="marquee">
-
     <div class="marquee-track">
 
         <span>CreatureMeza</span>
-
-        <span>Selected Objects</span>
-
-        <span>Independent Archive</span>
-
-        <span>Built For The Archive</span>
-
+        <span>Independent Fashion Archive</span>
+        <span>Build Your Fit</span>
+        <span>Objects / 001</span>
         <span>CreatureMeza</span>
-
-        <span>Selected Objects</span>
-
-        <span>Independent Archive</span>
-
-        <span>Built For The Archive</span>
+        <span>Independent Fashion Archive</span>
+        <span>Build Your Fit</span>
+        <span>Objects / 001</span>
 
     </div>
-
 </div>
 
+<!-- BUILDER -->
 
-<!-- =======================================================
-     BUILDER
-======================================================= -->
+<section class="section builder" id="builder">
 
-<section
-    class="builder reveal"
-    id="builder"
->
-
-    <div class="builder-head">
+    <div class="section-head">
 
         <div>
-
-            <div class="section-label">
-                001 / Outfit Builder
+            <div class="section-kicker">
+                001 / Builder
             </div>
 
             <h2 class="section-title">
-                Outfit
+                Your Fit
             </h2>
+        </div>
+
+        <p class="section-description">
+            Choose a brand from the catalog or use the arrows
+            to move through the pieces. Each layer can be changed independently.
+        </p>
+
+    </div>
+
+    <div class="builder-grid">
+
+        <!-- TOP -->
+
+        <div class="fit-card">
+
+            <div class="fit-label">
+                Upper
+            </div>
+
+            <div class="fit-number">
+                01
+            </div>
+
+            <div class="fit-image" id="topImage"></div>
+
+            <div class="fit-info">
+
+                <div class="fit-brand" id="topBrand">
+                    —
+                </div>
+
+                <div class="fit-name" id="topName">
+                    Select an object
+                </div>
+
+                <div class="fit-price" id="topPrice">
+                    —
+                </div>
+
+            </div>
+
+            <div class="fit-arrows">
+
+                <button
+                    class="arrow-btn"
+                    id="topPrev"
+                    aria-label="Previous upper item"
+                >
+                    ←
+                </button>
+
+                <button
+                    class="arrow-btn"
+                    id="topNext"
+                    aria-label="Next upper item"
+                >
+                    →
+                </button>
+
+            </div>
 
         </div>
 
-        <div class="builder-head-right">
+        <!-- BOTTOM -->
 
-            Three categories.
-            One combination.
-            Select one object from each category.
+        <div class="fit-card">
+
+            <div class="fit-label">
+                Lower
+            </div>
+
+            <div class="fit-number">
+                02
+            </div>
+
+            <div class="fit-image" id="bottomImage"></div>
+
+            <div class="fit-info">
+
+                <div class="fit-brand" id="bottomBrand">
+                    —
+                </div>
+
+                <div class="fit-name" id="bottomName">
+                    Select an object
+                </div>
+
+                <div class="fit-price" id="bottomPrice">
+                    —
+                </div>
+
+            </div>
+
+            <div class="fit-arrows">
+
+                <button
+                    class="arrow-btn"
+                    id="bottomPrev"
+                    aria-label="Previous lower item"
+                >
+                    ←
+                </button>
+
+                <button
+                    class="arrow-btn"
+                    id="bottomNext"
+                    aria-label="Next lower item"
+                >
+                    →
+                </button>
+
+            </div>
+
+        </div>
+
+        <!-- SHOES -->
+
+        <div class="fit-card">
+
+            <div class="fit-label">
+                Footwear
+            </div>
+
+            <div class="fit-number">
+                03
+            </div>
+
+            <div class="fit-image" id="shoesImage"></div>
+
+            <div class="fit-info">
+
+                <div class="fit-brand" id="shoesBrand">
+                    —
+                </div>
+
+                <div class="fit-name" id="shoesName">
+                    Select an object
+                </div>
+
+                <div class="fit-price" id="shoesPrice">
+                    —
+                </div>
+
+            </div>
+
+            <div class="fit-arrows">
+
+                <button
+                    class="arrow-btn"
+                    id="shoesPrev"
+                    aria-label="Previous footwear"
+                >
+                    ←
+                </button>
+
+                <button
+                    class="arrow-btn"
+                    id="shoesNext"
+                    aria-label="Next footwear"
+                >
+                    →
+                </button>
+
+            </div>
 
         </div>
 
     </div>
 
+    <div class="builder-controls">
 
-    <div
-        class="fit-grid"
-        id="fitGrid"
-    ></div>
+        <button class="control-btn" id="randomButton">
+            Random Fit
+        </button>
 
+        <button class="control-btn" id="resetButton">
+            Reset
+        </button>
+
+        <button class="control-btn" id="confirmButton">
+            Confirm Fit
+        </button>
+
+    </div>
 
     <div class="total-bar">
 
         <div class="total-label">
-            Current fit value
+            Total
         </div>
 
-        <div
-            class="total-value"
-            id="totalValue"
-        >
-            €0
+        <div class="total-value" id="totalPrice">
+            $0
         </div>
 
     </div>
 
-
-    <div class="fit-actions">
-
-        <button
-            class="fit-action"
-            id="rateFitButton"
-        >
-            Rate the fit
-        </button>
-
-        <button
-            class="fit-action primary"
-            id="confirmFitButton"
-        >
-            Confirm this fit
-        </button>
-
-    </div>
-
-
-    <div
-        class="rating-panel"
-        id="ratingPanel"
-    >
+    <div class="rating-panel">
 
         <div class="rating-title">
-            Rate this combination
+            Rate this fit
         </div>
 
-        <div
-            class="rating-buttons"
-            id="ratingButtons"
-        >
+        <div class="rating-buttons">
 
-            <button
-                class="rating-button"
-                data-rating="1"
-            >
-                1
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="2"
-            >
-                2
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="3"
-            >
-                3
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="4"
-            >
-                4
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="5"
-            >
-                5
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="6"
-            >
-                6
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="7"
-            >
-                7
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="8"
-            >
-                8
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="9"
-            >
-                9
-            </button>
-
-            <button
-                class="rating-button"
-                data-rating="10"
-            >
-                10
-            </button>
+            <button class="rating-btn" data-rating="1">1</button>
+            <button class="rating-btn" data-rating="2">2</button>
+            <button class="rating-btn" data-rating="3">3</button>
+            <button class="rating-btn" data-rating="4">4</button>
+            <button class="rating-btn" data-rating="5">5</button>
+            <button class="rating-btn" data-rating="6">6</button>
+            <button class="rating-btn" data-rating="7">7</button>
+            <button class="rating-btn" data-rating="8">8</button>
+            <button class="rating-btn" data-rating="9">9</button>
+            <button class="rating-btn" data-rating="10">10</button>
 
         </div>
 
-    </div>
-
-
-    <div
-        class="status"
-        id="status"
-    ></div>
-
-
-    <div class="builder-tools">
-
-        <button
-            class="tool-button"
-            id="randomFitButton"
-        >
-            Random fit
-        </button>
-
-        <button
-            class="tool-button"
-            id="resetFitButton"
-        >
-            Reset fit
-        </button>
+        <div class="status" id="status">
+            Select all three pieces to confirm your fit.
+        </div>
 
     </div>
 
 </section>
 
+<!-- ARCHIVE -->
 
-<!-- =======================================================
-     ARCHIVE
-======================================================= -->
+<section class="section archive" id="archive">
 
-<section
-    class="archive"
-    id="archive"
->
-
-    <div class="archive-head">
+    <div class="section-head">
 
         <div>
-
-            <div class="section-label">
+            <div class="section-kicker">
                 002 / Archive
             </div>
 
             <h2 class="section-title">
-
-                Selected<br>
-                Objects.
-
+                Objects
             </h2>
-
         </div>
 
-        <div class="archive-description">
-
-            A growing collection of pieces,
-            objects and references selected
-            from the CreatureMeza archive.
-
-        </div>
+        <p class="section-description">
+            Click any object to put it directly into the corresponding
+            position of your fit.
+        </p>
 
     </div>
 
-
-    <div class="archive-controls">
+    <div class="archive-tools">
 
         <input
-            class="archive-search"
-            id="archiveSearch"
+            class="search"
+            id="searchInput"
             type="text"
-            placeholder="SEARCH OBJECTS..."
+            placeholder="Search brand or object..."
             autocomplete="off"
         >
 
-        <select
-            class="category-filter"
-            id="categoryFilter"
+        <button
+            class="filter-btn active"
+            data-filter="all"
         >
+            All
+        </button>
 
-            <option value="all">
-                All categories
-            </option>
+        <button
+            class="filter-btn"
+            data-filter="top"
+        >
+            Top
+        </button>
 
-            <option value="top">
-                Top
-            </option>
+        <button
+            class="filter-btn"
+            data-filter="bottom"
+        >
+            Bottom
+        </button>
 
-            <option value="bottom">
-                Bottom
-            </option>
-
-            <option value="shoes">
-                Shoes
-            </option>
-
-        </select>
+        <button
+            class="filter-btn"
+            data-filter="shoes"
+        >
+            Shoes
+        </button>
 
     </div>
 
-
-    <div
-        class="archive-grid"
-        id="archiveGrid"
-    ></div>
+    <div class="archive-grid" id="archiveGrid"></div>
 
 </section>
 
+<!-- INFO -->
 
-<!-- =======================================================
-     INFO
-======================================================= -->
+<section class="section info">
 
-<section
-    class="info reveal"
-    id="about"
->
+    <div class="info-grid">
 
-    <div>
+        <div class="info-big">
+            No rules.<br>
+            Just objects.
+        </div>
 
-        <h2 class="info-title">
-
-            Built for<br>
-            the archive.
-
-        </h2>
-
-    </div>
-
-    <div class="info-copy">
-
-        CreatureMeza is an independent digital
-        archive for discovering unusual objects,
-        combining them and building your own fit.
-
-        <br><br>
-
-        <strong>
-            No algorithm.
-            No rules.
-            Just selection.
-        </strong>
+        <div class="info-text">
+            CreatureMeza is an independent fashion archive
+            built around objects, brands and combinations.
+            Select a piece, move through the archive,
+            construct a fit and rate the result.
+            <br><br>
+            Everything is treated as an object.
+            The combination is yours.
+        </div>
 
     </div>
 
 </section>
 
+<!-- FOOTER -->
 
-<!-- =======================================================
-     FOOTER
-======================================================= -->
-
-<footer class="footer">
+<footer>
 
     <div>
-        CreatureMeza © 2026
+        CreatureMeza / Archive
     </div>
 
     <a
+        class="footer-link"
         href="https://t.me/"
         target="_blank"
         rel="noopener"
@@ -3006,6 +1463,33 @@ a{
 
 </footer>
 
+<!-- CATALOG OVERLAY -->
+
+<div class="catalog-overlay" id="catalogOverlay">
+
+    <div class="catalog-window">
+
+        <div class="catalog-top">
+
+            <div class="catalog-heading">
+                Catalog
+            </div>
+
+            <button
+                class="close-btn"
+                id="catalogClose"
+                aria-label="Close catalog"
+            >
+                ×
+            </button>
+
+        </div>
+
+        <div class="catalog-list" id="catalogList"></div>
+
+    </div>
+
+</div>
 
 <script>
 
@@ -3018,921 +1502,753 @@ const catalog = {
     "Ader Error": {
 
         top: [
-
             {
-                name:"Oversized Logo Tee",
-                price:120,
-                image:""
-            },
-
-            {
-                name:"Layered Graphic Shirt",
+                name:"Ader Logo Tee",
                 price:180,
                 image:""
             },
-
             {
-                name:"Archive Cotton Hoodie",
+                name:"Ader Oversized Hoodie",
+                price:320,
+                image:""
+            },
+            {
+                name:"Ader Distressed Knit",
                 price:290,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Wide Cargo Trousers",
-                price:260,
+                name:"Ader Wide Trousers",
+                price:250,
                 image:""
             },
-
             {
-                name:"Relaxed Denim",
-                price:240,
-                image:""
-            },
-
-            {
-                name:"Utility Pants",
+                name:"Ader Cargo Pants",
                 price:280,
                 image:""
+            },
+            {
+                name:"Ader Denim",
+                price:230,
+                image:""
             }
-
         ],
 
         shoes: [
-
             {
-                name:"Chunky Runner",
-                price:310,
+                name:"Ader Platform Sneakers",
+                price:300,
                 image:""
             },
-
             {
-                name:"Archive Sneaker",
+                name:"Ader Runner",
+                price:275,
+                image:""
+            },
+            {
+                name:"Ader Black Derby",
                 price:330,
                 image:""
-            },
-
-            {
-                name:"Platform Trainer",
-                price:350,
-                image:""
             }
-
         ]
 
     },
 
-
     "Balenciaga": {
 
         top: [
-
             {
-                name:"Logo T-Shirt",
+                name:"Balenciaga Logo Tee",
                 price:550,
                 image:""
             },
-
             {
-                name:"Oversized Hoodie",
-                price:850,
+                name:"Balenciaga Zip Hoodie",
+                price:950,
                 image:""
             },
-
             {
-                name:"Zip Jacket",
-                price:1100,
+                name:"Balenciaga Oversized Shirt",
+                price:850,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Wide Leg Jeans",
-                price:850,
-                image:""
-            },
-
-            {
-                name:"Cargo Trousers",
+                name:"Balenciaga Baggy Jeans",
                 price:900,
                 image:""
             },
-
             {
-                name:"Destroyed Denim",
-                price:980,
+                name:"Balenciaga Track Pants",
+                price:800,
+                image:""
+            },
+            {
+                name:"Balenciaga Cargo",
+                price:780,
                 image:""
             }
-
         ],
 
         shoes: [
-
+            {
+                name:"Triple S",
+                price:1100,
+                image:""
+            },
             {
                 name:"Runner Sneaker",
                 price:1050,
                 image:""
             },
-
             {
-                name:"Triple Sole Trainer",
-                price:990,
-                image:""
-            },
-
-            {
-                name:"Track Sneaker",
-                price:1150,
+                name:"3XL Sneaker",
+                price:1200,
                 image:""
             }
-
         ]
 
     },
-
 
     "Carhartt WIP": {
 
         top: [
-
             {
-                name:"Pocket Tee",
-                price:65,
+                name:"Carhartt Pocket Tee",
+                price:75,
                 image:""
             },
-
             {
-                name:"Work Jacket",
-                price:180,
+                name:"Carhartt Detroit Jacket",
+                price:190,
                 image:""
             },
-
             {
-                name:"Detroit Jacket",
-                price:220,
+                name:"Carhartt Work Shirt",
+                price:120,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Single Knee Pant",
-                price:120,
-                image:""
-            },
-
-            {
-                name:"Cargo Pant",
+                name:"Carhartt Double Knee",
                 price:130,
                 image:""
             },
-
             {
-                name:"Double Knee Pant",
-                price:145,
+                name:"Carhartt Cargo",
+                price:140,
+                image:""
+            },
+            {
+                name:"Carhartt Denim",
+                price:120,
                 image:""
             }
-
         ],
 
         shoes: [
-
             {
-                name:"Canvas Sneaker",
-                price:90,
+                name:"Carhartt Canvas Sneaker",
+                price:110,
                 image:""
             },
-
             {
-                name:"Work Boot",
+                name:"Carhartt Work Shoe",
                 price:150,
                 image:""
             },
-
             {
-                name:"Low Trainer",
-                price:110,
+                name:"Carhartt High Top",
+                price:135,
                 image:""
             }
-
         ]
 
     },
-
 
     "Comme des Garçons": {
 
         top: [
-
             {
-                name:"Play Tee",
-                price:130,
-                image:""
-            },
-
-            {
-                name:"Graphic Shirt",
-                price:190,
-                image:""
-            },
-
-            {
-                name:"Wool Cardigan",
-                price:420,
-                image:""
-            }
-
-        ],
-
-        bottom: [
-
-            {
-                name:"Wide Trousers",
-                price:350,
-                image:""
-            },
-
-            {
-                name:"Pleated Pants",
-                price:390,
-                image:""
-            },
-
-            {
-                name:"Archive Shorts",
-                price:250,
-                image:""
-            }
-
-        ],
-
-        shoes: [
-
-            {
-                name:"Converse Play",
+                name:"CDG Heart Tee",
                 price:150,
                 image:""
             },
-
             {
-                name:"Derby Shoes",
-                price:480,
+                name:"CDG Knit",
+                price:420,
                 image:""
             },
-
             {
-                name:"Archive Trainer",
-                price:300,
+                name:"CDG Shirt",
+                price:500,
                 image:""
             }
+        ],
 
+        bottom: [
+            {
+                name:"CDG Wide Pants",
+                price:380,
+                image:""
+            },
+            {
+                name:"CDG Wool Trousers",
+                price:520,
+                image:""
+            },
+            {
+                name:"CDG Cargo",
+                price:450,
+                image:""
+            }
+        ],
+
+        shoes: [
+            {
+                name:"CDG Converse",
+                price:180,
+                image:""
+            },
+            {
+                name:"CDG Derby",
+                price:600,
+                image:""
+            },
+            {
+                name:"CDG Platform",
+                price:480,
+                image:""
+            }
         ]
 
     },
-
 
     "Diesel": {
 
         top: [
-
             {
-                name:"Washed Tee",
-                price:100,
-                image:""
-            },
-
-            {
-                name:"Graphic Tee",
+                name:"Diesel Logo Tee",
                 price:120,
                 image:""
             },
-
             {
-                name:"Denim Jacket",
+                name:"Diesel Denim Jacket",
                 price:350,
                 image:""
+            },
+            {
+                name:"Diesel Graphic Top",
+                price:180,
+                image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Bootcut Denim",
-                price:250,
+                name:"Diesel D-Sire Jeans",
+                price:300,
                 image:""
             },
-
             {
-                name:"Distressed Jeans",
+                name:"Diesel Cargo",
                 price:280,
                 image:""
             },
-
             {
-                name:"Wide Denim",
-                price:300,
+                name:"Diesel Flared Denim",
+                price:320,
                 image:""
             }
-
         ],
 
         shoes: [
-
             {
-                name:"D-Rise Sneaker",
-                price:320,
-                image:""
-            },
-
-            {
-                name:"Low Profile Shoe",
-                price:270,
-                image:""
-            },
-
-            {
-                name:"Archive Runner",
+                name:"Diesel D-Rise",
                 price:350,
                 image:""
+            },
+            {
+                name:"Diesel S-Athos",
+                price:300,
+                image:""
+            },
+            {
+                name:"Diesel Runner",
+                price:290,
+                image:""
             }
-
         ]
 
     },
-
 
     "Givenchy": {
 
         top: [
-
             {
-                name:"Star Logo Polo",
+                name:"Givenchy Signature Tee",
                 price:500,
                 image:""
             },
-
             {
-                name:"Logo Tee",
-                price:450,
+                name:"Givenchy Hoodie",
+                price:800,
                 image:""
             },
-
             {
-                name:"Oversized Sweatshirt",
-                price:700,
+                name:"Givenchy Wool Jacket",
+                price:1200,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Wide Trousers",
-                price:650,
-                image:""
-            },
-
-            {
-                name:"Cargo Pants",
-                price:620,
-                image:""
-            },
-
-            {
-                name:"Slim Denim",
-                price:550,
-                image:""
-            }
-
-        ],
-
-        shoes: [
-
-            {
-                name:"G4 Sneaker",
-                price:650,
-                image:""
-            },
-
-            {
-                name:"Low Trainer",
+                name:"Givenchy Tailored Pants",
                 price:700,
                 image:""
             },
-
             {
-                name:"Archive Runner",
-                price:720,
+                name:"Givenchy Cargo",
+                price:650,
+                image:""
+            },
+            {
+                name:"Givenchy Denim",
+                price:600,
                 image:""
             }
+        ],
 
+        shoes: [
+            {
+                name:"Givenchy Giv 1",
+                price:850,
+                image:""
+            },
+            {
+                name:"Givenchy Runner",
+                price:900,
+                image:""
+            },
+            {
+                name:"Givenchy Derby",
+                price:950,
+                image:""
+            }
         ]
 
     },
-
 
     "Maison Margiela": {
 
         top: [
-
             {
-                name:"Replica Tee",
-                price:220,
+                name:"Margiela Logo Tee",
+                price:260,
                 image:""
             },
-
             {
-                name:"Numbering Sweatshirt",
-                price:450,
-                image:""
-            },
-
-            {
-                name:"Oversized Knit",
+                name:"Margiela Knit",
                 price:650,
                 image:""
+            },
+            {
+                name:"Margiela Replica Jacket",
+                price:900,
+                image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Wide Wool Trousers",
+                name:"Margiela Wide Trousers",
+                price:600,
+                image:""
+            },
+            {
+                name:"Margiela Denim",
                 price:550,
                 image:""
             },
-
             {
-                name:"Painted Denim",
-                price:620,
-                image:""
-            },
-
-            {
-                name:"Archive Trousers",
-                price:700,
+                name:"Margiela Painter Pants",
+                price:580,
                 image:""
             }
-
         ],
 
         shoes: [
-
             {
                 name:"Replica Sneakers",
-                price:450,
+                price:600,
                 image:""
             },
-
             {
-                name:"Low Boot",
+                name:"Replica Low Top",
                 price:650,
                 image:""
             },
-
             {
-                name:"Tabi Shoes",
-                price:750,
+                name:"Tabi Boots",
+                price:900,
                 image:""
             }
-
         ]
 
     },
-
 
     "Nike": {
 
         top: [
-
             {
-                name:"Boxy Sports Tee",
+                name:"Nike Sportswear Tee",
                 price:45,
                 image:""
             },
-
             {
-                name:"Tech Fleece Hoodie",
-                price:120,
-                image:""
-            },
-
-            {
-                name:"Running Jacket",
-                price:150,
-                image:""
-            }
-
-        ],
-
-        bottom: [
-
-            {
-                name:"Tech Fleece Pants",
-                price:110,
-                image:""
-            },
-
-            {
-                name:"Loose Track Pants",
-                price:90,
-                image:""
-            },
-
-            {
-                name:"Utility Shorts",
-                price:70,
-                image:""
-            }
-
-        ],
-
-        shoes: [
-
-            {
-                name:"Air Max",
-                price:180,
-                image:""
-            },
-
-            {
-                name:"Air Force 1",
+                name:"Nike Tech Fleece",
                 price:130,
                 image:""
             },
-
             {
-                name:"Vomero",
-                price:160,
+                name:"Nike ACG Jacket",
+                price:190,
                 image:""
             }
+        ],
 
+        bottom: [
+            {
+                name:"Nike Tech Pants",
+                price:110,
+                image:""
+            },
+            {
+                name:"Nike ACG Cargo",
+                price:150,
+                image:""
+            },
+            {
+                name:"Nike Track Pants",
+                price:90,
+                image:""
+            }
+        ],
+
+        shoes: [
+            {
+                name:"Air Force 1",
+                price:120,
+                image:""
+            },
+            {
+                name:"Air Max 95",
+                price:180,
+                image:""
+            },
+            {
+                name:"Air Jordan 1",
+                price:200,
+                image:""
+            }
         ]
 
     },
-
 
     "Prada": {
 
         top: [
-
             {
-                name:"Triangle Logo Tee",
-                price:550,
+                name:"Prada Triangle Tee",
+                price:500,
                 image:""
             },
-
             {
-                name:"Nylon Overshirt",
-                price:950,
+                name:"Prada Nylon Jacket",
+                price:1300,
                 image:""
             },
-
             {
-                name:"Technical Jacket",
-                price:1200,
+                name:"Prada Knit",
+                price:900,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Technical Trousers",
-                price:850,
-                image:""
-            },
-
-            {
-                name:"Wide Wool Pants",
-                price:900,
-                image:""
-            },
-
-            {
-                name:"Nylon Cargo",
-                price:950,
-                image:""
-            }
-
-        ],
-
-        shoes: [
-
-            {
-                name:"America's Cup",
+                name:"Prada Nylon Pants",
                 price:750,
                 image:""
             },
-
             {
-                name:"Monolith Boot",
+                name:"Prada Tailored Trousers",
+                price:850,
+                image:""
+            },
+            {
+                name:"Prada Cargo",
+                price:800,
+                image:""
+            }
+        ],
+
+        shoes: [
+            {
+                name:"Prada America's Cup",
+                price:950,
+                image:""
+            },
+            {
+                name:"Prada Monolith",
                 price:1100,
                 image:""
             },
-
             {
-                name:"Cloudbust Sneaker",
-                price:850,
+                name:"Prada Derby",
+                price:1000,
                 image:""
             }
-
         ]
 
     },
-
 
     "Ralph Lauren": {
 
         top: [
-
             {
-                name:"Classic Polo",
-                price:110,
+                name:"Polo Classic Tee",
+                price:80,
                 image:""
             },
-
             {
-                name:"Oxford Shirt",
-                price:120,
-                image:""
-            },
-
-            {
-                name:"Cable Knit",
-                price:180,
-                image:""
-            }
-
-        ],
-
-        bottom: [
-
-            {
-                name:"Pleated Chino",
+                name:"Polo Oxford Shirt",
                 price:130,
                 image:""
             },
-
             {
-                name:"Straight Denim",
-                price:120,
-                image:""
-            },
-
-            {
-                name:"Wide Chino",
-                price:140,
+                name:"Polo Cable Knit",
+                price:160,
                 image:""
             }
+        ],
 
+        bottom: [
+            {
+                name:"Polo Chino",
+                price:110,
+                image:""
+            },
+            {
+                name:"Polo Pleated Pants",
+                price:140,
+                image:""
+            },
+            {
+                name:"Polo Denim",
+                price:120,
+                image:""
+            }
         ],
 
         shoes: [
-
             {
-                name:"Classic Sneaker",
+                name:"Polo Sneaker",
                 price:100,
                 image:""
             },
-
             {
-                name:"Loafer",
-                price:180,
+                name:"Polo Loafer",
+                price:150,
                 image:""
             },
-
             {
-                name:"Canvas Low",
+                name:"Polo Canvas",
                 price:90,
                 image:""
             }
-
         ]
 
     },
-
 
     "Supreme": {
 
         top: [
-
             {
-                name:"Box Logo Tee",
+                name:"Supreme Box Logo",
                 price:100,
                 image:""
             },
-
             {
-                name:"Box Logo Hoodie",
-                price:180,
-                image:""
-            },
-
-            {
-                name:"Work Jacket",
-                price:300,
-                image:""
-            }
-
-        ],
-
-        bottom: [
-
-            {
-                name:"Cargo Pant",
+                name:"Supreme Hoodie",
                 price:190,
                 image:""
             },
-
             {
-                name:"Baggy Jean",
+                name:"Supreme Work Jacket",
+                price:250,
+                image:""
+            }
+        ],
+
+        bottom: [
+            {
+                name:"Supreme Cargo",
                 price:180,
                 image:""
             },
-
             {
-                name:"Track Pant",
+                name:"Supreme Denim",
+                price:170,
+                image:""
+            },
+            {
+                name:"Supreme Work Pant",
                 price:160,
                 image:""
             }
-
         ],
 
         shoes: [
-
             {
-                name:"Skate Sneaker",
+                name:"Supreme AF1",
+                price:130,
+                image:""
+            },
+            {
+                name:"Supreme Dunk",
+                price:180,
+                image:""
+            },
+            {
+                name:"Supreme Vans",
                 price:120,
                 image:""
-            },
-
-            {
-                name:"Low Canvas",
-                price:110,
-                image:""
-            },
-
-            {
-                name:"Archive Trainer",
-                price:160,
-                image:""
             }
-
         ]
 
     },
-
 
     "Stone Island": {
 
         top: [
-
             {
-                name:"Compass Tee",
-                price:140,
+                name:"Stone Island Tee",
+                price:160,
                 image:""
             },
-
             {
-                name:"Crewneck Sweatshirt",
-                price:250,
+                name:"Stone Island Overshirt",
+                price:350,
                 image:""
             },
-
             {
-                name:"Soft Shell Jacket",
-                price:550,
+                name:"Stone Island Shell",
+                price:700,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Cargo Trousers",
-                price:280,
+                name:"Stone Island Cargo",
+                price:300,
                 image:""
             },
-
             {
-                name:"Parachute Pants",
-                price:320,
+                name:"Stone Island Nylon Pants",
+                price:350,
                 image:""
             },
-
             {
-                name:"Technical Shorts",
-                price:190,
+                name:"Stone Island Denim",
+                price:260,
                 image:""
             }
-
         ],
 
         shoes: [
-
             {
-                name:"Compass Sneaker",
-                price:220,
+                name:"Stone Island Runner",
+                price:250,
                 image:""
             },
-
             {
-                name:"Technical Trainer",
-                price:260,
+                name:"Stone Island Sneaker",
+                price:300,
                 image:""
             },
-
             {
-                name:"Low Runner",
-                price:230,
+                name:"Stone Island Boot",
+                price:350,
                 image:""
             }
-
         ]
 
     },
 
-
     "Y-3": {
 
         top: [
-
             {
-                name:"Logo Tee",
+                name:"Y-3 Logo Tee",
                 price:180,
                 image:""
             },
-
             {
-                name:"Oversized Hoodie",
-                price:320,
+                name:"Y-3 Hoodie",
+                price:350,
                 image:""
             },
-
             {
-                name:"Technical Jacket",
-                price:500,
+                name:"Y-3 Bomber",
+                price:600,
                 image:""
             }
-
         ],
 
         bottom: [
-
             {
-                name:"Wide Track Pants",
+                name:"Y-3 Wide Pants",
                 price:300,
                 image:""
             },
-
             {
-                name:"Technical Trousers",
-                price:350,
-                image:""
-            },
-
-            {
-                name:"Cargo Pants",
+                name:"Y-3 Cargo",
                 price:330,
                 image:""
+            },
+            {
+                name:"Y-3 Track Pants",
+                price:280,
+                image:""
             }
-
         ],
 
         shoes: [
-
             {
-                name:"Y-3 Runner",
+                name:"Y-3 Superstar",
                 price:350,
                 image:""
             },
-
             {
-                name:"Hicho",
+                name:"Y-3 Kaiwa",
                 price:400,
                 image:""
             },
-
             {
-                name:"Kaiwa",
+                name:"Y-3 Runner",
                 price:380,
                 image:""
             }
-
         ]
 
     }
@@ -3960,7 +2276,9 @@ const state = {
 
     rating:null,
 
-    confirmed:false
+    activeBrand:null,
+
+    filter:"all"
 
 };
 
@@ -3971,356 +2289,540 @@ const state = {
 
 function getAllItems(){
 
-    const items = [];
+    const result = [];
 
-    Object.entries(catalog).forEach(
-        ([brand,data]) => {
+    Object.keys(catalog).forEach(brand => {
 
-            categories.forEach(
-                category => {
+        categories.forEach(category => {
 
-                    data[category].forEach(
-                        item => {
+            catalog[brand][category].forEach((item,index) => {
 
-                            items.push({
+                result.push({
+                    ...item,
+                    brand,
+                    category,
+                    index
+                });
 
-                                ...item,
+            });
 
-                                brand,
+        });
 
-                                category
+    });
 
-                            });
-
-                        }
-                    );
-
-                }
-            );
-
-        }
-    );
-
-    return items;
-
+    return result;
 }
 
 
 function getCategoryLabel(category){
 
-    const labels = {
+    if(category === "top") return "Upper";
+    if(category === "bottom") return "Lower";
+    if(category === "shoes") return "Footwear";
 
-        top:"Top",
-
-        bottom:"Bottom",
-
-        shoes:"Shoes"
-
-    };
-
-    return labels[category] || category;
+    return category;
 
 }
 
 
-function formatPrice(value){
+function formatPrice(price){
 
-    return "€" +
-        Number(value)
-            .toLocaleString("en-US");
+    return "$" + Number(price).toLocaleString();
 
 }
 
 
-/* =========================================================
-   IMAGE
-========================================================= */
+function imageMarkup(item, small=false){
 
-function imageMarkup(item){
-
-    if(item.image){
+    if(item && item.image){
 
         return `
-
             <img
                 src="${item.image}"
                 alt="${item.name}"
                 loading="lazy"
             >
-
         `;
 
     }
 
     return `
-
-        <div
-            style="
-                width:100%;
-                height:100%;
-                display:flex;
-                align-items:center;
-                justify-content:center;
-                color:#333;
-                font-size:9px;
-                letter-spacing:.15em;
-                text-transform:uppercase;
-                text-align:center;
-                padding:20px;
-            "
-        >
-
-            ${item.brand}
-
+        <div class="${small ? "catalog-item-placeholder" : "fit-placeholder"}">
+            Image coming soon
         </div>
-
     `;
 
 }
 
 
 /* =========================================================
-   SELECTED ITEM
+   BUILDER
 ========================================================= */
 
 function getSelectedItem(category){
 
-    const index =
-        state.selected[category];
+    const selected = state.selected[category];
 
-    if(index === null){
-
+    if(!selected){
         return null;
-
     }
 
-    const all =
-        getAllItems()
-            .filter(
-                item =>
-                    item.category === category
-            );
-
-    return all[index] || null;
+    return catalog[selected.brand][category][selected.index] || null;
 
 }
 
 
-/* =========================================================
-   RENDER BUILDER
-========================================================= */
-
 function renderBuilder(){
 
-    const grid =
-        document.getElementById("fitGrid");
+    categories.forEach(category => {
 
-    grid.innerHTML = "";
+        const selected = state.selected[category];
+
+        const image = document.getElementById(category + "Image");
+        const brand = document.getElementById(category + "Brand");
+        const name = document.getElementById(category + "Name");
+        const price = document.getElementById(category + "Price");
+
+        if(!selected){
+
+            image.innerHTML = `
+                <div class="fit-placeholder">
+                    Select ${getCategoryLabel(category)}
+                </div>
+            `;
+
+            brand.textContent = "—";
+            name.textContent = "Select an object";
+            price.textContent = "—";
+
+            return;
+
+        }
+
+        const item = catalog[selected.brand][category][selected.index];
+
+        image.innerHTML = imageMarkup(item);
+
+        brand.textContent = selected.brand;
+        name.textContent = item.name;
+        price.textContent = formatPrice(item.price);
+
+    });
+
+    renderTotal();
+
+}
+
+
+function renderTotal(){
 
     let total = 0;
 
-    categories.forEach(
-        (category,index) => {
+    categories.forEach(category => {
 
-            const item =
-                getSelectedItem(category);
+        const item = getSelectedItem(category);
 
-            const card =
-                document.createElement("article");
-
-            card.className =
-                "fit-card";
-
-            if(item){
-
-                total += Number(item.price);
-
-                card.innerHTML = `
-
-                    <div class="fit-card-number">
-                        0${index + 1}
-                    </div>
-
-                    <div class="fit-card-category">
-                        ${getCategoryLabel(category)}
-                    </div>
-
-                    <div class="fit-image">
-
-                        ${imageMarkup(item)}
-
-                    </div>
-
-                    <div class="fit-info">
-
-                        <div class="fit-brand">
-                            ${item.brand}
-                        </div>
-
-                        <div class="fit-name">
-                            ${item.name}
-                        </div>
-
-                        <div class="fit-price">
-                            ${formatPrice(item.price)}
-                        </div>
-
-                    </div>
-
-                `;
-
-            }else{
-
-                card.innerHTML = `
-
-                    <div class="fit-card-number">
-                        0${index + 1}
-                    </div>
-
-                    <div class="fit-card-category">
-                        ${getCategoryLabel(category)}
-                    </div>
-
-                    <div class="fit-image">
-
-                        <div
-                            style="
-                                color:#292929;
-                                font-size:9px;
-                                letter-spacing:.2em;
-                                text-transform:uppercase;
-                            "
-                        >
-                            Select object
-                        </div>
-
-                    </div>
-
-                    <div class="fit-info">
-
-                        <div class="fit-brand">
-                            CreatureMeza
-                        </div>
-
-                        <div class="fit-name">
-                            Empty slot
-                        </div>
-
-                    </div>
-
-                `;
-
-            }
-
-            grid.appendChild(card);
-
+        if(item){
+            total += Number(item.price);
         }
-    );
 
-    document.getElementById("totalValue")
-        .textContent =
+    });
+
+    document.getElementById("totalPrice").textContent =
         formatPrice(total);
 
 }
 
 
-/* =========================================================
-   RANDOM FIT
-========================================================= */
+function selectItem(brand,category,index){
 
-function randomFit(){
-
-    categories.forEach(
-        category => {
-
-            const all =
-                getAllItems()
-                    .filter(
-                        item =>
-                            item.category === category
-                    );
-
-            const randomIndex =
-                Math.floor(
-                    Math.random() * all.length
-                );
-
-            state.selected[category] =
-                randomIndex;
-
-        }
-    );
+    state.selected[category] = {
+        brand,
+        index
+    };
 
     state.rating = null;
 
-    state.confirmed = false;
-
-    document.querySelectorAll(
-        ".rating-button"
-    ).forEach(
-        button =>
-            button.classList.remove("active")
-    );
+    document.querySelectorAll(".rating-btn")
+        .forEach(btn => btn.classList.remove("active"));
 
     renderBuilder();
 
-    document.getElementById("status")
-        .textContent =
+    const item = catalog[brand][category][index];
+
+    document.getElementById("status").textContent =
+        `${getCategoryLabel(category)} changed to ${item.name}.`;
+
+}
+
+
+function moveItem(category,direction){
+
+    let selected = state.selected[category];
+
+    if(!selected){
+
+        const firstBrand = Object.keys(catalog)[0];
+
+        state.selected[category] = {
+            brand:firstBrand,
+            index:0
+        };
+
+        renderBuilder();
+
+        return;
+
+    }
+
+    const brandItems = catalog[selected.brand][category];
+
+    let nextIndex =
+        selected.index + direction;
+
+    if(nextIndex < 0){
+        nextIndex = brandItems.length - 1;
+    }
+
+    if(nextIndex >= brandItems.length){
+        nextIndex = 0;
+    }
+
+    state.selected[category].index = nextIndex;
+
+    renderBuilder();
+
+    const item = brandItems[nextIndex];
+
+    document.getElementById("status").textContent =
+        `${selected.brand} / ${item.name}`;
+
+}
+
+
+function randomFit(){
+
+    categories.forEach(category => {
+
+        const brands = Object.keys(catalog);
+
+        const randomBrand =
+            brands[Math.floor(Math.random() * brands.length)];
+
+        const items =
+            catalog[randomBrand][category];
+
+        const randomIndex =
+            Math.floor(Math.random() * items.length);
+
+        state.selected[category] = {
+            brand:randomBrand,
+            index:randomIndex
+        };
+
+    });
+
+    state.rating = null;
+
+    document.querySelectorAll(".rating-btn")
+        .forEach(btn => btn.classList.remove("active"));
+
+    renderBuilder();
+
+    document.getElementById("status").textContent =
         "Random fit generated.";
 
 }
 
 
-/* =========================================================
-   RESET FIT
-========================================================= */
-
 function resetFit(){
 
-    categories.forEach(
-        category => {
-
-            state.selected[category] =
-                null;
-
-        }
-    );
+    state.selected = {
+        top:null,
+        bottom:null,
+        shoes:null
+    };
 
     state.rating = null;
 
-    state.confirmed = false;
-
-    document.querySelectorAll(
-        ".rating-button"
-    ).forEach(
-        button =>
-            button.classList.remove("active")
-    );
+    document.querySelectorAll(".rating-btn")
+        .forEach(btn => btn.classList.remove("active"));
 
     renderBuilder();
 
-    document.getElementById("status")
-        .textContent =
+    document.getElementById("status").textContent =
         "Fit reset.";
 
 }
 
 
+function confirmFit(){
+
+    const complete =
+        categories.every(category => state.selected[category]);
+
+    if(!complete){
+
+        document.getElementById("status").textContent =
+            "Select all three pieces first.";
+
+        return;
+
+    }
+
+    document.getElementById("status").textContent =
+        "Fit confirmed. Now rate it.";
+
+}
+
+
 /* =========================================================
-   INITIAL FIT
+   RATING
 ========================================================= */
 
-function setInitialFit(){
+function setupRating(){
 
-    categories.forEach(
-        category => {
+    document.querySelectorAll(".rating-btn")
+        .forEach(button => {
 
-            state.selected[category] = 0;
+            button.addEventListener("click", () => {
 
+                const rating =
+                    Number(button.dataset.rating);
+
+                state.rating = rating;
+
+                document.querySelectorAll(".rating-btn")
+                    .forEach(btn => {
+
+                        btn.classList.toggle(
+                            "active",
+                            Number(btn.dataset.rating) === rating
+                        );
+
+                    });
+
+                document.getElementById("status").textContent =
+                    `Fit rated ${rating}/10.`;
+
+            });
+
+        });
+
+}
+
+
+/* =========================================================
+   CATALOG
+========================================================= */
+
+function renderCatalog(){
+
+    const container =
+        document.getElementById("catalogList");
+
+    container.innerHTML = "";
+
+    Object.keys(catalog).forEach(brand => {
+
+        const brandData = catalog[brand];
+
+        const total =
+            brandData.top.length +
+            brandData.bottom.length +
+            brandData.shoes.length;
+
+        const brandElement =
+            document.createElement("div");
+
+        brandElement.className = "catalog-brand";
+
+        brandElement.innerHTML = `
+
+            <div class="brand-top">
+
+                <div class="brand-name">
+                    ${brand}
+                </div>
+
+                <div class="brand-arrow">
+                    →
+                </div>
+
+            </div>
+
+            <div class="brand-meta">
+                ${total} objects / click to open
+            </div>
+
+            <div class="brand-items">
+
+                <div class="brand-items-head">
+
+                    <div class="brand-items-title">
+                        ${brand} Objects
+                    </div>
+
+                    <div class="brand-items-note">
+                        Click an object to wear it
+                    </div>
+
+                </div>
+
+                <div class="brand-item-grid"></div>
+
+            </div>
+
+        `;
+
+        const itemGrid =
+            brandElement.querySelector(".brand-item-grid");
+
+        categories.forEach(category => {
+
+            catalog[brand][category].forEach((item,index) => {
+
+                const itemElement =
+                    document.createElement("div");
+
+                itemElement.className =
+                    "catalog-item";
+
+                itemElement.innerHTML = `
+
+                    <div class="catalog-item-image">
+                        ${imageMarkup(item,true)}
+                    </div>
+
+                    <div class="catalog-item-category">
+                        ${getCategoryLabel(category)}
+                    </div>
+
+                    <div class="catalog-item-name">
+                        ${item.name}
+                    </div>
+
+                    <div class="catalog-item-price">
+                        ${formatPrice(item.price)}
+                    </div>
+
+                `;
+
+                itemElement.addEventListener("click", event => {
+
+                    event.stopPropagation();
+
+                    selectItem(
+                        brand,
+                        category,
+                        index
+                    );
+
+                    closeCatalog();
+
+                    document
+                        .getElementById("builder")
+                        .scrollIntoView({
+                            behavior:"smooth"
+                        });
+
+                });
+
+                itemGrid.appendChild(itemElement);
+
+            });
+
+        });
+
+
+        brandElement.addEventListener("click", () => {
+
+            const currentlyOpen =
+                brandElement
+                    .querySelector(".brand-items")
+                    .classList.contains("open");
+
+            document
+                .querySelectorAll(".brand-items")
+                .forEach(element => {
+                    element.classList.remove("open");
+                });
+
+            document
+                .querySelectorAll(".catalog-brand")
+                .forEach(element => {
+                    element.classList.remove("active");
+                });
+
+            if(!currentlyOpen){
+
+                brandElement
+                    .querySelector(".brand-items")
+                    .classList.add("open");
+
+                brandElement.classList.add("active");
+
+            }
+
+        });
+
+
+        container.appendChild(brandElement);
+
+    });
+
+}
+
+
+function openCatalog(){
+
+    document
+        .getElementById("catalogOverlay")
+        .classList.add("open");
+
+    document.body.style.overflow = "hidden";
+
+}
+
+
+function closeCatalog(){
+
+    document
+        .getElementById("catalogOverlay")
+        .classList.remove("open");
+
+    document.body.style.overflow = "";
+
+}
+
+
+function setupCatalog(){
+
+    document
+        .getElementById("catalogButton")
+        .addEventListener("click", openCatalog);
+
+    document
+        .getElementById("catalogClose")
+        .addEventListener("click", closeCatalog);
+
+    document
+        .getElementById("catalogOverlay")
+        .addEventListener("click", event => {
+
+            if(event.target.id === "catalogOverlay"){
+                closeCatalog();
+            }
+
+        });
+
+    document.addEventListener("keydown", event => {
+
+        if(event.key === "Escape"){
+            closeCatalog();
         }
-    );
 
-    renderBuilder();
+    });
 
 }
 
@@ -4334,793 +2836,138 @@ function renderArchive(){
     const grid =
         document.getElementById("archiveGrid");
 
-    const search =
-        document.getElementById("archiveSearch")
+    const query =
+        document
+            .getElementById("searchInput")
             .value
             .trim()
             .toLowerCase();
 
-    const filter =
-        document.getElementById("categoryFilter")
-            .value;
+    const items =
+        getAllItems().filter(item => {
 
-    let items =
-        getAllItems();
+            const matchesFilter =
+                state.filter === "all" ||
+                item.category === state.filter;
 
-    if(filter !== "all"){
+            const matchesSearch =
+                !query ||
+                item.name.toLowerCase().includes(query) ||
+                item.brand.toLowerCase().includes(query);
 
-        items =
-            items.filter(
-                item =>
-                    item.category === filter
-            );
+            return matchesFilter && matchesSearch;
 
-    }
-
-    if(search){
-
-        items =
-            items.filter(
-                item => {
-
-                    const haystack = (
-
-                        item.name +
-                        " " +
-                        item.brand +
-                        " " +
-                        item.category
-
-                    ).toLowerCase();
-
-                    return haystack.includes(
-                        search
-                    );
-
-                }
-            );
-
-    }
+        });
 
     grid.innerHTML = "";
 
     if(items.length === 0){
 
         grid.innerHTML = `
-
-            <div
-                style="
-                    grid-column:1/-1;
-                    min-height:240px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    color:#444;
-                    font-size:9px;
-                    letter-spacing:.2em;
-                    text-transform:uppercase;
-                "
-            >
-                Nothing found.
+            <div style="
+                grid-column:1/-1;
+                padding:60px 20px;
+                border:1px solid #202020;
+                color:#555;
+                text-align:center;
+                font-size:10px;
+                letter-spacing:.2em;
+                text-transform:uppercase;
+            ">
+                Nothing found
             </div>
-
         `;
 
         return;
 
     }
 
-    items.forEach(
-        item => {
+    items.forEach(item => {
 
-            const article =
-                document.createElement("article");
+        const card =
+            document.createElement("div");
 
-            article.className =
-                "archive-item";
+        card.className = "archive-card";
 
-            article.innerHTML = `
+        card.innerHTML = `
 
-                <div class="archive-item-image">
+            <div class="archive-image">
+                ${imageMarkup(item,true)}
+            </div>
 
-                    ${imageMarkup(item)}
+            <div class="archive-brand">
+                ${item.brand}
+            </div>
 
+            <div class="archive-name">
+                ${item.name}
+            </div>
+
+            <div class="archive-bottom">
+
+                <div class="archive-category">
+                    ${getCategoryLabel(item.category)}
                 </div>
 
-                <div class="archive-item-meta">
-
-                    <div class="archive-item-brand">
-                        ${item.brand}
-                    </div>
-
-                    <div class="archive-item-name">
-                        ${item.name}
-                    </div>
-
-                    <div class="archive-item-bottom">
-
-                        <span>
-                            ${getCategoryLabel(item.category)}
-                        </span>
-
-                        <span>
-                            ${formatPrice(item.price)}
-                        </span>
-
-                    </div>
-
+                <div class="archive-price">
+                    ${formatPrice(item.price)}
                 </div>
 
-            `;
+            </div>
 
-            grid.appendChild(article);
+        `;
 
-        }
-    );
+        card.addEventListener("click", () => {
+
+            selectItem(
+                item.brand,
+                item.category,
+                item.index
+            );
+
+            document
+                .getElementById("builder")
+                .scrollIntoView({
+                    behavior:"smooth"
+                });
+
+        });
+
+        grid.appendChild(card);
+
+    });
 
 }
 
-
-/* =========================================================
-   RATING
-========================================================= */
-
-function setupRating(){
-
-    const rateButton =
-        document.getElementById(
-            "rateFitButton"
-        );
-
-    const panel =
-        document.getElementById(
-            "ratingPanel"
-        );
-
-    rateButton.addEventListener(
-        "click",
-        () => {
-
-            panel.classList.toggle(
-                "open"
-            );
-
-        }
-    );
-
-
-    document.querySelectorAll(
-        ".rating-button"
-    ).forEach(
-        button => {
-
-            button.addEventListener(
-                "click",
-                () => {
-
-                    state.rating =
-                        Number(
-                            button.dataset.rating
-                        );
-
-                    document.querySelectorAll(
-                        ".rating-button"
-                    ).forEach(
-                        other =>
-                            other.classList.remove(
-                                "active"
-                            )
-                    );
-
-                    button.classList.add(
-                        "active"
-                    );
-
-                    document.getElementById(
-                        "status"
-                    ).textContent =
-                        `Fit rating: ${state.rating}/10`;
-
-                }
-            );
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   CONFIRM FIT
-========================================================= */
-
-function confirmFit(){
-
-    const selected =
-        categories.map(
-            category =>
-                getSelectedItem(category)
-        );
-
-    if(
-        selected.some(
-            item => !item
-        )
-    ){
-
-        document.getElementById(
-            "status"
-        ).textContent =
-            "Complete all three slots first.";
-
-        return;
-
-    }
-
-    state.confirmed = true;
-
-    document.getElementById(
-        "status"
-    ).textContent =
-        "Fit confirmed. Saved to your selection.";
-
-}
-
-
-/* =========================================================
-   CATALOG
-========================================================= */
-
-function renderCatalog(){
-
-    const list =
-        document.getElementById(
-            "catalogList"
-        );
-
-    list.innerHTML = "";
-
-    Object.entries(catalog)
-        .forEach(
-            ([brand,data]) => {
-
-                const total =
-                    data.top.length +
-                    data.bottom.length +
-                    data.shoes.length;
-
-                const item =
-                    document.createElement("div");
-
-                item.className =
-                    "catalog-brand";
-
-                item.innerHTML = `
-
-                    <div class="catalog-brand-name">
-                        ${brand}
-                    </div>
-
-                    <div class="catalog-brand-count">
-                        ${total} objects
-                    </div>
-
-                `;
-
-                list.appendChild(item);
-
-            }
-        );
-
-}
-
-
-function setupCatalog(){
-
-    const button =
-        document.getElementById(
-            "catalogButton"
-        );
-
-    const close =
-        document.getElementById(
-            "catalogClose"
-        );
-
-    const overlay =
-        document.getElementById(
-            "catalogOverlay"
-        );
-
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            overlay.classList.add(
-                "open"
-            );
-
-        }
-    );
-
-
-    close.addEventListener(
-        "click",
-        () => {
-
-            overlay.classList.remove(
-                "open"
-            );
-
-        }
-    );
-
-
-    overlay.addEventListener(
-        "click",
-        event => {
-
-            if(
-                event.target === overlay
-            ){
-
-                overlay.classList.remove(
-                    "open"
-                );
-
-            }
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   MUSIC PLAYER
-========================================================= */
-
-function setupMusic(){
-
-    const button =
-        document.getElementById(
-            "musicButton"
-        );
-
-    const close =
-        document.getElementById(
-            "musicClose"
-        );
-
-    const overlay =
-        document.getElementById(
-            "musicOverlay"
-        );
-
-    const audio =
-        document.getElementById(
-            "nightfallAudio"
-        );
-
-    const play =
-        document.getElementById(
-            "musicPlay"
-        );
-
-    const back =
-        document.getElementById(
-            "musicBack"
-        );
-
-    const forward =
-        document.getElementById(
-            "musicForward"
-        );
-
-    const progress =
-        document.getElementById(
-            "musicProgress"
-        );
-
-    const volume =
-        document.getElementById(
-            "musicVolume"
-        );
-
-    const current =
-        document.getElementById(
-            "musicCurrent"
-        );
-
-    const duration =
-        document.getElementById(
-            "musicDuration"
-        );
-
-    const status =
-        document.getElementById(
-            "musicStatus"
-        );
-
-
-    audio.volume = 0.7;
-
-
-    function formatTime(seconds){
-
-        if(
-            !Number.isFinite(seconds)
-        ){
-
-            return "00:00";
-
-        }
-
-        const minutes =
-            Math.floor(
-                seconds / 60
-            );
-
-        const secondsPart =
-            Math.floor(
-                seconds % 60
-            );
-
-        return (
-
-            String(minutes)
-                .padStart(2,"0")
-
-            +
-
-            ":" +
-
-            String(secondsPart)
-                .padStart(2,"0")
-
-        );
-
-    }
-
-
-    function updatePlayer(){
-
-        if(audio.paused){
-
-            play.textContent =
-                "PLAY";
-
-            status.textContent =
-                "PAUSED";
-
-            overlay.classList.remove(
-                "playing"
-            );
-
-        }else{
-
-            play.textContent =
-                "PAUSE";
-
-            status.textContent =
-                "PLAYING";
-
-            overlay.classList.add(
-                "playing"
-            );
-
-        }
-
-    }
-
-
-    button.addEventListener(
-        "click",
-        () => {
-
-            overlay.classList.add(
-                "open"
-            );
-
-        }
-    );
-
-
-    close.addEventListener(
-        "click",
-        () => {
-
-            overlay.classList.remove(
-                "open"
-            );
-
-        }
-    );
-
-
-    overlay.addEventListener(
-        "click",
-        event => {
-
-            if(
-                event.target === overlay
-            ){
-
-                overlay.classList.remove(
-                    "open"
-                );
-
-            }
-
-        }
-    );
-
-
-    play.addEventListener(
-        "click",
-        async () => {
-
-            try{
-
-                if(audio.paused){
-
-                    await audio.play();
-
-                }else{
-
-                    audio.pause();
-
-                }
-
-                updatePlayer();
-
-            }catch(error){
-
-                status.textContent =
-                    "AUDIO FILE NOT FOUND";
-
-                console.error(
-                    "Nightfall audio error:",
-                    error
-                );
-
-            }
-
-        }
-    );
-
-
-    back.addEventListener(
-        "click",
-        () => {
-
-            audio.currentTime =
-                Math.max(
-                    0,
-                    audio.currentTime - 10
-                );
-
-        }
-    );
-
-
-    forward.addEventListener(
-        "click",
-        () => {
-
-            audio.currentTime =
-                Math.min(
-                    audio.duration || 0,
-                    audio.currentTime + 10
-                );
-
-        }
-    );
-
-
-    audio.addEventListener(
-        "loadedmetadata",
-        () => {
-
-            duration.textContent =
-                formatTime(
-                    audio.duration
-                );
-
-        }
-    );
-
-
-    audio.addEventListener(
-        "timeupdate",
-        () => {
-
-            if(audio.duration){
-
-                progress.value =
-                    (
-                        audio.currentTime /
-                        audio.duration
-                    ) * 100;
-
-            }
-
-            current.textContent =
-                formatTime(
-                    audio.currentTime
-                );
-
-        }
-    );
-
-
-    progress.addEventListener(
-        "input",
-        () => {
-
-            if(audio.duration){
-
-                audio.currentTime =
-                    (
-                        Number(
-                            progress.value
-                        ) / 100
-                    ) *
-                    audio.duration;
-
-            }
-
-        }
-    );
-
-
-    volume.addEventListener(
-        "input",
-        () => {
-
-            audio.volume =
-                Number(
-                    volume.value
-                );
-
-        }
-    );
-
-
-    audio.addEventListener(
-        "play",
-        updatePlayer
-    );
-
-
-    audio.addEventListener(
-        "pause",
-        updatePlayer
-    );
-
-
-    audio.addEventListener(
-        "ended",
-        () => {
-
-            progress.value = 0;
-
-            current.textContent =
-                "00:00";
-
-            updatePlayer();
-
-        }
-    );
-
-
-    audio.addEventListener(
-        "error",
-        () => {
-
-            status.textContent =
-                "NIGHTFALL.MP3 NOT FOUND";
-
-            play.textContent =
-                "PLAY";
-
-        }
-    );
-
-}
-
-
-/* =========================================================
-   REVEAL
-========================================================= */
-
-function setupReveal(){
-
-    const elements =
-        document.querySelectorAll(
-            ".reveal"
-        );
-
-    if(
-        !("IntersectionObserver" in window)
-    ){
-
-        elements.forEach(
-            element =>
-                element.classList.add(
-                    "visible"
-                )
-        );
-
-        return;
-
-    }
-
-
-    const observer =
-        new IntersectionObserver(
-            entries => {
-
-                entries.forEach(
-                    entry => {
-
-                        if(
-                            entry.isIntersecting
-                        ){
-
-                            entry.target
-                                .classList
-                                .add(
-                                    "visible"
-                                );
-
-                            observer.unobserve(
-                                entry.target
-                            );
-
-                        }
-
-                    }
-                );
-
-            },
-            {
-                threshold:.08
-            }
-        );
-
-
-    elements.forEach(
-        element =>
-            observer.observe(
-                element
-            )
-    );
-
-}
-
-
-/* =========================================================
-   SEARCH
-========================================================= */
 
 function setupSearch(){
 
-    document.getElementById(
-        "archiveSearch"
-    ).addEventListener(
-        "input",
-        renderArchive
-    );
+    document
+        .getElementById("searchInput")
+        .addEventListener("input", renderArchive);
 
+    document
+        .querySelectorAll(".filter-btn")
+        .forEach(button => {
 
-    document.getElementById(
-        "categoryFilter"
-    ).addEventListener(
-        "change",
-        renderArchive
-    );
+            button.addEventListener("click", () => {
+
+                state.filter =
+                    button.dataset.filter;
+
+                document
+                    .querySelectorAll(".filter-btn")
+                    .forEach(btn => {
+                        btn.classList.remove("active");
+                    });
+
+                button.classList.add("active");
+
+                renderArchive();
+
+            });
+
+        });
 
 }
 
@@ -5131,72 +2978,79 @@ function setupSearch(){
 
 function setupButtons(){
 
-    document.getElementById(
-        "randomFitButton"
-    ).addEventListener(
-        "click",
-        randomFit
-    );
+    document
+        .getElementById("topPrev")
+        .addEventListener("click", () => {
+            moveItem("top",-1);
+        });
+
+    document
+        .getElementById("topNext")
+        .addEventListener("click", () => {
+            moveItem("top",1);
+        });
 
 
-    document.getElementById(
-        "resetFitButton"
-    ).addEventListener(
-        "click",
-        resetFit
-    );
+    document
+        .getElementById("bottomPrev")
+        .addEventListener("click", () => {
+            moveItem("bottom",-1);
+        });
+
+    document
+        .getElementById("bottomNext")
+        .addEventListener("click", () => {
+            moveItem("bottom",1);
+        });
 
 
-    document.getElementById(
-        "confirmFitButton"
-    ).addEventListener(
-        "click",
-        confirmFit
-    );
+    document
+        .getElementById("shoesPrev")
+        .addEventListener("click", () => {
+            moveItem("shoes",-1);
+        });
+
+    document
+        .getElementById("shoesNext")
+        .addEventListener("click", () => {
+            moveItem("shoes",1);
+        });
+
+
+    document
+        .getElementById("randomButton")
+        .addEventListener("click", randomFit);
+
+    document
+        .getElementById("resetButton")
+        .addEventListener("click", resetFit);
+
+    document
+        .getElementById("confirmButton")
+        .addEventListener("click", confirmFit);
 
 }
 
 
 /* =========================================================
-   GLOBAL ESCAPE
+   INITIAL FIT
 ========================================================= */
 
-function setupKeyboard(){
+function setInitialFit(){
 
-    document.addEventListener(
-        "keydown",
-        event => {
+    const firstBrand =
+        Object.keys(catalog)[0];
 
-            if(
-                event.key !== "Escape"
-            ){
+    categories.forEach(category => {
 
-                return;
+        state.selected[category] = {
+            brand:firstBrand,
+            index:0
+        };
 
-            }
+    });
 
-
-            const catalogOverlay =
-                document.getElementById(
-                    "catalogOverlay"
-                );
-
-            const musicOverlay =
-                document.getElementById(
-                    "musicOverlay"
-                );
-
-
-            catalogOverlay.classList.remove(
-                "open"
-            );
-
-            musicOverlay.classList.remove(
-                "open"
-            );
-
-        }
-    );
+    renderBuilder();
 
 }
 
@@ -5207,28 +3061,17 @@ function setupKeyboard(){
 
 function setupLoader(){
 
-    const loader =
-        document.getElementById(
-            "loader"
-        );
+    window.addEventListener("load", () => {
 
-    window.addEventListener(
-        "load",
-        () => {
+        setTimeout(() => {
 
-            setTimeout(
-                () => {
+            document
+                .getElementById("loader")
+                .classList.add("hide");
 
-                    loader.classList.add(
-                        "hide"
-                    );
+        },1600);
 
-                },
-                400
-            );
-
-        }
-    );
+    });
 
 }
 
@@ -5239,38 +3082,27 @@ function setupLoader(){
 
 function init(){
 
-    setInitialFit();
+    renderCatalog();
 
     renderArchive();
 
-    renderCatalog();
-
-    setupRating();
-
     setupCatalog();
-
-    setupMusic();
 
     setupSearch();
 
     setupButtons();
 
-    setupReveal();
+    setupRating();
 
-    setupKeyboard();
+    setInitialFit();
 
     setupLoader();
 
 }
 
-
-document.addEventListener(
-    "DOMContentLoaded",
-    init
-);
+init();
 
 </script>
 
 </body>
-
 </html>
