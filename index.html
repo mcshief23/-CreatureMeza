@@ -1,1512 +1,4938 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#050507">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f4f4f2">
+<meta name="apple-mobile-web-app-capable" content="yes">
+
 <title>CreatureMeza — Archive</title>
 
 <style>
+
+/* =========================================================
+   CREATUREMEZA
+   LIGHT ARCHIVE SYSTEM
+   ========================================================= */
+
 :root{
-  --bg:#050507;
-  --panel:#0b0b10;
-  --panel2:#10101a;
-  --line:#24242f;
-  --line2:#36364a;
-  --text:#f2f2f5;
-  --muted:#777783;
-  --soft:#b8b8c4;
-  --accent:#8b8be8;
-  --accent2:#b6a7ff;
-  --accent-bg:rgba(139,139,232,.09);
-  --glow:rgba(139,139,232,.35);
+    --bg:#f4f4f2;
+    --white:#ffffff;
+    --soft:#eeeeec;
+    --soft2:#e5e5e2;
+
+    --line:#d2d2ce;
+    --line2:#b9b9b5;
+    --line3:#999995;
+
+    --black:#111111;
+    --text:#181818;
+    --muted:#70706c;
+
+    --radius:18px;
+    --header:72px;
+
+    --shadow:
+        0 20px 60px rgba(0,0,0,.07);
+
+    --transition:
+        280ms cubic-bezier(.2,.8,.2,1);
 }
 
-*{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Arial,Helvetica,sans-serif;
-  overflow-x:hidden;
-}
-button,input,textarea{font:inherit}
-button,input,textarea{-webkit-tap-highlight-color:transparent}
-button{color:inherit}
-a{color:inherit;text-decoration:none}
+    background:var(--bg);
+    color:var(--text);
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
 
-body:before{
-  content:"";
-  position:fixed;
-  inset:0;
-  pointer-events:none;
-  z-index:-1;
-  opacity:.35;
-  background:
-    radial-gradient(circle at 15% 20%,rgba(139,139,232,.08),transparent 28%),
-    radial-gradient(circle at 85% 70%,rgba(182,167,255,.05),transparent 25%);
+    overflow-x:hidden;
+    min-height:100vh;
 }
+
+button,
+input,
+textarea,
+select{
+    font:inherit;
+}
+
+button{
+    border:0;
+    background:none;
+    cursor:pointer;
+    color:inherit;
+}
+
+a{
+    color:inherit;
+    text-decoration:none;
+}
+
+img{
+    max-width:100%;
+    display:block;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar{
+    width:7px;
+}
+
+::-webkit-scrollbar-track{
+    background:var(--bg);
+}
+
+::-webkit-scrollbar-thumb{
+    background:#bcbcb8;
+}
+
+::-webkit-scrollbar-thumb:hover{
+    background:#858581;
+}
+
+
+/* =========================================================
+   LOADER
+   ========================================================= */
+
+#loader{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+
+    background:#f4f4f2;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    transition:
+        opacity .8s ease,
+        visibility .8s ease;
+}
+
+#loader.hide{
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+}
+
+.loader-inner{
+    text-align:center;
+}
+
+.loader-logo{
+    font-size:clamp(28px,7vw,70px);
+    font-weight:900;
+    letter-spacing:-.07em;
+    line-height:.85;
+
+    animation:
+        loaderPulse 2s ease-in-out infinite;
+}
+
+.loader-sub{
+    margin-top:18px;
+
+    font-size:10px;
+    letter-spacing:.28em;
+    text-transform:uppercase;
+
+    color:var(--muted);
+}
+
+.loader-line{
+    width:120px;
+    height:1px;
+
+    background:var(--line2);
+
+    margin:28px auto 0;
+
+    position:relative;
+    overflow:hidden;
+}
+
+.loader-line::after{
+    content:"";
+
+    position:absolute;
+    left:-100%;
+    top:0;
+
+    width:60%;
+    height:100%;
+
+    background:#222;
+
+    animation:loaderLine 1.5s ease-in-out infinite;
+}
+
+@keyframes loaderPulse{
+    0%,100%{
+        opacity:.35;
+        transform:scale(.98);
+    }
+
+    50%{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes loaderLine{
+    0%{
+        left:-70%;
+    }
+
+    100%{
+        left:120%;
+    }
+}
+
+
+/* =========================================================
+   MOVING LINES
+   ========================================================= */
+
+.motion-lines{
+    position:fixed;
+    inset:0;
+
+    overflow:hidden;
+    pointer-events:none;
+
+    z-index:0;
+}
+
+.motion-lines span{
+    position:absolute;
+
+    width:150vw;
+    height:1px;
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent 0%,
+            rgba(70,70,70,.04) 15%,
+            rgba(70,70,70,.27) 48%,
+            rgba(70,70,70,.08) 75%,
+            transparent 100%
+        );
+
+    transform:rotate(-12deg);
+
+    animation:
+        lineMove 24s linear infinite;
+
+    opacity:.8;
+}
+
+.motion-lines span:nth-child(1){
+    top:8%;
+    animation-duration:27s;
+}
+
+.motion-lines span:nth-child(2){
+    top:27%;
+    animation-duration:31s;
+    animation-delay:-8s;
+}
+
+.motion-lines span:nth-child(3){
+    top:49%;
+    animation-duration:22s;
+    animation-delay:-14s;
+}
+
+.motion-lines span:nth-child(4){
+    top:72%;
+    animation-duration:29s;
+    animation-delay:-18s;
+}
+
+.motion-lines span:nth-child(5){
+    top:91%;
+    animation-duration:25s;
+    animation-delay:-5s;
+}
+
+@keyframes lineMove{
+    from{
+        transform:
+            translateX(-45%)
+            rotate(-12deg);
+    }
+
+    to{
+        transform:
+            translateX(45%)
+            rotate(-12deg);
+    }
+}
+
+
+/* =========================================================
+   MAIN LAYER
+   ========================================================= */
+
+.site{
+    position:relative;
+    z-index:2;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
 
 header{
-  position:fixed;
-  inset:0 0 auto;
-  height:76px;
-  z-index:1000;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 34px;
-  border-bottom:1px solid rgba(255,255,255,.12);
-  background:rgba(5,5,7,.88);
-  backdrop-filter:blur(18px);
+    position:fixed;
+
+    top:0;
+    left:0;
+    right:0;
+
+    height:var(--header);
+
+    z-index:500;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:
+        0 28px;
+
+    border-bottom:
+        1px solid rgba(120,120,120,.25);
+
+    background:
+        rgba(244,244,242,.78);
+
+    backdrop-filter:
+        blur(18px);
+
+    -webkit-backdrop-filter:
+        blur(18px);
 }
-.logo{
-  font-size:15px;
-  font-weight:900;
-  letter-spacing:.18em;
-  text-transform:uppercase;
+
+.header-logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    font-weight:900;
+    font-size:14px;
+
+    letter-spacing:-.03em;
 }
+
+.logo-mark{
+    width:28px;
+    height:28px;
+
+    border:1px solid var(--black);
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:8px;
+    font-weight:900;
+
+    position:relative;
+}
+
+.logo-mark::after{
+    content:"";
+
+    position:absolute;
+
+    inset:5px;
+
+    border:
+        1px solid var(--line3);
+
+    border-radius:50%;
+}
+
 .header-right{
-  display:flex;
-  align-items:center;
-  gap:20px;
+    display:flex;
+    align-items:center;
+    gap:10px;
 }
-.header-index{
-  color:#666675;
-  font-size:10px;
-  letter-spacing:.18em;
+
+.header-status{
+    display:flex;
+    align-items:center;
+    gap:7px;
+
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+
+    color:var(--muted);
 }
-.header-btn,.control-btn,.arrow-btn,.rating-btn,.review-open,.review-close,.submit-review{
-  border:1px solid #343445;
-  background:#0c0c12;
-  cursor:pointer;
-  transition:.25s ease;
+
+.status-dot{
+    width:6px;
+    height:6px;
+
+    border-radius:50%;
+    background:#555;
+
+    animation:
+        statusPulse 2s ease-in-out infinite;
 }
-.header-btn{
-  padding:11px 17px;
-  font-size:10px;
-  letter-spacing:.18em;
-  text-transform:uppercase;
+
+@keyframes statusPulse{
+    0%,100%{
+        opacity:.3;
+    }
+
+    50%{
+        opacity:1;
+    }
 }
-.header-btn:hover,.control-btn:hover,.arrow-btn:hover,.rating-btn:hover,
-.rating-btn.active,.review-open:hover,.submit-review:hover{
-  background:var(--accent);
-  color:#050507;
-  border-color:var(--accent);
-  box-shadow:0 0 24px var(--glow);
+
+.catalog-button{
+    height:40px;
+
+    padding:
+        0 17px;
+
+    border:
+        1px solid var(--black);
+
+    border-radius:999px;
+
+    font-size:10px;
+    font-weight:700;
+
+    letter-spacing:.12em;
+    text-transform:uppercase;
+
+    transition:
+        var(--transition);
 }
+
+.catalog-button:hover{
+    background:var(--black);
+    color:white;
+}
+
+
+/* =========================================================
+   HERO
+   ========================================================= */
 
 .hero{
-  min-height:100vh;
-  position:relative;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:130px 25px 90px;
-  overflow:hidden;
+    min-height:100vh;
+
+    padding:
+        calc(var(--header) + 40px)
+        28px
+        50px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+
+    position:relative;
 }
-.hero-grid{
-  position:absolute;
-  inset:0;
-  opacity:.15;
-  background-image:
-    linear-gradient(rgba(255,255,255,.1) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.1) 1px,transparent 1px);
-  background-size:80px 80px;
-  mask-image:linear-gradient(to bottom,transparent,#000 25%,#000 70%,transparent);
+
+.hero-small{
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:.25em;
+
+    color:var(--muted);
+
+    margin-bottom:30px;
 }
-.hero-content{
-  position:relative;
-  z-index:2;
-  text-align:center;
-  max-width:1000px;
-  animation:heroIn 1.2s ease both;
-}
-.hero-kicker,.section-kicker{
-  color:var(--accent);
-  font-size:10px;
-  letter-spacing:.38em;
-  text-transform:uppercase;
-}
-.hero-kicker{margin-bottom:28px}
-.hero-name{
-  font-size:clamp(20px,3vw,36px);
-  font-weight:900;
-  letter-spacing:.3em;
-  text-transform:uppercase;
-  margin-bottom:30px;
-}
+
 .hero-title{
-  font-size:clamp(62px,11vw,150px);
-  line-height:.82;
-  font-weight:900;
-  letter-spacing:-.065em;
-  text-transform:uppercase;
-}
-.hero-title span{display:block}
-.hero-sub{
-  max-width:500px;
-  margin:38px auto 0;
-  color:#858592;
-  font-size:12px;
-  line-height:1.8;
-}
-.hero-orbit{
-  position:absolute;
-  width:min(65vw,720px);
-  height:min(65vw,720px);
-  border:1px solid rgba(139,139,232,.13);
-  border-radius:50%;
-  animation:spin 35s linear infinite;
-}
-.hero-orbit:before,.hero-orbit:after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  border:1px solid rgba(139,139,232,.09);
-}
-.hero-orbit:before{inset:10%}
-.hero-orbit:after{inset:25%}
+    font-size:
+        clamp(
+            58px,
+            14vw,
+            210px
+        );
 
-.marquee{
-  overflow:hidden;
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
-  padding:17px 0;
-  white-space:nowrap;
-}
-.marquee-track{
-  display:inline-block;
-  animation:marquee 24s linear infinite;
-}
-.marquee span{
-  margin:0 32px;
-  font-size:10px;
-  letter-spacing:.35em;
-  color:#696978;
-  text-transform:uppercase;
-}
-.marquee span:nth-child(2){color:var(--accent)}
+    line-height:.76;
 
-.section{
-  padding:110px 34px;
-  max-width:1500px;
-  margin:auto;
+    font-weight:900;
+
+    letter-spacing:-.085em;
+
+    max-width:1400px;
+
+    animation:
+        heroReveal 1.2s cubic-bezier(.2,.8,.2,1)
+        both;
 }
+
+.hero-title span{
+    display:block;
+}
+
+.hero-title span:nth-child(2){
+    margin-left:
+        clamp(25px,10vw,160px);
+}
+
+@keyframes heroReveal{
+    from{
+        opacity:0;
+        transform:
+            translateY(50px);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateY(0);
+    }
+}
+
+.hero-bottom{
+    margin-top:90px;
+
+    display:grid;
+    grid-template-columns:
+        1fr 1fr;
+
+    gap:30px;
+
+    max-width:800px;
+}
+
+.hero-info{
+    font-size:11px;
+    line-height:1.7;
+
+    color:var(--muted);
+
+    max-width:320px;
+}
+
+.hero-scroll{
+    display:flex;
+    align-items:center;
+    gap:12px;
+
+    font-size:9px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+}
+
+.scroll-line{
+    width:60px;
+    height:1px;
+
+    background:var(--line2);
+
+    position:relative;
+    overflow:hidden;
+}
+
+.scroll-line::after{
+    content:"";
+
+    position:absolute;
+    top:0;
+    left:-100%;
+
+    width:100%;
+    height:100%;
+
+    background:#222;
+
+    animation:
+        scrollLine 2s ease-in-out infinite;
+}
+
+@keyframes scrollLine{
+    0%{
+        left:-100%;
+    }
+
+    50%{
+        left:0;
+    }
+
+    100%{
+        left:100%;
+    }
+}
+
+
+/* =========================================================
+   SECTION
+   ========================================================= */
+
+section{
+    padding:
+        110px 28px;
+}
+
 .section-head{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:30px;
-  margin-bottom:45px;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+
+    margin-bottom:45px;
+
+    border-bottom:
+        1px solid var(--line);
+
+    padding-bottom:18px;
 }
-.section-kicker{font-size:9px;margin-bottom:12px}
+
+.section-number{
+    font-size:9px;
+    color:var(--muted);
+    letter-spacing:.18em;
+}
+
 .section-title{
-  font-size:clamp(35px,6vw,80px);
-  font-weight:900;
-  letter-spacing:-.06em;
-  text-transform:uppercase;
+    font-size:
+        clamp(34px,6vw,80px);
+
+    line-height:.9;
+
+    font-weight:800;
+
+    letter-spacing:-.065em;
 }
+
 .section-description{
-  max-width:380px;
-  color:#777783;
-  font-size:11px;
-  line-height:1.8;
+    max-width:300px;
+
+    font-size:10px;
+    line-height:1.7;
+
+    color:var(--muted);
+
+    text-align:right;
 }
 
-.builder{border-top:1px solid var(--line)}
-.builder-grid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:14px;
+
+/* =========================================================
+   BUILDER
+   ========================================================= */
+
+#builder{
+    min-height:100vh;
 }
-.fit-card{
-  min-height:580px;
-  position:relative;
-  background:linear-gradient(145deg,#0d0d14,#07070b);
-  border:1px solid var(--line);
-  overflow:hidden;
-  transition:.35s ease;
+
+.builder-layout{
+    display:grid;
+
+    grid-template-columns:
+        minmax(0,1.5fr)
+        minmax(300px,.7fr);
+
+    gap:30px;
 }
-.fit-card:hover{
-  border-color:var(--accent);
-  box-shadow:0 0 35px rgba(139,139,232,.12);
-  transform:translateY(-4px);
+
+.builder-stage{
+    min-height:650px;
+
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.52);
+
+    border-radius:
+        var(--radius);
+
+    position:relative;
+
+    overflow:hidden;
+
+    box-shadow:
+        var(--shadow);
 }
-.fit-label,.fit-number{
-  position:absolute;
-  top:20px;
-  z-index:5;
-  font-size:9px;
-  letter-spacing:.25em;
-  text-transform:uppercase;
+
+.stage-grid{
+    position:absolute;
+    inset:0;
+
+    background-image:
+        linear-gradient(
+            var(--line) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            var(--line) 1px,
+            transparent 1px
+        );
+
+    background-size:
+        70px 70px;
+
+    opacity:.17;
 }
-.fit-label{left:20px;color:#777783}
-.fit-number{right:20px;color:#454557}
-.fit-image{
-  position:absolute;
-  inset:55px 30px 105px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+
+.stage-center{
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    width:min(76%,430px);
+
+    text-align:center;
 }
-.fit-image img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
+
+.outfit-stack{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+
+    align-items:center;
 }
-.fit-placeholder{
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#383847;
-  font-size:11px;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  text-align:center;
-  border:1px dashed #252535;
-  padding:20px;
+
+.outfit-piece{
+    width:70%;
+
+    min-height:100px;
+
+    border:
+        1px solid var(--line2);
+
+    background:
+        rgba(255,255,255,.78);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+
+    transition:
+        var(--transition);
 }
-.fit-info{
-  position:absolute;
-  bottom:0;
-  left:0;
-  right:0;
-  min-height:100px;
-  padding:18px 20px;
-  border-top:1px solid var(--line);
-  background:rgba(5,5,7,.94);
+
+.outfit-piece:hover{
+    transform:
+        translateX(8px);
+    border-color:
+        #777;
 }
-.fit-brand{
-  color:var(--accent);
-  font-size:8px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  margin-bottom:7px;
+
+.outfit-piece.top{
+    border-radius:
+        22px 22px 7px 7px;
 }
-.fit-name{
-  font-size:14px;
-  font-weight:800;
-  text-transform:uppercase;
+
+.outfit-piece.bottom{
+    min-height:145px;
+
+    width:53%;
+
+    border-radius:
+        7px 7px 18px 18px;
 }
-.fit-price{margin-top:6px;color:#888895;font-size:10px}
-.fit-arrows{
-  position:absolute;
-  bottom:20px;
-  right:20px;
-  z-index:10;
-  display:flex;
-  gap:5px;
+
+.outfit-piece.shoes{
+    width:65%;
+    min-height:70px;
+
+    border-radius:20px;
 }
-.arrow-btn{
-  width:38px;
-  height:38px;
-  font-size:17px;
+
+.piece-label{
+    font-size:9px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+
+    color:var(--muted);
 }
+
+.stage-caption{
+    margin-top:25px;
+
+    font-size:9px;
+
+    letter-spacing:.18em;
+
+    color:var(--muted);
+
+    text-transform:uppercase;
+}
+
+
+/* =========================================================
+   BUILDER CONTROLS
+   ========================================================= */
+
 .builder-controls{
-  margin-top:14px;
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
 }
-.control-btn{
-  padding:14px 22px;
-  font-size:9px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
+
+.control-card{
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.68);
+
+    border-radius:
+        var(--radius);
+
+    padding:22px;
+
+    transition:
+        var(--transition);
 }
-.total-bar{
-  margin-top:14px;
-  border:1px solid var(--line);
-  min-height:86px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:20px 25px;
-  background:linear-gradient(90deg,transparent,rgba(139,139,232,.035));
+
+.control-card:hover{
+    border-color:
+        var(--line3);
 }
+
+.control-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    margin-bottom:18px;
+}
+
+.control-category{
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.18em;
+
+    color:var(--muted);
+}
+
+.control-number{
+    font-size:9px;
+    color:var(--muted);
+}
+
+.item-name{
+    font-size:22px;
+    font-weight:800;
+
+    letter-spacing:-.045em;
+
+    min-height:27px;
+}
+
+.item-brand{
+    margin-top:6px;
+
+    font-size:9px;
+    text-transform:uppercase;
+
+    letter-spacing:.16em;
+
+    color:var(--muted);
+}
+
+.item-price{
+    margin-top:15px;
+
+    font-size:13px;
+    font-weight:700;
+}
+
+.control-actions{
+    display:flex;
+    gap:8px;
+
+    margin-top:20px;
+}
+
+.arrow{
+    width:43px;
+    height:38px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:999px;
+
+    transition:
+        var(--transition);
+}
+
+.arrow:hover{
+    background:#111;
+    color:#fff;
+}
+
+.brand-mini{
+    margin-top:12px;
+
+    font-size:9px;
+    color:var(--muted);
+}
+
+
+/* =========================================================
+   TOTAL
+   ========================================================= */
+
+.total-card{
+    margin-top:auto;
+
+    border:
+        1px solid #111;
+
+    background:
+        #111;
+
+    color:white;
+
+    border-radius:
+        var(--radius);
+
+    padding:25px;
+}
+
 .total-label{
-  color:#777783;
-  font-size:9px;
-  letter-spacing:.25em;
-  text-transform:uppercase;
+    font-size:9px;
+    text-transform:uppercase;
+
+    letter-spacing:.2em;
+
+    opacity:.55;
 }
+
 .total-value{
-  font-size:24px;
-  font-weight:900;
-  color:var(--accent);
-}
-.rating-panel{
-  margin-top:14px;
-  border:1px solid var(--line);
-  padding:25px;
-}
-.rating-title{
-  font-size:10px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  color:#888895;
-  margin-bottom:17px;
-}
-.rating-buttons{
-  display:grid;
-  grid-template-columns:repeat(10,1fr);
-  gap:5px;
-}
-.rating-btn{height:45px}
-.status{
-  margin-top:15px;
-  color:#777783;
-  font-size:10px;
-  letter-spacing:.1em;
+    margin-top:10px;
+
+    font-size:
+        clamp(34px,5vw,55px);
+
+    font-weight:800;
+
+    letter-spacing:-.06em;
 }
 
-.archive{border-top:1px solid var(--line)}
-.archive-search-area{position:relative;max-width:1000px}
-.search-label{
-  display:block;
-  color:#777783;
-  font-size:9px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  margin-bottom:12px;
-}
-.search-wrap{position:relative}
-.search{
-  width:100%;
-  height:72px;
-  background:#0a0a10;
-  border:1px solid #303044;
-  color:#fff;
-  padding:0 60px 0 24px;
-  outline:none;
-  font-size:16px;
-  transition:.25s;
-}
-.search::placeholder{color:#555566}
-.search:focus{
-  border-color:var(--accent);
-  box-shadow:0 0 0 3px rgba(139,139,232,.07),0 0 30px rgba(139,139,232,.1);
-}
-.search-icon{
-  position:absolute;
-  top:50%;
-  right:24px;
-  transform:translateY(-50%);
-  color:var(--accent);
-  font-size:20px;
-  pointer-events:none;
-}
-.search-hint{
-  margin-top:15px;
-  color:#555566;
-  font-size:10px;
-  letter-spacing:.08em;
-}
-.search-results{
-  display:none;
-  margin-top:12px;
-  border:1px solid #303044;
-  background:#09090e;
-  max-height:460px;
-  overflow-y:auto;
-}
-.search-results.open{display:block}
-.search-result{
-  width:100%;
-  border:0;
-  border-bottom:1px solid #20202d;
-  background:transparent;
-  color:#dddde7;
-  padding:18px 20px;
-  text-align:left;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:20px;
-  cursor:pointer;
-  transition:.2s;
-}
-.search-result:hover{background:var(--accent-bg)}
-.search-result-main{min-width:0}
-.search-result-brand{
-  color:var(--accent);
-  font-size:9px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
-  margin-bottom:7px;
-}
-.search-result-name{
-  color:#f1f1f5;
-  font-size:13px;
-  font-weight:800;
-  text-transform:uppercase;
-}
-.search-result-type{
-  color:#777783;
-  font-size:9px;
-  letter-spacing:.12em;
-  text-transform:uppercase;
-  white-space:nowrap;
-}
-.search-result-price{
-  color:#858594;
-  font-size:11px;
-  white-space:nowrap;
-}
-.search-empty{
-  padding:30px 20px;
-  color:#666676;
-  font-size:10px;
-  letter-spacing:.16em;
-  text-align:center;
-  text-transform:uppercase;
-}
-.search-selected{
-  display:none;
-  margin-top:12px;
-  padding:15px 18px;
-  border:1px solid rgba(139,139,232,.35);
-  background:rgba(139,139,232,.06);
-  color:#aaaac0;
-  font-size:10px;
-  line-height:1.7;
-}
-.search-selected.show{display:block}
-.search-selected strong{color:var(--accent)}
+.fit-actions{
+    display:grid;
+    grid-template-columns:1fr 1fr;
 
-.info{border-top:1px solid var(--line)}
-.info-grid{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:70px;
-}
-.info-big{
-  font-size:clamp(30px,5vw,65px);
-  line-height:.95;
-  font-weight:900;
-  letter-spacing:-.055em;
-  text-transform:uppercase;
-}
-.info-text{color:#777783;font-size:12px;line-height:2}
+    gap:8px;
 
-.reviews{
-  border-top:1px solid var(--line);
-  text-align:center;
+    margin-top:20px;
 }
-.review-open{
-  padding:17px 28px;
-  font-size:10px;
-  letter-spacing:.2em;
-  text-transform:uppercase;
+
+.fit-button{
+    padding:13px;
+
+    border:
+        1px solid rgba(255,255,255,.25);
+
+    color:white;
+
+    border-radius:999px;
+
+    font-size:9px;
+
+    text-transform:uppercase;
+    letter-spacing:.12em;
+
+    transition:
+        var(--transition);
 }
-.review-form{
-  display:none;
-  max-width:650px;
-  margin:35px auto 0;
-  text-align:left;
-  border:1px solid var(--line);
-  padding:25px;
-  background:linear-gradient(145deg,#0d0d14,#08080d);
-  animation:formIn .35s ease both;
+
+.fit-button:hover,
+.fit-button.active{
+    background:white;
+    color:#111;
 }
-.review-form.open{display:block}
-.review-form label{
-  display:block;
-  color:#777783;
-  font-size:9px;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-  margin-bottom:9px;
+
+
+/* =========================================================
+   BRAND SELECTOR
+   ========================================================= */
+
+.brand-selector{
+    margin-top:10px;
+
+    display:flex;
+    gap:7px;
+
+    flex-wrap:wrap;
 }
-.review-form input,.review-form textarea{
-  width:100%;
-  border:1px solid #303044;
-  background:#08080d;
-  color:#fff;
-  outline:none;
-  padding:14px;
-  margin-bottom:20px;
+
+.brand-pill{
+    border:
+        1px solid var(--line);
+
+    padding:
+        9px 12px;
+
+    border-radius:999px;
+
+    font-size:8px;
+
+    text-transform:uppercase;
+
+    letter-spacing:.1em;
+
+    transition:
+        var(--transition);
 }
-.review-form textarea{
-  min-height:120px;
-  resize:vertical;
+
+.brand-pill:hover,
+.brand-pill.active{
+    background:#111;
+    color:white;
+    border-color:#111;
 }
-.review-form input:focus,.review-form textarea:focus{
-  border-color:var(--accent);
+
+
+/* =========================================================
+   ARCHIVE
+   ========================================================= */
+
+.archive-grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(4,1fr);
+
+    gap:10px;
 }
-.skull-rating{
-  display:flex;
-  gap:8px;
-  margin-bottom:20px;
+
+.archive-card{
+    min-height:310px;
+
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.6);
+
+    border-radius:
+        var(--radius);
+
+    padding:20px;
+
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+
+    position:relative;
+    overflow:hidden;
+
+    transition:
+        var(--transition);
 }
-.skull-rating button{
-  width:42px;
-  height:42px;
-  border:1px solid #333346;
-  background:#0b0b11;
-  color:#777783;
-  font-size:22px;
-  cursor:pointer;
-  transition:.2s;
+
+.archive-card:hover{
+    transform:
+        translateY(-7px);
+
+    box-shadow:
+        var(--shadow);
+
+    border-color:
+        var(--line3);
 }
-.skull-rating button:hover,.skull-rating button.active{
-  color:var(--accent);
-  border-color:var(--accent);
-  box-shadow:0 0 18px var(--glow);
+
+.archive-visual{
+    height:180px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
 }
-.review-actions{
-  display:flex;
-  gap:10px;
-  flex-wrap:wrap;
+
+.archive-shape{
+    width:110px;
+    height:130px;
+
+    border:
+        1px solid #777;
+
+    background:
+        linear-gradient(
+            145deg,
+            #fff,
+            #e1e1df
+        );
+
+    transition:
+        var(--transition);
 }
-.submit-review,.review-close{
-  padding:13px 20px;
-  font-size:9px;
-  letter-spacing:.15em;
-  text-transform:uppercase;
+
+.archive-card:nth-child(2) .archive-shape{
+    width:80px;
+    height:145px;
+
+    transform:
+        rotate(8deg);
 }
-.review-close{color:#888895}
-.review-error{
-  display:none;
-  margin-bottom:15px;
-  padding:12px;
-  border:1px solid #56343f;
-  color:#d99aaa;
-  font-size:10px;
-  line-height:1.5;
+
+.archive-card:nth-child(3) .archive-shape{
+    width:145px;
+    height:70px;
+
+    border-radius:50%;
 }
-.review-error.show{display:block}
-.review-list{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:12px;
-  margin-top:35px;
-  text-align:left;
+
+.archive-card:nth-child(4) .archive-shape{
+    width:100px;
+    height:100px;
+
+    transform:
+        rotate(45deg);
 }
-.review-card{
-  border:1px solid var(--line);
-  padding:20px;
-  background:#0a0a10;
-  animation:cardIn .4s ease both;
+
+.archive-card:hover .archive-shape{
+    transform:
+        scale(1.08)
+        rotate(3deg);
 }
-.review-user{
-  color:var(--accent);
-  font-size:10px;
-  letter-spacing:.15em;
-  text-transform:uppercase;
+
+.archive-meta{
+    border-top:
+        1px solid var(--line);
+
+    padding-top:15px;
 }
+
+.archive-brand{
+    font-size:8px;
+
+    text-transform:uppercase;
+    letter-spacing:.15em;
+
+    color:var(--muted);
+}
+
+.archive-name{
+    margin-top:6px;
+
+    font-size:14px;
+    font-weight:800;
+
+    letter-spacing:-.03em;
+}
+
+.archive-price{
+    margin-top:10px;
+
+    font-size:10px;
+}
+
+
+/* =========================================================
+   CATALOG OVERLAY
+   ========================================================= */
+
+.catalog-overlay{
+    position:fixed;
+
+    inset:0;
+
+    z-index:800;
+
+    background:
+        rgba(15,15,15,.25);
+
+    backdrop-filter:
+        blur(6px);
+
+    -webkit-backdrop-filter:
+        blur(6px);
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:
+        opacity .35s ease,
+        visibility .35s ease;
+}
+
+.catalog-overlay.open{
+    opacity:1;
+    visibility:visible;
+}
+
+.catalog-panel{
+    position:absolute;
+
+    right:0;
+    top:0;
+    bottom:0;
+
+    width:
+        min(470px,100%);
+
+    background:
+        #f4f4f2;
+
+    border-left:
+        1px solid var(--line);
+
+    transform:
+        translateX(100%);
+
+    transition:
+        transform .5s cubic-bezier(.2,.8,.2,1);
+
+    padding:
+        95px 28px 35px;
+
+    overflow-y:auto;
+}
+
+.catalog-overlay.open
+.catalog-panel{
+    transform:
+        translateX(0);
+}
+
+.catalog-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+
+    border-bottom:
+        1px solid var(--line);
+
+    padding-bottom:20px;
+
+    margin-bottom:20px;
+}
+
+.catalog-title{
+    font-size:42px;
+    font-weight:900;
+
+    letter-spacing:-.07em;
+}
+
+.close-catalog{
+    width:38px;
+    height:38px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:50%;
+
+    font-size:18px;
+
+    transition:
+        var(--transition);
+}
+
+.close-catalog:hover{
+    background:#111;
+    color:white;
+}
+
+.catalog-description{
+    font-size:10px;
+    color:var(--muted);
+    line-height:1.7;
+
+    margin-bottom:30px;
+}
+
+.catalog-list{
+    display:flex;
+    flex-direction:column;
+    gap:5px;
+}
+
+.catalog-brand{
+    width:100%;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:17px 0;
+
+    border-bottom:
+        1px solid var(--line);
+
+    text-align:left;
+
+    font-size:17px;
+    font-weight:800;
+
+    letter-spacing:-.035em;
+
+    transition:
+        var(--transition);
+}
+
+.catalog-brand span:last-child{
+    font-size:12px;
+
+    color:var(--muted);
+
+    transition:
+        var(--transition);
+}
+
+.catalog-brand:hover{
+    padding-left:10px;
+}
+
+.catalog-brand:hover span:last-child{
+    transform:
+        translateX(-8px);
+
+    color:#111;
+}
+
+
+/* =========================================================
+   BRAND ITEMS
+   ========================================================= */
+
+.brand-items{
+    display:none;
+
+    border-bottom:
+        1px solid var(--line);
+
+    padding:
+        3px 0 10px;
+}
+
+.brand-items.open{
+    display:block;
+
+    animation:
+        itemsReveal .35s ease both;
+}
+
+@keyframes itemsReveal{
+    from{
+        opacity:0;
+        transform:
+            translateY(-7px);
+    }
+
+    to{
+        opacity:1;
+        transform:
+            translateY(0);
+    }
+}
+
+.catalog-item{
+    padding:
+        12px 10px;
+
+    display:flex;
+    justify-content:space-between;
+    gap:20px;
+
+    font-size:10px;
+
+    color:#333;
+
+    border-bottom:
+        1px solid #dededb;
+}
+
+.catalog-item:last-child{
+    border-bottom:0;
+}
+
+.catalog-item-price{
+    color:var(--muted);
+    white-space:nowrap;
+}
+
+
+/* =========================================================
+   REVIEWS
+   ========================================================= */
+
+.reviews-layout{
+    display:grid;
+
+    grid-template-columns:
+        .8fr 1.2fr;
+
+    gap:30px;
+}
+
+.review-info{
+    border:
+        1px solid var(--line);
+
+    border-radius:
+        var(--radius);
+
+    padding:28px;
+
+    background:
+        rgba(255,255,255,.5);
+}
+
+.review-big{
+    font-size:
+        clamp(60px,9vw,110px);
+
+    font-weight:900;
+
+    letter-spacing:-.09em;
+
+    line-height:.8;
+}
+
 .review-stars{
-  color:var(--accent2);
-  margin:12px 0;
-  letter-spacing:3px;
+    margin-top:20px;
+
+    font-size:18px;
+    letter-spacing:5px;
 }
-.review-comment{
-  color:#aaaaba;
-  font-size:12px;
-  line-height:1.7;
-  word-break:break-word;
+
+.review-info-text{
+    margin-top:30px;
+
+    font-size:10px;
+
+    line-height:1.7;
+
+    color:var(--muted);
+
+    max-width:280px;
 }
+
+.review-form{
+    border:
+        1px solid var(--line);
+
+    border-radius:
+        var(--radius);
+
+    padding:28px;
+
+    background:
+        rgba(255,255,255,.6);
+}
+
+.form-label{
+    display:block;
+
+    font-size:8px;
+
+    text-transform:uppercase;
+    letter-spacing:.18em;
+
+    color:var(--muted);
+
+    margin-bottom:8px;
+}
+
+.form-input,
+.form-textarea{
+    width:100%;
+
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.8);
+
+    outline:none;
+
+    border-radius:
+        10px;
+
+    padding:
+        13px 14px;
+
+    color:#111;
+
+    transition:
+        var(--transition);
+}
+
+.form-input:focus,
+.form-textarea:focus{
+    border-color:#777;
+}
+
+.form-group{
+    margin-bottom:18px;
+}
+
+.form-textarea{
+    resize:vertical;
+    min-height:130px;
+}
+
+.rating-select{
+    display:flex;
+    gap:6px;
+}
+
+.rating-star{
+    width:35px;
+    height:35px;
+
+    border:
+        1px solid var(--line);
+
+    border-radius:50%;
+
+    font-size:13px;
+
+    transition:
+        var(--transition);
+}
+
+.rating-star:hover,
+.rating-star.active{
+    background:#111;
+    color:white;
+    border-color:#111;
+}
+
+.submit-review{
+    width:100%;
+
+    padding:15px;
+
+    background:#111;
+    color:white;
+
+    border-radius:999px;
+
+    font-size:9px;
+    text-transform:uppercase;
+    letter-spacing:.15em;
+
+    transition:
+        var(--transition);
+}
+
+.submit-review:hover{
+    transform:
+        translateY(-2px);
+
+    background:#333;
+}
+
+
+/* =========================================================
+   REVIEW CARDS
+   ========================================================= */
+
+.review-list{
+    margin-top:30px;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:10px;
+}
+
+.review-card{
+    border:
+        1px solid var(--line);
+
+    background:
+        rgba(255,255,255,.55);
+
+    border-radius:
+        var(--radius);
+
+    padding:22px;
+}
+
+.review-card-top{
+    display:flex;
+    justify-content:space-between;
+
+    margin-bottom:25px;
+}
+
+.review-author{
+    font-size:10px;
+    font-weight:700;
+}
+
+.review-date{
+    font-size:8px;
+    color:var(--muted);
+}
+
+.review-card-stars{
+    font-size:10px;
+    letter-spacing:2px;
+}
+
+.review-text{
+    font-size:11px;
+
+    line-height:1.7;
+
+    color:#454541;
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
 
 footer{
-  border-top:1px solid var(--line);
-  padding:35px;
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-end;
-  gap:20px;
-  color:#666675;
-  font-size:9px;
-  letter-spacing:.18em;
-  text-transform:uppercase;
-}
-.footer-right{
-  display:flex;
-  flex-direction:column;
-  align-items:flex-end;
-  gap:10px;
-}
-.footer-link{color:#777783;transition:.2s}
-.footer-link:hover{color:var(--accent)}
-.footer-team{
-  color:#4e4e5c;
-  font-size:8px;
-  letter-spacing:.22em;
+    padding:
+        80px 28px 35px;
+
+    border-top:
+        1px solid var(--line);
 }
 
-.loader{
-  position:fixed;
-  inset:0;
-  z-index:5000;
-  background:#050507;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  transition:.7s ease;
-}
-.loader.hide{opacity:0;pointer-events:none}
-.loader-inner{text-align:center}
-.loader-logo{
-  font-size:24px;
-  font-weight:900;
-  letter-spacing:.35em;
-  text-transform:uppercase;
-}
-.loader-line{
-  width:180px;
-  height:1px;
-  background:#222233;
-  margin:25px auto 0;
-  overflow:hidden;
-}
-.loader-progress{
-  width:0;
-  height:100%;
-  background:var(--accent);
-  animation:loading 1.5s ease forwards;
-}
-
-.reveal{
-  opacity:0;
-  transform:translateY(28px);
-  transition:opacity .8s ease,transform .8s ease;
-}
-.reveal.visible{opacity:1;transform:translateY(0)}
-
-@keyframes loading{to{width:100%}}
-@keyframes spin{to{transform:rotate(360deg)}}
-@keyframes marquee{
-  from{transform:translateX(0)}
-  to{transform:translateX(-50%)}
-}
-@keyframes heroIn{
-  from{opacity:0;transform:translateY(25px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes formIn{
-  from{opacity:0;transform:translateY(15px)}
-  to{opacity:1;transform:translateY(0)}
-}
-@keyframes cardIn{
-  from{opacity:0;transform:translateY(12px)}
-  to{opacity:1;transform:translateY(0)}
-}
-
-@media(max-width:900px){
-  header{padding:0 18px;height:68px}
-  .header-index{display:none}
-  .hero{padding-left:18px;padding-right:18px}
-  .hero-title{font-size:clamp(55px,15vw,100px)}
-  .section{padding:80px 18px}
-  .section-head{display:block}
-  .section-description{margin-top:20px}
-  .builder-grid{grid-template-columns:1fr}
-  .fit-card{min-height:500px}
-  .info-grid{grid-template-columns:1fr;gap:35px}
-  .review-list{grid-template-columns:1fr 1fr}
-}
-
-@media(max-width:600px){
-  .logo{font-size:12px}
-  .header-btn{padding:10px 12px;font-size:8px}
-  .hero-name{letter-spacing:.18em}
-  .hero-sub{font-size:11px}
-  .rating-buttons{grid-template-columns:repeat(5,1fr)}
-  .search{height:62px;font-size:14px;padding:0 50px 0 18px}
-  .search-icon{right:18px}
-  .search-result{align-items:flex-start;flex-direction:column;gap:9px}
-  .search-result-price{position:absolute;right:20px;margin-top:2px}
-  .review-list{grid-template-columns:1fr}
-  footer{
-    padding:25px 18px;
-    flex-direction:column;
+.footer-top{
+    display:flex;
+    justify-content:space-between;
     align-items:flex-start;
-  }
-  .footer-right{align-items:flex-start}
+
+    gap:30px;
 }
+
+.footer-logo{
+    font-size:
+        clamp(45px,9vw,130px);
+
+    line-height:.75;
+
+    font-weight:900;
+
+    letter-spacing:-.09em;
+}
+
+.footer-right{
+    text-align:right;
+
+    font-size:9px;
+
+    line-height:1.8;
+
+    color:var(--muted);
+}
+
+.footer-bottom{
+    margin-top:80px;
+
+    padding-top:18px;
+
+    border-top:
+        1px solid var(--line);
+
+    display:flex;
+    justify-content:space-between;
+
+    font-size:8px;
+
+    text-transform:uppercase;
+    letter-spacing:.15em;
+
+    color:var(--muted);
+}
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+.toast{
+    position:fixed;
+
+    left:50%;
+    bottom:25px;
+
+    z-index:2000;
+
+    transform:
+        translate(-50%,30px);
+
+    opacity:0;
+
+    pointer-events:none;
+
+    background:#111;
+    color:#fff;
+
+    padding:
+        13px 20px;
+
+    border-radius:999px;
+
+    font-size:9px;
+
+    letter-spacing:.08em;
+
+    transition:
+        var(--transition);
+}
+
+.toast.show{
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media(max-width:1000px){
+
+    .builder-layout{
+        grid-template-columns:1fr;
+    }
+
+    .builder-stage{
+        min-height:540px;
+    }
+
+    .archive-grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .reviews-layout{
+        grid-template-columns:1fr;
+    }
+
+    .review-list{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+}
+
+
+@media(max-width:650px){
+
+    :root{
+        --header:62px;
+    }
+
+    header{
+        padding:
+            0 15px;
+    }
+
+    .header-status{
+        display:none;
+    }
+
+    .catalog-button{
+        height:36px;
+        padding:
+            0 13px;
+    }
+
+    .hero{
+        padding:
+            calc(var(--header) + 25px)
+            15px
+            40px;
+    }
+
+    .hero-title{
+        font-size:
+            clamp(53px,16vw,100px);
+    }
+
+    .hero-title span:nth-child(2){
+        margin-left:20px;
+    }
+
+    .hero-bottom{
+        grid-template-columns:1fr;
+
+        margin-top:55px;
+    }
+
+    section{
+        padding:
+            75px 15px;
+    }
+
+    .section-head{
+        flex-direction:column;
+        align-items:flex-start;
+
+        gap:18px;
+    }
+
+    .section-description{
+        text-align:left;
+    }
+
+    .builder-stage{
+        min-height:480px;
+    }
+
+    .archive-grid{
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+    .archive-card{
+        min-height:250px;
+        padding:14px;
+    }
+
+    .archive-visual{
+        height:130px;
+    }
+
+    .archive-shape{
+        transform:scale(.75);
+    }
+
+    .review-list{
+        grid-template-columns:1fr;
+    }
+
+    .catalog-panel{
+        padding:
+            80px 18px 25px;
+    }
+
+    .catalog-title{
+        font-size:36px;
+    }
+
+    .footer-top{
+        flex-direction:column;
+    }
+
+    .footer-right{
+        text-align:left;
+    }
+
+    .footer-bottom{
+        flex-direction:column;
+        gap:10px;
+    }
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+   ========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible{
+    outline:
+        2px solid #555;
+
+    outline-offset:
+        3px;
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
 @media(prefers-reduced-motion:reduce){
-  html{scroll-behavior:auto}
-  *,*:before,*:after{
-    animation-duration:.01ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.01ms!important;
-  }
+
+    *,
+    *::before,
+    *::after{
+        animation-duration:.01ms !important;
+        animation-iteration-count:1 !important;
+        scroll-behavior:auto !important;
+        transition-duration:.01ms !important;
+    }
 }
+
 </style>
 </head>
 
+
 <body>
 
-<div class="loader" id="loader">
-  <div class="loader-inner">
-    <div class="loader-logo">CreatureMeza</div>
-    <div class="loader-line"><div class="loader-progress"></div></div>
-  </div>
+
+<!-- =======================================================
+     LOADER
+     ======================================================= -->
+
+<div id="loader">
+
+    <div class="loader-inner">
+
+        <div class="loader-logo">
+            CREATURE
+        </div>
+
+        <div class="loader-sub">
+            Entering the archive
+        </div>
+
+        <div class="loader-line"></div>
+
+    </div>
+
 </div>
+
+
+<!-- =======================================================
+     MOVING BACKGROUND
+     ======================================================= -->
+
+<div class="motion-lines" aria-hidden="true">
+
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+
+</div>
+
+
+<div class="site">
+
+
+<!-- =======================================================
+     HEADER
+     ======================================================= -->
 
 <header>
-  <div class="logo">CreatureMeza</div>
-  <div class="header-right">
-    <div class="header-index">CM / 001</div>
-    <button class="header-btn" id="catalogButton">Найти вещь</button>
-  </div>
+
+    <a href="#top" class="header-logo">
+
+        <div class="logo-mark">
+            CM
+        </div>
+
+        <span>
+            CREATUREMEZA
+        </span>
+
+    </a>
+
+
+    <div class="header-right">
+
+        <div class="header-status">
+
+            <span class="status-dot"></span>
+
+            Archive online
+
+        </div>
+
+
+        <button
+            class="catalog-button"
+            id="openCatalog"
+        >
+            Catalog
+        </button>
+
+    </div>
+
 </header>
 
+
+
+<!-- =======================================================
+     HERO
+     ======================================================= -->
+
+<main id="top">
+
 <section class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-orbit"></div>
-  <div class="hero-content">
-    <div class="hero-kicker">Независимый архив моды</div>
-    <div class="hero-name">CreatureMeza</div>
+
+    <div class="hero-small">
+        CreatureMeza / Archive 001
+    </div>
+
+
     <h1 class="hero-title">
-      <span>Собери</span>
-      <span>свой</span>
-      <span>образ.</span>
+
+        <span>CREATURE</span>
+        <span>MEZA</span>
+
     </h1>
-    <p class="hero-sub">
-      Выбирай вещи из архива. Создавай собственные сочетания.
-      Никаких правил. Только вещи.
-    </p>
-  </div>
+
+
+    <div class="hero-bottom">
+
+        <div class="hero-info">
+
+            An experimental fashion archive
+            collecting garments, objects,
+            collaborations and ideas from
+            the underground to the iconic.
+
+        </div>
+
+
+        <div class="hero-scroll">
+
+            <span class="scroll-line"></span>
+
+            Scroll to explore
+
+        </div>
+
+    </div>
+
 </section>
 
-<div class="marquee">
-  <div class="marquee-track">
-    <span>CreatureMeza</span>
-    <span>Независимый архив моды</span>
-    <span>Собери свой образ</span>
-    <span>Объекты / 001</span>
-    <span>CreatureMeza</span>
-    <span>Независимый архив моды</span>
-    <span>Собери свой образ</span>
-    <span>Объекты / 001</span>
-  </div>
-</div>
 
-<section class="section builder reveal" id="builder">
-  <div class="section-head">
-    <div>
-      <div class="section-kicker">001 / Конструктор</div>
-      <h2 class="section-title">Твой образ</h2>
-    </div>
-    <p class="section-description">
-      Найди вещь через поиск. Каждый слой изменяется отдельно.
-    </p>
-  </div>
 
-  <div class="builder-grid">
-    <div class="fit-card">
-      <div class="fit-label">Верх</div>
-      <div class="fit-number">01</div>
-      <div class="fit-image" id="topImage"></div>
-      <div class="fit-info">
-        <div class="fit-brand" id="topBrand">—</div>
-        <div class="fit-name" id="topName">Выберите вещь</div>
-        <div class="fit-price" id="topPrice">—</div>
-      </div>
-      <div class="fit-arrows">
-        <button class="arrow-btn" id="topPrev">←</button>
-        <button class="arrow-btn" id="topNext">→</button>
-      </div>
+<!-- =======================================================
+     BUILDER
+     ======================================================= -->
+
+<section id="builder">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                01 / BUILDER
+            </div>
+
+            <h2 class="section-title">
+                BUILD<br>
+                YOUR FIT
+            </h2>
+
+        </div>
+
+
+        <div class="section-description">
+
+            Select pieces from the archive.
+            Change categories, explore brands
+            and create your own combination.
+
+        </div>
+
     </div>
 
-    <div class="fit-card">
-      <div class="fit-label">Низ</div>
-      <div class="fit-number">02</div>
-      <div class="fit-image" id="bottomImage"></div>
-      <div class="fit-info">
-        <div class="fit-brand" id="bottomBrand">—</div>
-        <div class="fit-name" id="bottomName">Выберите вещь</div>
-        <div class="fit-price" id="bottomPrice">—</div>
-      </div>
-      <div class="fit-arrows">
-        <button class="arrow-btn" id="bottomPrev">←</button>
-        <button class="arrow-btn" id="bottomNext">→</button>
-      </div>
+
+    <div class="builder-layout">
+
+
+        <!-- STAGE -->
+
+        <div class="builder-stage">
+
+            <div class="stage-grid"></div>
+
+
+            <div class="stage-center">
+
+                <div class="outfit-stack">
+
+
+                    <div
+                        class="outfit-piece top"
+                        id="visualTop"
+                    >
+
+                        <span class="piece-label">
+                            TOP
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="outfit-piece bottom"
+                        id="visualBottom"
+                    >
+
+                        <span class="piece-label">
+                            BOTTOM
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="outfit-piece shoes"
+                        id="visualShoes"
+                    >
+
+                        <span class="piece-label">
+                            FOOTWEAR
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="stage-caption">
+                    Current selected silhouette
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- CONTROLS -->
+
+        <div class="builder-controls">
+
+
+            <!-- TOP -->
+
+            <div class="control-card">
+
+                <div class="control-top">
+
+                    <span class="control-category">
+                        Upper / 01
+                    </span>
+
+                    <span
+                        class="control-number"
+                        id="topNumber"
+                    >
+                        01 / 08
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="item-name"
+                    id="topName"
+                >
+                    ERD Printed Hoodie
+                </div>
+
+
+                <div
+                    class="item-brand"
+                    id="topBrand"
+                >
+                    ERD
+                </div>
+
+
+                <div
+                    class="item-price"
+                    id="topPrice"
+                >
+                    €850
+                </div>
+
+
+                <div class="control-actions">
+
+                    <button
+                        class="arrow"
+                        id="topPrev"
+                    >
+                        ←
+                    </button>
+
+                    <button
+                        class="arrow"
+                        id="topNext"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BOTTOM -->
+
+            <div class="control-card">
+
+                <div class="control-top">
+
+                    <span class="control-category">
+                        Bottom / 02
+                    </span>
+
+                    <span
+                        class="control-number"
+                        id="bottomNumber"
+                    >
+                        01 / 08
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="item-name"
+                    id="bottomName"
+                >
+                    Rick Owens Wide Trousers
+                </div>
+
+
+                <div
+                    class="item-brand"
+                    id="bottomBrand"
+                >
+                    RICK OWENS
+                </div>
+
+
+                <div
+                    class="item-price"
+                    id="bottomPrice"
+                >
+                    €990
+                </div>
+
+
+                <div class="control-actions">
+
+                    <button
+                        class="arrow"
+                        id="bottomPrev"
+                    >
+                        ←
+                    </button>
+
+                    <button
+                        class="arrow"
+                        id="bottomNext"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SHOES -->
+
+            <div class="control-card">
+
+                <div class="control-top">
+
+                    <span class="control-category">
+                        Footwear / 03
+                    </span>
+
+                    <span
+                        class="control-number"
+                        id="shoesNumber"
+                    >
+                        01 / 08
+                    </span>
+
+                </div>
+
+
+                <div
+                    class="item-name"
+                    id="shoesName"
+                >
+                    DRKSHDW Ramones High
+                </div>
+
+
+                <div
+                    class="item-brand"
+                    id="shoesBrand"
+                >
+                    DRKSHDW
+                </div>
+
+
+                <div
+                    class="item-price"
+                    id="shoesPrice"
+                >
+                    €920
+                </div>
+
+
+                <div class="control-actions">
+
+                    <button
+                        class="arrow"
+                        id="shoesPrev"
+                    >
+                        ←
+                    </button>
+
+                    <button
+                        class="arrow"
+                        id="shoesNext"
+                    >
+                        →
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BRANDS -->
+
+            <div class="control-card">
+
+                <div class="control-top">
+
+                    <span class="control-category">
+                        Brand filter
+                    </span>
+
+                </div>
+
+
+                <div class="brand-selector">
+
+                    <button
+                        class="brand-pill active"
+                        data-brand="ALL"
+                    >
+                        ALL
+                    </button>
+
+                    <button
+                        class="brand-pill"
+                        data-brand="ERD"
+                    >
+                        ERD
+                    </button>
+
+                    <button
+                        class="brand-pill"
+                        data-brand="RICK"
+                    >
+                        RICK OWENS
+                    </button>
+
+                    <button
+                        class="brand-pill"
+                        data-brand="STONE"
+                    >
+                        STONE ISLAND
+                    </button>
+
+                    <button
+                        class="brand-pill"
+                        data-brand="STUSSY"
+                    >
+                        STÜSSY
+                    </button>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- TOTAL -->
+
+            <div class="total-card">
+
+                <div class="total-label">
+                    Total fit value
+                </div>
+
+
+                <div
+                    class="total-value"
+                    id="totalPrice"
+                >
+                    €2,760
+                </div>
+
+
+                <div class="fit-actions">
+
+                    <button
+                        class="fit-button"
+                        id="rateFit"
+                    >
+                        Rate fit
+                    </button>
+
+                    <button
+                        class="fit-button"
+                        id="confirmFit"
+                    >
+                        Confirm fit
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
     </div>
 
-    <div class="fit-card">
-      <div class="fit-label">Обувь</div>
-      <div class="fit-number">03</div>
-      <div class="fit-image" id="shoesImage"></div>
-      <div class="fit-info">
-        <div class="fit-brand" id="shoesBrand">—</div>
-        <div class="fit-name" id="shoesName">Выберите вещь</div>
-        <div class="fit-price" id="shoesPrice">—</div>
-      </div>
-      <div class="fit-arrows">
-        <button class="arrow-btn" id="shoesPrev">←</button>
-        <button class="arrow-btn" id="shoesNext">→</button>
-      </div>
-    </div>
-  </div>
-
-  <div class="builder-controls">
-    <button class="control-btn" id="randomButton">Случайный образ</button>
-    <button class="control-btn" id="resetButton">Сбросить</button>
-    <button class="control-btn" id="confirmButton">Подтвердить образ</button>
-  </div>
-
-  <div class="total-bar">
-    <div class="total-label">Общая стоимость</div>
-    <div class="total-value" id="totalPrice">$0</div>
-  </div>
-
-  <div class="rating-panel">
-    <div class="rating-title">Оцени этот образ</div>
-    <div class="rating-buttons">
-      <button class="rating-btn" data-rating="1">1</button>
-      <button class="rating-btn" data-rating="2">2</button>
-      <button class="rating-btn" data-rating="3">3</button>
-      <button class="rating-btn" data-rating="4">4</button>
-      <button class="rating-btn" data-rating="5">5</button>
-      <button class="rating-btn" data-rating="6">6</button>
-      <button class="rating-btn" data-rating="7">7</button>
-      <button class="rating-btn" data-rating="8">8</button>
-      <button class="rating-btn" data-rating="9">9</button>
-      <button class="rating-btn" data-rating="10">10</button>
-    </div>
-    <div class="status" id="status">
-      Выберите все три вещи, чтобы подтвердить образ.
-    </div>
-  </div>
 </section>
 
-<section class="section archive reveal" id="archive">
-  <div class="section-head">
-    <div>
-      <div class="section-kicker">002 / Поиск</div>
-      <h2 class="section-title">Найти вещь</h2>
+
+
+<!-- =======================================================
+     ARCHIVE
+     ======================================================= -->
+
+<section id="archive">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                02 / ARCHIVE
+            </div>
+
+            <h2 class="section-title">
+                SELECTED<br>
+                OBJECTS
+            </h2>
+
+        </div>
+
+
+        <div class="section-description">
+
+            A small selection of objects
+            currently living inside the
+            CreatureMeza archive.
+
+        </div>
+
     </div>
-    <p class="section-description">
-      Начни вводить название бренда или вещи.
-      Подсказки появятся автоматически.
-    </p>
-  </div>
 
-  <div class="archive-search-area">
-    <label class="search-label" for="searchInput">Поиск по архиву</label>
 
-    <div class="search-wrap">
-      <input
-        class="search"
-        id="searchInput"
-        type="text"
-        placeholder="Найти вещь или бренд..."
-        autocomplete="off"
-        spellcheck="false"
-      >
-      <div class="search-icon">/</div>
+
+    <div class="archive-grid">
+
+
+        <article class="archive-card">
+
+            <div class="archive-visual">
+
+                <div class="archive-shape"></div>
+
+            </div>
+
+            <div class="archive-meta">
+
+                <div class="archive-brand">
+                    ERD
+                </div>
+
+                <div class="archive-name">
+                    Printed Archive Hoodie
+                </div>
+
+                <div class="archive-price">
+                    €850
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <article class="archive-card">
+
+            <div class="archive-visual">
+
+                <div class="archive-shape"></div>
+
+            </div>
+
+            <div class="archive-meta">
+
+                <div class="archive-brand">
+                    RICK OWENS
+                </div>
+
+                <div class="archive-name">
+                    DRKSHDW Denim
+                </div>
+
+                <div class="archive-price">
+                    €1,150
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <article class="archive-card">
+
+            <div class="archive-visual">
+
+                <div class="archive-shape"></div>
+
+            </div>
+
+            <div class="archive-meta">
+
+                <div class="archive-brand">
+                    STONE ISLAND
+                </div>
+
+                <div class="archive-name">
+                    Shadow Project Shell
+                </div>
+
+                <div class="archive-price">
+                    €1,300
+                </div>
+
+            </div>
+
+        </article>
+
+
+
+        <article class="archive-card">
+
+            <div class="archive-visual">
+
+                <div class="archive-shape"></div>
+
+            </div>
+
+            <div class="archive-meta">
+
+                <div class="archive-brand">
+                    DRKSHDW
+                </div>
+
+                <div class="archive-name">
+                    Ramones High
+                </div>
+
+                <div class="archive-price">
+                    €920
+                </div>
+
+            </div>
+
+        </article>
+
+
     </div>
 
-    <div class="search-hint">
-      Введи хотя бы одну букву, чтобы увидеть результаты.
-    </div>
-
-    <div class="search-results" id="searchResults"></div>
-    <div class="search-selected" id="searchSelected"></div>
-  </div>
 </section>
 
-<section class="section info reveal">
-  <div class="info-grid">
-    <div class="info-big">
-      Никаких правил.<br>
-      Только вещи.
+
+
+<!-- =======================================================
+     REVIEWS
+     ======================================================= -->
+
+<section id="reviews">
+
+    <div class="section-head">
+
+        <div>
+
+            <div class="section-number">
+                03 / COMMUNITY
+            </div>
+
+            <h2 class="section-title">
+                REVIEWS
+            </h2>
+
+        </div>
+
+
+        <div class="section-description">
+
+            Leave your impression of
+            CreatureMeza and the archive.
+
+        </div>
+
     </div>
-    <div class="info-text">
-      CreatureMeza — независимый архив моды,
-      построенный вокруг вещей, брендов и сочетаний.
-      <br><br>
-      Найди нужную вещь через поиск, добавь её
-      в образ и измени комбинацию стрелками.
-      <br><br>
-      Каждая вещь — это объект.
-      Комбинация принадлежит тебе.
+
+
+
+    <div class="reviews-layout">
+
+
+        <div class="review-info">
+
+            <div class="review-big">
+                4.9
+            </div>
+
+            <div class="review-stars">
+                ★★★★★
+            </div>
+
+            <div class="review-info-text">
+
+                Community rating based on
+                submitted opinions from
+                CreatureMeza visitors.
+
+            </div>
+
+        </div>
+
+
+
+        <form
+            class="review-form"
+            id="reviewForm"
+        >
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Name
+                </label>
+
+                <input
+                    class="form-input"
+                    id="reviewName"
+                    type="text"
+                    placeholder="Your name"
+                    maxlength="40"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Rating
+                </label>
+
+
+                <div class="rating-select">
+
+                    <button
+                        type="button"
+                        class="rating-star"
+                        data-rating="1"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        class="rating-star"
+                        data-rating="2"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        class="rating-star"
+                        data-rating="3"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        class="rating-star"
+                        data-rating="4"
+                    >
+                        ★
+                    </button>
+
+                    <button
+                        type="button"
+                        class="rating-star"
+                        data-rating="5"
+                    >
+                        ★
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label class="form-label">
+                    Review
+                </label>
+
+                <textarea
+                    class="form-textarea"
+                    id="reviewText"
+                    placeholder="Write something..."
+                    maxlength="500"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button
+                class="submit-review"
+                type="submit"
+            >
+                Submit review
+            </button>
+
+        </form>
+
     </div>
-  </div>
-</section>
 
-<section class="section reviews reveal" id="reviews">
-  <div class="section-kicker">003 / Отзывы</div>
-  <h2 class="section-title">Мнение архива</h2>
-  <p class="section-description" style="margin:20px auto 30px">
-    Оставь короткий отзыв о CreatureMeza.
-  </p>
 
-  <button class="review-open" id="reviewOpen">Оставить отзыв</button>
 
-  <form class="review-form" id="reviewForm">
-    <div class="review-error" id="reviewError"></div>
-
-    <label for="reviewName">Имя пользователя</label>
-    <input
-      id="reviewName"
-      maxlength="32"
-      placeholder="Твоё имя"
-      autocomplete="off"
+    <div
+        class="review-list"
+        id="reviewList"
     >
 
-    <label>Оценка</label>
-    <div class="skull-rating" id="skullRating">
-      <button type="button" data-value="1">☠</button>
-      <button type="button" data-value="2">☠</button>
-      <button type="button" data-value="3">☠</button>
-      <button type="button" data-value="4">☠</button>
-      <button type="button" data-value="5">☠</button>
+
+        <article class="review-card">
+
+            <div class="review-card-top">
+
+                <span class="review-author">
+                    Alex
+                </span>
+
+                <span class="review-date">
+                    ARCHIVE
+                </span>
+
+            </div>
+
+            <div class="review-card-stars">
+                ★★★★★
+            </div>
+
+            <p class="review-text">
+                Very clean archive concept.
+                The builder is especially interesting.
+            </p>
+
+        </article>
+
+
+
+        <article class="review-card">
+
+            <div class="review-card-top">
+
+                <span class="review-author">
+                    M.
+                </span>
+
+                <span class="review-date">
+                    ARCHIVE
+                </span>
+
+            </div>
+
+            <div class="review-card-stars">
+                ★★★★★
+            </div>
+
+            <p class="review-text">
+                Feels more like an editorial
+                archive than a normal store.
+            </p>
+
+        </article>
+
+
+
+        <article class="review-card">
+
+            <div class="review-card-top">
+
+                <span class="review-author">
+                    CM USER
+                </span>
+
+                <span class="review-date">
+                    ARCHIVE
+                </span>
+
+            </div>
+
+            <div class="review-card-stars">
+                ★★★★☆
+            </div>
+
+            <p class="review-text">
+                Minimal, strange and exactly
+                the kind of fashion archive I like.
+            </p>
+
+        </article>
+
+
     </div>
 
-    <label for="reviewText">Комментарий</label>
-    <textarea
-      id="reviewText"
-      maxlength="500"
-      placeholder="Напиши, что думаешь..."
-    ></textarea>
-
-    <div class="review-actions">
-      <button class="submit-review" type="submit">Опубликовать</button>
-      <button class="review-close" type="button" id="reviewClose">Закрыть</button>
-    </div>
-  </form>
-
-  <div class="review-list" id="reviewList"></div>
 </section>
 
+
+
+</main>
+
+
+
+<!-- =======================================================
+     FOOTER
+     ======================================================= -->
+
 <footer>
-  <div>CreatureMeza / Архив</div>
-  <div class="footer-right">
-    <a class="footer-link" href="https://t.me/" target="_blank" rel="noopener">
-      Telegram
-    </a>
-    <div class="footer-team">made by Borov’s Team</div>
-  </div>
+
+    <div class="footer-top">
+
+        <div class="footer-logo">
+            CM
+        </div>
+
+
+        <div class="footer-right">
+
+            CREATUREMEZA<br>
+            FASHION ARCHIVE<br>
+            EST. 2026<br><br>
+
+            made by Borov's team<br>
+            our telegram channel:<br>
+            CreatureMeza
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 CreatureMeza
+        </span>
+
+        <span>
+            All objects are archived
+        </span>
+
+    </div>
+
 </footer>
 
+
+</div>
+
+
+<!-- =======================================================
+     CATALOG
+     ======================================================= -->
+
+<div
+    class="catalog-overlay"
+    id="catalogOverlay"
+>
+
+    <aside class="catalog-panel">
+
+
+        <div class="catalog-head">
+
+            <div class="catalog-title">
+                CATALOG
+            </div>
+
+            <button
+                class="close-catalog"
+                id="closeCatalog"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="catalog-description">
+
+            Explore the brands and objects
+            currently represented in the
+            CreatureMeza archive.
+
+        </div>
+
+
+        <div class="catalog-list">
+
+
+            <!-- ERD -->
+
+            <button
+                class="catalog-brand"
+                data-target="erdItems"
+            >
+
+                <span>
+                    ERD
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="erdItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Printed Archive Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €850
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Graphic Zip Jacket
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €920
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Distressed Denim
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €780
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Archive Graphic Tee
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €390
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- RICK OWENS -->
+
+            <button
+                class="catalog-brand"
+                data-target="rickItems"
+            >
+
+                <span>
+                    RICK OWENS
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="rickItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        DRKSHDW Ramones High
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €920
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        DRKSHDW Denim
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €1,150
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Bauhaus Cargo
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €1,250
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Larry Fleece
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €1,100
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STONE ISLAND -->
+
+            <button
+                class="catalog-brand"
+                data-target="stoneItems"
+            >
+
+                <span>
+                    STONE ISLAND
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="stoneItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Shadow Project Shell
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €1,300
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Nylon Metal Jacket
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €780
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Compass Cargo
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €620
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Technical Overshirt
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €710
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- STUSSY -->
+
+            <button
+                class="catalog-brand"
+                data-target="stussyItems"
+            >
+
+                <span>
+                    STÜSSY
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="stussyItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        8 Ball Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €250
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Stock Logo Tee
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €120
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Work Jacket
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €310
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Washed Denim
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €280
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- SUPREME -->
+
+            <button
+                class="catalog-brand"
+                data-target="supremeItems"
+            >
+
+                <span>
+                    SUPREME
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="supremeItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Box Logo Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €420
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Work Jacket
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €520
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Script Tee
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €130
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- NIKE -->
+
+            <button
+                class="catalog-brand"
+                data-target="nikeItems"
+            >
+
+                <span>
+                    NIKE
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="nikeItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Air Force 1
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €130
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Air Max 95
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €190
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Air Jordan 1
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €180
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- ADIDAS -->
+
+            <button
+                class="catalog-brand"
+                data-target="adidasItems"
+            >
+
+                <span>
+                    ADIDAS
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="adidasItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Samba
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €120
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Campus
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €110
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Superstar
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €120
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BAPE -->
+
+            <button
+                class="catalog-brand"
+                data-target="bapeItems"
+            >
+
+                <span>
+                    BAPE
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="bapeItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Shark Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €520
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        College Tee
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €180
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- OFF WHITE -->
+
+            <button
+                class="catalog-brand"
+                data-target="offwhiteItems"
+            >
+
+                <span>
+                    OFF-WHITE
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="offwhiteItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Industrial Belt
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €250
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Arrow Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €600
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- BALENCIAGA -->
+
+            <button
+                class="catalog-brand"
+                data-target="balenciagaItems"
+            >
+
+                <span>
+                    BALENCIAGA
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="balenciagaItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Distressed Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €850
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Triple S
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €850
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- CARHARTT -->
+
+            <button
+                class="catalog-brand"
+                data-target="carharttItems"
+            >
+
+                <span>
+                    CARHARTT WIP
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="carharttItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Detroit Jacket
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €250
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Double Knee Pant
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €140
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- PALACE -->
+
+            <button
+                class="catalog-brand"
+                data-target="palaceItems"
+            >
+
+                <span>
+                    PALACE
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="palaceItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Tri-Ferg Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €230
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Puffer Jacket
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €420
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <!-- MASTERMIND -->
+
+            <button
+                class="catalog-brand"
+                data-target="mastermindItems"
+            >
+
+                <span>
+                    MASTERMIND
+                </span>
+
+                <span>
+                    +
+                </span>
+
+            </button>
+
+
+            <div
+                class="brand-items"
+                id="mastermindItems"
+            >
+
+                <div class="catalog-item">
+
+                    <span>
+                        Skull Zip Hoodie
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €900
+                    </span>
+
+                </div>
+
+                <div class="catalog-item">
+
+                    <span>
+                        Japan Graphic Tee
+                    </span>
+
+                    <span class="catalog-item-price">
+                        €380
+                    </span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </aside>
+
+</div>
+
+
+
+<!-- =======================================================
+     TOAST
+     ======================================================= -->
+
+<div
+    class="toast"
+    id="toast"
+>
+    FIT CONFIRMED
+</div>
+
+
+
+<!-- =======================================================
+     JAVASCRIPT
+     ======================================================= -->
+
 <script>
-const catalog={
-  "Ader Error":{
-    top:[["Ader Logo Tee",180],["Ader Oversized Hoodie",320],["Ader Distressed Knit",290]],
-    bottom:[["Ader Wide Trousers",250],["Ader Cargo Pants",280],["Ader Denim",230]],
-    shoes:[["Ader Platform Sneakers",300],["Ader Runner",275],["Ader Black Derby",330]]
-  },
-  "Balenciaga":{
-    top:[["Balenciaga Logo Tee",550],["Balenciaga Zip Hoodie",950],["Balenciaga Oversized Shirt",850]],
-    bottom:[["Balenciaga Baggy Jeans",900],["Balenciaga Track Pants",800],["Balenciaga Cargo",780]],
-    shoes:[["Triple S",1100],["Runner Sneaker",1050],["3XL Sneaker",1200]]
-  },
-  "Carhartt WIP":{
-    top:[["Carhartt Pocket Tee",75],["Carhartt Detroit Jacket",190],["Carhartt Work Shirt",120]],
-    bottom:[["Carhartt Double Knee",130],["Carhartt Cargo",140],["Carhartt Denim",120]],
-    shoes:[["Carhartt Canvas Sneaker",110],["Carhartt Work Shoe",150],["Carhartt High Top",135]]
-  },
-  "Comme des Garçons":{
-    top:[["CDG Heart Tee",150],["CDG Knit",420],["CDG Shirt",500]],
-    bottom:[["CDG Wide Pants",380],["CDG Wool Trousers",520],["CDG Cargo",450]],
-    shoes:[["CDG Converse",180],["CDG Derby",600],["CDG Platform",480]]
-  },
-  "Diesel":{
-    top:[["Diesel Logo Tee",120],["Diesel Denim Jacket",350],["Diesel Graphic Top",180]],
-    bottom:[["Diesel D-Sire Jeans",300],["Diesel Cargo",280],["Diesel Flared Denim",320]],
-    shoes:[["Diesel D-Rise",350],["Diesel S-Athos",300],["Diesel Runner",290]]
-  },
-  "Givenchy":{
-    top:[["Givenchy Signature Tee",500],["Givenchy Hoodie",800],["Givenchy Wool Jacket",1200]],
-    bottom:[["Givenchy Tailored Pants",700],["Givenchy Cargo",650],["Givenchy Denim",600]],
-    shoes:[["Givenchy Giv 1",850],["Givenchy Runner",900],["Givenchy Derby",950]]
-  },
-  "Maison Margiela":{
-    top:[["Margiela Logo Tee",260],["Margiela Knit",650],["Margiela Replica Jacket",900]],
-    bottom:[["Margiela Wide Trousers",600],["Margiela Denim",550],["Margiela Painter Pants",580]],
-    shoes:[["Replica Sneakers",600],["Replica Low Top",650],["Tabi Boots",900]]
-  },
-  "Nike":{
-    top:[["Nike Sportswear Tee",45],["Nike Tech Fleece",130],["Nike ACG Jacket",190]],
-    bottom:[["Nike Tech Pants",110],["Nike ACG Cargo",150],["Nike Track Pants",90]],
-    shoes:[["Air Force 1",120],["Air Max 95",180],["Air Jordan 1",200]]
-  },
-  "Prada":{
-    top:[["Prada Triangle Tee",500],["Prada Nylon Jacket",1300],["Prada Knit",900]],
-    bottom:[["Prada Nylon Pants",750],["Prada Tailored Trousers",850],["Prada Cargo",800]],
-    shoes:[["Prada America's Cup",950],["Prada Monolith",1100],["Prada Derby",1000]]
-  },
-  "Ralph Lauren":{
-    top:[["Polo Classic Tee",80],["Polo Oxford Shirt",130],["Polo Cable Knit",160]],
-    bottom:[["Polo Chino",110],["Polo Pleated Pants",140],["Polo Denim",120]],
-    shoes:[["Polo Sneaker",100],["Polo Loafer",150],["Polo Canvas",90]]
-  },
-  "Supreme":{
-    top:[["Supreme Box Logo",100],["Supreme Hoodie",190],["Supreme Work Jacket",250]],
-    bottom:[["Supreme Cargo",180],["Supreme Denim",170],["Supreme Work Pant",160]],
-    shoes:[["Supreme AF1",130],["Supreme Dunk",180],["Supreme Vans",120]]
-  },
-  "Stone Island":{
-    top:[["Stone Island Tee",160],["Stone Island Overshirt",350],["Stone Island Shell",700]],
-    bottom:[["Stone Island Cargo",300],["Stone Island Nylon Pants",350],["Stone Island Denim",260]],
-    shoes:[["Stone Island Runner",250],["Stone Island Sneaker",300],["Stone Island Boot",350]]
-  },
-  "Y-3":{
-    top:[["Y-3 Logo Tee",180],["Y-3 Hoodie",350],["Y-3 Bomber",600]],
-    bottom:[["Y-3 Wide Pants",300],["Y-3 Cargo",330],["Y-3 Track Pants",280]],
-    shoes:[["Y-3 Superstar",350],["Y-3 Kaiwa",400],["Y-3 Runner",380]]
-  }
-};
 
-const categories=["top","bottom","shoes"];
-const state={
-  selected:{top:null,bottom:null,shoes:null},
-  rating:null
-};
 
-const $=id=>document.getElementById(id);
+/* =========================================================
+   LOADER
+   ========================================================= */
 
-function categoryLabel(category){
-  return category==="top"?"Верх":category==="bottom"?"Низ":"Обувь";
-}
+window.addEventListener(
+    "load",
+    function(){
 
-function price(value){
-  return "$"+Number(value).toLocaleString("en-US");
-}
+        setTimeout(
+            function(){
 
-function item(brand,category,index){
-  const data=catalog[brand][category][index];
-  return {
-    brand,
-    category,
-    index,
-    name:data[0],
-    price:data[1],
-    image:""
-  };
-}
+                document
+                    .getElementById("loader")
+                    .classList
+                    .add("hide");
 
-function allItems(){
-  const result=[];
-  Object.keys(catalog).forEach(brand=>{
-    categories.forEach(category=>{
-      catalog[brand][category].forEach((_,index)=>{
-        result.push(item(brand,category,index));
-      });
-    });
-  });
-  return result;
-}
-
-function selectedItem(category){
-  const selected=state.selected[category];
-  return selected?item(selected.brand,category,selected.index):null;
-}
-
-function imageMarkup(current){
-  if(current && current.image){
-    const img=document.createElement("img");
-    img.src=current.image;
-    img.alt=current.name;
-    img.loading="lazy";
-    return img;
-  }
-
-  const placeholder=document.createElement("div");
-  placeholder.className="fit-placeholder";
-  placeholder.textContent="Изображение скоро появится";
-  return placeholder;
-}
-
-function renderBuilder(){
-  categories.forEach(category=>{
-    const current=selectedItem(category);
-    const image=$(category+"Image");
-    const brand=$(category+"Brand");
-    const name=$(category+"Name");
-    const cost=$(category+"Price");
-
-    image.innerHTML="";
-    image.appendChild(imageMarkup(current));
-
-    if(current){
-      brand.textContent=current.brand;
-      name.textContent=current.name;
-      cost.textContent=price(current.price);
-    }else{
-      brand.textContent="—";
-      name.textContent="Выберите вещь";
-      cost.textContent="—";
-    }
-  });
-
-  let total=0;
-  categories.forEach(category=>{
-    const current=selectedItem(category);
-    if(current)total+=current.price;
-  });
-  $("totalPrice").textContent=price(total);
-}
-
-function clearRating(){
-  state.rating=null;
-  document.querySelectorAll(".rating-btn").forEach(button=>{
-    button.classList.remove("active");
-  });
-}
-
-function selectItem(brand,category,index){
-  state.selected[category]={brand,index};
-  clearRating();
-  renderBuilder();
-
-  const current=item(brand,category,index);
-  $("status").textContent=
-    categoryLabel(category)+" выбрано: "+current.name+".";
-  showSelected(current);
-}
-
-function moveItem(category,direction){
-  let selected=state.selected[category];
-
-  if(!selected){
-    selected={brand:Object.keys(catalog)[0],index:0};
-    state.selected[category]=selected;
-  }
-
-  const list=catalog[selected.brand][category];
-  let next=selected.index+direction;
-
-  if(next<0)next=list.length-1;
-  if(next>=list.length)next=0;
-
-  selected.index=next;
-  renderBuilder();
-
-  $("status").textContent=
-    selected.brand+" / "+list[next][0];
-}
-
-function randomFit(){
-  const brands=Object.keys(catalog);
-
-  categories.forEach(category=>{
-    const brand=brands[Math.floor(Math.random()*brands.length)];
-    const list=catalog[brand][category];
-    const index=Math.floor(Math.random()*list.length);
-    state.selected[category]={brand,index};
-  });
-
-  clearRating();
-  renderBuilder();
-  $("status").textContent="Случайный образ создан.";
-}
-
-function resetFit(){
-  state.selected={top:null,bottom:null,shoes:null};
-  clearRating();
-  renderBuilder();
-  $("status").textContent="Образ сброшен.";
-}
-
-function confirmFit(){
-  const complete=categories.every(category=>state.selected[category]);
-
-  if(!complete){
-    $("status").textContent="Сначала выберите все три вещи.";
-    return;
-  }
-
-  $("status").textContent="Образ подтверждён. Теперь оцени его.";
-}
-
-function showSelected(current){
-  $("searchSelected").innerHTML=
-    "Выбрано: <strong>"+current.brand+"</strong> / "+
-    current.name+" — "+categoryLabel(current.category)+".";
-  $("searchSelected").classList.add("show");
-}
-
-function renderSearch(){
-  const query=$("searchInput").value.trim().toLowerCase();
-  const results=$("searchResults");
-  results.innerHTML="";
-
-  if(!query){
-    results.classList.remove("open");
-    return;
-  }
-
-  const found=allItems().filter(current=>{
-    return (current.brand+" "+current.name)
-      .toLowerCase()
-      .includes(query);
-  }).slice(0,30);
-
-  if(!found.length){
-    const empty=document.createElement("div");
-    empty.className="search-empty";
-    empty.textContent="Ничего не найдено";
-    results.appendChild(empty);
-    results.classList.add("open");
-    return;
-  }
-
-  found.forEach(current=>{
-    const button=document.createElement("button");
-    button.className="search-result";
-
-    const main=document.createElement("div");
-    main.className="search-result-main";
-
-    const brand=document.createElement("div");
-    brand.className="search-result-brand";
-    brand.textContent=current.brand;
-
-    const name=document.createElement("div");
-    name.className="search-result-name";
-    name.textContent=current.name;
-
-    const type=document.createElement("div");
-    type.className="search-result-type";
-    type.textContent=categoryLabel(current.category);
-
-    const cost=document.createElement("div");
-    cost.className="search-result-price";
-    cost.textContent=price(current.price);
-
-    main.append(brand,name);
-    button.append(main,type,cost);
-
-    button.addEventListener("click",()=>{
-      selectItem(current.brand,current.category,current.index);
-      $("searchInput").value=current.name;
-      results.classList.remove("open");
-      $("builder").scrollIntoView({behavior:"smooth"});
-    });
-
-    results.appendChild(button);
-  });
-
-  results.classList.add("open");
-}
-
-function setupButtons(){
-  $("topPrev").onclick=()=>moveItem("top",-1);
-  $("topNext").onclick=()=>moveItem("top",1);
-  $("bottomPrev").onclick=()=>moveItem("bottom",-1);
-  $("bottomNext").onclick=()=>moveItem("bottom",1);
-  $("shoesPrev").onclick=()=>moveItem("shoes",-1);
-  $("shoesNext").onclick=()=>moveItem("shoes",1);
-
-  $("randomButton").onclick=randomFit;
-  $("resetButton").onclick=resetFit;
-  $("confirmButton").onclick=confirmFit;
-
-  document.querySelectorAll(".rating-btn").forEach(button=>{
-    button.onclick=()=>{
-      state.rating=Number(button.dataset.rating);
-      document.querySelectorAll(".rating-btn").forEach(other=>{
-        other.classList.toggle(
-          "active",
-          Number(other.dataset.rating)===state.rating
+            },
+            900
         );
-      });
-      $("status").textContent="Оценка образа: "+state.rating+"/10.";
-    };
-  });
-}
 
-function setupSearch(){
-  $("searchInput").addEventListener("input",renderSearch);
-
-  document.addEventListener("click",event=>{
-    if(!event.target.closest(".archive-search-area")){
-      $("searchResults").classList.remove("open");
     }
-  });
+);
 
-  $("catalogButton").onclick=()=>{
-    $("archive").scrollIntoView({behavior:"smooth"});
-    setTimeout(()=>$("searchInput").focus(),500);
-  };
-}
 
-function normalize(value){
-  return value
-    .toLowerCase()
-    .replaceAll("ё","е")
-    .replace(/[^a-zа-я0-9]+/g," ")
-    .trim();
-}
 
-const bannedWords=[
-  "хуй","хуи","хуйн","пизд","ебл","еба","ебу","ебан",
-  "бля","бляд","сука","сучк","мраз","гандон","мудак",
-  "дебил","идиот","fuck","shit","bitch","asshole"
-];
+/* =========================================================
+   CATALOG
+   ========================================================= */
 
-function hasBadWords(value){
-  const text=normalize(value);
-  return bannedWords.some(word=>text.includes(word));
-}
-
-let reviewRating=0;
-
-function showReviewError(message){
-  $("reviewError").textContent=message;
-  $("reviewError").classList.add("show");
-}
-
-function hideReviewError(){
-  $("reviewError").classList.remove("show");
-}
-
-function loadReviews(){
-  let reviews=[];
-
-  try{
-    reviews=JSON.parse(localStorage.getItem("creaturemeza_reviews")||"[]");
-  }catch{
-    reviews=[];
-  }
-
-  $("reviewList").innerHTML="";
-
-  reviews.slice().reverse().forEach(review=>{
-    const card=document.createElement("div");
-    card.className="review-card";
-
-    const user=document.createElement("div");
-    user.className="review-user";
-    user.textContent=review.name;
-
-    const stars=document.createElement("div");
-    stars.className="review-stars";
-    stars.textContent="☠".repeat(review.rating);
-
-    const comment=document.createElement("div");
-    comment.className="review-comment";
-    comment.textContent=review.text;
-
-    card.append(user,stars,comment);
-    $("reviewList").appendChild(card);
-  });
-}
-
-function setupReviews(){
-  $("reviewOpen").onclick=()=>{
-    $("reviewForm").classList.add("open");
-    $("reviewOpen").style.display="none";
-  };
-
-  $("reviewClose").onclick=()=>{
-    $("reviewForm").classList.remove("open");
-    $("reviewOpen").style.display="inline-block";
-    hideReviewError();
-  };
-
-  document.querySelectorAll("#skullRating button").forEach(button=>{
-    button.onclick=()=>{
-      reviewRating=Number(button.dataset.value);
-
-      document.querySelectorAll("#skullRating button").forEach(other=>{
-        other.classList.toggle(
-          "active",
-          Number(other.dataset.value)<=reviewRating
-        );
-      });
-    };
-  });
-
-  $("reviewForm").addEventListener("submit",event=>{
-    event.preventDefault();
-    hideReviewError();
-
-    const name=$("reviewName").value.trim();
-    const text=$("reviewText").value.trim();
-
-    if(name.length<2){
-      showReviewError("Введи имя пользователя.");
-      return;
-    }
-
-    if(text.length<3){
-      showReviewError("Комментарий слишком короткий.");
-      return;
-    }
-
-    if(!reviewRating){
-      showReviewError("Выбери оценку черепами.");
-      return;
-    }
-
-    if(hasBadWords(name)||hasBadWords(text)){
-      showReviewError("Отзыв содержит запрещённые выражения.");
-      return;
-    }
-
-    let reviews=[];
-
-    try{
-      reviews=JSON.parse(localStorage.getItem("creaturemeza_reviews")||"[]");
-    }catch{
-      reviews=[];
-    }
-
-    reviews.push({
-      name:name.replace(/[<>]/g,""),
-      text:text.replace(/[<>]/g,""),
-      rating:reviewRating
-    });
-
-    localStorage.setItem(
-      "creaturemeza_reviews",
-      JSON.stringify(reviews.slice(-30))
+const catalogOverlay =
+    document.getElementById(
+        "catalogOverlay"
     );
 
-    $("reviewName").value="";
-    $("reviewText").value="";
-    reviewRating=0;
+const openCatalog =
+    document.getElementById(
+        "openCatalog"
+    );
 
-    document.querySelectorAll("#skullRating button")
-      .forEach(button=>button.classList.remove("active"));
+const closeCatalog =
+    document.getElementById(
+        "closeCatalog"
+    );
 
-    $("reviewForm").classList.remove("open");
-    $("reviewOpen").style.display="inline-block";
 
-    loadReviews();
-  });
+openCatalog.addEventListener(
+    "click",
+    function(){
+
+        catalogOverlay.classList.add(
+            "open"
+        );
+
+        document.body.style.overflow =
+            "hidden";
+
+    }
+);
+
+
+closeCatalog.addEventListener(
+    "click",
+    function(){
+
+        catalogOverlay.classList.remove(
+            "open"
+        );
+
+        document.body.style.overflow =
+            "";
+
+    }
+);
+
+
+catalogOverlay.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target ===
+            catalogOverlay
+        ){
+
+            catalogOverlay.classList.remove(
+                "open"
+            );
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+    }
+);
+
+
+document.addEventListener(
+    "keydown",
+    function(event){
+
+        if(
+            event.key === "Escape"
+        ){
+
+            catalogOverlay.classList.remove(
+                "open"
+            );
+
+            document.body.style.overflow =
+                "";
+
+        }
+
+    }
+);
+
+
+
+/* =========================================================
+   BRAND ACCORDION
+   ========================================================= */
+
+const catalogBrands =
+    document.querySelectorAll(
+        ".catalog-brand"
+    );
+
+
+catalogBrands.forEach(
+    function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                const targetId =
+                    button.dataset.target;
+
+                const target =
+                    document.getElementById(
+                        targetId
+                    );
+
+                const isOpen =
+                    target.classList.contains(
+                        "open"
+                    );
+
+
+                document
+                    .querySelectorAll(
+                        ".brand-items"
+                    )
+                    .forEach(
+                        function(item){
+
+                            item.classList.remove(
+                                "open"
+                            );
+
+                        }
+                    );
+
+
+                document
+                    .querySelectorAll(
+                        ".catalog-brand span:last-child"
+                    )
+                    .forEach(
+                        function(icon){
+
+                            icon.textContent =
+                                "+";
+
+                        }
+                    );
+
+
+                if(!isOpen){
+
+                    target.classList.add(
+                        "open"
+                    );
+
+                    button
+                        .querySelector(
+                            "span:last-child"
+                        )
+                        .textContent =
+                        "−";
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   BUILDER DATA
+   ========================================================= */
+
+const items = {
+
+    top:[
+        {
+            name:"ERD Printed Hoodie",
+            brand:"ERD",
+            price:850
+        },
+
+        {
+            name:"Mastermind Skull Hoodie",
+            brand:"MASTERMIND",
+            price:980
+        },
+
+        {
+            name:"Stone Island Technical Shell",
+            brand:"STONE ISLAND",
+            price:760
+        },
+
+        {
+            name:"Stüssy 8 Ball Hoodie",
+            brand:"STÜSSY",
+            price:250
+        },
+
+        {
+            name:"Supreme Box Logo Hoodie",
+            brand:"SUPREME",
+            price:420
+        },
+
+        {
+            name:"BAPE Shark Hoodie",
+            brand:"BAPE",
+            price:520
+        },
+
+        {
+            name:"Off-White Arrow Hoodie",
+            brand:"OFF-WHITE",
+            price:600
+        },
+
+        {
+            name:"Palace Tri-Ferg Hoodie",
+            brand:"PALACE",
+            price:230
+        }
+    ],
+
+
+    bottom:[
+        {
+            name:"Rick Owens Wide Trousers",
+            brand:"RICK OWENS",
+            price:990
+        },
+
+        {
+            name:"ERD Distressed Denim",
+            brand:"ERD",
+            price:780
+        },
+
+        {
+            name:"Stone Island Compass Cargo",
+            brand:"STONE ISLAND",
+            price:620
+        },
+
+        {
+            name:"Stüssy Washed Denim",
+            brand:"STÜSSY",
+            price:280
+        },
+
+        {
+            name:"Supreme Work Pant",
+            brand:"SUPREME",
+            price:310
+        },
+
+        {
+            name:"Carhartt Double Knee",
+            brand:"CARHARTT WIP",
+            price:140
+        },
+
+        {
+            name:"Rick Owens Bauhaus Cargo",
+            brand:"RICK OWENS",
+            price:1250
+        },
+
+        {
+            name:"Palace Denim",
+            brand:"PALACE",
+            price:260
+        }
+    ],
+
+
+    shoes:[
+        {
+            name:"DRKSHDW Ramones High",
+            brand:"DRKSHDW",
+            price:920
+        },
+
+        {
+            name:"Nike Air Jordan 1",
+            brand:"NIKE",
+            price:180
+        },
+
+        {
+            name:"Adidas Samba",
+            brand:"ADIDAS",
+            price:120
+        },
+
+        {
+            name:"Balenciaga Triple S",
+            brand:"BALENCIAGA",
+            price:850
+        },
+
+        {
+            name:"Nike Air Max 95",
+            brand:"NIKE",
+            price:190
+        },
+
+        {
+            name:"Adidas Campus",
+            brand:"ADIDAS",
+            price:110
+        },
+
+        {
+            name:"DRKSHDW Abstract Sneak",
+            brand:"DRKSHDW",
+            price:980
+        },
+
+        {
+            name:"BAPE Bapesta",
+            brand:"BAPE",
+            price:350
+        }
+    ]
+
+};
+
+
+
+/* =========================================================
+   BUILDER STATE
+   ========================================================= */
+
+let current = {
+
+    top:0,
+    bottom:0,
+    shoes:0
+
+};
+
+
+
+/* =========================================================
+   FORMAT PRICE
+   ========================================================= */
+
+function formatPrice(
+    number
+){
+
+    return "€" +
+        number
+            .toLocaleString(
+                "en-US"
+            );
+
 }
 
-function setupReveal(){
-  const observer=new IntersectionObserver(entries=>{
-    entries.forEach(entry=>{
-      if(entry.isIntersecting){
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  },{threshold:.12});
 
-  document.querySelectorAll(".reveal").forEach(element=>{
-    observer.observe(element);
-  });
+
+/* =========================================================
+   UPDATE BUILDER
+   ========================================================= */
+
+function updateBuilder(){
+
+    const top =
+        items.top[
+            current.top
+        ];
+
+    const bottom =
+        items.bottom[
+            current.bottom
+        ];
+
+    const shoes =
+        items.shoes[
+            current.shoes
+        ];
+
+
+    document.getElementById(
+        "topName"
+    ).textContent =
+        top.name;
+
+    document.getElementById(
+        "topBrand"
+    ).textContent =
+        top.brand;
+
+    document.getElementById(
+        "topPrice"
+    ).textContent =
+        formatPrice(
+            top.price
+        );
+
+
+    document.getElementById(
+        "bottomName"
+    ).textContent =
+        bottom.name;
+
+    document.getElementById(
+        "bottomBrand"
+    ).textContent =
+        bottom.brand;
+
+    document.getElementById(
+        "bottomPrice"
+    ).textContent =
+        formatPrice(
+            bottom.price
+        );
+
+
+    document.getElementById(
+        "shoesName"
+    ).textContent =
+        shoes.name;
+
+    document.getElementById(
+        "shoesBrand"
+    ).textContent =
+        shoes.brand;
+
+    document.getElementById(
+        "shoesPrice"
+    ).textContent =
+        formatPrice(
+            shoes.price
+        );
+
+
+    document.getElementById(
+        "topNumber"
+    ).textContent =
+        `${current.top + 1} / ${items.top.length}`;
+
+
+    document.getElementById(
+        "bottomNumber"
+    ).textContent =
+        `${current.bottom + 1} / ${items.bottom.length}`;
+
+
+    document.getElementById(
+        "shoesNumber"
+    ).textContent =
+        `${current.shoes + 1} / ${items.shoes.length}`;
+
+
+    const total =
+        top.price +
+        bottom.price +
+        shoes.price;
+
+
+    document.getElementById(
+        "totalPrice"
+    ).textContent =
+        formatPrice(
+            total
+        );
+
+
+    animatePiece(
+        "visualTop"
+    );
+
+    animatePiece(
+        "visualBottom"
+    );
+
+    animatePiece(
+        "visualShoes"
+    );
+
 }
 
-function setupLoader(){
-  window.addEventListener("load",()=>{
-    setTimeout(()=>$("loader").classList.add("hide"),1600);
-  });
+
+
+/* =========================================================
+   PIECE ANIMATION
+   ========================================================= */
+
+function animatePiece(
+    id
+){
+
+    const element =
+        document.getElementById(
+            id
+        );
+
+    element.animate(
+        [
+            {
+                opacity:.35,
+                transform:
+                    "translateY(8px)"
+            },
+
+            {
+                opacity:1,
+                transform:
+                    "translateY(0)"
+            }
+        ],
+        {
+            duration:350,
+            easing:
+                "cubic-bezier(.2,.8,.2,1)"
+        }
+    );
+
 }
 
-function init(){
-  setupButtons();
-  setupSearch();
-  setupReviews();
-  setupReveal();
-  setupLoader();
-  loadReviews();
-  renderBuilder();
+
+
+/* =========================================================
+   NEXT / PREVIOUS
+   ========================================================= */
+
+function changeItem(
+    category,
+    direction
+){
+
+    const length =
+        items[
+            category
+        ].length;
+
+
+    current[
+        category
+    ] += direction;
+
+
+    if(
+        current[category] < 0
+    ){
+
+        current[category] =
+            length - 1;
+
+    }
+
+
+    if(
+        current[category] >= length
+    ){
+
+        current[category] = 0;
+
+    }
+
+
+    updateBuilder();
+
 }
 
-init();
+
+
+document
+    .getElementById("topPrev")
+    .addEventListener(
+        "click",
+        function(){
+
+            changeItem(
+                "top",
+                -1
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("topNext")
+    .addEventListener(
+        "click",
+        function(){
+
+            changeItem(
+                "top",
+                1
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("bottomPrev")
+    .addEventListener(
+        "click",
+        function(){
+
+            changeItem(
+                "bottom",
+                -1
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("bottomNext")
+    .addEventListener(
+        "click",
+        function(){
+
+            changeItem(
+                "bottom",
+                1
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("shoesPrev")
+    .addEventListener(
+        "click",
+        function(){
+
+            changeItem(
+                "shoes",
+                -1
+            );
+
+        }
+    );
+
+
+document
+    .getElementById("shoesNext")
+    .addEventListener(
+        "click",
+        function(){
+
+            changeItem(
+                "shoes",
+                1
+            );
+
+        }
+    );
+
+
+
+/* =========================================================
+   BRAND FILTER
+   ========================================================= */
+
+const brandButtons =
+    document.querySelectorAll(
+        ".brand-pill"
+    );
+
+
+brandButtons.forEach(
+    function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                brandButtons.forEach(
+                    function(btn){
+
+                        btn.classList.remove(
+                            "active"
+                        );
+
+                    }
+                );
+
+
+                button.classList.add(
+                    "active"
+                );
+
+
+                const brand =
+                    button.dataset.brand;
+
+
+                if(
+                    brand === "ALL"
+                ){
+
+                    return;
+
+                }
+
+
+                /*
+                 * Find first item with
+                 * matching brand.
+                 */
+
+                [
+                    "top",
+                    "bottom",
+                    "shoes"
+                ].forEach(
+                    function(category){
+
+                        const found =
+                            items[
+                                category
+                            ].findIndex(
+                                function(item){
+
+                                    return (
+                                        item.brand
+                                            .toUpperCase()
+                                            .includes(
+                                                brand
+                                            )
+                                    );
+
+                                }
+                            );
+
+
+                        if(
+                            found !== -1
+                        ){
+
+                            current[
+                                category
+                            ] = found;
+
+                        }
+
+                    }
+                );
+
+
+                updateBuilder();
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   TOAST
+   ========================================================= */
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+
+function showToast(
+    text
+){
+
+    toast.textContent =
+        text;
+
+    toast.classList.add(
+        "show"
+    );
+
+
+    setTimeout(
+        function(){
+
+            toast.classList.remove(
+                "show"
+            );
+
+        },
+        2200
+    );
+
+}
+
+
+
+/* =========================================================
+   FIT BUTTONS
+   ========================================================= */
+
+document
+    .getElementById("confirmFit")
+    .addEventListener(
+        "click",
+        function(){
+
+            this.classList.toggle(
+                "active"
+            );
+
+
+            if(
+                this.classList.contains(
+                    "active"
+                )
+            ){
+
+                showToast(
+                    "FIT CONFIRMED"
+                );
+
+            }
+            else{
+
+                showToast(
+                    "FIT UNCONFIRMED"
+                );
+
+            }
+
+        }
+    );
+
+
+document
+    .getElementById("rateFit")
+    .addEventListener(
+        "click",
+        function(){
+
+            document
+                .getElementById("reviews")
+                .scrollIntoView({
+                    behavior:"smooth"
+                });
+
+
+            showToast(
+                "RATE THE FIT BELOW"
+            );
+
+        }
+    );
+
+
+
+/* =========================================================
+   REVIEW RATING
+   ========================================================= */
+
+let selectedRating = 0;
+
+
+const ratingButtons =
+    document.querySelectorAll(
+        ".rating-star"
+    );
+
+
+ratingButtons.forEach(
+    function(button){
+
+        button.addEventListener(
+            "click",
+            function(){
+
+                selectedRating =
+                    Number(
+                        button.dataset.rating
+                    );
+
+
+                ratingButtons.forEach(
+                    function(star){
+
+                        const value =
+                            Number(
+                                star.dataset.rating
+                            );
+
+
+                        star.classList.toggle(
+                            "active",
+                            value <=
+                                selectedRating
+                        );
+
+                    }
+                );
+
+            }
+        );
+
+    }
+);
+
+
+
+/* =========================================================
+   REVIEW FORM
+   ========================================================= */
+
+const reviewForm =
+    document.getElementById(
+        "reviewForm"
+    );
+
+
+reviewForm.addEventListener(
+    "submit",
+    function(event){
+
+        event.preventDefault();
+
+
+        const name =
+            document.getElementById(
+                "reviewName"
+            ).value.trim();
+
+
+        const text =
+            document.getElementById(
+                "reviewText"
+            ).value.trim();
+
+
+        if(
+            selectedRating === 0
+        ){
+
+            showToast(
+                "SELECT A RATING"
+            );
+
+            return;
+
+        }
+
+
+        if(
+            !name ||
+            !text
+        ){
+
+            showToast(
+                "FILL IN ALL FIELDS"
+            );
+
+            return;
+
+        }
+
+
+        const card =
+            document.createElement(
+                "article"
+            );
+
+
+        card.className =
+            "review-card";
+
+
+        const stars =
+            "★".repeat(
+                selectedRating
+            ) +
+            "☆".repeat(
+                5 - selectedRating
+            );
+
+
+        card.innerHTML = `
+
+            <div class="review-card-top">
+
+                <span class="review-author">
+                    ${escapeHTML(name)}
+                </span>
+
+                <span class="review-date">
+                    NEW
+                </span>
+
+            </div>
+
+            <div class="review-card-stars">
+                ${stars}
+            </div>
+
+            <p class="review-text">
+                ${escapeHTML(text)}
+            </p>
+
+        `;
+
+
+        document
+            .getElementById(
+                "reviewList"
+            )
+            .prepend(
+                card
+            );
+
+
+        reviewForm.reset();
+
+
+        selectedRating = 0;
+
+
+        ratingButtons.forEach(
+            function(star){
+
+                star.classList.remove(
+                    "active"
+                );
+
+            }
+        );
+
+
+        showToast(
+            "REVIEW ADDED"
+        );
+
+
+        /*
+         * IMPORTANT:
+         *
+         * At this stage the review exists
+         * only in the current browser.
+         *
+         * To send it to Telegram,
+         * connect this form to a backend.
+         */
+
+    }
+);
+
+
+
+/* =========================================================
+   HTML ESCAPE
+   ========================================================= */
+
+function escapeHTML(
+    value
+){
+
+    return value
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+
+}
+
+
+
+/* =========================================================
+   INITIAL BUILDER
+   ========================================================= */
+
+updateBuilder();
+
+
+
+/* =========================================================
+   HEADER SCROLL EFFECT
+   ========================================================= */
+
+let lastScroll = 0;
+
+
+window.addEventListener(
+    "scroll",
+    function(){
+
+        const currentScroll =
+            window.scrollY;
+
+
+        if(
+            currentScroll > 20
+        ){
+
+            document
+                .querySelector("header")
+                .style.boxShadow =
+                "0 8px 30px rgba(0,0,0,.04)";
+
+        }
+        else{
+
+            document
+                .querySelector("header")
+                .style.boxShadow =
+                "none";
+
+        }
+
+
+        lastScroll =
+            currentScroll;
+
+    }
+);
+
+
+/* =========================================================
+   END
+   ========================================================= */
+
 </script>
+
 </body>
 </html>
