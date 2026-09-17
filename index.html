@@ -3639,6 +3639,12 @@ footer{
 
 }
 
+
+/* =========================================================
+   UPLOAD CLOTHES
+========================================================= */
+.upload-clothes{padding:35px 14px 100px}.upload-header span{color:#777;font-size:9px;letter-spacing:.2em}.upload-header h2{margin-top:8px;font-size:47px;line-height:.83;font-weight:430;letter-spacing:-.07em}.upload-glass{margin-top:22px;padding:12px;border-radius:36px;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px)}.upload-drop{position:relative;min-height:310px;border-radius:29px;border:1px dashed rgba(255,255,255,.22);background:linear-gradient(145deg,rgba(255,255,255,.10),rgba(255,255,255,.035));display:flex;align-items:center;justify-content:center;overflow:hidden;cursor:pointer}.upload-drop input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.upload-empty{text-align:center;pointer-events:none}.upload-plus{font-size:46px;font-weight:200;line-height:1}.upload-empty strong{display:block;margin-top:18px;font-size:11px;letter-spacing:.16em}.upload-empty span{display:block;margin-top:8px;color:#777;font-size:8px;letter-spacing:.12em}.upload-preview{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;padding:16px;display:none}.upload-preview.visible{display:block}.upload-form{display:grid;gap:8px;margin-top:10px}.upload-row{display:grid;grid-template-columns:1fr 1fr;gap:8px}.upload-field{width:100%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:white;border-radius:22px;padding:14px 15px;outline:none;font-size:9px;letter-spacing:.1em}.upload-field option{background:#111;color:#fff}.gender-switch{display:grid;grid-template-columns:1fr 1fr;gap:7px}.gender-button{border:1px solid rgba(255,255,255,.13);background:rgba(255,255,255,.05);border-radius:24px;padding:13px;color:#777;font-size:9px;letter-spacing:.15em;cursor:pointer}.gender-button.active{background:white;color:#111}.upload-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}.upload-action{border:1px solid rgba(255,255,255,.14);border-radius:28px;padding:15px;background:rgba(255,255,255,.08);font-size:8px;letter-spacing:.12em;cursor:pointer}.upload-action.primary{background:white;color:#111}.upload-note{color:#666;font-size:8px;line-height:1.55;letter-spacing:.06em;padding:3px 4px 0}@media(min-width:800px){.upload-clothes{padding-left:35px;padding-right:35px}.upload-glass{display:grid;grid-template-columns:1fr 1fr;gap:12px}.upload-form{margin-top:0;align-content:center;padding:12px}.upload-drop{min-height:480px}}
+
 </style>
 
 </head>
@@ -4027,6 +4033,47 @@ footer{
         id="productGrid"
     ></div>
 
+</section>
+
+
+
+<!-- ======================================================
+     UPLOAD YOUR CLOTHES
+====================================================== -->
+<section class="upload-clothes" id="uploadClothes">
+    <div class="upload-header">
+        <span>CREATUREMEZA / YOUR CLOSET</span>
+        <h2>UPLOAD<br>YOUR CLOTHES</h2>
+    </div>
+    <div class="upload-glass">
+        <label class="upload-drop" id="uploadDrop">
+            <input id="clothesFile" type="file" accept="image/*">
+            <div class="upload-empty" id="uploadEmpty">
+                <div class="upload-plus">＋</div>
+                <strong>SELECT PHOTO</strong>
+                <span>JPG / PNG / HEIC</span>
+            </div>
+            <img class="upload-preview" id="clothesPreview" alt="Uploaded clothing preview">
+        </label>
+        <div class="upload-form">
+            <div class="gender-switch">
+                <button class="gender-button active" type="button" data-gender="MAN">MAN</button>
+                <button class="gender-button" type="button" data-gender="WOMAN">WOMAN</button>
+            </div>
+            <input class="upload-field" id="clothesName" maxlength="50" placeholder="ITEM NAME — e.g. CAT ZIP-HOODIE">
+            <div class="upload-row">
+                <select class="upload-field" id="clothesCategory">
+                    <option value="shirt">SHIRT</option><option value="tshirt">T-SHIRT</option><option value="zip-hoodie">ZIP-HOODIE</option><option value="hoodie">HOODIE</option><option value="longsleeve">LONGSLEEVE</option><option value="jeans">JEANS</option><option value="accessories">ACCESSORIES</option>
+                </select>
+                <input class="upload-field" id="clothesPrice" type="number" min="0" inputmode="decimal" placeholder="PRICE $">
+            </div>
+            <div class="upload-actions">
+                <button class="upload-action" id="removeBgButton" type="button">REMOVE BACKGROUND</button>
+                <button class="upload-action primary" id="addUploadedButton" type="button">ADD TO FIT</button>
+            </div>
+            <div class="upload-note">Photo preview works now. Automatic background removal will be connected through the processing backend next.</div>
+        </div>
+    </div>
 </section>
 
 
@@ -4592,6 +4639,25 @@ const products = [
 
 
     {
+        id:"cm002m",
+
+        name:"BLACK MAN T-SHIRT",
+
+        price:29,
+
+        oldPrice:35,
+
+        category:"tshirt",
+
+        status:"PREORDER",
+
+        image:"",
+
+        description:
+            "CreatureMeza graphic T-shirt."
+    },
+
+    {
         id:"cm002",
 
         name:"BLACK WOMAN T-SHIRT",
@@ -4610,6 +4676,25 @@ const products = [
             "CreatureMeza graphic T-shirt."
     },
 
+
+    {
+        id:"cm003m",
+
+        name:"DREAM MAN T-SHIRT",
+
+        price:29,
+
+        oldPrice:35,
+
+        category:"tshirt",
+
+        status:"PREORDER",
+
+        image:"",
+
+        description:
+            "CreatureMeza T-shirt from Collection 001."
+    },
 
     {
         id:"cm003",
@@ -4632,6 +4717,25 @@ const products = [
 
 
     {
+        id:"cm004m",
+
+        name:"RED MAN T-SHIRT",
+
+        price:29,
+
+        oldPrice:35,
+
+        category:"tshirt",
+
+        status:"PREORDER",
+
+        image:"",
+
+        description:
+            "CreatureMeza graphic T-shirt."
+    },
+
+    {
         id:"cm004",
 
         name:"RED WOMAN T-SHIRT",
@@ -4650,6 +4754,25 @@ const products = [
             "CreatureMeza graphic T-shirt."
     },
 
+
+    {
+        id:"cm005m",
+
+        name:"EYES MAN T-SHIRT",
+
+        price:29,
+
+        oldPrice:35,
+
+        category:"tshirt",
+
+        status:"PREORDER",
+
+        image:"",
+
+        description:
+            "CreatureMeza Eyes graphic T-shirt."
+    },
 
     {
         id:"cm005",
@@ -7001,6 +7124,70 @@ document
 
         }
     );
+
+
+
+/* =========================================================
+   UPLOAD YOUR CLOTHES
+========================================================= */
+let uploadGender = "MAN";
+let uploadedImageURL = "";
+
+document.querySelectorAll(".gender-button").forEach(button => {
+    button.addEventListener("click", () => {
+        document.querySelectorAll(".gender-button").forEach(b => b.classList.remove("active"));
+        button.classList.add("active");
+        uploadGender = button.dataset.gender;
+    });
+});
+
+const clothesFile = document.getElementById("clothesFile");
+const clothesPreview = document.getElementById("clothesPreview");
+const uploadEmpty = document.getElementById("uploadEmpty");
+
+clothesFile.addEventListener("change", event => {
+    const file = event.target.files && event.target.files[0];
+    if(!file) return;
+    if(!file.type.startsWith("image/")){
+        showToast("SELECT AN IMAGE FILE");
+        return;
+    }
+    if(uploadedImageURL.startsWith("blob:")) URL.revokeObjectURL(uploadedImageURL);
+    uploadedImageURL = URL.createObjectURL(file);
+    clothesPreview.src = uploadedImageURL;
+    clothesPreview.classList.add("visible");
+    uploadEmpty.style.display = "none";
+    showToast("PHOTO READY");
+});
+
+document.getElementById("removeBgButton").addEventListener("click", () => {
+    if(!uploadedImageURL){ showToast("SELECT A PHOTO FIRST"); return; }
+    showToast("BACKGROUND REMOVAL — NEXT CONNECTION");
+});
+
+document.getElementById("addUploadedButton").addEventListener("click", () => {
+    if(!uploadedImageURL){ showToast("SELECT A PHOTO FIRST"); return; }
+    const category = document.getElementById("clothesCategory").value;
+    const rawName = document.getElementById("clothesName").value.trim();
+    const price = Math.max(0, Number(document.getElementById("clothesPrice").value) || 0);
+    const item = {
+        id:"upload-" + Date.now(),
+        name:(rawName || "MY " + (categoryLabels[category] || "ITEM")) + " " + uploadGender,
+        price:price,
+        oldPrice:null,
+        category:category,
+        status:"MY CLOSET",
+        image:uploadedImageURL,
+        description:"Uploaded to CreatureMeza Fit Builder."
+    };
+    products.unshift(item);
+    if(["shirt","tshirt","zip-hoodie","hoodie","longsleeve"].includes(category)) builderData.top.unshift(item);
+    if(category === "jeans") builderData.bottom.unshift(item);
+    if(category === "accessories") builderData.accessory.unshift(item);
+    renderProducts(); renderArchive(); renderBuilder(); renderCatalog();
+    showToast("ADDED TO FIT BUILDER");
+    scrollToSection("builder");
+});
 
 
 /* =========================================================
