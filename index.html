@@ -7232,233 +7232,44 @@ loadReviews();
 </script>
 
 <!-- =========================================================
-     CREATUREMEZA AI BACKGROUND REMOVAL
-     STABLE GITHUB PAGES VERSION
+     CREATUREMEZA AI BACKGROUND REMOVAL V2
+     FAST -> MASK CHECK -> QUALITY FALLBACK
 ========================================================= -->
 
 <script>
 
-/* =========================================================
-   ELEMENTS
-========================================================= */
+(() => {
 
-const CM_AI = {
+    /* =====================================================
+       ELEMENTS
+    ===================================================== */
 
-    button:
-        document.getElementById(
-            "removeBackgroundButton"
-        ),
+    const button =
+        document.getElementById("removeBackgroundButton");
 
-    addButton:
-        document.getElementById(
-            "addUploadToFit"
-        ),
+    const addButton =
+        document.getElementById("addUploadToFit");
 
-    input:
-        document.getElementById(
-            "clothesInput"
-        ),
+    const input =
+        document.getElementById("clothesInput");
 
-    preview:
-        document.getElementById(
-            "uploadPreview"
-        ),
+    const preview =
+        document.getElementById("uploadPreview");
 
-    status:
-        document.getElementById(
-            "aiStatus"
-        ),
+    const status =
+        document.getElementById("aiStatus");
 
-    progress:
-        document.getElementById(
-            "aiProgress"
-        ),
+    const progress =
+        document.getElementById("aiProgress");
 
-    progressBar:
-        document.getElementById(
-            "aiProgressBar"
-        )
+    const progressBar =
+        document.getElementById("aiProgressBar");
 
-};
 
+    if (!button || !input || !preview) {
 
-/* =========================================================
-   STATE
-========================================================= */
-
-CM_AI.running =
-    false;
-
-CM_AI.module =
-    null;
-
-CM_AI.processedBlob =
-    null;
-
-
-/* =========================================================
-   GET FILE
-
-   ВАЖНО:
-   AI больше не зависит от selectedFile
-   из другого script.
-
-   Если пользователь загрузил файл вручную —
-   берём его непосредственно из input.
-
-   Если вещь пришла из коллекции —
-   используем selectedFile основного сайта.
-========================================================= */
-
-function cmGetAIFile(){
-
-    const inputFile =
-        CM_AI.input &&
-        CM_AI.input.files &&
-        CM_AI.input.files[0];
-
-    if(inputFile){
-
-        return inputFile;
-
-    }
-
-
-    /*
-        Для вещи, выбранной из коллекции.
-
-        typeof безопасен даже если
-        переменной вообще не существует.
-    */
-
-    if(
-        typeof selectedFile !==
-        "undefined"
-
-        &&
-
-        selectedFile
-    ){
-
-        return selectedFile;
-
-    }
-
-
-    return null;
-
-}
-
-
-/* =========================================================
-   STATUS
-========================================================= */
-
-function cmAIStatus(text){
-
-    if(
-        CM_AI.status
-    ){
-
-        CM_AI.status.textContent =
-            text;
-
-    }
-
-}
-
-
-/* =========================================================
-   PROGRESS
-========================================================= */
-
-function cmAIProgress(percent){
-
-    const value =
-        Math.max(
-            0,
-            Math.min(
-                100,
-                Number(percent) || 0
-            )
-        );
-
-
-    if(
-        CM_AI.progress
-    ){
-
-        CM_AI.progress.classList.add(
-            "visible"
-        );
-
-    }
-
-
-    if(
-        CM_AI.progressBar
-    ){
-
-        CM_AI.progressBar.style.width =
-            value +
-            "%";
-
-    }
-
-}
-
-
-/* =========================================================
-   BUTTON STATE
-========================================================= */
-
-function cmSetAIRunning(running){
-
-    CM_AI.running =
-        running;
-
-
-    if(
-        CM_AI.button
-    ){
-
-        CM_AI.button.disabled =
-            running;
-
-    }
-
-
-    if(
-        CM_AI.addButton &&
-        running
-    ){
-
-        CM_AI.addButton.disabled =
-            true;
-
-    }
-
-}
-
-
-/* =========================================================
-   SHOW MESSAGE
-========================================================= */
-
-function cmToast(message){
-
-    /*
-        Используем твою старую функцию,
-        если она существует.
-    */
-
-    if(
-        typeof showToast ===
-        "function"
-    ){
-
-        showToast(
-            message
+        console.error(
+            "CreatureMeza AI: required elements not found"
         );
 
         return;
@@ -7466,51 +7277,149 @@ function cmToast(message){
     }
 
 
-    console.log(
-        message
-    );
+    /* =====================================================
+       STATE
+    ===================================================== */
 
-}
+    let running = false;
+
+    let aiFunction = null;
+
+    let currentResultURL = "";
+
+    let lastProcessedBlob = null;
 
 
-/* =========================================================
-   LOAD AI
+    /* =====================================================
+       HELPERS
+    ===================================================== */
 
-   КЛЮЧЕВОЕ ИЗМЕНЕНИЕ:
+    function setStatus(text) {
 
-   Больше НЕТ:
-
-   <script type="module">
-   import ...
-
-   Поэтому если CDN временно не загрузился,
-   кнопка всё равно имеет обработчик клика.
-
-   Модуль загружается ТОЛЬКО после клика.
-========================================================= */
-
-async function cmLoadAI(){
-
-    if(
-        CM_AI.module
-    ){
-
-        return CM_AI.module;
+        if (status) {
+            status.textContent = text;
+        }
 
     }
 
 
-    cmAIStatus(
-        "ЗАГРУЖАЮ AI ENGINE…"
-    );
+    function setProgress(value) {
+
+        const percent =
+            Math.max(
+                0,
+                Math.min(
+                    100,
+                    Number(value) || 0
+                )
+            );
 
 
-    cmAIProgress(
-        2
-    );
+        if (progress) {
+
+            progress.classList.add(
+                "visible"
+            );
+
+        }
 
 
-    try{
+        if (progressBar) {
+
+            progressBar.style.width =
+                percent + "%";
+
+        }
+
+    }
+
+
+    function toast(text) {
+
+        if (
+            typeof showToast === "function"
+        ) {
+
+            showToast(text);
+
+        }
+
+        else {
+
+            console.log(text);
+
+        }
+
+    }
+
+
+    /* =====================================================
+       GET FILE
+    ===================================================== */
+
+    function getFile() {
+
+        if (
+            input.files &&
+            input.files.length
+        ) {
+
+            return input.files[0];
+
+        }
+
+
+        /*
+            Если вещь была выбрана
+            из коллекции.
+        */
+
+        try {
+
+            if (
+                typeof selectedFile !== "undefined" &&
+                selectedFile
+            ) {
+
+                return selectedFile;
+
+            }
+
+        }
+        catch (error) {
+
+            console.warn(
+                "selectedFile unavailable",
+                error
+            );
+
+        }
+
+
+        return null;
+
+    }
+
+
+    /* =====================================================
+       LOAD IMG.LY
+    ===================================================== */
+
+    async function loadAI() {
+
+        if (aiFunction) {
+
+            return aiFunction;
+
+        }
+
+
+        setStatus(
+            "ЗАГРУЖАЮ AI ENGINE…"
+        );
+
+        setProgress(3);
+
 
         const module =
             await import(
@@ -7518,1045 +7427,1109 @@ async function cmLoadAI(){
             );
 
 
-        /*
-            Поддерживаем и default export,
-            и named export.
-        */
-
-        const remove =
+        aiFunction =
             module.default ||
             module.removeBackground;
 
 
-        if(
-            typeof remove !==
-            "function"
-        ){
+        if (
+            typeof aiFunction !== "function"
+        ) {
 
             throw new Error(
-                "REMOVE_BACKGROUND_FUNCTION_NOT_FOUND"
+                "Background removal function not found"
             );
 
         }
 
 
-        CM_AI.module = {
+        return aiFunction;
 
-            removeBackground:
-                remove
+    }
+
+
+    /* =====================================================
+       READ IMAGE FROM BLOB
+    ===================================================== */
+
+    async function blobToImage(blob) {
+
+        const url =
+            URL.createObjectURL(blob);
+
+
+        try {
+
+            const image =
+                new Image();
+
+
+            await new Promise(
+                (resolve, reject) => {
+
+                    image.onload =
+                        resolve;
+
+                    image.onerror =
+                        reject;
+
+                    image.src =
+                        url;
+
+                }
+            );
+
+
+            return image;
+
+        }
+
+        finally {
+
+            /*
+                URL нельзя revoke до того,
+                как картинка загрузилась.
+            */
+
+        }
+
+    }
+
+
+    /* =====================================================
+       ANALYZE AI MASK
+
+       Проверяем:
+       - сколько объекта осталось;
+       - не уничтожен ли центр вещи;
+       - есть ли большие дырки внутри объекта.
+
+       Это НЕ меняет изображение.
+       Только решает, нужен ли QUALITY.
+    ===================================================== */
+
+    async function analyzeMask(blob) {
+
+        let url = "";
+
+        try {
+
+            url =
+                URL.createObjectURL(blob);
+
+
+            const image =
+                new Image();
+
+
+            await new Promise(
+                (resolve, reject) => {
+
+                    image.onload =
+                        resolve;
+
+                    image.onerror =
+                        reject;
+
+                    image.src =
+                        url;
+
+                }
+            );
+
+
+            /*
+                Для анализа нам не нужны
+                тысячи пикселей.
+
+                Уменьшаем до максимум 320px.
+                Так iPhone работает быстрее.
+            */
+
+            const maxSide = 320;
+
+            const ratio =
+                Math.min(
+                    1,
+                    maxSide /
+                    Math.max(
+                        image.naturalWidth,
+                        image.naturalHeight
+                    )
+                );
+
+
+            const width =
+                Math.max(
+                    1,
+                    Math.round(
+                        image.naturalWidth *
+                        ratio
+                    )
+                );
+
+
+            const height =
+                Math.max(
+                    1,
+                    Math.round(
+                        image.naturalHeight *
+                        ratio
+                    )
+                );
+
+
+            const canvas =
+                document.createElement(
+                    "canvas"
+                );
+
+
+            canvas.width = width;
+            canvas.height = height;
+
+
+            const ctx =
+                canvas.getContext(
+                    "2d",
+                    {
+                        willReadFrequently:
+                            true
+                    }
+                );
+
+
+            ctx.clearRect(
+                0,
+                0,
+                width,
+                height
+            );
+
+
+            ctx.drawImage(
+                image,
+                0,
+                0,
+                width,
+                height
+            );
+
+
+            const pixels =
+                ctx.getImageData(
+                    0,
+                    0,
+                    width,
+                    height
+                ).data;
+
+
+            let visible = 0;
+
+            let strongVisible = 0;
+
+            let centerTotal = 0;
+
+            let centerVisible = 0;
+
+
+            /*
+                Центральная область.
+                Именно там обычно находится
+                основная часть одежды.
+            */
+
+            const centerX1 =
+                width * 0.25;
+
+            const centerX2 =
+                width * 0.75;
+
+            const centerY1 =
+                height * 0.20;
+
+            const centerY2 =
+                height * 0.82;
+
+
+            for (
+                let y = 0;
+                y < height;
+                y++
+            ) {
+
+                for (
+                    let x = 0;
+                    x < width;
+                    x++
+                ) {
+
+                    const i =
+                        (
+                            y * width +
+                            x
+                        ) * 4;
+
+
+                    const alpha =
+                        pixels[i + 3];
+
+
+                    if (alpha > 12) {
+
+                        visible++;
+
+                    }
+
+
+                    if (alpha > 180) {
+
+                        strongVisible++;
+
+                    }
+
+
+                    if (
+                        x >= centerX1 &&
+                        x <= centerX2 &&
+                        y >= centerY1 &&
+                        y <= centerY2
+                    ) {
+
+                        centerTotal++;
+
+
+                        if (
+                            alpha > 35
+                        ) {
+
+                            centerVisible++;
+
+                        }
+
+                    }
+
+                }
+
+            }
+
+
+            const total =
+                width * height;
+
+
+            const visibleRatio =
+                visible / total;
+
+
+            const strongRatio =
+                strongVisible / total;
+
+
+            const centerRatio =
+                centerTotal
+                    ? centerVisible /
+                      centerTotal
+                    : 0;
+
+
+            /*
+                Эвристика.
+
+                Если осталось слишком мало
+                объекта или центр неожиданно
+                стал очень прозрачным —
+                FAST результат подозрительный.
+            */
+
+            let suspicious = false;
+
+            const reasons = [];
+
+
+            if (
+                visibleRatio < 0.07
+            ) {
+
+                suspicious = true;
+
+                reasons.push(
+                    "too_little_foreground"
+                );
+
+            }
+
+
+            if (
+                strongRatio < 0.045
+            ) {
+
+                suspicious = true;
+
+                reasons.push(
+                    "weak_foreground"
+                );
+
+            }
+
+
+            if (
+                centerRatio < 0.22
+            ) {
+
+                suspicious = true;
+
+                reasons.push(
+                    "center_removed"
+                );
+
+            }
+
+
+            console.log(
+                "CreatureMeza mask analysis:",
+                {
+                    visibleRatio,
+                    strongRatio,
+                    centerRatio,
+                    suspicious,
+                    reasons
+                }
+            );
+
+
+            return {
+
+                suspicious,
+
+                visibleRatio,
+
+                strongRatio,
+
+                centerRatio,
+
+                reasons
+
+            };
+
+        }
+
+        catch (error) {
+
+            /*
+                Если Safari не смог
+                проанализировать PNG,
+                не ломаем весь AI.
+
+                Просто считаем FAST
+                допустимым.
+            */
+
+            console.warn(
+                "Mask analysis failed:",
+                error
+            );
+
+
+            return {
+
+                suspicious: false,
+
+                reasons: [
+                    "analysis_failed"
+                ]
+
+            };
+
+        }
+
+        finally {
+
+            if (url) {
+
+                URL.revokeObjectURL(url);
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       AI PROGRESS
+    ===================================================== */
+
+    function createProgressHandler(
+        start,
+        end,
+        label
+    ) {
+
+        return (
+            key,
+            current,
+            total
+        ) => {
+
+            let normalized = 0;
+
+
+            if (
+                Number.isFinite(current) &&
+                Number.isFinite(total) &&
+                total > 0
+            ) {
+
+                normalized =
+                    current / total;
+
+            }
+
+
+            const percent =
+                Math.round(
+                    start +
+                    normalized *
+                    (end - start)
+                );
+
+
+            setProgress(percent);
+
+
+            const safePercent =
+                Math.max(
+                    start,
+                    Math.min(
+                        end,
+                        percent
+                    )
+                );
+
+
+            setStatus(
+                label +
+                " — " +
+                safePercent +
+                "%"
+            );
 
         };
 
+    }
 
-        return CM_AI.module;
+
+    /* =====================================================
+       RUN FAST MODEL
+    ===================================================== */
+
+    async function runFast(
+        removeBackground,
+        file
+    ) {
+
+        setStatus(
+            "FAST AI — УДАЛЯЮ ФОН…"
+        );
+
+
+        setProgress(8);
+
+
+        return await removeBackground(
+            file,
+            {
+
+                model:
+                    "isnet_quint8",
+
+                proxyToWorker:
+                    false,
+
+                output: {
+
+                    format:
+                        "image/png",
+
+                    quality:
+                        1,
+
+                    type:
+                        "foreground"
+
+                },
+
+                progress:
+                    createProgressHandler(
+                        8,
+                        55,
+                        "FAST AI"
+                    )
+
+            }
+        );
 
     }
 
-    catch(error){
 
-        console.error(
-            "CreatureMeza AI import error:",
-            error
+    /* =====================================================
+       RUN QUALITY MODEL
+    ===================================================== */
+
+    async function runQuality(
+        removeBackground,
+        file
+    ) {
+
+        setStatus(
+            "СЛОЖНЫЙ ФОН — ЗАПУСКАЮ QUALITY AI…"
         );
+
+
+        setProgress(58);
+
+
+        /*
+            Полная ISNet модель.
+            Она тяжелее FAST версии,
+            поэтому запускаем её только
+            при необходимости.
+        */
+
+        return await removeBackground(
+            file,
+            {
+
+                model:
+                    "isnet",
+
+                proxyToWorker:
+                    false,
+
+                output: {
+
+                    format:
+                        "image/png",
+
+                    quality:
+                        1,
+
+                    type:
+                        "foreground"
+
+                },
+
+                progress:
+                    createProgressHandler(
+                        58,
+                        94,
+                        "QUALITY AI"
+                    )
+
+            }
+        );
+
+    }
+
+
+    /* =====================================================
+       RESULT -> BLOB
+    ===================================================== */
+
+    function ensureBlob(result) {
+
+        if (
+            result instanceof Blob
+        ) {
+
+            return result;
+
+        }
+
+
+        if (
+            result instanceof ArrayBuffer
+        ) {
+
+            return new Blob(
+                [result],
+                {
+                    type:
+                        "image/png"
+                }
+            );
+
+        }
+
+
+        if (
+            ArrayBuffer.isView(result)
+        ) {
+
+            return new Blob(
+                [result.buffer],
+                {
+                    type:
+                        "image/png"
+                }
+            );
+
+        }
 
 
         throw new Error(
-            "Не удалось загрузить AI-модель"
-        );
-
-    }
-
-}
-
-
-/* =========================================================
-   CONVERT RESULT TO BLOB
-========================================================= */
-
-async function cmEnsureBlob(result){
-
-    if(
-        result instanceof Blob
-    ){
-
-        return result;
-
-    }
-
-
-    if(
-        result instanceof ArrayBuffer
-    ){
-
-        return new Blob(
-            [result],
-            {
-                type:
-                    "image/png"
-            }
+            "AI returned invalid image"
         );
 
     }
 
 
-    if(
-        ArrayBuffer.isView(
-            result
-        )
-    ){
+    /* =====================================================
+       SHOW RESULT
 
-        return new Blob(
-            [result.buffer],
-            {
-                type:
-                    "image/png"
-            }
-        );
+       ВАЖНО:
+       здесь НЕТ дополнительного
+       удаления пикселей.
 
-    }
+       Используем именно маску AI.
+    ===================================================== */
 
+    function showResult(blob) {
 
-    throw new Error(
-        "AI_RESULT_IS_NOT_BLOB"
-    );
-
-}
+        lastProcessedBlob =
+            blob;
 
 
-/* =========================================================
-   CROP TRANSPARENT AREA
-========================================================= */
+        if (
+            currentResultURL
+        ) {
 
-async function cmCropTransparent(blob){
+            URL.revokeObjectURL(
+                currentResultURL
+            );
 
-    try{
+        }
 
-        const bitmap =
-            await createImageBitmap(
+
+        currentResultURL =
+            URL.createObjectURL(
                 blob
             );
 
 
-        const canvas =
-            document.createElement(
-                "canvas"
-            );
-
-
-        canvas.width =
-            bitmap.width;
-
-        canvas.height =
-            bitmap.height;
-
-
-        const ctx =
-            canvas.getContext(
-                "2d",
-                {
-                    willReadFrequently:
-                        true
-                }
-            );
-
-
-        ctx.clearRect(
-            0,
-            0,
-            canvas.width,
-            canvas.height
-        );
-
-
-        ctx.drawImage(
-            bitmap,
-            0,
-            0
-        );
-
-
-        const imageData =
-            ctx.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
-
-
-        const data =
-            imageData.data;
-
-
-        let minX =
-            canvas.width;
-
-        let minY =
-            canvas.height;
-
-        let maxX =
-            -1;
-
-        let maxY =
-            -1;
-
-
         /*
-            Ищем пиксели,
-            которые не полностью прозрачные.
+            Переменная из основного
+            CreatureMeza JS.
         */
 
-        for(
-            let y = 0;
-            y < canvas.height;
-            y++
-        ){
+        try {
 
-            for(
-                let x = 0;
-                x < canvas.width;
-                x++
-            ){
+            if (
+                typeof processedImageURL !==
+                "undefined"
+            ) {
 
-                const index =
-                    (
-                        y *
-                        canvas.width +
-                        x
-                    )
-                    *
-                    4;
+                if (
+                    processedImageURL &&
+                    processedImageURL !==
+                    currentResultURL
+                ) {
 
+                    try {
 
-                const alpha =
-                    data[
-                        index +
-                        3
-                    ];
-
-
-                if(
-                    alpha >
-                    12
-                ){
-
-                    if(
-                        x <
-                        minX
-                    ){
-
-                        minX =
-                            x;
+                        URL.revokeObjectURL(
+                            processedImageURL
+                        );
 
                     }
-
-
-                    if(
-                        y <
-                        minY
-                    ){
-
-                        minY =
-                            y;
-
-                    }
-
-
-                    if(
-                        x >
-                        maxX
-                    ){
-
-                        maxX =
-                            x;
-
-                    }
-
-
-                    if(
-                        y >
-                        maxY
-                    ){
-
-                        maxY =
-                            y;
-
-                    }
+                    catch (_) {}
 
                 }
+
+
+                processedImageURL =
+                    currentResultURL;
 
             }
 
         }
+        catch (_) {}
 
 
         /*
-            Ничего не найдено —
-            возвращаем исходный PNG.
+            Некоторые версии твоего
+            основного кода могут работать
+            через window.
         */
 
-        if(
-            maxX <
-            minX
+        window.creatureMezaProcessedBlob =
+            blob;
 
-            ||
-
-            maxY <
-            minY
-        ){
-
-            bitmap.close();
-
-            return blob;
-
-        }
+        window.creatureMezaProcessedURL =
+            currentResultURL;
 
 
-        let width =
-            maxX -
-            minX +
-            1;
+        preview.src =
+            currentResultURL;
 
 
-        let height =
-            maxY -
-            minY +
-            1;
-
-
-        /*
-            Немного свободного пространства
-            вокруг одежды.
-        */
-
-        const padding =
-            Math.max(
-                8,
-
-                Math.round(
-                    Math.max(
-                        width,
-                        height
-                    )
-                    *
-                    0.025
-                )
-            );
-
-
-        minX =
-            Math.max(
-                0,
-                minX -
-                padding
-            );
-
-
-        minY =
-            Math.max(
-                0,
-                minY -
-                padding
-            );
-
-
-        maxX =
-            Math.min(
-                canvas.width -
-                1,
-
-                maxX +
-                padding
-            );
-
-
-        maxY =
-            Math.min(
-                canvas.height -
-                1,
-
-                maxY +
-                padding
-            );
-
-
-        width =
-            maxX -
-            minX +
-            1;
-
-
-        height =
-            maxY -
-            minY +
-            1;
-
-
-        const output =
-            document.createElement(
-                "canvas"
-            );
-
-
-        output.width =
-            width;
-
-        output.height =
-            height;
-
-
-        const outputContext =
-            output.getContext(
-                "2d"
-            );
-
-
-        outputContext.clearRect(
-            0,
-            0,
-            width,
-            height
+        preview.classList.add(
+            "visible"
         );
 
 
-        outputContext.drawImage(
-
-            canvas,
-
-            minX,
-            minY,
-            width,
-            height,
-
-            0,
-            0,
-            width,
-            height
-
-        );
-
-
-        bitmap.close();
-
-
-        const cropped =
-            await new Promise(
-                resolve => {
-
-                    output.toBlob(
-                        result => {
-
-                            resolve(
-                                result ||
-                                blob
-                            );
-
-                        },
-
-                        "image/png",
-
-                        1
-                    );
-
-                }
+        const photo =
+            document.getElementById(
+                "uploadPhoto"
             );
 
 
-        return cropped;
+        if (photo) {
 
-    }
-
-    catch(error){
-
-        /*
-            Обрезка — дополнительная функция.
-            Даже если Safari её не выполнит,
-            AI-результат всё равно используем.
-        */
-
-        console.warn(
-            "CreatureMeza crop error:",
-            error
-        );
-
-
-        return blob;
-
-    }
-
-}
-
-
-/* =========================================================
-   SET RESULT
-========================================================= */
-
-async function cmSetResult(blob){
-
-    cmAIStatus(
-        "ОБРАБАТЫВАЮ PNG…"
-    );
-
-
-    cmAIProgress(
-        96
-    );
-
-
-    const finalBlob =
-        await cmCropTransparent(
-            blob
-        );
-
-
-    CM_AI.processedBlob =
-        finalBlob;
-
-
-    /*
-        Удаляем старый URL,
-        чтобы браузер не держал его в памяти.
-    */
-
-    if(
-        typeof processedImageURL !==
-        "undefined"
-
-        &&
-
-        processedImageURL
-    ){
-
-        try{
-
-            URL.revokeObjectURL(
-                processedImageURL
-            );
-
-        }
-
-        catch(error){
-
-            console.warn(
-                error
-            );
-
-        }
-
-    }
-
-
-    const resultURL =
-        URL.createObjectURL(
-            finalBlob
-        );
-
-
-    /*
-        Сохраняем в переменную основного сайта,
-        чтобы кнопка "Добавить в образ"
-        продолжала работать.
-    */
-
-    if(
-        typeof processedImageURL !==
-        "undefined"
-    ){
-
-        processedImageURL =
-            resultURL;
-
-    }
-
-
-    CM_AI.preview.src =
-        resultURL;
-
-
-    CM_AI.preview.classList.add(
-        "visible"
-    );
-
-
-    cmAIProgress(
-        100
-    );
-
-
-    cmAIStatus(
-        "ФОН УДАЛЁН ✓"
-    );
-
-
-    if(
-        CM_AI.addButton
-    ){
-
-        CM_AI.addButton.disabled =
-            false;
-
-    }
-
-
-    cmToast(
-        "ФОН УДАЛЁН"
-    );
-
-}
-
-
-/* =========================================================
-   REMOVE BACKGROUND
-========================================================= */
-
-async function cmRemoveBackground(){
-
-    /*
-        Защита от двойного клика.
-    */
-
-    if(
-        CM_AI.running
-    ){
-
-        return;
-
-    }
-
-
-    const file =
-        cmGetAIFile();
-
-
-    if(
-        !file
-    ){
-
-        cmAIStatus(
-            "СНАЧАЛА ВЫБЕРИ ФОТО"
-        );
-
-
-        cmToast(
-            "СНАЧАЛА ВЫБЕРИ ФОТО"
-        );
-
-
-        return;
-
-    }
-
-
-    cmSetAIRunning(
-        true
-    );
-
-
-    cmAIProgress(
-        1
-    );
-
-
-    cmAIStatus(
-        "ЗАПУСКАЮ ИИ…"
-    );
-
-
-    try{
-
-        /*
-            Сначала загружаем библиотеку.
-        */
-
-        const AI =
-            await cmLoadAI();
-
-
-        cmAIProgress(
-            5
-        );
-
-
-        cmAIStatus(
-            "ЗАГРУЖАЮ МОДЕЛЬ…"
-        );
-
-
-        /*
-            Маленькая модель лучше подходит
-            для телефона.
-
-            isnet_quint8 ~40 MB.
-
-            proxyToWorker:false помогает
-            избежать части проблем
-            Web Worker на статическом Pages.
-        */
-
-        const config = {
-
-            model:
-                "isnet_quint8",
-
-            proxyToWorker:
-                false,
-
-            debug:
-                false,
-
-            output:{
-
-                format:
-                    "image/png",
-
-                quality:
-                    1,
-
-                type:
-                    "foreground"
-
-            },
-
-            progress:
-                (
-                    key,
-                    current,
-                    total
-                ) => {
-
-                    let percent =
-                        8;
-
-
-                    /*
-                        IMG.LY иногда передаёт
-                        загрузку в байтах,
-                        иногда шаги обработки.
-                    */
-
-                    if(
-                        Number.isFinite(
-                            current
-                        )
-
-                        &&
-
-                        Number.isFinite(
-                            total
-                        )
-
-                        &&
-
-                        total >
-                        0
-                    ){
-
-                        percent =
-                            Math.round(
-                                (
-                                    current /
-                                    total
-                                )
-                                *
-                                82
-                            )
-                            +
-                            8;
-
-                    }
-
-
-                    percent =
-                        Math.max(
-                            8,
-                            Math.min(
-                                90,
-                                percent
-                            )
-                        );
-
-
-                    cmAIProgress(
-                        percent
-                    );
-
-
-                    const stage =
-                        String(
-                            key ||
-                            ""
-                        );
-
-
-                    if(
-                        stage.includes(
-                            "fetch"
-                        )
-
-                        ||
-
-                        stage.includes(
-                            "download"
-                        )
-                    ){
-
-                        cmAIStatus(
-                            "ЗАГРУЖАЮ AI-МОДЕЛЬ — " +
-                            percent +
-                            "%"
-                        );
-
-                    }
-
-                    else if(
-                        stage.includes(
-                            "inference"
-                        )
-                    ){
-
-                        cmAIStatus(
-                            "ИИ ОПРЕДЕЛЯЕТ ОДЕЖДУ…"
-                        );
-
-                    }
-
-                    else if(
-                        stage.includes(
-                            "mask"
-                        )
-                    ){
-
-                        cmAIStatus(
-                            "СОЗДАЮ ПРОЗРАЧНЫЙ ФОН…"
-                        );
-
-                    }
-
-                    else{
-
-                        cmAIStatus(
-                            "ИИ УДАЛЯЕТ ФОН — " +
-                            percent +
-                            "%"
-                        );
-
-                    }
-
-                }
-
-        };
-
-
-        /*
-            ЗДЕСЬ реально запускается
-            нейросеть.
-        */
-
-        const result =
-            await AI.removeBackground(
-                file,
-                config
-            );
-
-
-        cmAIProgress(
-            94
-        );
-
-
-        if(
-            !result
-        ){
-
-            throw new Error(
-                "AI_RETURNED_EMPTY_RESULT"
+            photo.classList.add(
+                "has-image"
             );
 
         }
 
 
-        const blob =
-            await cmEnsureBlob(
-                result
-            );
+        if (addButton) {
 
-
-        await cmSetResult(
-            blob
-        );
-
-    }
-
-    catch(error){
-
-        console.error(
-            "=================================="
-        );
-
-        console.error(
-            "CREATUREMEZA AI ERROR"
-        );
-
-        console.error(
-            error
-        );
-
-        console.error(
-            "=================================="
-        );
-
-
-        cmAIProgress(
-            0
-        );
-
-
-        /*
-            Теперь ошибка НЕ выглядит
-            как "кнопка не нажимается".
-
-            Пользователь увидит,
-            на каком этапе всё сломалось.
-        */
-
-        let message =
-            "ОШИБКА ИИ";
-
-
-        if(
-            error &&
-            error.message
-        ){
-
-            const text =
-                String(
-                    error.message
-                );
-
-
-            if(
-                text.toLowerCase()
-                    .includes(
-                        "fetch"
-                    )
-            ){
-
-                message =
-                    "НЕ УДАЛОСЬ ЗАГРУЗИТЬ AI-МОДЕЛЬ";
-
-            }
-
-            else if(
-                text.toLowerCase()
-                    .includes(
-                        "network"
-                    )
-            ){
-
-                message =
-                    "ОШИБКА СЕТИ ПРИ ЗАГРУЗКЕ ИИ";
-
-            }
-
-        }
-
-
-        cmAIStatus(
-            message +
-            " — НАЖМИ ЕЩЁ РАЗ"
-        );
-
-
-        cmToast(
-            message
-        );
-
-
-        if(
-            CM_AI.addButton
-        ){
-
-            CM_AI.addButton.disabled =
-                true;
-
-        }
-
-    }
-
-    finally{
-
-        CM_AI.running =
-            false;
-
-
-        /*
-            После ошибки или успеха
-            кнопка снова кликабельна.
-        */
-
-        if(
-            CM_AI.button
-        ){
-
-            CM_AI.button.disabled =
+            addButton.disabled =
                 false;
 
         }
 
+
+        setProgress(100);
+
+
+        setStatus(
+            "ФОН УДАЛЁН ✓"
+        );
+
+
+        toast(
+            "ФОН УДАЛЁН"
+        );
+
     }
 
-}
+
+    /* =====================================================
+       MAIN AI PIPELINE
+    ===================================================== */
+
+    async function processImage() {
+
+        if (running) {
+
+            return;
+
+        }
 
 
-/* =========================================================
-   BUTTON CLICK
+        const file =
+            getFile();
 
-   Этот обработчик создаётся СРАЗУ.
-   Он не зависит от успешного import().
-========================================================= */
 
-if(
-    CM_AI.button
-){
+        if (!file) {
 
-    CM_AI.button.addEventListener(
+            button.disabled =
+                true;
+
+
+            setStatus(
+                "СНАЧАЛА ВЫБЕРИ ФОТОГРАФИЮ"
+            );
+
+
+            return;
+
+        }
+
+
+        running = true;
+
+        button.disabled =
+            true;
+
+
+        if (addButton) {
+
+            addButton.disabled =
+                true;
+
+        }
+
+
+        try {
+
+            /*
+                1. LOAD LIBRARY
+            */
+
+            const removeBackground =
+                await loadAI();
+
+
+            /*
+                2. FAST PASS
+            */
+
+            const fastResult =
+                await runFast(
+                    removeBackground,
+                    file
+                );
+
+
+            const fastBlob =
+                ensureBlob(
+                    fastResult
+                );
+
+
+            /*
+                3. CHECK MASK
+            */
+
+            setStatus(
+                "ПРОВЕРЯЮ КАЧЕСТВО МАСКИ…"
+            );
+
+
+            setProgress(56);
+
+
+            const analysis =
+                await analyzeMask(
+                    fastBlob
+                );
+
+
+            /*
+                4. QUALITY FALLBACK
+            */
+
+            if (
+                analysis.suspicious
+            ) {
+
+                console.log(
+                    "FAST mask suspicious.",
+                    "Starting QUALITY.",
+                    analysis
+                );
+
+
+                try {
+
+                    const qualityResult =
+                        await runQuality(
+                            removeBackground,
+                            file
+                        );
+
+
+                    const qualityBlob =
+                        ensureBlob(
+                            qualityResult
+                        );
+
+
+                    /*
+                        Проверяем и второй
+                        результат, но даже если
+                        он сложный — используем
+                        QUALITY, потому что это
+                        более точная модель.
+                    */
+
+                    setStatus(
+                        "ПРОВЕРЯЮ QUALITY РЕЗУЛЬТАТ…"
+                    );
+
+
+                    setProgress(95);
+
+
+                    const qualityAnalysis =
+                        await analyzeMask(
+                            qualityBlob
+                        );
+
+
+                    console.log(
+                        "QUALITY analysis:",
+                        qualityAnalysis
+                    );
+
+
+                    showResult(
+                        qualityBlob
+                    );
+
+                }
+
+                catch (qualityError) {
+
+                    /*
+                        Например, телефону
+                        не хватило памяти
+                        для большой модели.
+
+                        Тогда не теряем уже
+                        готовый FAST результат.
+                    */
+
+                    console.warn(
+                        "QUALITY failed. Using FAST:",
+                        qualityError
+                    );
+
+
+                    setStatus(
+                        "QUALITY НЕДОСТУПЕН — ИСПОЛЬЗУЮ FAST"
+                    );
+
+
+                    showResult(
+                        fastBlob
+                    );
+
+                }
+
+            }
+
+            else {
+
+                /*
+                    FAST выглядит нормально.
+                    Вторую тяжёлую модель
+                    вообще не загружаем.
+                */
+
+                showResult(
+                    fastBlob
+                );
+
+            }
+
+        }
+
+        catch (error) {
+
+            console.error(
+                "CreatureMeza AI error:",
+                error
+            );
+
+
+            setProgress(0);
+
+
+            setStatus(
+                "ОШИБКА ИИ — НАЖМИ ЕЩЁ РАЗ"
+            );
+
+
+            toast(
+                "ОШИБКА ИИ"
+            );
+
+
+            if (addButton) {
+
+                addButton.disabled =
+                    true;
+
+            }
+
+        }
+
+        finally {
+
+            running = false;
+
+
+            /*
+                Если фотография всё ещё есть,
+                кнопку снова разрешаем.
+            */
+
+            if (
+                getFile()
+            ) {
+
+                button.disabled =
+                    false;
+
+            }
+
+        }
+
+    }
+
+
+    /* =====================================================
+       CLICK
+    ===================================================== */
+
+    button.addEventListener(
         "click",
-        cmRemoveBackground
+        processImage
     );
 
-}
 
+    /* =====================================================
+       NEW PHOTO
+    ===================================================== */
 
-/* =========================================================
-   FILE INPUT
-
-   Дополнительная страховка:
-   после выбора фотографии кнопка
-   гарантированно разблокируется.
-========================================================= */
-
-if(
-    CM_AI.input
-){
-
-    CM_AI.input.addEventListener(
+    input.addEventListener(
         "change",
         () => {
 
             const file =
-                CM_AI.input.files &&
-                CM_AI.input.files[0];
+                getFile();
 
 
-            if(
-                !file
-            ){
+            lastProcessedBlob =
+                null;
 
-                CM_AI.button.disabled =
+
+            if (addButton) {
+
+                addButton.disabled =
+                    true;
+
+            }
+
+
+            if (
+                currentResultURL
+            ) {
+
+                URL.revokeObjectURL(
+                    currentResultURL
+                );
+
+
+                currentResultURL =
+                    "";
+
+            }
+
+
+            if (!file) {
+
+                button.disabled =
                     true;
 
 
-                cmAIStatus(
+                setStatus(
                     "СНАЧАЛА ВЫБЕРИ ФОТОГРАФИЮ"
                 );
 
@@ -8566,46 +8539,54 @@ if(
             }
 
 
-            CM_AI.button.disabled =
+            button.disabled =
                 false;
 
 
-            CM_AI.addButton.disabled =
-                true;
+            if (progress) {
+
+                progress.classList.remove(
+                    "visible"
+                );
+
+            }
 
 
-            cmAIProgress(
-                0
-            );
+            if (progressBar) {
+
+                progressBar.style.width =
+                    "0%";
+
+            }
 
 
-            CM_AI.progress.classList.remove(
-                "visible"
-            );
-
-
-            cmAIStatus(
+            setStatus(
                 "ФОТО ЗАГРУЖЕНО — МОЖНО УДАЛЯТЬ ФОН"
             );
 
         }
     );
 
-}
+
+    /* =====================================================
+       INITIAL STATE
+    ===================================================== */
+
+    if (
+        getFile()
+    ) {
+
+        button.disabled =
+            false;
+
+    }
 
 
-/* =========================================================
-   INITIAL CHECK
-========================================================= */
+    console.log(
+        "CreatureMeza AI V2 ready"
+    );
 
-if(
-    cmGetAIFile()
-){
-
-    CM_AI.button.disabled =
-        false;
-
-}
+})();
 
 </script>
 
