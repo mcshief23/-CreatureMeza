@@ -7232,44 +7232,1691 @@ loadReviews();
 </script>
 
 <!-- =========================================================
-     CREATUREMEZA AI BACKGROUND REMOVAL V2
-     FAST -> MASK CHECK -> QUALITY FALLBACK
+     CREATUREMEZA — QUALITY AI + KEEP BRUSH
+     ВСТАВИТЬ ПЕРЕД </body>
 ========================================================= -->
 
-<script>
+<style>
 
-(() => {
+#cmKeepEditor{
+    display:none;
+    width:100%;
+    margin-top:14px;
+}
 
-    /* =====================================================
-       ELEMENTS
-    ===================================================== */
+#cmKeepEditor.visible{
+    display:block;
+}
 
-    const button =
-        document.getElementById("removeBackgroundButton");
+.cm-keep-title{
+    font-size:12px;
+    font-weight:800;
+    letter-spacing:.08em;
+    margin-bottom:8px;
+}
 
-    const addButton =
-        document.getElementById("addUploadToFit");
+.cm-keep-help{
+    font-size:11px;
+    line-height:1.45;
+    opacity:.55;
+    margin-bottom:12px;
+}
 
-    const input =
-        document.getElementById("clothesInput");
+#cmKeepStage{
+    position:relative;
+    width:100%;
+    max-width:520px;
+    margin:0 auto;
 
-    const preview =
-        document.getElementById("uploadPreview");
+    border-radius:24px;
+    overflow:hidden;
 
-    const status =
-        document.getElementById("aiStatus");
+    background:
+        linear-gradient(45deg,#ddd 25%,transparent 25%),
+        linear-gradient(-45deg,#ddd 25%,transparent 25%),
+        linear-gradient(45deg,transparent 75%,#ddd 75%),
+        linear-gradient(-45deg,transparent 75%,#ddd 75%);
 
-    const progress =
-        document.getElementById("aiProgress");
+    background-size:20px 20px;
+    background-position:
+        0 0,
+        0 10px,
+        10px -10px,
+        -10px 0;
 
-    const progressBar =
-        document.getElementById("aiProgressBar");
+    touch-action:none;
+}
+
+#cmKeepImage{
+    display:block;
+    width:100%;
+    height:auto;
+    pointer-events:none;
+    user-select:none;
+}
+
+#cmKeepCanvas{
+    position:absolute;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    cursor:crosshair;
+    touch-action:none;
+}
+
+.cm-keep-tools{
+    display:flex;
+    flex-wrap:wrap;
+    gap:7px;
+    margin-top:10px;
+}
+
+.cm-keep-tools button{
+    appearance:none;
+    border:1px solid rgba(255,255,255,.15);
+    background:rgba(255,255,255,.07);
+    color:#fff;
+
+    border-radius:999px;
+
+    padding:9px 13px;
+
+    font-size:10px;
+    font-weight:800;
+    letter-spacing:.04em;
+
+    cursor:pointer;
+}
+
+.cm-keep-tools button:active{
+    transform:scale(.96);
+}
+
+.cm-brush-info{
+    width:100%;
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    margin-top:10px;
+
+    font-size:10px;
+    opacity:.7;
+}
+
+#cmBrushRange{
+    flex:1;
+}
+
+#cmProtectionStatus{
+    margin-top:9px;
+
+    font-size:10px;
+    font-weight:700;
+
+    opacity:.6;
+}
+
+</style>
 
 
-    if (!button || !input || !preview) {
+<script type="module">
 
-        console.error(
-            "CreatureMeza AI: required elements not found"
+/* =========================================================
+   CREATUREMEZA QUALITY BACKGROUND REMOVAL
+========================================================= */
+
+
+/* =========================================================
+   ORIGINAL ELEMENTS
+========================================================= */
+
+const removeButton =
+    document.getElementById("removeBackgroundButton");
+
+const clothesInput =
+    document.getElementById("clothesInput");
+
+const uploadPreview =
+    document.getElementById("uploadPreview");
+
+const addButton =
+    document.getElementById("addUploadToFit");
+
+const aiStatus =
+    document.getElementById("aiStatus");
+
+const aiProgress =
+    document.getElementById("aiProgress");
+
+const aiProgressBar =
+    document.getElementById("aiProgressBar");
+
+
+if(
+    !removeButton ||
+    !clothesInput ||
+    !uploadPreview
+){
+
+    console.error(
+        "CreatureMeza AI: upload elements not found"
+    );
+
+}
+
+
+/* =========================================================
+   CREATE KEEP EDITOR
+========================================================= */
+
+const editor =
+    document.createElement("div");
+
+editor.id =
+    "cmKeepEditor";
+
+editor.innerHTML = `
+
+    <div class="cm-keep-title">
+        KEEP BRUSH
+    </div>
+
+    <div class="cm-keep-help">
+        Проведи пальцем по частям вещи,
+        которые AI точно не должен удалить.
+        Не обязательно идеально обводить края.
+    </div>
+
+    <div id="cmKeepStage">
+
+        <img
+            id="cmKeepImage"
+            alt=""
+        >
+
+        <canvas
+            id="cmKeepCanvas"
+        ></canvas>
+
+    </div>
+
+    <div class="cm-keep-tools">
+
+        <button
+            type="button"
+            id="cmUndoKeep"
+        >
+            UNDO
+        </button>
+
+        <button
+            type="button"
+            id="cmClearKeep"
+        >
+            CLEAR
+        </button>
+
+        <button
+            type="button"
+            id="cmBrushMinus"
+        >
+            BRUSH −
+        </button>
+
+        <button
+            type="button"
+            id="cmBrushPlus"
+        >
+            BRUSH +
+        </button>
+
+    </div>
+
+    <div class="cm-brush-info">
+
+        <span>
+            KEEP SIZE
+        </span>
+
+        <input
+            id="cmBrushRange"
+            type="range"
+            min="10"
+            max="140"
+            value="55"
+        >
+
+        <span id="cmBrushValue">
+            55
+        </span>
+
+    </div>
+
+    <div id="cmProtectionStatus">
+        НИЧЕГО НЕ ОТМЕЧЕНО
+    </div>
+
+`;
+
+
+/*
+    Ставим редактор непосредственно
+    после upload-блока.
+*/
+
+const uploadContainer =
+    uploadPreview.closest(".upload-photo") ||
+    uploadPreview.parentElement;
+
+
+if(uploadContainer){
+
+    uploadContainer.insertAdjacentElement(
+        "afterend",
+        editor
+    );
+
+}
+
+
+/* =========================================================
+   EDITOR ELEMENTS
+========================================================= */
+
+const keepStage =
+    document.getElementById("cmKeepStage");
+
+const keepImage =
+    document.getElementById("cmKeepImage");
+
+const keepCanvas =
+    document.getElementById("cmKeepCanvas");
+
+const keepCtx =
+    keepCanvas.getContext(
+        "2d",
+        {
+            willReadFrequently:true
+        }
+    );
+
+const undoButton =
+    document.getElementById("cmUndoKeep");
+
+const clearButton =
+    document.getElementById("cmClearKeep");
+
+const brushMinus =
+    document.getElementById("cmBrushMinus");
+
+const brushPlus =
+    document.getElementById("cmBrushPlus");
+
+const brushRange =
+    document.getElementById("cmBrushRange");
+
+const brushValue =
+    document.getElementById("cmBrushValue");
+
+const protectionStatus =
+    document.getElementById(
+        "cmProtectionStatus"
+    );
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let running =
+    false;
+
+let drawing =
+    false;
+
+let brushSize =
+    55;
+
+let lastX =
+    0;
+
+let lastY =
+    0;
+
+let originalFile =
+    null;
+
+let originalURL =
+    "";
+
+let finalURL =
+    "";
+
+let history =
+    [];
+
+let hasKeepPaint =
+    false;
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+function setStatus(text){
+
+    if(aiStatus){
+
+        aiStatus.textContent =
+            text;
+
+    }
+
+}
+
+
+function setProgress(value){
+
+    value =
+        Math.max(
+            0,
+            Math.min(
+                100,
+                value
+            )
+        );
+
+
+    if(aiProgress){
+
+        aiProgress.classList.add(
+            "visible"
+        );
+
+    }
+
+
+    if(aiProgressBar){
+
+        aiProgressBar.style.width =
+            value + "%";
+
+    }
+
+}
+
+
+/* =========================================================
+   FIND CURRENT FILE
+========================================================= */
+
+function getCurrentFile(){
+
+    if(
+        clothesInput.files &&
+        clothesInput.files[0]
+    ){
+
+        return clothesInput.files[0];
+
+    }
+
+
+    /*
+        Поддержка вещи,
+        выбранной из COLLECTION.
+    */
+
+    try{
+
+        if(
+            typeof selectedFile !==
+            "undefined" &&
+            selectedFile
+        ){
+
+            return selectedFile;
+
+        }
+
+    }
+    catch(error){}
+
+
+    return originalFile;
+
+}
+
+
+/* =========================================================
+   SHOW EDITOR
+========================================================= */
+
+async function prepareEditor(file){
+
+    if(!file){
+
+        return;
+
+    }
+
+
+    originalFile =
+        file;
+
+
+    if(originalURL){
+
+        URL.revokeObjectURL(
+            originalURL
+        );
+
+    }
+
+
+    originalURL =
+        URL.createObjectURL(
+            file
+        );
+
+
+    keepImage.src =
+        originalURL;
+
+
+    await new Promise(
+        (resolve,reject)=>{
+
+            if(
+                keepImage.complete &&
+                keepImage.naturalWidth
+            ){
+
+                resolve();
+
+                return;
+
+            }
+
+
+            keepImage.onload =
+                resolve;
+
+            keepImage.onerror =
+                reject;
+
+        }
+    );
+
+
+    editor.classList.add(
+        "visible"
+    );
+
+
+    /*
+        Подождать layout Safari.
+    */
+
+    await new Promise(
+        resolve =>
+            requestAnimationFrame(
+                ()=>requestAnimationFrame(
+                    resolve
+                )
+            )
+    );
+
+
+    resizeKeepCanvas();
+
+
+    clearKeepMask();
+
+
+    setStatus(
+        "ОТМЕТЬ КИСТЬЮ ТО, ЧТО НУЖНО СОХРАНИТЬ"
+    );
+
+}
+
+
+/* =========================================================
+   CANVAS SIZE
+========================================================= */
+
+function resizeKeepCanvas(){
+
+    if(
+        !keepImage.naturalWidth ||
+        !keepImage.naturalHeight
+    ){
+
+        return;
+
+    }
+
+
+    const rect =
+        keepImage.getBoundingClientRect();
+
+
+    if(
+        !rect.width ||
+        !rect.height
+    ){
+
+        return;
+
+    }
+
+
+    /*
+        Canvas хранит маску в разрешении,
+        близком к экранному.
+
+        Для KEEP-разметки этого достаточно,
+        затем мы масштабируем её до
+        разрешения AI-маски.
+    */
+
+    const scale =
+        Math.min(
+            2,
+            window.devicePixelRatio || 1
+        );
+
+
+    const oldCanvas =
+        document.createElement(
+            "canvas"
+        );
+
+
+    oldCanvas.width =
+        keepCanvas.width || 1;
+
+    oldCanvas.height =
+        keepCanvas.height || 1;
+
+
+    oldCanvas
+        .getContext("2d")
+        .drawImage(
+            keepCanvas,
+            0,
+            0
+        );
+
+
+    keepCanvas.width =
+        Math.max(
+            1,
+            Math.round(
+                rect.width *
+                scale
+            )
+        );
+
+
+    keepCanvas.height =
+        Math.max(
+            1,
+            Math.round(
+                rect.height *
+                scale
+            )
+        );
+
+
+    if(hasKeepPaint){
+
+        keepCtx.drawImage(
+            oldCanvas,
+            0,
+            0,
+            keepCanvas.width,
+            keepCanvas.height
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   HISTORY
+========================================================= */
+
+function saveHistory(){
+
+    if(
+        history.length >= 15
+    ){
+
+        history.shift();
+
+    }
+
+
+    history.push(
+        keepCtx.getImageData(
+            0,
+            0,
+            keepCanvas.width,
+            keepCanvas.height
+        )
+    );
+
+}
+
+
+/* =========================================================
+   CLEAR
+========================================================= */
+
+function clearKeepMask(){
+
+    keepCtx.clearRect(
+        0,
+        0,
+        keepCanvas.width,
+        keepCanvas.height
+    );
+
+
+    history =
+        [];
+
+    hasKeepPaint =
+        false;
+
+
+    protectionStatus.textContent =
+        "НИЧЕГО НЕ ОТМЕЧЕНО";
+
+}
+
+
+/* =========================================================
+   COORDINATES
+========================================================= */
+
+function pointerPosition(event){
+
+    const rect =
+        keepCanvas.getBoundingClientRect();
+
+
+    const scaleX =
+        keepCanvas.width /
+        rect.width;
+
+
+    const scaleY =
+        keepCanvas.height /
+        rect.height;
+
+
+    return {
+
+        x:
+            (
+                event.clientX -
+                rect.left
+            ) * scaleX,
+
+        y:
+            (
+                event.clientY -
+                rect.top
+            ) * scaleY,
+
+        scale:
+            (
+                scaleX +
+                scaleY
+            ) / 2
+
+    };
+
+}
+
+
+/* =========================================================
+   KEEP BRUSH
+========================================================= */
+
+function drawKeepLine(
+    x1,
+    y1,
+    x2,
+    y2,
+    scale
+){
+
+    keepCtx.save();
+
+
+    /*
+        Красный показывается только
+        пользователю.
+
+        Реальная KEEP-маска определяется
+        alpha-каналом canvas.
+    */
+
+    keepCtx.strokeStyle =
+        "rgba(255,55,55,.62)";
+
+
+    keepCtx.fillStyle =
+        "rgba(255,55,55,.62)";
+
+
+    keepCtx.lineWidth =
+        brushSize *
+        scale;
+
+
+    keepCtx.lineCap =
+        "round";
+
+
+    keepCtx.lineJoin =
+        "round";
+
+
+    keepCtx.beginPath();
+
+
+    keepCtx.moveTo(
+        x1,
+        y1
+    );
+
+
+    keepCtx.lineTo(
+        x2,
+        y2
+    );
+
+
+    keepCtx.stroke();
+
+
+    /*
+        Точка нужна,
+        если пользователь просто тапнул.
+    */
+
+    keepCtx.beginPath();
+
+
+    keepCtx.arc(
+        x2,
+        y2,
+        (
+            brushSize *
+            scale
+        ) / 2,
+        0,
+        Math.PI * 2
+    );
+
+
+    keepCtx.fill();
+
+
+    keepCtx.restore();
+
+
+    hasKeepPaint =
+        true;
+
+
+    protectionStatus.textContent =
+        "ЗАЩИЩЁННАЯ ОБЛАСТЬ ДОБАВЛЕНА";
+
+}
+
+
+/* =========================================================
+   POINTER DOWN
+========================================================= */
+
+keepCanvas.addEventListener(
+    "pointerdown",
+    event => {
+
+        event.preventDefault();
+
+
+        keepCanvas.setPointerCapture(
+            event.pointerId
+        );
+
+
+        saveHistory();
+
+
+        drawing =
+            true;
+
+
+        const p =
+            pointerPosition(
+                event
+            );
+
+
+        lastX =
+            p.x;
+
+        lastY =
+            p.y;
+
+
+        drawKeepLine(
+            p.x,
+            p.y,
+            p.x,
+            p.y,
+            p.scale
+        );
+
+    }
+);
+
+
+/* =========================================================
+   POINTER MOVE
+========================================================= */
+
+keepCanvas.addEventListener(
+    "pointermove",
+    event => {
+
+        if(!drawing){
+
+            return;
+
+        }
+
+
+        event.preventDefault();
+
+
+        const p =
+            pointerPosition(
+                event
+            );
+
+
+        drawKeepLine(
+            lastX,
+            lastY,
+            p.x,
+            p.y,
+            p.scale
+        );
+
+
+        lastX =
+            p.x;
+
+        lastY =
+            p.y;
+
+    }
+);
+
+
+/* =========================================================
+   POINTER END
+========================================================= */
+
+function stopDrawing(){
+
+    drawing =
+        false;
+
+}
+
+
+keepCanvas.addEventListener(
+    "pointerup",
+    stopDrawing
+);
+
+
+keepCanvas.addEventListener(
+    "pointercancel",
+    stopDrawing
+);
+
+
+/* =========================================================
+   UNDO
+========================================================= */
+
+undoButton.addEventListener(
+    "click",
+    ()=>{
+
+        const previous =
+            history.pop();
+
+
+        if(!previous){
+
+            return;
+
+        }
+
+
+        keepCtx.clearRect(
+            0,
+            0,
+            keepCanvas.width,
+            keepCanvas.height
+        );
+
+
+        keepCtx.putImageData(
+            previous,
+            0,
+            0
+        );
+
+
+        /*
+            Проверяем,
+            осталась ли вообще разметка.
+        */
+
+        const data =
+            keepCtx.getImageData(
+                0,
+                0,
+                keepCanvas.width,
+                keepCanvas.height
+            ).data;
+
+
+        hasKeepPaint =
+            false;
+
+
+        for(
+            let i = 3;
+            i < data.length;
+            i += 4
+        ){
+
+            if(data[i] > 5){
+
+                hasKeepPaint =
+                    true;
+
+                break;
+
+            }
+
+        }
+
+
+        protectionStatus.textContent =
+            hasKeepPaint
+            ? "ЗАЩИЩЁННАЯ ОБЛАСТЬ ДОБАВЛЕНА"
+            : "НИЧЕГО НЕ ОТМЕЧЕНО";
+
+    }
+);
+
+
+/* =========================================================
+   CLEAR BUTTON
+========================================================= */
+
+clearButton.addEventListener(
+    "click",
+    clearKeepMask
+);
+
+
+/* =========================================================
+   BRUSH SIZE
+========================================================= */
+
+function updateBrush(){
+
+    brushSize =
+        Number(
+            brushRange.value
+        );
+
+
+    brushValue.textContent =
+        brushSize;
+
+}
+
+
+brushRange.addEventListener(
+    "input",
+    updateBrush
+);
+
+
+brushMinus.addEventListener(
+    "click",
+    ()=>{
+
+        brushRange.value =
+            Math.max(
+                10,
+                Number(
+                    brushRange.value
+                ) - 10
+            );
+
+
+        updateBrush();
+
+    }
+);
+
+
+brushPlus.addEventListener(
+    "click",
+    ()=>{
+
+        brushRange.value =
+            Math.min(
+                140,
+                Number(
+                    brushRange.value
+                ) + 10
+            );
+
+
+        updateBrush();
+
+    }
+);
+
+
+/* =========================================================
+   LOAD IMAGE FROM BLOB
+========================================================= */
+
+async function blobToImage(blob){
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    try{
+
+        const image =
+            new Image();
+
+
+        await new Promise(
+            (resolve,reject)=>{
+
+                image.onload =
+                    resolve;
+
+                image.onerror =
+                    reject;
+
+                image.src =
+                    url;
+
+            }
+        );
+
+
+        return {
+            image,
+            url
+        };
+
+    }
+    catch(error){
+
+        URL.revokeObjectURL(
+            url
+        );
+
+        throw error;
+
+    }
+
+}
+
+
+/* =========================================================
+   COMBINE AI MASK + KEEP MASK
+========================================================= */
+
+async function combineMasks(
+    aiMaskBlob
+){
+
+    const loaded =
+        await blobToImage(
+            aiMaskBlob
+        );
+
+
+    const maskImage =
+        loaded.image;
+
+
+    try{
+
+        const width =
+            maskImage.naturalWidth;
+
+
+        const height =
+            maskImage.naturalHeight;
+
+
+        const canvas =
+            document.createElement(
+                "canvas"
+            );
+
+
+        canvas.width =
+            width;
+
+        canvas.height =
+            height;
+
+
+        const ctx =
+            canvas.getContext(
+                "2d",
+                {
+                    willReadFrequently:true
+                }
+            );
+
+
+        /*
+            AI mask:
+            RGB white,
+            alpha = AI foreground.
+        */
+
+        ctx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        ctx.drawImage(
+            maskImage,
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        const aiData =
+            ctx.getImageData(
+                0,
+                0,
+                width,
+                height
+            );
+
+
+        /*
+            KEEP canvas ->
+            размер AI mask.
+        */
+
+        const keepScaled =
+            document.createElement(
+                "canvas"
+            );
+
+
+        keepScaled.width =
+            width;
+
+        keepScaled.height =
+            height;
+
+
+        const keepScaledCtx =
+            keepScaled.getContext(
+                "2d",
+                {
+                    willReadFrequently:true
+                }
+            );
+
+
+        keepScaledCtx.clearRect(
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        keepScaledCtx.drawImage(
+            keepCanvas,
+            0,
+            0,
+            width,
+            height
+        );
+
+
+        /*
+            Небольшое размытие KEEP mask.
+
+            Это важно:
+            иначе граница кисти будет
+            жёсткой и заметной.
+        */
+
+        const softCanvas =
+            document.createElement(
+                "canvas"
+            );
+
+
+        softCanvas.width =
+            width;
+
+        softCanvas.height =
+            height;
+
+
+        const softCtx =
+            softCanvas.getContext(
+                "2d",
+                {
+                    willReadFrequently:true
+                }
+            );
+
+
+        /*
+            Размер feather зависит
+            от размера исходного изображения.
+        */
+
+        const feather =
+            Math.max(
+                2,
+                Math.min(
+                    10,
+                    Math.round(
+                        Math.max(
+                            width,
+                            height
+                        ) / 500
+                    )
+                )
+            );
+
+
+        softCtx.filter =
+            `blur(${feather}px)`;
+
+
+        softCtx.drawImage(
+            keepScaled,
+            0,
+            0
+        );
+
+
+        softCtx.filter =
+            "none";
+
+
+        const keepData =
+            softCtx.getImageData(
+                0,
+                0,
+                width,
+                height
+            );
+
+
+        const A =
+            aiData.data;
+
+
+        const K =
+            keepData.data;
+
+
+        /*
+            КЛЮЧЕВАЯ ЧАСТЬ.
+
+            AI alpha сохраняем.
+
+            Если KEEP brush говорит,
+            что пиксель должен остаться,
+            увеличиваем alpha.
+
+            max(AI, KEEP)
+        */
+
+        for(
+            let i = 0;
+            i < A.length;
+            i += 4
+        ){
+
+            const aiAlpha =
+                A[i + 3];
+
+
+            const keepAlpha =
+                K[i + 3];
+
+
+            const finalAlpha =
+                Math.max(
+                    aiAlpha,
+                    keepAlpha
+                );
+
+
+            A[i] =
+                255;
+
+            A[i + 1] =
+                255;
+
+            A[i + 2] =
+                255;
+
+            A[i + 3] =
+                finalAlpha;
+
+        }
+
+
+        ctx.putImageData(
+            aiData,
+            0,
+            0
+        );
+
+
+        const blob =
+            await new Promise(
+                resolve =>
+                    canvas.toBlob(
+                        resolve,
+                        "image/png",
+                        1
+                    )
+            );
+
+
+        if(!blob){
+
+            throw new Error(
+                "KEEP mask encoding failed"
+            );
+
+        }
+
+
+        return blob;
+
+    }
+
+    finally{
+
+        URL.revokeObjectURL(
+            loaded.url
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   IMPORT AI
+========================================================= */
+
+let aiModulePromise =
+    null;
+
+
+async function getAI(){
+
+    if(!aiModulePromise){
+
+        aiModulePromise =
+            import(
+                "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm"
+            );
+
+    }
+
+
+    return await aiModulePromise;
+
+}
+
+
+/* =========================================================
+   QUALITY CONFIG
+========================================================= */
+
+function qualityConfig(){
+
+    return {
+
+        /*
+            FULL MODEL.
+            Не quint8.
+        */
+
+        model:
+            "isnet",
+
+        /*
+            На iPhone worker обычно лучше,
+            потому что интерфейс меньше
+            зависает.
+        */
+
+        proxyToWorker:
+            true,
+
+        debug:
+            false,
+
+        output:{
+
+            format:
+                "image/png",
+
+            quality:
+                1
+
+        },
+
+        progress:
+            (
+                key,
+                current,
+                total
+            )=>{
+
+                if(
+                    !total ||
+                    !Number.isFinite(total)
+                ){
+
+                    return;
+
+                }
+
+
+                const fraction =
+                    Math.max(
+                        0,
+                        Math.min(
+                            1,
+                            current / total
+                        )
+                    );
+
+
+                /*
+                    Загрузка модели:
+                    5 -> 50%.
+                */
+
+                setProgress(
+                    Math.round(
+                        5 +
+                        fraction * 45
+                    )
+                );
+
+            }
+
+    };
+
+}
+
+
+/* =========================================================
+   APPLY RESULT
+========================================================= */
+
+function applyFinalResult(
+    resultBlob
+){
+
+    if(finalURL){
+
+        URL.revokeObjectURL(
+            finalURL
+        );
+
+    }
+
+
+    finalURL =
+        URL.createObjectURL(
+            resultBlob
+        );
+
+
+    uploadPreview.src =
+        finalURL;
+
+
+    uploadPreview.classList.add(
+        "visible"
+    );
+
+
+    /*
+        Передаём результат
+        остальному CreatureMeza.
+    */
+
+    window.creatureMezaProcessedBlob =
+        resultBlob;
+
+
+    window.creatureMezaProcessedURL =
+        finalURL;
+
+
+    /*
+        Старый код сайта использует
+        processedImageURL.
+    */
+
+    try{
+
+        if(
+            typeof processedImageURL !==
+            "undefined"
+        ){
+
+            processedImageURL =
+                finalURL;
+
+        }
+
+    }
+    catch(error){}
+
+
+    if(addButton){
+
+        addButton.disabled =
+            false;
+
+    }
+
+
+    setProgress(
+        100
+    );
+
+
+    setStatus(
+        "QUALITY CUTOUT ГОТОВ ✓"
+    );
+
+}
+
+
+/* =========================================================
+   MAIN REMOVE
+========================================================= */
+
+async function runQualityRemoval(){
+
+    if(running){
+
+        return;
+
+    }
+
+
+    const file =
+        getCurrentFile();
+
+
+    if(!file){
+
+        setStatus(
+            "СНАЧАЛА ВЫБЕРИ ФОТО"
         );
 
         return;
@@ -7277,972 +8924,260 @@ loadReviews();
     }
 
 
-    /* =====================================================
-       STATE
-    ===================================================== */
-
-    let running = false;
-
-    let aiFunction = null;
-
-    let currentResultURL = "";
-
-    let lastProcessedBlob = null;
+    running =
+        true;
 
 
-    /* =====================================================
-       HELPERS
-    ===================================================== */
+    removeButton.disabled =
+        true;
 
-    function setStatus(text) {
 
-        if (status) {
-            status.textContent = text;
-        }
+    if(addButton){
+
+        addButton.disabled =
+            true;
 
     }
 
 
-    function setProgress(value) {
+    try{
 
-        const percent =
-            Math.max(
-                0,
-                Math.min(
-                    100,
-                    Number(value) || 0
-                )
-            );
-
-
-        if (progress) {
-
-            progress.classList.add(
-                "visible"
-            );
-
-        }
-
-
-        if (progressBar) {
-
-            progressBar.style.width =
-                percent + "%";
-
-        }
-
-    }
-
-
-    function toast(text) {
-
-        if (
-            typeof showToast === "function"
-        ) {
-
-            showToast(text);
-
-        }
-
-        else {
-
-            console.log(text);
-
-        }
-
-    }
-
-
-    /* =====================================================
-       GET FILE
-    ===================================================== */
-
-    function getFile() {
-
-        if (
-            input.files &&
-            input.files.length
-        ) {
-
-            return input.files[0];
-
-        }
-
-
-        /*
-            Если вещь была выбрана
-            из коллекции.
-        */
-
-        try {
-
-            if (
-                typeof selectedFile !== "undefined" &&
-                selectedFile
-            ) {
-
-                return selectedFile;
-
-            }
-
-        }
-        catch (error) {
-
-            console.warn(
-                "selectedFile unavailable",
-                error
-            );
-
-        }
-
-
-        return null;
-
-    }
-
-
-    /* =====================================================
-       LOAD IMG.LY
-    ===================================================== */
-
-    async function loadAI() {
-
-        if (aiFunction) {
-
-            return aiFunction;
-
-        }
+        setProgress(
+            3
+        );
 
 
         setStatus(
-            "ЗАГРУЖАЮ AI ENGINE…"
+            "ЗАГРУЖАЮ QUALITY AI…"
         );
 
-        setProgress(3);
+
+        const AI =
+            await getAI();
 
 
-        const module =
-            await import(
-                "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm"
-            );
+        const segmentForeground =
+            AI.segmentForeground ||
+            AI.alphamask;
 
 
-        aiFunction =
-            module.default ||
-            module.removeBackground;
+        const applySegmentationMask =
+            AI.applySegmentationMask;
 
 
-        if (
-            typeof aiFunction !== "function"
-        ) {
+        if(
+            typeof segmentForeground !==
+            "function"
+        ){
 
             throw new Error(
-                "Background removal function not found"
+                "segmentForeground unavailable"
             );
 
         }
 
 
-        return aiFunction;
+        if(
+            typeof applySegmentationMask !==
+            "function"
+        ){
 
-    }
-
-
-    /* =====================================================
-       READ IMAGE FROM BLOB
-    ===================================================== */
-
-    async function blobToImage(blob) {
-
-        const url =
-            URL.createObjectURL(blob);
-
-
-        try {
-
-            const image =
-                new Image();
-
-
-            await new Promise(
-                (resolve, reject) => {
-
-                    image.onload =
-                        resolve;
-
-                    image.onerror =
-                        reject;
-
-                    image.src =
-                        url;
-
-                }
+            throw new Error(
+                "applySegmentationMask unavailable"
             );
-
-
-            return image;
 
         }
 
-        finally {
 
-            /*
-                URL нельзя revoke до того,
-                как картинка загрузилась.
-            */
+        /*
+            STEP 1:
+            AI создаёт alpha mask.
+        */
 
-        }
-
-    }
-
-
-    /* =====================================================
-       ANALYZE AI MASK
-
-       Проверяем:
-       - сколько объекта осталось;
-       - не уничтожен ли центр вещи;
-       - есть ли большие дырки внутри объекта.
-
-       Это НЕ меняет изображение.
-       Только решает, нужен ли QUALITY.
-    ===================================================== */
-
-    async function analyzeMask(blob) {
-
-        let url = "";
-
-        try {
-
-            url =
-                URL.createObjectURL(blob);
+        setStatus(
+            "QUALITY AI АНАЛИЗИРУЕТ ВЕЩЬ…"
+        );
 
 
-            const image =
-                new Image();
+        setProgress(
+            8
+        );
 
 
-            await new Promise(
-                (resolve, reject) => {
-
-                    image.onload =
-                        resolve;
-
-                    image.onerror =
-                        reject;
-
-                    image.src =
-                        url;
-
-                }
+        const aiMask =
+            await segmentForeground(
+                file,
+                qualityConfig()
             );
 
 
-            /*
-                Для анализа нам не нужны
-                тысячи пикселей.
+        setProgress(
+            60
+        );
 
-                Уменьшаем до максимум 320px.
-                Так iPhone работает быстрее.
-            */
 
-            const maxSide = 320;
+        /*
+            STEP 2:
+            Добавляем KEEP brush.
+        */
 
-            const ratio =
-                Math.min(
-                    1,
-                    maxSide /
-                    Math.max(
-                        image.naturalWidth,
-                        image.naturalHeight
-                    )
-                );
+        let finalMask =
+            aiMask;
 
 
-            const width =
-                Math.max(
-                    1,
-                    Math.round(
-                        image.naturalWidth *
-                        ratio
-                    )
-                );
-
-
-            const height =
-                Math.max(
-                    1,
-                    Math.round(
-                        image.naturalHeight *
-                        ratio
-                    )
-                );
-
-
-            const canvas =
-                document.createElement(
-                    "canvas"
-                );
-
-
-            canvas.width = width;
-            canvas.height = height;
-
-
-            const ctx =
-                canvas.getContext(
-                    "2d",
-                    {
-                        willReadFrequently:
-                            true
-                    }
-                );
-
-
-            ctx.clearRect(
-                0,
-                0,
-                width,
-                height
-            );
-
-
-            ctx.drawImage(
-                image,
-                0,
-                0,
-                width,
-                height
-            );
-
-
-            const pixels =
-                ctx.getImageData(
-                    0,
-                    0,
-                    width,
-                    height
-                ).data;
-
-
-            let visible = 0;
-
-            let strongVisible = 0;
-
-            let centerTotal = 0;
-
-            let centerVisible = 0;
-
-
-            /*
-                Центральная область.
-                Именно там обычно находится
-                основная часть одежды.
-            */
-
-            const centerX1 =
-                width * 0.25;
-
-            const centerX2 =
-                width * 0.75;
-
-            const centerY1 =
-                height * 0.20;
-
-            const centerY2 =
-                height * 0.82;
-
-
-            for (
-                let y = 0;
-                y < height;
-                y++
-            ) {
-
-                for (
-                    let x = 0;
-                    x < width;
-                    x++
-                ) {
-
-                    const i =
-                        (
-                            y * width +
-                            x
-                        ) * 4;
-
-
-                    const alpha =
-                        pixels[i + 3];
-
-
-                    if (alpha > 12) {
-
-                        visible++;
-
-                    }
-
-
-                    if (alpha > 180) {
-
-                        strongVisible++;
-
-                    }
-
-
-                    if (
-                        x >= centerX1 &&
-                        x <= centerX2 &&
-                        y >= centerY1 &&
-                        y <= centerY2
-                    ) {
-
-                        centerTotal++;
-
-
-                        if (
-                            alpha > 35
-                        ) {
-
-                            centerVisible++;
-
-                        }
-
-                    }
-
-                }
-
-            }
-
-
-            const total =
-                width * height;
-
-
-            const visibleRatio =
-                visible / total;
-
-
-            const strongRatio =
-                strongVisible / total;
-
-
-            const centerRatio =
-                centerTotal
-                    ? centerVisible /
-                      centerTotal
-                    : 0;
-
-
-            /*
-                Эвристика.
-
-                Если осталось слишком мало
-                объекта или центр неожиданно
-                стал очень прозрачным —
-                FAST результат подозрительный.
-            */
-
-            let suspicious = false;
-
-            const reasons = [];
-
-
-            if (
-                visibleRatio < 0.07
-            ) {
-
-                suspicious = true;
-
-                reasons.push(
-                    "too_little_foreground"
-                );
-
-            }
-
-
-            if (
-                strongRatio < 0.045
-            ) {
-
-                suspicious = true;
-
-                reasons.push(
-                    "weak_foreground"
-                );
-
-            }
-
-
-            if (
-                centerRatio < 0.22
-            ) {
-
-                suspicious = true;
-
-                reasons.push(
-                    "center_removed"
-                );
-
-            }
-
-
-            console.log(
-                "CreatureMeza mask analysis:",
-                {
-                    visibleRatio,
-                    strongRatio,
-                    centerRatio,
-                    suspicious,
-                    reasons
-                }
-            );
-
-
-            return {
-
-                suspicious,
-
-                visibleRatio,
-
-                strongRatio,
-
-                centerRatio,
-
-                reasons
-
-            };
-
-        }
-
-        catch (error) {
-
-            /*
-                Если Safari не смог
-                проанализировать PNG,
-                не ломаем весь AI.
-
-                Просто считаем FAST
-                допустимым.
-            */
-
-            console.warn(
-                "Mask analysis failed:",
-                error
-            );
-
-
-            return {
-
-                suspicious: false,
-
-                reasons: [
-                    "analysis_failed"
-                ]
-
-            };
-
-        }
-
-        finally {
-
-            if (url) {
-
-                URL.revokeObjectURL(url);
-
-            }
-
-        }
-
-    }
-
-
-    /* =====================================================
-       AI PROGRESS
-    ===================================================== */
-
-    function createProgressHandler(
-        start,
-        end,
-        label
-    ) {
-
-        return (
-            key,
-            current,
-            total
-        ) => {
-
-            let normalized = 0;
-
-
-            if (
-                Number.isFinite(current) &&
-                Number.isFinite(total) &&
-                total > 0
-            ) {
-
-                normalized =
-                    current / total;
-
-            }
-
-
-            const percent =
-                Math.round(
-                    start +
-                    normalized *
-                    (end - start)
-                );
-
-
-            setProgress(percent);
-
-
-            const safePercent =
-                Math.max(
-                    start,
-                    Math.min(
-                        end,
-                        percent
-                    )
-                );
-
+        if(hasKeepPaint){
 
             setStatus(
-                label +
-                " — " +
-                safePercent +
-                "%"
+                "ЗАЩИЩАЮ ОТМЕЧЕННЫЕ ЧАСТИ…"
             );
 
-        };
 
-    }
+            finalMask =
+                await combineMasks(
+                    aiMask
+                );
+
+        }
 
 
-    /* =====================================================
-       RUN FAST MODEL
-    ===================================================== */
-
-    async function runFast(
-        removeBackground,
-        file
-    ) {
-
-        setStatus(
-            "FAST AI — УДАЛЯЮ ФОН…"
+        setProgress(
+            78
         );
-
-
-        setProgress(8);
-
-
-        return await removeBackground(
-            file,
-            {
-
-                model:
-                    "isnet_quint8",
-
-                proxyToWorker:
-                    false,
-
-                output: {
-
-                    format:
-                        "image/png",
-
-                    quality:
-                        1,
-
-                    type:
-                        "foreground"
-
-                },
-
-                progress:
-                    createProgressHandler(
-                        8,
-                        55,
-                        "FAST AI"
-                    )
-
-            }
-        );
-
-    }
-
-
-    /* =====================================================
-       RUN QUALITY MODEL
-    ===================================================== */
-
-    async function runQuality(
-        removeBackground,
-        file
-    ) {
-
-        setStatus(
-            "СЛОЖНЫЙ ФОН — ЗАПУСКАЮ QUALITY AI…"
-        );
-
-
-        setProgress(58);
 
 
         /*
-            Полная ISNet модель.
-            Она тяжелее FAST версии,
-            поэтому запускаем её только
-            при необходимости.
+            STEP 3:
+            Применяем итоговую маску
+            к ОРИГИНАЛУ.
+
+            Поэтому KEEP возвращает именно
+            настоящие пиксели фотографии,
+            а не дорисовывает одежду.
         */
 
-        return await removeBackground(
-            file,
-            {
-
-                model:
-                    "isnet",
-
-                proxyToWorker:
-                    false,
-
-                output: {
-
-                    format:
-                        "image/png",
-
-                    quality:
-                        1,
-
-                    type:
-                        "foreground"
-
-                },
-
-                progress:
-                    createProgressHandler(
-                        58,
-                        94,
-                        "QUALITY AI"
-                    )
-
-            }
+        setStatus(
+            "СОБИРАЮ ФИНАЛЬНЫЙ CUTOUT…"
         );
 
-    }
 
-
-    /* =====================================================
-       RESULT -> BLOB
-    ===================================================== */
-
-    function ensureBlob(result) {
-
-        if (
-            result instanceof Blob
-        ) {
-
-            return result;
-
-        }
-
-
-        if (
-            result instanceof ArrayBuffer
-        ) {
-
-            return new Blob(
-                [result],
+        const result =
+            await applySegmentationMask(
+                file,
+                finalMask,
                 {
-                    type:
-                        "image/png"
-                }
-            );
 
-        }
+                    output:{
 
+                        format:
+                            "image/png",
 
-        if (
-            ArrayBuffer.isView(result)
-        ) {
-
-            return new Blob(
-                [result.buffer],
-                {
-                    type:
-                        "image/png"
-                }
-            );
-
-        }
-
-
-        throw new Error(
-            "AI returned invalid image"
-        );
-
-    }
-
-
-    /* =====================================================
-       SHOW RESULT
-
-       ВАЖНО:
-       здесь НЕТ дополнительного
-       удаления пикселей.
-
-       Используем именно маску AI.
-    ===================================================== */
-
-    function showResult(blob) {
-
-        lastProcessedBlob =
-            blob;
-
-
-        if (
-            currentResultURL
-        ) {
-
-            URL.revokeObjectURL(
-                currentResultURL
-            );
-
-        }
-
-
-        currentResultURL =
-            URL.createObjectURL(
-                blob
-            );
-
-
-        /*
-            Переменная из основного
-            CreatureMeza JS.
-        */
-
-        try {
-
-            if (
-                typeof processedImageURL !==
-                "undefined"
-            ) {
-
-                if (
-                    processedImageURL &&
-                    processedImageURL !==
-                    currentResultURL
-                ) {
-
-                    try {
-
-                        URL.revokeObjectURL(
-                            processedImageURL
-                        );
+                        quality:
+                            1
 
                     }
-                    catch (_) {}
 
                 }
+            );
 
 
-                processedImageURL =
-                    currentResultURL;
-
-            }
-
-        }
-        catch (_) {}
-
-
-        /*
-            Некоторые версии твоего
-            основного кода могут работать
-            через window.
-        */
-
-        window.creatureMezaProcessedBlob =
-            blob;
-
-        window.creatureMezaProcessedURL =
-            currentResultURL;
-
-
-        preview.src =
-            currentResultURL;
-
-
-        preview.classList.add(
-            "visible"
+        setProgress(
+            96
         );
 
 
-        const photo =
-            document.getElementById(
-                "uploadPhoto"
-            );
+        applyFinalResult(
+            result
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            "CreatureMeza QUALITY AI:",
+            error
+        );
 
 
-        if (photo) {
+        setProgress(
+            0
+        );
 
-            photo.classList.add(
-                "has-image"
-            );
+
+        setStatus(
+            "ОШИБКА AI — ПОПРОБУЙ ЕЩЁ РАЗ"
+        );
+
+
+        if(addButton){
+
+            addButton.disabled =
+                true;
 
         }
 
+    }
 
-        if (addButton) {
+    finally{
 
-            addButton.disabled =
+        running =
+            false;
+
+
+        if(
+            getCurrentFile()
+        ){
+
+            removeButton.disabled =
                 false;
 
         }
 
-
-        setProgress(100);
-
-
-        setStatus(
-            "ФОН УДАЛЁН ✓"
-        );
-
-
-        toast(
-            "ФОН УДАЛЁН"
-        );
-
     }
 
+}
 
-    /* =====================================================
-       MAIN AI PIPELINE
-    ===================================================== */
 
-    async function processImage() {
+/* =========================================================
+   REPLACE OLD BUTTON EVENT
 
-        if (running) {
+   stopImmediatePropagation нужен,
+   чтобы старый AI handler не запускался
+   одновременно с новым.
+========================================================= */
 
-            return;
+removeButton.addEventListener(
+    "click",
+    event => {
 
-        }
+        event.preventDefault();
 
+        event.stopImmediatePropagation();
+
+
+        runQualityRemoval();
+
+    },
+    true
+);
+
+
+/* =========================================================
+   FILE INPUT
+========================================================= */
+
+clothesInput.addEventListener(
+    "change",
+    async ()=>{
 
         const file =
-            getFile();
+            getCurrentFile();
 
 
-        if (!file) {
+        if(!file){
 
-            button.disabled =
-                true;
-
-
-            setStatus(
-                "СНАЧАЛА ВЫБЕРИ ФОТОГРАФИЮ"
+            editor.classList.remove(
+                "visible"
             );
 
 
@@ -8251,13 +9186,11 @@ loadReviews();
         }
 
 
-        running = true;
-
-        button.disabled =
-            true;
+        removeButton.disabled =
+            false;
 
 
-        if (addButton) {
+        if(addButton){
 
             addButton.disabled =
                 true;
@@ -8265,328 +9198,111 @@ loadReviews();
         }
 
 
-        try {
+        try{
 
-            /*
-                1. LOAD LIBRARY
-            */
+            await prepareEditor(
+                file
+            );
 
-            const removeBackground =
-                await loadAI();
+        }
+        catch(error){
+
+            console.error(
+                "KEEP editor:",
+                error
+            );
+
+        }
+
+    }
+);
 
 
-            /*
-                2. FAST PASS
-            */
+/* =========================================================
+   SUPPORT COLLECTION ITEMS
 
-            const fastResult =
-                await runFast(
-                    removeBackground,
+   Старый код может менять selectedFile
+   без изменения <input>.
+
+   Поэтому при клике проверяем,
+   изменился ли выбранный файл.
+========================================================= */
+
+document.addEventListener(
+    "click",
+    async ()=>{
+
+        /*
+            Даём старому collection-handler
+            сначала установить selectedFile.
+        */
+
+        await new Promise(
+            resolve =>
+                setTimeout(
+                    resolve,
+                    0
+                )
+        );
+
+
+        const file =
+            getCurrentFile();
+
+
+        if(
+            file &&
+            file !== originalFile
+        ){
+
+            try{
+
+                await prepareEditor(
                     file
                 );
 
 
-            const fastBlob =
-                ensureBlob(
-                    fastResult
-                );
-
-
-            /*
-                3. CHECK MASK
-            */
-
-            setStatus(
-                "ПРОВЕРЯЮ КАЧЕСТВО МАСКИ…"
-            );
-
-
-            setProgress(56);
-
-
-            const analysis =
-                await analyzeMask(
-                    fastBlob
-                );
-
-
-            /*
-                4. QUALITY FALLBACK
-            */
-
-            if (
-                analysis.suspicious
-            ) {
-
-                console.log(
-                    "FAST mask suspicious.",
-                    "Starting QUALITY.",
-                    analysis
-                );
-
-
-                try {
-
-                    const qualityResult =
-                        await runQuality(
-                            removeBackground,
-                            file
-                        );
-
-
-                    const qualityBlob =
-                        ensureBlob(
-                            qualityResult
-                        );
-
-
-                    /*
-                        Проверяем и второй
-                        результат, но даже если
-                        он сложный — используем
-                        QUALITY, потому что это
-                        более точная модель.
-                    */
-
-                    setStatus(
-                        "ПРОВЕРЯЮ QUALITY РЕЗУЛЬТАТ…"
-                    );
-
-
-                    setProgress(95);
-
-
-                    const qualityAnalysis =
-                        await analyzeMask(
-                            qualityBlob
-                        );
-
-
-                    console.log(
-                        "QUALITY analysis:",
-                        qualityAnalysis
-                    );
-
-
-                    showResult(
-                        qualityBlob
-                    );
-
-                }
-
-                catch (qualityError) {
-
-                    /*
-                        Например, телефону
-                        не хватило памяти
-                        для большой модели.
-
-                        Тогда не теряем уже
-                        готовый FAST результат.
-                    */
-
-                    console.warn(
-                        "QUALITY failed. Using FAST:",
-                        qualityError
-                    );
-
-
-                    setStatus(
-                        "QUALITY НЕДОСТУПЕН — ИСПОЛЬЗУЮ FAST"
-                    );
-
-
-                    showResult(
-                        fastBlob
-                    );
-
-                }
-
-            }
-
-            else {
-
-                /*
-                    FAST выглядит нормально.
-                    Вторую тяжёлую модель
-                    вообще не загружаем.
-                */
-
-                showResult(
-                    fastBlob
-                );
-
-            }
-
-        }
-
-        catch (error) {
-
-            console.error(
-                "CreatureMeza AI error:",
-                error
-            );
-
-
-            setProgress(0);
-
-
-            setStatus(
-                "ОШИБКА ИИ — НАЖМИ ЕЩЁ РАЗ"
-            );
-
-
-            toast(
-                "ОШИБКА ИИ"
-            );
-
-
-            if (addButton) {
-
-                addButton.disabled =
-                    true;
-
-            }
-
-        }
-
-        finally {
-
-            running = false;
-
-
-            /*
-                Если фотография всё ещё есть,
-                кнопку снова разрешаем.
-            */
-
-            if (
-                getFile()
-            ) {
-
-                button.disabled =
+                removeButton.disabled =
                     false;
 
             }
+            catch(error){}
 
         }
 
     }
+);
 
 
-    /* =====================================================
-       CLICK
-    ===================================================== */
+/* =========================================================
+   RESIZE
+========================================================= */
 
-    button.addEventListener(
-        "click",
-        processImage
-    );
+window.addEventListener(
+    "resize",
+    ()=>{
 
+        if(
+            editor.classList.contains(
+                "visible"
+            )
+        ){
 
-    /* =====================================================
-       NEW PHOTO
-    ===================================================== */
-
-    input.addEventListener(
-        "change",
-        () => {
-
-            const file =
-                getFile();
-
-
-            lastProcessedBlob =
-                null;
-
-
-            if (addButton) {
-
-                addButton.disabled =
-                    true;
-
-            }
-
-
-            if (
-                currentResultURL
-            ) {
-
-                URL.revokeObjectURL(
-                    currentResultURL
-                );
-
-
-                currentResultURL =
-                    "";
-
-            }
-
-
-            if (!file) {
-
-                button.disabled =
-                    true;
-
-
-                setStatus(
-                    "СНАЧАЛА ВЫБЕРИ ФОТОГРАФИЮ"
-                );
-
-
-                return;
-
-            }
-
-
-            button.disabled =
-                false;
-
-
-            if (progress) {
-
-                progress.classList.remove(
-                    "visible"
-                );
-
-            }
-
-
-            if (progressBar) {
-
-                progressBar.style.width =
-                    "0%";
-
-            }
-
-
-            setStatus(
-                "ФОТО ЗАГРУЖЕНО — МОЖНО УДАЛЯТЬ ФОН"
-            );
+            resizeKeepCanvas();
 
         }
-    );
-
-
-    /* =====================================================
-       INITIAL STATE
-    ===================================================== */
-
-    if (
-        getFile()
-    ) {
-
-        button.disabled =
-            false;
 
     }
+);
 
 
-    console.log(
-        "CreatureMeza AI V2 ready"
-    );
+/* =========================================================
+   READY
+========================================================= */
 
-})();
+console.log(
+    "CreatureMeza QUALITY AI + KEEP BRUSH ready"
+);
 
 </script>
 
