@@ -168,9 +168,7 @@ a{
             rgba(255,255,255,.045)
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.16);
 
     box-shadow:
         0 20px 70px rgba(0,0,0,.30),
@@ -201,7 +199,9 @@ a{
 
     background:#070707;
 
-    transition:.6s;
+    transition:
+        opacity .6s ease,
+        visibility .6s ease;
 }
 
 .loader.hidden{
@@ -240,11 +240,7 @@ a{
     left:14px;
     right:14px;
 
-    top:
-        calc(
-            12px +
-            env(safe-area-inset-top)
-        );
+    top:calc(12px + env(safe-area-inset-top));
 
     z-index:900;
 
@@ -271,13 +267,10 @@ a{
             rgba(255,255,255,.09)
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,.20);
+    border:1px solid rgba(255,255,255,.20);
 
     box-shadow:
-        0 18px 60px
-        rgba(0,0,0,.40);
+        0 18px 60px rgba(0,0,0,.40);
 
     backdrop-filter:
         blur(35px)
@@ -314,12 +307,9 @@ a{
 
     border-radius:50%;
 
-    border:
-        1px solid
-        rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.16);
 
-    background:
-        rgba(255,255,255,.07);
+    background:rgba(255,255,255,.07);
 }
 
 .bag-count{
@@ -355,12 +345,9 @@ a{
 
     border-radius:50%;
 
-    border:
-        1px solid
-        rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.16);
 
-    background:
-        rgba(255,255,255,.07);
+    background:rgba(255,255,255,.07);
 }
 
 /* =========================================================
@@ -413,9 +400,7 @@ main{
             #111
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.13);
 }
 
 .hero-top{
@@ -506,16 +491,13 @@ main{
 .hero-button{
     flex-shrink:0;
 
-    border:
-        1px solid
-        rgba(255,255,255,.18);
+    border:1px solid rgba(255,255,255,.18);
 
     border-radius:30px;
 
     padding:13px 19px;
 
-    background:
-        rgba(255,255,255,.08);
+    background:rgba(255,255,255,.08);
 
     font-size:8px;
 
@@ -590,14 +572,13 @@ main{
 
     border-radius:30px;
 
-    background:
-        rgba(20,20,20,.76);
+    background:rgba(20,20,20,.76);
 
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 
     backdrop-filter:blur(30px);
+
+    -webkit-backdrop-filter:blur(30px);
 }
 
 .categories{
@@ -635,8 +616,7 @@ main{
 .category.active{
     color:white;
 
-    background:
-        rgba(255,255,255,.14);
+    background:rgba(255,255,255,.14);
 }
 
 /* =========================================================
@@ -747,12 +727,24 @@ main{
     border-radius:29px;
 
     background:
-    radial-gradient(
-        circle at 50% 42%,
-        #eeeeee 0%,
-        #e4e4e4 55%,
-        #d8d8d8 100%
+        radial-gradient(
+            circle at 50% 40%,
+            #ededed 0%,
+            #dfdfdf 48%,
+            #cfcfcf 100%
         );
+
+    box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.25),
+        0 12px 40px rgba(0,0,0,.13);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+}
+
+.product:active .product-image{
+    transform:scale(.98);
 }
 
 .product-image img{
@@ -763,9 +755,15 @@ main{
     width:100%;
     height:100%;
 
-    padding:12px;
+    padding:13px;
 
     object-fit:contain;
+
+    transition:transform .35s ease;
+}
+
+.product:hover .product-image img{
+    transform:scale(1.025);
 }
 
 .product-placeholder{
@@ -811,11 +809,19 @@ main{
     right:12px;
     top:12px;
 
+    padding:7px 9px;
+
+    border-radius:20px;
+
+    background:rgba(255,255,255,.72);
+
     color:#111;
 
-    font-size:7px;
+    font-size:6px;
 
     letter-spacing:1px;
+
+    backdrop-filter:blur(10px);
 }
 
 .product-info{
@@ -888,10 +894,11 @@ main{
     border-radius:31px;
 
     background:
-        linear-gradient(
-            145deg,
-            #f9f9f9,
-            #e6e6e6
+        radial-gradient(
+            circle at 50% 40%,
+            #f5f5f5,
+            #dedede 70%,
+            #d1d1d1
         );
 }
 
@@ -931,12 +938,9 @@ main{
 
     border-radius:50%;
 
-    background:
-        rgba(255,255,255,.65);
+    background:rgba(255,255,255,.65);
 
-    border:
-        1px solid
-        rgba(0,0,0,.10);
+    border:1px solid rgba(0,0,0,.10);
 
     font-size:36px;
 
@@ -1002,8 +1006,7 @@ main{
 
     padding:12px 17px;
 
-    background:
-        rgba(10,10,10,.80);
+    background:rgba(10,10,10,.80);
 
     color:white;
 
@@ -1014,8 +1017,7 @@ main{
     backdrop-filter:blur(20px);
 }
 
-.upload-photo.has-image
-.change-photo{
+.upload-photo.has-image .change-photo{
     display:block;
 }
 
@@ -1047,16 +1049,13 @@ main{
 
 .choice,
 .upload-category{
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 
     border-radius:24px;
 
     padding:13px;
 
-    background:
-        rgba(255,255,255,.055);
+    background:rgba(255,255,255,.055);
 
     color:#777;
 
@@ -1095,9 +1094,7 @@ main{
 .input{
     width:100%;
 
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 
     outline:0;
 
@@ -1105,8 +1102,7 @@ main{
 
     padding:14px 15px;
 
-    background:
-        rgba(255,255,255,.055);
+    background:rgba(255,255,255,.055);
 
     color:white;
 
@@ -1122,16 +1118,13 @@ main{
 
     margin-top:15px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.15);
+    border:1px solid rgba(255,255,255,.15);
 
     border-radius:28px;
 
     padding:16px;
 
-    background:
-        rgba(255,255,255,.08);
+    background:rgba(255,255,255,.08);
 
     font-size:8px;
 
@@ -1217,7 +1210,7 @@ main{
 }
 
 /* =========================================================
-   FIT CANVAS — NO MANNEQUIN
+   FIT CANVAS
 ========================================================= */
 
 .fit-stage{
@@ -1247,9 +1240,7 @@ main{
             #101010
         );
 
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 }
 
 .fit-stage::before{
@@ -1263,18 +1254,14 @@ main{
     width:430px;
     height:430px;
 
-    transform:
-        translate(-50%,-50%);
+    transform:translate(-50%,-50%);
 
     border-radius:50%;
 
-    border:
-        1px solid
-        rgba(255,255,255,.055);
+    border:1px solid rgba(255,255,255,.055);
 
     box-shadow:
-        inset 0 0 70px
-        rgba(255,255,255,.018);
+        inset 0 0 70px rgba(255,255,255,.018);
 
     pointer-events:none;
 }
@@ -1290,8 +1277,7 @@ main{
     width:58%;
     height:1px;
 
-    transform:
-        translateX(-50%);
+    transform:translateX(-50%);
 
     background:
         linear-gradient(
@@ -1335,7 +1321,7 @@ main{
 }
 
 /* =========================================================
-   CLOTHING
+   CLOTHING LAYERS
 ========================================================= */
 
 .clothing-layer{
@@ -1381,10 +1367,6 @@ main{
     z-index:18;
 }
 
-#fitAccessory{
-    z-index:20;
-}
-
 #fitHeadwear{
     z-index:25;
 }
@@ -1397,15 +1379,13 @@ main{
     left:50%;
     top:50%;
 
-    transform:
-        translate(-50%,-50%);
+    transform:translate(-50%,-50%);
 
     padding:16px 22px;
 
     border-radius:25px;
 
-    background:
-        rgba(0,0,0,.38);
+    background:rgba(0,0,0,.38);
 
     color:#777;
 
@@ -1436,7 +1416,7 @@ main{
     display:grid;
 
     grid-template-columns:
-        repeat(3,1fr);
+        repeat(5,1fr);
 
     gap:5px;
 }
@@ -1444,27 +1424,23 @@ main{
 .fit-tab{
     min-width:0;
 
-    border:
-        1px solid
-        rgba(255,255,255,.11);
+    border:1px solid rgba(255,255,255,.11);
 
     border-radius:22px;
 
     padding:11px 3px;
 
-    background:
-        rgba(255,255,255,.055);
+    background:rgba(255,255,255,.055);
 
     color:#777;
 
     font-size:6px;
 
-    letter-spacing:.8px;
+    letter-spacing:.6px;
 }
 
 .fit-tab.active{
-    background:
-        rgba(255,255,255,.16);
+    background:rgba(255,255,255,.16);
 
     color:white;
 }
@@ -1478,12 +1454,9 @@ main{
 
     text-align:center;
 
-    background:
-        rgba(255,255,255,.06);
+    background:rgba(255,255,255,.06);
 
-    border:
-        1px solid
-        rgba(255,255,255,.09);
+    border:1px solid rgba(255,255,255,.09);
 }
 
 .fit-current-name{
@@ -1529,14 +1502,11 @@ main{
 .move-button{
     aspect-ratio:1;
 
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 
     border-radius:50%;
 
-    background:
-        rgba(255,255,255,.06);
+    background:rgba(255,255,255,.06);
 
     font-size:15px;
 }
@@ -1563,14 +1533,11 @@ main{
 .scale-button{
     height:45px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 
     border-radius:50%;
 
-    background:
-        rgba(255,255,255,.06);
+    background:rgba(255,255,255,.06);
 
     font-size:17px;
 }
@@ -1590,16 +1557,13 @@ main{
 
     margin-top:15px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.14);
 
     border-radius:25px;
 
     padding:14px;
 
-    background:
-        rgba(255,255,255,.09);
+    background:rgba(255,255,255,.09);
 
     font-size:7px;
 
@@ -1619,8 +1583,7 @@ main{
 
     border-radius:25px;
 
-    background:
-        rgba(255,255,255,.08);
+    background:rgba(255,255,255,.08);
 }
 
 .fit-total span{
@@ -1647,16 +1610,13 @@ main{
 }
 
 .fit-action{
-    border:
-        1px solid
-        rgba(255,255,255,.12);
+    border:1px solid rgba(255,255,255,.12);
 
     border-radius:25px;
 
     padding:14px 7px;
 
-    background:
-        rgba(255,255,255,.06);
+    background:rgba(255,255,255,.06);
 
     font-size:7px;
 
@@ -1759,9 +1719,7 @@ main{
 .review-textarea{
     width:100%;
 
-    border:
-        1px solid
-        rgba(255,255,255,.11);
+    border:1px solid rgba(255,255,255,.11);
 
     outline:0;
 
@@ -1769,8 +1727,7 @@ main{
 
     padding:14px;
 
-    background:
-        rgba(255,255,255,.05);
+    background:rgba(255,255,255,.05);
 
     color:white;
 
@@ -1801,14 +1758,11 @@ main{
     min-width:46px;
     height:42px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.11);
+    border:1px solid rgba(255,255,255,.11);
 
     border-radius:20px;
 
-    background:
-        rgba(255,255,255,.05);
+    background:rgba(255,255,255,.05);
 
     color:#777;
 
@@ -1855,8 +1809,7 @@ main{
     opacity:0;
     visibility:hidden;
 
-    background:
-        rgba(0,0,0,.58);
+    background:rgba(0,0,0,.58);
 
     backdrop-filter:blur(18px);
 
@@ -1893,8 +1846,7 @@ main{
     transition:.4s;
 }
 
-.cart-overlay.open
-.cart-panel{
+.cart-overlay.open .cart-panel{
     transform:translateY(0);
 }
 
@@ -1916,14 +1868,11 @@ main{
     width:42px;
     height:42px;
 
-    border:
-        1px solid
-        rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.14);
 
     border-radius:50%;
 
-    background:
-        rgba(255,255,255,.07);
+    background:rgba(255,255,255,.07);
 }
 
 .cart-list{
@@ -1947,8 +1896,7 @@ main{
 
     border-radius:22px;
 
-    background:
-        rgba(255,255,255,.07);
+    background:rgba(255,255,255,.07);
 }
 
 .cart-name{
@@ -1988,8 +1936,7 @@ main{
 
     border-radius:24px;
 
-    background:
-        rgba(255,255,255,.10);
+    background:rgba(255,255,255,.10);
 }
 
 /* =========================================================
@@ -2022,8 +1969,7 @@ main{
 
     border-radius:30px;
 
-    background:
-        rgba(245,245,245,.94);
+    background:rgba(245,245,245,.94);
 
     color:#111;
 
@@ -2181,6 +2127,10 @@ footer{
     <div class="orb orb-2"></div>
 </div>
 
+<!-- =========================================================
+     LOADER
+========================================================= -->
+
 <div
     class="loader"
     id="loader"
@@ -2240,6 +2190,7 @@ footer{
         <button
             class="round-button"
             id="uploadShortcut"
+            aria-label="Загрузить одежду"
         >
             ＋
         </button>
@@ -2247,6 +2198,7 @@ footer{
         <button
             class="round-button"
             id="fitShortcut"
+            aria-label="Fit Builder"
         >
             ↗
         </button>
@@ -2424,13 +2376,6 @@ footer{
                 ОБУВЬ
             </button>
 
-            <button
-                class="category"
-                data-category="accessories"
-            >
-                АКСЕССУАРЫ
-            </button>
-
         </div>
 
     </div>
@@ -2461,7 +2406,7 @@ footer{
             class="item-count"
             id="itemCount"
         >
-            0
+            18 ШТ.
         </div>
 
     </div>
@@ -2515,7 +2460,6 @@ footer{
             <label
                 for="clothesInput"
                 class="file-label"
-                id="fileLabel"
             >
 
                 <div
@@ -2640,13 +2584,6 @@ footer{
                     ОБУВЬ
                 </button>
 
-                <button
-                    class="upload-category"
-                    data-value="accessories"
-                >
-                    АКСЕССУАР
-                </button>
-
             </div>
 
             <div class="label">
@@ -2658,7 +2595,7 @@ footer{
                 id="uploadName"
                 type="text"
                 maxlength="45"
-                placeholder="CAT ZIP-HOODIE"
+                placeholder="НАЗВАНИЕ ВЕЩИ"
             >
 
             <button
@@ -2769,12 +2706,6 @@ footer{
             >
 
             <img
-                id="fitAccessory"
-                class="clothing-layer"
-                alt=""
-            >
-
-            <img
                 id="fitHeadwear"
                 class="clothing-layer"
                 alt=""
@@ -2827,13 +2758,6 @@ footer{
                     data-layer="headwear"
                 >
                     ГОЛОВА
-                </button>
-
-                <button
-                    class="fit-tab"
-                    data-layer="accessory"
-                >
-                    АКС.
                 </button>
 
             </div>
@@ -3171,31 +3095,19 @@ footer{
                 id="reviewRating"
             >
 
-                <button
-                    class="rating-button"
-                    data-rating="1"
-                >
+                <button class="rating-button" data-rating="1">
                     1 ★
                 </button>
 
-                <button
-                    class="rating-button"
-                    data-rating="2"
-                >
+                <button class="rating-button" data-rating="2">
                     2 ★
                 </button>
 
-                <button
-                    class="rating-button"
-                    data-rating="3"
-                >
+                <button class="rating-button" data-rating="3">
                     3 ★
                 </button>
 
-                <button
-                    class="rating-button"
-                    data-rating="4"
-                >
+                <button class="rating-button" data-rating="4">
                     4 ★
                 </button>
 
@@ -3303,21 +3215,20 @@ footer{
 </div>
 
 <!-- =========================================================
-     MAIN JS
+     MAIN JAVASCRIPT
 ========================================================= -->
 
 <script>
 
 /* =========================================================
-   PRODUCTS
+   PRODUCTS — REAL COLLECTION
 ========================================================= */
 
 const products = [
 
     {
-        id:9,
+        id:1,
         name:"HOSPITAL T-SHIRT WHITE",
-        gender:"MAN",
         category:"tshirt",
         price:30,
         oldPrice:45,
@@ -3326,78 +3237,173 @@ const products = [
     },
 
     {
-
-        id:1,
-        name:"CAT ZIP-HOODIE",
-        gender:"MAN",
-        category:"zip",
-        price:118,
-        oldPrice:135,
-        image:"assets/products/CAT-ZIP-HOODIE.jpeg",
+        id:2,
+        name:"CHRISTIANE T-SHIRT",
+        category:"tshirt",
+        price:40,
+        oldPrice:55,
+        image:"image/CHRISTIANE T-SHIRT.webp",
         preorder:true
     },
 
     {
-        id:2,
-        name:"CREATURE T-SHIRT",
-        gender:"MAN",
-        category:"tshirt",
-        price:62,
-        image:""
-    },
-
-    {
         id:3,
-        name:"ARCHIVE HOODIE",
-        gender:"MAN",
-        category:"hoodie",
-        price:110,
-        image:""
+        name:"JAP T-SHIRT WHITE",
+        category:"tshirt",
+        price:42,
+        oldPrice:60,
+        image:"image/JAP T-SHIRT WHITE.webp",
+        preorder:true
     },
 
     {
         id:4,
-        name:"CREATURE JEANS",
-        gender:"MAN",
-        category:"jeans",
-        price:125,
-        image:""
+        name:"PRIVATE T-SHIRT BLACK",
+        category:"tshirt",
+        price:45,
+        oldPrice:65,
+        image:"image/PRIVATE T-SHIRT BLACK.webp",
+        preorder:true
     },
 
     {
         id:5,
-        name:"CREATURE LONGSLEEVE",
-        gender:"MAN",
+        name:"ARC LONGSLEEVE",
         category:"longsleeve",
-        price:75,
-        image:""
+        price:55,
+        oldPrice:75,
+        image:"image/ARC LONGSLEEVE.webp",
+        preorder:true
     },
 
     {
         id:6,
-        name:"CREATURE WOMAN T-SHIRT",
-        gender:"WOMAN",
-        category:"tshirt",
-        price:62,
-        image:""
+        name:"ARC 2 LONGSLEEVE",
+        category:"longsleeve",
+        price:58,
+        oldPrice:80,
+        image:"image/ARC 2 LONGSLEEVE.png",
+        preorder:true
     },
 
     {
         id:7,
-        name:"CREATURE WOMAN ZIP-HOODIE",
-        gender:"WOMAN",
-        category:"zip",
-        price:118,
-        image:""
+        name:"AFFLICTION POLO",
+        category:"shirt",
+        price:60,
+        oldPrice:85,
+        image:"image/AFFLICTION POLO.jpg",
+        preorder:true
     },
 
     {
         id:8,
-        name:"CREATURE WOMAN JEANS",
-        gender:"WOMAN",
+        name:"GRAY HOODIE",
+        category:"hoodie",
+        price:70,
+        oldPrice:95,
+        image:"image/GRAY HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:9,
+        name:"STONE ISLAND HOODIE",
+        category:"hoodie",
+        price:78,
+        oldPrice:105,
+        image:"image/STONE ISLAND HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:10,
+        name:"INSO ZIP-HOODIE",
+        category:"zip",
+        price:75,
+        oldPrice:100,
+        image:"image/INSO ZIP-HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:11,
+        name:"SCULL ZIP-HOODIE",
+        category:"zip",
+        price:80,
+        oldPrice:110,
+        image:"image/SCULL ZIP-HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:12,
+        name:"TORNADO JEANS",
         category:"jeans",
-        price:125,
-        image:""
+        price:85,
+        oldPrice:115,
+        image:"image/TORNADO JEANS.jpg",
+        preorder:true
+    },
+
+    {
+        id:13,
+        name:"HYSTERIC JEANS",
+        category:"jeans",
+        price:90,
+        oldPrice:125,
+        image:"image/HYSTERIC JEANS.jpg",
+        preorder:true
+    },
+
+    {
+        id:14,
+        name:"ADIDAS BOOTS",
+        category:"shoes",
+        price:95,
+        oldPrice:130,
+        image:"image/ADIDAS BOOTS.jpg",
+        preorder:true
+    },
+
+    {
+        id:15,
+        name:"JEREMY SCOTT BOOTS",
+        category:"shoes",
+        price:110,
+        oldPrice:145,
+        image:"image/JEREMY SCOTT BOOTS.jpg",
+        preorder:true
+    },
+
+    {
+        id:16,
+        name:"MM6 EVOLUTION BOOTS",
+        category:"shoes",
+        price:120,
+        oldPrice:160,
+        image:"image/MM6 EVOLUTION BOOTS.jpg",
+        preorder:true
+    },
+
+    {
+        id:17,
+        name:"SAKURA CAP",
+        category:"headwear",
+        price:40,
+        oldPrice:55,
+        image:"image/SAKURA CAP.jpg",
+        preorder:true
+    },
+
+    {
+        id:18,
+        name:"VENICE CAP",
+        category:"headwear",
+        price:42,
+        oldPrice:60,
+        image:"image/VENICE CAP.jpg",
+        preorder:true
     }
 
 ];
@@ -3431,8 +3437,6 @@ const fit = {
 
     headwear:null,
 
-    accessory:null,
-
     outerwear:null,
 
     top:null,
@@ -3456,15 +3460,6 @@ const transforms = {
         scaleX:1,
         scaleY:1,
         width:120
-    },
-
-    accessory:{
-        x:0,
-        y:-160,
-        scale:1,
-        scaleX:1,
-        scaleY:1,
-        width:140
     },
 
     outerwear:{
@@ -3506,7 +3501,7 @@ const transforms = {
 };
 
 /* =========================================================
-   DEFAULTS
+   CATEGORY DEFAULTS
 ========================================================= */
 
 const categoryDefaults = {
@@ -3581,15 +3576,6 @@ const categoryDefaults = {
         scaleX:1,
         scaleY:1,
         width:190
-    },
-
-    accessories:{
-        x:0,
-        y:-165,
-        scale:.85,
-        scaleX:1,
-        scaleY:1,
-        width:140
     }
 
 };
@@ -3642,9 +3628,6 @@ const fitOuterwear =
 
 const fitBottom =
     document.getElementById("fitBottom");
-
-const fitAccessory =
-    document.getElementById("fitAccessory");
 
 const fitShoes =
     document.getElementById("fitShoes");
@@ -3740,8 +3723,6 @@ function categoryLabel(category){
 
         jeans:"ДЖИНСЫ",
 
-        accessories:"АКСЕССУАР",
-
         headwear:"ГОЛОВНОЙ УБОР",
 
         shoes:"ОБУВЬ"
@@ -3785,25 +3766,42 @@ function showToast(message){
 }
 
 /* =========================================================
+   SAFE TEXT
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+/* =========================================================
    PRODUCTS
 ========================================================= */
 
 function renderProducts(){
 
+    /*
+        Вещи доступны и в мужском,
+        и в женском разделе.
+
+        Поэтому selectedGender здесь
+        не удаляет товары из каталога.
+    */
+
     const visible =
         products.filter(
             item => {
 
-                const gender =
-                    item.gender ===
-                    selectedGender;
-
                 const category =
                     selectedCategory === "all" ||
-                    item.category ===
-                    selectedCategory;
+                    item.category === selectedCategory;
 
-                return gender && category;
+                return category;
             }
         );
 
@@ -3834,22 +3832,17 @@ function renderProducts(){
                         </div>
 
                         <div class="placeholder-name">
-                            ${product.name}
+                            ${escapeHTML(product.name)}
                         </div>
 
                     </div>
 
-                    ${
-                        product.image
-                        ? `
-                        <img
-                            src="${product.image}"
-                            alt="${product.name}"
-                            onerror="this.style.display='none'"
-                        >
-                        `
-                        : ""
-                    }
+                    <img
+                        src="${encodeURI(product.image)}"
+                        alt="${escapeHTML(product.name)}"
+                        loading="lazy"
+                        onerror="this.style.display='none'"
+                    >
 
                     ${
                         product.preorder
@@ -3866,7 +3859,7 @@ function renderProducts(){
                 <div class="product-info">
 
                     <div class="product-name">
-                        ${product.name}
+                        ${escapeHTML(product.name)}
                     </div>
 
                     <div class="product-meta">
@@ -3913,7 +3906,7 @@ function renderProducts(){
 }
 
 /* =========================================================
-   COLLECTION → UPLOAD
+   COLLECTION → AI LAB
 ========================================================= */
 
 async function sendCollectionItemToUpload(product){
@@ -3921,7 +3914,7 @@ async function sendCollectionItemToUpload(product){
     if(!product.image){
 
         showToast(
-            "У ЭТОЙ ВЕЩИ ПОКА НЕТ ФОТО"
+            "У ЭТОЙ ВЕЩИ НЕТ ФОТО"
         );
 
         return;
@@ -3934,7 +3927,7 @@ async function sendCollectionItemToUpload(product){
 
         const response =
             await fetch(
-                product.image
+                encodeURI(product.image)
             );
 
         if(!response.ok){
@@ -3947,10 +3940,19 @@ async function sendCollectionItemToUpload(product){
         const blob =
             await response.blob();
 
-        const extension =
+        let extension = "jpg";
+
+        if(
             blob.type.includes("png")
-            ? "png"
-            : "jpg";
+        ){
+            extension = "png";
+        }
+
+        if(
+            blob.type.includes("webp")
+        ){
+            extension = "webp";
+        }
 
         selectedFile =
             new File(
@@ -4006,8 +4008,14 @@ async function sendCollectionItemToUpload(product){
             .value =
                 product.name;
 
+        /*
+            Выбранный на сайте раздел
+            становится текущим полом
+            для AI Lab.
+        */
+
         uploadGender =
-            product.gender;
+            selectedGender;
 
         uploadCategory =
             product.category;
@@ -4028,7 +4036,7 @@ async function sendCollectionItemToUpload(product){
             "0%";
 
         aiStatus.textContent =
-            "ВЕЩЬ ИЗ КОЛЛЕКЦИИ ЗАГРУЖЕНА — УДАЛИ ФОН";
+            "ВЕЩЬ ЗАГРУЖЕНА — УДАЛИ ФОН";
 
         document
             .getElementById(
@@ -4087,10 +4095,15 @@ document
                 selectedGender =
                     button.dataset.gender;
 
+                uploadGender =
+                    selectedGender;
+
                 fitGender.textContent =
                     genderLabel(
                         selectedGender
                     );
+
+                updateUploadButtons();
 
                 renderProducts();
             }
@@ -4209,7 +4222,7 @@ document
 );
 
 /* =========================================================
-   PHOTO
+   USER PHOTO
 ========================================================= */
 
 clothesInput.addEventListener(
@@ -4285,7 +4298,7 @@ clothesInput.addEventListener(
 );
 
 /* =========================================================
-   CROP TRANSPARENT
+   CROP TRANSPARENT IMAGE
 ========================================================= */
 
 async function cropTransparentBlob(blob){
@@ -4481,7 +4494,7 @@ async function cropTransparentBlob(blob){
 }
 
 /* =========================================================
-   AI CALLBACK
+   BACKGROUND REMOVAL CALLBACK
 ========================================================= */
 
 window.finishBackgroundRemoval =
@@ -4561,7 +4574,7 @@ window.backgroundRemovalError =
     };
 
 /* =========================================================
-   FIT LAYERS
+   FIT LAYER MAPPING
 ========================================================= */
 
 function getLayer(category){
@@ -4585,15 +4598,11 @@ function getLayer(category){
         return "outerwear";
     }
 
-    if(category === "accessories"){
-        return "accessory";
-    }
-
     return "top";
 }
 
 /* =========================================================
-   ADD UPLOAD
+   ADD UPLOAD TO FIT
 ========================================================= */
 
 addUploadToFit.addEventListener(
@@ -4629,9 +4638,6 @@ addUploadToFit.addEventListener(
 
             name:name,
 
-            gender:
-                uploadGender,
-
             category:
                 uploadCategory,
 
@@ -4658,7 +4664,7 @@ addUploadToFit.addEventListener(
 );
 
 /* =========================================================
-   ADD FIT ITEM
+   ADD PRODUCT TO FIT
 ========================================================= */
 
 function addProductToFit(item){
@@ -4700,7 +4706,7 @@ function addProductToFit(item){
 }
 
 /* =========================================================
-   DEFAULT
+   DEFAULT TRANSFORM
 ========================================================= */
 
 function applyDefaults(
@@ -4758,11 +4764,7 @@ function layerElement(layer){
         return fitShoes;
     }
 
-    if(layer === "headwear"){
-        return fitHeadwear;
-    }
-
-    return fitAccessory;
+    return fitHeadwear;
 }
 
 /* =========================================================
@@ -4776,7 +4778,6 @@ function renderFit(){
         "top",
         "outerwear",
         "shoes",
-        "accessory",
         "headwear"
     ]
     .forEach(
@@ -4865,7 +4866,7 @@ function renderFit(){
 }
 
 /* =========================================================
-   CURRENT
+   CURRENT LAYER
 ========================================================= */
 
 function updateCurrent(){
@@ -4923,7 +4924,7 @@ function updateCurrent(){
 }
 
 /* =========================================================
-   TABS
+   FIT TABS
 ========================================================= */
 
 function setActiveTab(layer){
@@ -5028,8 +5029,7 @@ document
                 const direction =
                     button.dataset.move;
 
-                const step =
-                    6;
+                const step = 6;
 
                 if(direction === "left"){
 
@@ -5222,7 +5222,7 @@ document
 );
 
 /* =========================================================
-   RESET
+   RESET TRANSFORM
 ========================================================= */
 
 document
@@ -5254,7 +5254,7 @@ document
 );
 
 /* =========================================================
-   REMOVE
+   REMOVE LAYER
 ========================================================= */
 
 document
@@ -5262,6 +5262,15 @@ document
 .addEventListener(
     "click",
     () => {
+
+        if(!fit[activeLayer]){
+
+            showToast(
+                "СЛОЙ ПУСТ"
+            );
+
+            return;
+        }
 
         fit[
             activeLayer
@@ -5276,7 +5285,7 @@ document
 );
 
 /* =========================================================
-   CLEAR
+   CLEAR FIT
 ========================================================= */
 
 document
@@ -5286,14 +5295,14 @@ document
     () => {
 
         Object
-        .keys(fit)
-        .forEach(
-            layer => {
+            .keys(fit)
+            .forEach(
+                layer => {
 
-                fit[layer] =
-                    null;
-            }
-        );
+                    fit[layer] =
+                        null;
+                }
+            );
 
         renderFit();
 
@@ -5381,25 +5390,63 @@ function renderCart(){
                 row.className =
                     "cart-item";
 
-                row.innerHTML = `
+                const left =
+                    document.createElement(
+                        "div"
+                    );
 
-                    <div>
+                const name =
+                    document.createElement(
+                        "div"
+                    );
 
-                        <div class="cart-name">
-                            ${item.name}
-                        </div>
+                name.className =
+                    "cart-name";
 
-                        <div class="cart-meta">
-                            ${categoryLabel(item.category)}
-                        </div>
+                name.textContent =
+                    item.name;
 
-                    </div>
+                const meta =
+                    document.createElement(
+                        "div"
+                    );
 
-                    <div class="cart-price">
-                        ${money(item.price)}
-                    </div>
+                meta.className =
+                    "cart-meta";
 
-                `;
+                meta.textContent =
+                    categoryLabel(
+                        item.category
+                    );
+
+                left.appendChild(
+                    name
+                );
+
+                left.appendChild(
+                    meta
+                );
+
+                const price =
+                    document.createElement(
+                        "div"
+                    );
+
+                price.className =
+                    "cart-price";
+
+                price.textContent =
+                    money(
+                        item.price
+                    );
+
+                row.appendChild(
+                    left
+                );
+
+                row.appendChild(
+                    price
+                );
 
                 cartList.appendChild(
                     row
@@ -5431,7 +5478,7 @@ function renderCart(){
 }
 
 /* =========================================================
-   CART OPEN/CLOSE
+   CART OPEN / CLOSE
 ========================================================= */
 
 document
@@ -5581,25 +5628,64 @@ function addReviewCard(
     card.className =
         "review-card glass";
 
-    card.innerHTML = `
+    const top =
+        document.createElement(
+            "div"
+        );
 
-        <div class="review-top">
+    top.className =
+        "review-top";
 
-            <div class="review-user">
-                ${review.name}
-            </div>
+    const user =
+        document.createElement(
+            "div"
+        );
 
-            <div class="review-stars">
-                ${starsFromRating(review.rating)}
-            </div>
+    user.className =
+        "review-user";
 
-        </div>
+    user.textContent =
+        review.name;
 
-        <p class="review-text">
-            ${review.text}
-        </p>
+    const stars =
+        document.createElement(
+            "div"
+        );
 
-    `;
+    stars.className =
+        "review-stars";
+
+    stars.textContent =
+        starsFromRating(
+            review.rating
+        );
+
+    top.appendChild(
+        user
+    );
+
+    top.appendChild(
+        stars
+    );
+
+    const text =
+        document.createElement(
+            "p"
+        );
+
+    text.className =
+        "review-text";
+
+    text.textContent =
+        review.text;
+
+    card.appendChild(
+        top
+    );
+
+    card.appendChild(
+        text
+    );
 
     document
         .getElementById(
@@ -5759,6 +5845,8 @@ renderCart();
 
 loadReviews();
 
+updateUploadButtons();
+
 </script>
 
 <!-- =========================================================
@@ -5767,11 +5855,8 @@ loadReviews();
 
 <script type="module">
 
-import {
-    removeBackground
-}
+import removeBackground
 from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
-
 
 const button =
     document.getElementById(
@@ -5792,7 +5877,6 @@ const bar =
     document.getElementById(
         "aiProgressBar"
     );
-
 
 button.addEventListener(
     "click",
