@@ -1,0 +1,7342 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+>
+
+<meta
+    name="theme-color"
+    content="#070707"
+>
+
+<meta
+    name="description"
+    content="CreatureMeza — независимый проект одежды"
+>
+
+<title>CreatureMeza</title>
+
+<style>
+
+/* =========================================================
+   ROOT
+========================================================= */
+
+:root{
+
+    --bg:#070707;
+    --bg2:#0d0d0d;
+
+    --white:#ffffff;
+    --black:#080808;
+
+    --text:#f7f7f7;
+
+    --muted:#858585;
+    --muted2:#b8b8b8;
+
+    --glass:rgba(255,255,255,.07);
+    --line:rgba(255,255,255,.13);
+
+    --radius:34px;
+
+}
+
+/* =========================================================
+   RESET
+========================================================= */
+
+*{
+
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+
+}
+
+html{
+
+    scroll-behavior:smooth;
+
+}
+
+body{
+
+    min-height:100vh;
+
+    background:
+        radial-gradient(
+            circle at 50% -10%,
+            #292929,
+            #101010 28%,
+            #070707 58%
+        );
+
+    color:var(--text);
+
+    font-family:
+        Inter,
+        -apple-system,
+        BlinkMacSystemFont,
+        "SF Pro Display",
+        "Helvetica Neue",
+        Arial,
+        sans-serif;
+
+    overflow-x:hidden;
+
+}
+
+button,
+input,
+textarea{
+
+    font:inherit;
+
+}
+
+button{
+
+    cursor:pointer;
+    color:inherit;
+
+}
+
+button,
+label,
+a{
+
+    -webkit-tap-highlight-color:transparent;
+
+}
+
+img{
+
+    display:block;
+
+}
+
+a{
+
+    color:inherit;
+    text-decoration:none;
+
+}
+
+/* =========================================================
+   AMBIENT
+========================================================= */
+
+.ambient{
+
+    position:fixed;
+    inset:0;
+
+    z-index:-10;
+
+    overflow:hidden;
+    pointer-events:none;
+
+}
+
+.orb{
+
+    position:absolute;
+
+    border-radius:50%;
+
+    filter:blur(110px);
+
+    opacity:.14;
+
+}
+
+.orb-1{
+
+    width:500px;
+    height:500px;
+
+    top:5%;
+    left:-300px;
+
+    background:white;
+
+}
+
+.orb-2{
+
+    width:600px;
+    height:600px;
+
+    right:-400px;
+    top:45%;
+
+    background:#aaa;
+
+}
+
+/* =========================================================
+   GLASS
+========================================================= */
+
+.glass{
+
+    position:relative;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,.12),
+            rgba(255,255,255,.045)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.30),
+        inset 0 1px 0 rgba(255,255,255,.20);
+
+    backdrop-filter:
+        blur(30px)
+        saturate(160%);
+
+    -webkit-backdrop-filter:
+        blur(30px)
+        saturate(160%);
+
+}
+
+/* =========================================================
+   LOADER
+========================================================= */
+
+.loader{
+
+    position:fixed;
+    inset:0;
+
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:#070707;
+
+    transition:
+        opacity .6s,
+        visibility .6s;
+
+}
+
+.loader.hidden{
+
+    opacity:0;
+    visibility:hidden;
+
+}
+
+.loader-logo{
+
+    text-align:center;
+
+    font-size:24px;
+    font-weight:650;
+
+    letter-spacing:-1px;
+
+}
+
+.loader-sub{
+
+    margin-top:12px;
+
+    color:#666;
+
+    text-align:center;
+
+    font-size:8px;
+
+    letter-spacing:3px;
+
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header{
+
+    position:fixed;
+
+    left:14px;
+    right:14px;
+
+    top:
+        calc(
+            12px +
+            env(safe-area-inset-top)
+        );
+
+    z-index:900;
+
+    height:68px;
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        auto
+        1fr;
+
+    align-items:center;
+
+    padding:
+        0
+        13px
+        0
+        17px;
+
+    border-radius:40px;
+
+    background:
+        linear-gradient(
+            110deg,
+            rgba(255,255,255,.15),
+            rgba(255,255,255,.055) 40%,
+            rgba(255,255,255,.09)
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.20);
+
+    box-shadow:
+        0 18px 60px
+        rgba(0,0,0,.40);
+
+    backdrop-filter:
+        blur(35px)
+        saturate(175%);
+
+    -webkit-backdrop-filter:
+        blur(35px)
+        saturate(175%);
+
+}
+
+.header-left{
+
+    display:flex;
+    align-items:center;
+
+}
+
+.bag{
+
+    display:flex;
+    align-items:center;
+
+    gap:8px;
+
+    border:0;
+    background:none;
+
+}
+
+.bag-icon{
+
+    width:38px;
+    height:38px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    background:
+        rgba(255,255,255,.07);
+
+}
+
+.bag-count{
+
+    color:#ddd;
+
+    font-size:10px;
+
+}
+
+.logo{
+
+    font-size:19px;
+
+    font-weight:650;
+
+    letter-spacing:-1.2px;
+
+}
+
+.header-right{
+
+    display:flex;
+
+    justify-content:flex-end;
+
+    gap:6px;
+
+}
+
+.round-button{
+
+    width:40px;
+    height:40px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.16);
+
+    background:
+        rgba(255,255,255,.07);
+
+}
+
+/* =========================================================
+   MAIN
+========================================================= */
+
+main{
+
+    padding-top:
+        calc(
+            105px +
+            env(safe-area-inset-top)
+        );
+
+}
+
+/* =========================================================
+   HERO
+========================================================= */
+
+.hero{
+
+    min-height:
+        calc(
+            100svh -
+            120px
+        );
+
+    margin:
+        0
+        14px;
+
+    padding:
+        25px
+        22px
+        19px;
+
+    border-radius:39px;
+
+    overflow:hidden;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    background:
+        radial-gradient(
+            circle at 50% 20%,
+            rgba(255,255,255,.16),
+            transparent 32%
+        ),
+        linear-gradient(
+            150deg,
+            #1c1c1c,
+            #090909 55%,
+            #111
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.13);
+
+}
+
+.hero-top{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    color:#777;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+}
+
+.hero-center{
+
+    margin:auto 0;
+
+}
+
+.hero-kicker{
+
+    margin-bottom:13px;
+
+    text-align:center;
+
+    color:#888;
+
+    font-size:8px;
+
+    letter-spacing:3px;
+
+}
+
+.hero-title{
+
+    text-align:center;
+
+    font-size:
+        clamp(
+            52px,
+            15vw,
+            120px
+        );
+
+    line-height:.78;
+
+    font-weight:580;
+
+    letter-spacing:-.09em;
+
+}
+
+.hero-title span{
+
+    display:block;
+
+}
+
+.hero-glass{
+
+    padding:22px;
+
+    border-radius:30px;
+
+}
+
+.hero-small{
+
+    color:#999;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+}
+
+.hero-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    gap:20px;
+
+    margin-top:13px;
+
+}
+
+.hero-description{
+
+    max-width:460px;
+
+    color:#bbb;
+
+    font-size:10px;
+
+    line-height:1.65;
+
+}
+
+.hero-button{
+
+    flex-shrink:0;
+
+    border:
+        1px solid
+        rgba(255,255,255,.18);
+
+    border-radius:30px;
+
+    padding:
+        13px
+        19px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    font-size:8px;
+
+    letter-spacing:1.5px;
+
+}
+
+/* =========================================================
+   GENDER
+========================================================= */
+
+.gender-section{
+
+    padding:
+        28px
+        14px
+        0;
+
+}
+
+.gender-switch{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap:6px;
+
+    padding:6px;
+
+    border-radius:30px;
+
+}
+
+.gender-button{
+
+    border:0;
+
+    border-radius:25px;
+
+    padding:14px;
+
+    background:transparent;
+
+    color:#777;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+}
+
+.gender-button.active{
+
+    background:white;
+
+    color:#111;
+
+}
+
+/* =========================================================
+   CATEGORIES
+========================================================= */
+
+.category-wrap{
+
+    position:sticky;
+
+    top:
+        calc(
+            90px +
+            env(safe-area-inset-top)
+        );
+
+    z-index:500;
+
+    padding:
+        14px
+        14px
+        0;
+
+}
+
+.category-box{
+
+    padding:6px;
+
+    overflow:hidden;
+
+    border-radius:30px;
+
+    background:
+        rgba(20,20,20,.82);
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    backdrop-filter:blur(30px);
+
+    -webkit-backdrop-filter:blur(30px);
+
+}
+
+.categories{
+
+    display:flex;
+
+    gap:4px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+}
+
+.categories::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.category{
+
+    flex-shrink:0;
+
+    border:0;
+
+    border-radius:24px;
+
+    padding:
+        11px
+        16px;
+
+    background:transparent;
+
+    color:#777;
+
+    font-size:8px;
+
+    letter-spacing:1.4px;
+
+}
+
+.category.active{
+
+    color:white;
+
+    background:
+        rgba(255,255,255,.14);
+
+}
+
+/* =========================================================
+   SECTION
+========================================================= */
+
+.section{
+
+    padding:
+        75px
+        14px
+        100px;
+
+}
+
+.section-code{
+
+    color:#777;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+}
+
+.section-title{
+
+    margin-top:9px;
+
+    font-size:
+        clamp(
+            45px,
+            12vw,
+            78px
+        );
+
+    line-height:.82;
+
+    font-weight:430;
+
+    letter-spacing:-.075em;
+
+}
+
+.section-description{
+
+    max-width:430px;
+
+    margin-top:18px;
+
+    color:#777;
+
+    font-size:10px;
+
+    line-height:1.65;
+
+}
+
+/* =========================================================
+   PRODUCT HEADING
+========================================================= */
+
+.product-heading{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:flex-end;
+
+    margin-bottom:24px;
+
+}
+
+.product-heading h2{
+
+    margin-top:7px;
+
+    font-size:38px;
+
+    font-weight:430;
+
+    letter-spacing:-2px;
+
+}
+
+.item-count{
+
+    color:#777;
+
+    font-size:8px;
+
+}
+
+/* =========================================================
+   PRODUCT GRID
+========================================================= */
+
+.product-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(
+            2,
+            minmax(0,1fr)
+        );
+
+    gap:
+        34px
+        10px;
+
+}
+
+.product{
+
+    min-width:0;
+
+    cursor:pointer;
+
+}
+
+/* =========================================================
+   PRODUCT IMAGE — PURE WHITE
+========================================================= */
+
+.product-image{
+
+    position:relative;
+
+    aspect-ratio:1 / 1.1;
+
+    overflow:hidden;
+
+    border-radius:29px;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 12px 40px
+        rgba(0,0,0,.13);
+
+    transition:
+        transform .3s ease,
+        box-shadow .3s ease;
+
+}
+
+.product:active
+.product-image{
+
+    transform:scale(.985);
+
+}
+
+.product-image img{
+
+    position:relative;
+
+    z-index:2;
+
+    width:100%;
+    height:100%;
+
+    padding:13px;
+
+    object-fit:contain;
+
+    background:#ffffff;
+
+    transition:
+        transform .35s ease;
+
+}
+
+.product:hover
+.product-image img{
+
+    transform:scale(1.025);
+
+}
+
+.product-placeholder{
+
+    position:absolute;
+
+    inset:0;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    padding:15px;
+
+    color:#111;
+
+    text-align:center;
+
+}
+
+.placeholder-brand{
+
+    font-size:10px;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+}
+
+.placeholder-name{
+
+    margin-top:9px;
+
+    color:#888;
+
+    font-size:7px;
+
+}
+
+.preorder{
+
+    position:absolute;
+
+    z-index:5;
+
+    right:12px;
+    top:12px;
+
+    padding:
+        9px
+        12px;
+
+    border-radius:18px;
+
+    background:
+        rgba(255,255,255,.88);
+
+    color:#111;
+
+    box-shadow:
+        0 5px 20px
+        rgba(0,0,0,.06);
+
+    font-size:7px;
+
+    letter-spacing:1px;
+
+}
+
+.product-info{
+
+    padding:
+        11px
+        3px
+        0;
+
+}
+
+.product-name{
+
+    overflow:hidden;
+
+    white-space:nowrap;
+
+    text-overflow:ellipsis;
+
+    font-size:10px;
+
+}
+
+.product-meta{
+
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:7px;
+
+    letter-spacing:1px;
+
+}
+
+.price-row{
+
+    display:flex;
+
+    gap:7px;
+
+    align-items:center;
+
+    margin-top:8px;
+
+}
+
+.price{
+
+    font-size:15px;
+
+    font-weight:650;
+
+}
+
+.old-price{
+
+    color:#666;
+
+    font-size:9px;
+
+    text-decoration:line-through;
+
+}
+
+/* =========================================================
+   UPLOAD PANEL
+========================================================= */
+
+.upload-panel{
+
+    margin-top:25px;
+
+    padding:10px;
+
+    border-radius:38px;
+
+}
+
+.upload-photo{
+
+    position:relative;
+
+    min-height:420px;
+
+    overflow:hidden;
+
+    border-radius:31px;
+
+    background:#ffffff;
+
+}
+
+.file-label{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:2;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+}
+
+.upload-placeholder{
+
+    color:#111;
+
+    text-align:center;
+
+}
+
+.upload-plus{
+
+    width:76px;
+    height:76px;
+
+    margin:
+        0
+        auto
+        20px;
+
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:#f1f1f1;
+
+    border:
+        1px solid
+        rgba(0,0,0,.08);
+
+    font-size:36px;
+
+    font-weight:200;
+
+}
+
+.upload-placeholder strong{
+
+    display:block;
+
+    font-size:10px;
+
+    letter-spacing:2px;
+
+}
+
+.upload-placeholder span{
+
+    display:block;
+
+    margin-top:8px;
+
+    color:#888;
+
+    font-size:7px;
+
+}
+
+.upload-preview{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:3;
+
+    width:100%;
+    height:100%;
+
+    padding:14px;
+
+    object-fit:contain;
+
+    pointer-events:none;
+
+    display:none;
+
+}
+
+.upload-preview.visible{
+
+    display:block;
+
+}
+
+.change-photo{
+
+    position:absolute;
+
+    z-index:5;
+
+    left:50%;
+    bottom:14px;
+
+    transform:
+        translateX(-50%);
+
+    display:none;
+
+    border:0;
+
+    border-radius:25px;
+
+    padding:
+        12px
+        17px;
+
+    background:
+        rgba(10,10,10,.80);
+
+    color:white;
+
+    font-size:7px;
+
+    letter-spacing:1.3px;
+
+    backdrop-filter:blur(20px);
+
+    -webkit-backdrop-filter:blur(20px);
+
+}
+
+.upload-photo.has-image
+.change-photo{
+
+    display:block;
+
+}
+
+.upload-controls{
+
+    padding:
+        15px
+        8px
+        8px;
+
+}
+
+.label{
+
+    margin:
+        18px
+        2px
+        9px;
+
+    color:#777;
+
+    font-size:7px;
+
+    letter-spacing:1.7px;
+
+}
+
+.choice-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap:7px;
+
+}
+
+.choice,
+.upload-category{
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:24px;
+
+    padding:13px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    color:#777;
+
+    font-size:8px;
+
+    letter-spacing:1.2px;
+
+}
+
+.choice.active,
+.upload-category.active{
+
+    background:white;
+
+    color:#111;
+
+}
+
+.upload-categories{
+
+    display:flex;
+
+    gap:6px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+}
+
+.upload-categories::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.upload-category{
+
+    flex-shrink:0;
+
+    padding:
+        11px
+        14px;
+
+}
+
+.input{
+
+    width:100%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    outline:0;
+
+    border-radius:24px;
+
+    padding:
+        14px
+        15px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    color:white;
+
+    font-size:9px;
+
+}
+
+.input::placeholder{
+
+    color:#666;
+
+}
+
+.ai-button{
+
+    width:100%;
+
+    margin-top:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.15);
+
+    border-radius:28px;
+
+    padding:16px;
+
+    background:
+        rgba(255,255,255,.08);
+
+    font-size:8px;
+
+    letter-spacing:1.5px;
+
+}
+
+.ai-button:not(:disabled){
+
+    background:
+        rgba(255,255,255,.12);
+
+}
+
+.ai-button:disabled,
+.add-fit-button:disabled{
+
+    opacity:.30;
+    cursor:not-allowed;
+
+}
+
+.ai-progress{
+
+    display:none;
+
+    height:3px;
+
+    overflow:hidden;
+
+    margin-top:13px;
+
+    border-radius:10px;
+
+    background:#252525;
+
+}
+
+.ai-progress.visible{
+
+    display:block;
+
+}
+
+.ai-progress-bar{
+
+    width:0%;
+    height:100%;
+
+    background:white;
+
+    transition:
+        width .25s;
+
+}
+
+.ai-status{
+
+    min-height:18px;
+
+    margin-top:11px;
+
+    color:#777;
+
+    text-align:center;
+
+    font-size:7px;
+
+    line-height:1.5;
+
+    letter-spacing:1.2px;
+
+}
+
+.add-fit-button{
+
+    width:100%;
+
+    margin-top:9px;
+
+    border:0;
+
+    border-radius:28px;
+
+    padding:17px;
+
+    background:white;
+
+    color:#111;
+
+    font-size:8px;
+
+    font-weight:650;
+
+    letter-spacing:1.5px;
+
+}
+
+/* =========================================================
+   FIT BUILDER
+========================================================= */
+
+.builder-layout{
+
+    margin-top:25px;
+
+}
+
+.fit-stage{
+
+    position:relative;
+
+    min-height:680px;
+
+    overflow:hidden;
+
+    border-radius:39px;
+
+    background:
+        radial-gradient(
+            circle at 50% 38%,
+            rgba(255,255,255,.11),
+            transparent 34%
+        ),
+        radial-gradient(
+            circle at 50% 85%,
+            rgba(255,255,255,.045),
+            transparent 35%
+        ),
+        linear-gradient(
+            145deg,
+            #171717,
+            #0c0c0c 58%,
+            #101010
+        );
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+}
+
+.fit-stage::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    top:52%;
+
+    width:430px;
+    height:430px;
+
+    transform:
+        translate(-50%,-50%);
+
+    border-radius:50%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.055);
+
+    box-shadow:
+        inset 0 0 70px
+        rgba(255,255,255,.018);
+
+    pointer-events:none;
+
+}
+
+.fit-stage::after{
+
+    content:"";
+
+    position:absolute;
+
+    left:50%;
+    bottom:74px;
+
+    width:58%;
+    height:1px;
+
+    transform:
+        translateX(-50%);
+
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            rgba(255,255,255,.10),
+            transparent
+        );
+
+    pointer-events:none;
+
+}
+
+.fit-label{
+
+    position:absolute;
+
+    z-index:50;
+
+    left:20px;
+    top:20px;
+
+    color:#777;
+
+    font-size:7px;
+
+    letter-spacing:1.7px;
+
+}
+
+.fit-gender{
+
+    position:absolute;
+
+    z-index:50;
+
+    right:20px;
+    top:20px;
+
+    color:#777;
+
+    font-size:7px;
+
+    letter-spacing:1.7px;
+
+}
+
+/* =========================================================
+   CLOTHING LAYERS
+========================================================= */
+
+.clothing-layer{
+
+    position:absolute;
+
+    left:50%;
+    top:50%;
+
+    max-width:none;
+
+    object-fit:contain;
+
+    pointer-events:none;
+
+    transform-origin:
+        center center;
+
+    filter:
+        drop-shadow(
+            0 15px 18px
+            rgba(0,0,0,.30)
+        );
+
+    display:none;
+
+}
+
+.clothing-layer.visible{
+
+    display:block;
+
+}
+
+#fitBottom{
+
+    z-index:5;
+
+}
+
+#fitTop{
+
+    z-index:10;
+
+}
+
+#fitOuterwear{
+
+    z-index:15;
+
+}
+
+#fitShoes{
+
+    z-index:18;
+
+}
+
+#fitHeadwear{
+
+    z-index:25;
+
+}
+
+.fit-empty{
+
+    position:absolute;
+
+    z-index:30;
+
+    left:50%;
+    top:50%;
+
+    transform:
+        translate(-50%,-50%);
+
+    padding:
+        16px
+        22px;
+
+    border-radius:25px;
+
+    background:
+        rgba(0,0,0,.38);
+
+    color:#777;
+
+    text-align:center;
+
+    font-size:8px;
+
+    line-height:1.7;
+
+    letter-spacing:1.4px;
+
+    backdrop-filter:
+        blur(15px);
+
+}
+
+/* =========================================================
+   FIT CONTROLS
+========================================================= */
+
+.fit-controls{
+
+    margin-top:10px;
+
+    padding:12px;
+
+    border-radius:35px;
+
+}
+
+.fit-tabs{
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(5,1fr);
+
+    gap:5px;
+
+}
+
+.fit-tab{
+
+    min-width:0;
+
+    border:
+        1px solid
+        rgba(255,255,255,.11);
+
+    border-radius:22px;
+
+    padding:
+        11px
+        3px;
+
+    background:
+        rgba(255,255,255,.055);
+
+    color:#777;
+
+    font-size:6px;
+
+    letter-spacing:.8px;
+
+}
+
+.fit-tab.active{
+
+    background:
+        rgba(255,255,255,.16);
+
+    color:white;
+
+}
+
+.fit-current{
+
+    margin-top:9px;
+
+    padding:15px;
+
+    border-radius:25px;
+
+    text-align:center;
+
+    background:
+        rgba(255,255,255,.06);
+
+    border:
+        1px solid
+        rgba(255,255,255,.09);
+
+}
+
+.fit-current-name{
+
+    font-size:9px;
+
+}
+
+.fit-current-type{
+
+    margin-top:5px;
+
+    color:#777;
+
+    font-size:8px;
+
+}
+
+.adjust-title{
+
+    margin-top:16px;
+
+    color:#777;
+
+    text-align:center;
+
+    font-size:7px;
+
+    letter-spacing:1.5px;
+
+}
+
+.move-grid{
+
+    width:165px;
+
+    margin:
+        12px
+        auto
+        0;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:6px;
+
+}
+
+.move-button{
+
+    aspect-ratio:1;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.06);
+
+    font-size:15px;
+
+}
+
+.move-empty{
+
+    visibility:hidden;
+
+}
+
+.scale-row{
+
+    display:grid;
+
+    grid-template-columns:
+        45px
+        1fr
+        45px;
+
+    align-items:center;
+
+    gap:8px;
+
+    margin-top:12px;
+
+}
+
+.scale-button{
+
+    height:45px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.06);
+
+    font-size:17px;
+
+}
+
+.scale-value{
+
+    text-align:center;
+
+    color:#aaa;
+
+    font-size:8px;
+
+    letter-spacing:1px;
+
+}
+
+.auto-fit{
+
+    width:100%;
+
+    margin-top:15px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius:25px;
+
+    padding:14px;
+
+    background:
+        rgba(255,255,255,.09);
+
+    font-size:7px;
+
+    letter-spacing:1.4px;
+
+}
+
+.fit-total{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    margin-top:13px;
+
+    padding:17px;
+
+    border-radius:25px;
+
+    background:
+        rgba(255,255,255,.08);
+
+}
+
+.fit-total span{
+
+    color:#777;
+
+    font-size:7px;
+
+    letter-spacing:1.4px;
+
+}
+
+.fit-total strong{
+
+    font-size:21px;
+
+}
+
+.fit-actions{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr
+        1fr;
+
+    gap:7px;
+
+    margin-top:8px;
+
+}
+
+.fit-action{
+
+    border:
+        1px solid
+        rgba(255,255,255,.12);
+
+    border-radius:25px;
+
+    padding:
+        14px
+        7px;
+
+    background:
+        rgba(255,255,255,.06);
+
+    font-size:7px;
+
+    letter-spacing:1px;
+
+}
+
+.fit-action.full{
+
+    grid-column:
+        1 / -1;
+
+    background:white;
+
+    color:#111;
+
+}
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+.reviews-section{
+
+    padding-top:20px;
+
+}
+
+.reviews-grid{
+
+    display:grid;
+
+    grid-template-columns:
+        1fr;
+
+    gap:9px;
+
+    margin-top:24px;
+
+}
+
+.review-card{
+
+    padding:20px;
+
+    border-radius:29px;
+
+}
+
+.review-top{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    gap:12px;
+
+}
+
+.review-user{
+
+    font-size:9px;
+
+    font-weight:650;
+
+    letter-spacing:.8px;
+
+}
+
+.review-stars{
+
+    color:#ddd;
+
+    font-size:9px;
+
+    letter-spacing:2px;
+
+}
+
+.review-text{
+
+    margin-top:13px;
+
+    color:#aaa;
+
+    font-size:9px;
+
+    line-height:1.65;
+
+}
+
+.review-demo{
+
+    margin-top:11px;
+
+    color:#555;
+
+    font-size:6px;
+
+    letter-spacing:1.5px;
+
+}
+
+.review-form{
+
+    margin-top:10px;
+
+    padding:18px;
+
+    border-radius:30px;
+
+}
+
+.review-form-grid{
+
+    display:grid;
+
+    gap:8px;
+
+}
+
+.review-input,
+.review-textarea{
+
+    width:100%;
+
+    border:
+        1px solid
+        rgba(255,255,255,.11);
+
+    outline:0;
+
+    border-radius:22px;
+
+    padding:14px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:white;
+
+    font-size:9px;
+
+}
+
+.review-textarea{
+
+    min-height:110px;
+
+    resize:none;
+
+}
+
+.review-rating{
+
+    display:flex;
+
+    gap:5px;
+
+    overflow-x:auto;
+
+    scrollbar-width:none;
+
+}
+
+.review-rating::-webkit-scrollbar{
+
+    display:none;
+
+}
+
+.rating-button{
+
+    min-width:46px;
+    height:42px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.11);
+
+    border-radius:20px;
+
+    background:
+        rgba(255,255,255,.05);
+
+    color:#777;
+
+    font-size:8px;
+
+}
+
+.rating-button.active{
+
+    background:white;
+
+    color:#111;
+
+}
+
+.review-submit{
+
+    width:100%;
+
+    border:0;
+
+    border-radius:24px;
+
+    padding:15px;
+
+    background:white;
+
+    color:#111;
+
+    font-size:8px;
+
+    font-weight:650;
+
+    letter-spacing:1.3px;
+
+}
+
+/* =========================================================
+   CART
+========================================================= */
+
+.cart-overlay{
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:2000;
+
+    opacity:0;
+    visibility:hidden;
+
+    background:
+        rgba(0,0,0,.58);
+
+    backdrop-filter:blur(18px);
+
+    -webkit-backdrop-filter:blur(18px);
+
+    transition:.3s;
+
+}
+
+.cart-overlay.open{
+
+    opacity:1;
+    visibility:visible;
+
+}
+
+.cart-panel{
+
+    position:absolute;
+
+    left:8px;
+    right:8px;
+
+    bottom:
+        calc(
+            8px +
+            env(safe-area-inset-bottom)
+        );
+
+    max-height:80svh;
+
+    overflow:auto;
+
+    padding:20px;
+
+    border-radius:38px;
+
+    transform:
+        translateY(110%);
+
+    transition:.4s;
+
+}
+
+.cart-overlay.open
+.cart-panel{
+
+    transform:
+        translateY(0);
+
+}
+
+.cart-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.cart-header h2{
+
+    font-size:29px;
+
+    font-weight:430;
+
+}
+
+.cart-close{
+
+    width:42px;
+    height:42px;
+
+    border:
+        1px solid
+        rgba(255,255,255,.14);
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.07);
+
+}
+
+.cart-list{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:7px;
+
+    margin-top:18px;
+
+}
+
+.cart-item{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:10px;
+
+    padding:15px;
+
+    border-radius:22px;
+
+    background:
+        rgba(255,255,255,.07);
+
+}
+
+.cart-name{
+
+    font-size:9px;
+
+}
+
+.cart-meta{
+
+    margin-top:5px;
+
+    color:#777;
+
+    font-size:7px;
+
+}
+
+.cart-price{
+
+    font-size:11px;
+
+}
+
+.cart-empty{
+
+    padding:
+        45px
+        10px;
+
+    color:#777;
+
+    text-align:center;
+
+    font-size:8px;
+
+}
+
+.cart-total{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    margin-top:10px;
+
+    padding:18px;
+
+    border-radius:24px;
+
+    background:
+        rgba(255,255,255,.10);
+
+}
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+.toast{
+
+    position:fixed;
+
+    z-index:5000;
+
+    left:50%;
+
+    bottom:
+        calc(
+            20px +
+            env(safe-area-inset-bottom)
+        );
+
+    transform:
+        translate(-50%,20px);
+
+    max-width:
+        calc(
+            100vw -
+            30px
+        );
+
+    padding:
+        13px
+        18px;
+
+    border-radius:30px;
+
+    background:
+        rgba(245,245,245,.94);
+
+    color:#111;
+
+    font-size:8px;
+
+    letter-spacing:1px;
+
+    white-space:nowrap;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transition:.3s;
+
+}
+
+.toast.show{
+
+    opacity:1;
+
+    transform:
+        translate(-50%,0);
+
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+footer{
+
+    margin:
+        0
+        14px
+        20px;
+
+    padding:
+        27px
+        22px;
+
+    border-radius:32px;
+
+}
+
+.footer-logo{
+
+    font-size:24px;
+
+    font-weight:650;
+
+}
+
+.footer-text{
+
+    margin-top:12px;
+
+    color:#777;
+
+    font-size:9px;
+
+    line-height:1.6;
+
+}
+
+/* =========================================================
+   DESKTOP
+========================================================= */
+
+@media(min-width:800px){
+
+    .header{
+
+        max-width:1300px;
+
+        left:35px;
+        right:35px;
+
+        margin:auto;
+
+    }
+
+    main{
+
+        max-width:1370px;
+
+        margin:auto;
+
+    }
+
+    .hero{
+
+        margin:
+            0
+            35px;
+
+        padding:35px;
+
+    }
+
+    .gender-section,
+    .category-wrap,
+    .section{
+
+        padding-left:35px;
+        padding-right:35px;
+
+    }
+
+    .product-grid{
+
+        grid-template-columns:
+            repeat(
+                4,
+                1fr
+            );
+
+        gap:
+            45px
+            16px;
+
+    }
+
+    .upload-panel{
+
+        display:grid;
+
+        grid-template-columns:
+            1.1fr
+            .9fr;
+
+        gap:10px;
+
+    }
+
+    .upload-photo{
+
+        min-height:650px;
+
+    }
+
+    .upload-controls{
+
+        padding:35px;
+
+    }
+
+    .builder-layout{
+
+        display:grid;
+
+        grid-template-columns:
+            1.1fr
+            .9fr;
+
+        gap:10px;
+
+    }
+
+    .fit-stage{
+
+        min-height:760px;
+
+    }
+
+    .fit-controls{
+
+        margin-top:0;
+
+        padding:30px;
+
+    }
+
+    .reviews-grid{
+
+        grid-template-columns:
+            repeat(
+                3,
+                1fr
+            );
+
+    }
+
+    .cart-panel{
+
+        left:auto;
+
+        right:20px;
+        bottom:20px;
+
+        width:430px;
+
+    }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- =========================================================
+     AMBIENT
+========================================================= -->
+
+<div class="ambient">
+
+    <div class="orb orb-1"></div>
+
+    <div class="orb orb-2"></div>
+
+</div>
+
+<!-- =========================================================
+     LOADER
+========================================================= -->
+
+<div
+    class="loader"
+    id="loader"
+>
+
+    <div>
+
+        <div class="loader-logo">
+
+            CreatureMeza
+
+        </div>
+
+        <div class="loader-sub">
+
+            INDEPENDENT CLOTHING
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     HEADER
+========================================================= -->
+
+<header class="header">
+
+    <div class="header-left">
+
+        <button
+            class="bag"
+            id="openCart"
+        >
+
+            <span class="bag-icon">
+
+                ◇
+
+            </span>
+
+            <span
+                class="bag-count"
+                id="bagCount"
+            >
+
+                0
+
+            </span>
+
+        </button>
+
+    </div>
+
+    <a
+        href="#top"
+        class="logo"
+    >
+
+        CreatureMeza
+
+    </a>
+
+    <div class="header-right">
+
+        <button
+            class="round-button"
+            id="uploadShortcut"
+            aria-label="Загрузить одежду"
+        >
+
+            ＋
+
+        </button>
+
+        <button
+            class="round-button"
+            id="fitShortcut"
+            aria-label="Открыть Fit Builder"
+        >
+
+            ↗
+
+        </button>
+
+    </div>
+
+</header>
+
+<!-- =========================================================
+     MAIN
+========================================================= -->
+
+<main id="top">
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-top">
+
+        <span>
+
+            CM / 001
+
+        </span>
+
+        <span>
+
+            КОЛЛЕКЦИЯ 2026
+
+        </span>
+
+    </div>
+
+    <div class="hero-center">
+
+        <div class="hero-kicker">
+
+            НЕЗАВИСИМЫЙ ПРОЕКТ ОДЕЖДЫ
+
+        </div>
+
+        <h1 class="hero-title">
+
+            <span>
+
+                Creature
+
+            </span>
+
+            <span>
+
+                Meza
+
+            </span>
+
+        </h1>
+
+    </div>
+
+    <div class="hero-glass glass">
+
+        <div class="hero-small">
+
+            CREATUREMEZA / ARCHIVE
+
+        </div>
+
+        <div class="hero-row">
+
+            <p class="hero-description">
+
+                Коллекция CreatureMeza и экспериментальная
+                система создания собственных образов.
+                Загружай одежду и собирай свой fit.
+
+            </p>
+
+            <button
+                class="hero-button"
+                id="enterCollection"
+            >
+
+                ОТКРЫТЬ
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     GENDER
+========================================================= -->
+
+<section class="gender-section">
+
+    <div class="gender-switch glass">
+
+        <button
+            class="gender-button active"
+            data-gender="MAN"
+        >
+
+            МУЖСКОЕ
+
+        </button>
+
+        <button
+            class="gender-button"
+            data-gender="WOMAN"
+        >
+
+            ЖЕНСКОЕ
+
+        </button>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     CATEGORIES
+========================================================= -->
+
+<div
+    class="category-wrap"
+    id="collection"
+>
+
+    <div class="category-box">
+
+        <div class="categories">
+
+            <button
+                class="category active"
+                data-category="all"
+            >
+
+                ВСЁ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="shirt"
+            >
+
+                РУБАШКИ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="tshirt"
+            >
+
+                ФУТБОЛКИ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="zip"
+            >
+
+                ZIP-ХУДИ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="hoodie"
+            >
+
+                ХУДИ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="longsleeve"
+            >
+
+                ЛОНГСЛИВЫ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="jeans"
+            >
+
+                ДЖИНСЫ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="headwear"
+            >
+
+                ГОЛОВНЫЕ УБОРЫ
+
+            </button>
+
+            <button
+                class="category"
+                data-category="shoes"
+            >
+
+                ОБУВЬ
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     COLLECTION
+========================================================= -->
+
+<section class="section">
+
+    <div class="product-heading">
+
+        <div>
+
+            <div class="section-code">
+
+                CREATUREMEZA / STORE
+
+            </div>
+
+            <h2>
+
+                Коллекция
+
+            </h2>
+
+        </div>
+
+        <div
+            class="item-count"
+            id="itemCount"
+        >
+
+            0
+
+        </div>
+
+    </div>
+
+    <div
+        class="product-grid"
+        id="productGrid"
+    ></div>
+
+</section>
+
+<!-- =========================================================
+     AI LAB
+========================================================= -->
+
+<section
+    class="section"
+    id="upload"
+>
+
+    <div class="section-code">
+
+        CREATUREMEZA / AI LAB
+
+    </div>
+
+    <h2 class="section-title">
+
+        ЗАГРУЗИ<br>
+        ОДЕЖДУ
+
+    </h2>
+
+    <p class="section-description">
+
+        Загрузи свою вещь или нажми на вещь
+        из коллекции. Удали фон и добавь её
+        в Fit Builder.
+
+    </p>
+
+    <div class="upload-panel glass">
+
+        <div
+            class="upload-photo"
+            id="uploadPhoto"
+        >
+
+            <input
+                id="clothesInput"
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/heic,image/heif"
+                hidden
+            >
+
+            <label
+                for="clothesInput"
+                class="file-label"
+            >
+
+                <div
+                    class="upload-placeholder"
+                    id="uploadPlaceholder"
+                >
+
+                    <div class="upload-plus">
+
+                        +
+
+                    </div>
+
+                    <strong>
+
+                        ВЫБРАТЬ ФОТО
+
+                    </strong>
+
+                    <span>
+
+                        JPG / PNG / WEBP / HEIC
+
+                    </span>
+
+                </div>
+
+            </label>
+
+            <img
+                id="uploadPreview"
+                class="upload-preview"
+                alt=""
+            >
+
+            <label
+                for="clothesInput"
+                class="change-photo"
+            >
+
+                ДРУГОЕ ФОТО
+
+            </label>
+
+        </div>
+
+        <div class="upload-controls">
+
+            <div class="label">
+
+                ДЛЯ КОГО
+
+            </div>
+
+            <div class="choice-grid">
+
+                <button
+                    class="choice upload-gender active"
+                    data-value="MAN"
+                >
+
+                    МУЖСКОЕ
+
+                </button>
+
+                <button
+                    class="choice upload-gender"
+                    data-value="WOMAN"
+                >
+
+                    ЖЕНСКОЕ
+
+                </button>
+
+            </div>
+
+            <div class="label">
+
+                ТИП ВЕЩИ
+
+            </div>
+
+            <div class="upload-categories">
+
+                <button
+                    class="upload-category active"
+                    data-value="shirt"
+                >
+
+                    РУБАШКА
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="tshirt"
+                >
+
+                    ФУТБОЛКА
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="zip"
+                >
+
+                    ZIP-ХУДИ
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="hoodie"
+                >
+
+                    ХУДИ
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="longsleeve"
+                >
+
+                    ЛОНГСЛИВ
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="jeans"
+                >
+
+                    ДЖИНСЫ
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="headwear"
+                >
+
+                    ГОЛОВНОЙ УБОР
+
+                </button>
+
+                <button
+                    class="upload-category"
+                    data-value="shoes"
+                >
+
+                    ОБУВЬ
+
+                </button>
+
+            </div>
+
+            <div class="label">
+
+                НАЗВАНИЕ
+
+            </div>
+
+            <input
+                class="input"
+                id="uploadName"
+                type="text"
+                maxlength="45"
+                placeholder="НАЗВАНИЕ ВЕЩИ"
+            >
+
+            <button
+                class="ai-button"
+                id="removeBackgroundButton"
+                disabled
+            >
+
+                ✦ УДАЛИТЬ ФОН С ПОМОЩЬЮ ИИ
+
+            </button>
+
+            <div
+                class="ai-progress"
+                id="aiProgress"
+            >
+
+                <div
+                    class="ai-progress-bar"
+                    id="aiProgressBar"
+                ></div>
+
+            </div>
+
+            <div
+                class="ai-status"
+                id="aiStatus"
+            >
+
+                СНАЧАЛА ВЫБЕРИ ФОТОГРАФИЮ
+
+            </div>
+
+            <button
+                class="add-fit-button"
+                id="addUploadToFit"
+                disabled
+            >
+
+                ДОБАВИТЬ В ОБРАЗ
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     FIT BUILDER
+========================================================= -->
+
+<section
+    class="section"
+    id="fitBuilder"
+>
+
+    <div class="section-code">
+
+        CREATUREMEZA / FIT LAB
+
+    </div>
+
+    <h2 class="section-title">
+
+        FIT<br>
+        BUILDER
+
+    </h2>
+
+    <p class="section-description">
+
+        Собирай одежду прямо на полотне.
+        Каждую вещь можно двигать,
+        увеличивать и изменять отдельно.
+
+    </p>
+
+    <div class="builder-layout">
+
+        <div
+            class="fit-stage"
+            id="fitStage"
+        >
+
+            <div class="fit-label">
+
+                LIVE FIT / 003
+
+            </div>
+
+            <div
+                class="fit-gender"
+                id="fitGender"
+            >
+
+                МУЖСКОЕ
+
+            </div>
+
+            <img
+                id="fitBottom"
+                class="clothing-layer"
+                alt=""
+            >
+
+            <img
+                id="fitTop"
+                class="clothing-layer"
+                alt=""
+            >
+
+            <img
+                id="fitOuterwear"
+                class="clothing-layer"
+                alt=""
+            >
+
+            <img
+                id="fitShoes"
+                class="clothing-layer"
+                alt=""
+            >
+
+            <img
+                id="fitHeadwear"
+                class="clothing-layer"
+                alt=""
+            >
+
+            <div
+                class="fit-empty"
+                id="fitEmpty"
+            >
+
+                ДОБАВЬ ВЕЩИ<br>
+                В ОБРАЗ
+
+            </div>
+
+        </div>
+
+        <div class="fit-controls glass">
+
+            <div class="fit-tabs">
+
+                <button
+                    class="fit-tab active"
+                    data-layer="top"
+                >
+
+                    ВЕРХ
+
+                </button>
+
+                <button
+                    class="fit-tab"
+                    data-layer="outerwear"
+                >
+
+                    ХУДИ
+
+                </button>
+
+                <button
+                    class="fit-tab"
+                    data-layer="bottom"
+                >
+
+                    НИЗ
+
+                </button>
+
+                <button
+                    class="fit-tab"
+                    data-layer="shoes"
+                >
+
+                    ОБУВЬ
+
+                </button>
+
+                <button
+                    class="fit-tab"
+                    data-layer="headwear"
+                >
+
+                    ГОЛОВА
+
+                </button>
+
+            </div>
+
+            <div class="fit-current">
+
+                <div
+                    class="fit-current-name"
+                    id="fitCurrentName"
+                >
+
+                    ПУСТО
+
+                </div>
+
+                <div
+                    class="fit-current-type"
+                    id="fitCurrentType"
+                >
+
+                    —
+
+                </div>
+
+            </div>
+
+            <button
+                class="auto-fit"
+                id="autoFit"
+            >
+
+                ✦ AUTO FIT
+
+            </button>
+
+            <div class="adjust-title">
+
+                ПОЛОЖЕНИЕ
+
+            </div>
+
+            <div class="move-grid">
+
+                <div class="move-empty"></div>
+
+                <button
+                    class="move-button"
+                    data-move="up"
+                >
+
+                    ↑
+
+                </button>
+
+                <div class="move-empty"></div>
+
+                <button
+                    class="move-button"
+                    data-move="left"
+                >
+
+                    ←
+
+                </button>
+
+                <button
+                    class="move-button"
+                    id="resetTransform"
+                >
+
+                    ·
+
+                </button>
+
+                <button
+                    class="move-button"
+                    data-move="right"
+                >
+
+                    →
+
+                </button>
+
+                <div class="move-empty"></div>
+
+                <button
+                    class="move-button"
+                    data-move="down"
+                >
+
+                    ↓
+
+                </button>
+
+                <div class="move-empty"></div>
+
+            </div>
+
+            <div class="adjust-title">
+
+                ОБЩИЙ РАЗМЕР
+
+            </div>
+
+            <div class="scale-row">
+
+                <button
+                    class="scale-button"
+                    id="scaleDown"
+                >
+
+                    −
+
+                </button>
+
+                <div
+                    class="scale-value"
+                    id="scaleValue"
+                >
+
+                    100%
+
+                </div>
+
+                <button
+                    class="scale-button"
+                    id="scaleUp"
+                >
+
+                    +
+
+                </button>
+
+            </div>
+
+            <div class="adjust-title">
+
+                ШИРИНА
+
+            </div>
+
+            <div class="scale-row">
+
+                <button
+                    class="scale-button"
+                    id="widthDown"
+                >
+
+                    −
+
+                </button>
+
+                <div
+                    class="scale-value"
+                    id="widthValue"
+                >
+
+                    100%
+
+                </div>
+
+                <button
+                    class="scale-button"
+                    id="widthUp"
+                >
+
+                    +
+
+                </button>
+
+            </div>
+
+            <div class="adjust-title">
+
+                ВЫСОТА
+
+            </div>
+
+            <div class="scale-row">
+
+                <button
+                    class="scale-button"
+                    id="heightDown"
+                >
+
+                    −
+
+                </button>
+
+                <div
+                    class="scale-value"
+                    id="heightValue"
+                >
+
+                    100%
+
+                </div>
+
+                <button
+                    class="scale-button"
+                    id="heightUp"
+                >
+
+                    +
+
+                </button>
+
+            </div>
+
+            <div class="fit-total">
+
+                <span>
+
+                    ВЕЩЕЙ В ОБРАЗЕ
+
+                </span>
+
+                <strong id="fitCount">
+
+                    0
+
+                </strong>
+
+            </div>
+
+            <div class="fit-actions">
+
+                <button
+                    class="fit-action"
+                    id="removeLayer"
+                >
+
+                    УБРАТЬ ВЕЩЬ
+
+                </button>
+
+                <button
+                    class="fit-action"
+                    id="clearFit"
+                >
+
+                    ОЧИСТИТЬ
+
+                </button>
+
+                <button
+                    class="fit-action full"
+                    id="addFitToBag"
+                >
+
+                    ДОБАВИТЬ ОБРАЗ В КОРЗИНУ
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================================================
+     REVIEWS
+========================================================= -->
+
+<section
+    class="section reviews-section"
+    id="reviews"
+>
+
+    <div class="section-code">
+
+        CREATUREMEZA / COMMUNITY
+
+    </div>
+
+    <h2 class="section-title">
+
+        ОТЗЫВЫ
+
+    </h2>
+
+    <p class="section-description">
+
+        Отзывы о CreatureMeza.
+
+    </p>
+
+    <div
+        class="reviews-grid"
+        id="reviewsGrid"
+    >
+
+        <article class="review-card glass">
+
+            <div class="review-top">
+
+                <div class="review-user">
+
+                    @CREATURE_01
+
+                </div>
+
+                <div class="review-stars">
+
+                    ★★★★★
+
+                </div>
+
+            </div>
+
+            <p class="review-text">
+
+                Нравится идея с Fit Builder.
+                Можно собрать сочетание вещей
+                прямо на сайте.
+
+            </p>
+
+            <div class="review-demo">
+
+                DEMO REVIEW
+
+            </div>
+
+        </article>
+
+        <article class="review-card glass">
+
+            <div class="review-top">
+
+                <div class="review-user">
+
+                    @ARCHIVE_02
+
+                </div>
+
+                <div class="review-stars">
+
+                    ★★★★☆
+
+                </div>
+
+            </div>
+
+            <p class="review-text">
+
+                Особенно зашёл тёмный интерфейс
+                и возможность загружать свою одежду.
+
+            </p>
+
+            <div class="review-demo">
+
+                DEMO REVIEW
+
+            </div>
+
+        </article>
+
+        <article class="review-card glass">
+
+            <div class="review-top">
+
+                <div class="review-user">
+
+                    @CM_03
+
+                </div>
+
+                <div class="review-stars">
+
+                    ★★★★★
+
+                </div>
+
+            </div>
+
+            <p class="review-text">
+
+                Крутая идея коллекции и конструктора
+                образов в одном месте.
+
+            </p>
+
+            <div class="review-demo">
+
+                DEMO REVIEW
+
+            </div>
+
+        </article>
+
+    </div>
+
+    <div class="review-form glass">
+
+        <div class="label">
+
+            ОСТАВИТЬ ОТЗЫВ
+
+        </div>
+
+        <div class="review-form-grid">
+
+            <input
+                class="review-input"
+                id="reviewName"
+                maxlength="24"
+                placeholder="@USERNAME"
+            >
+
+            <div
+                class="review-rating"
+                id="reviewRating"
+            >
+
+                <button
+                    class="rating-button"
+                    data-rating="1"
+                >
+
+                    1 ★
+
+                </button>
+
+                <button
+                    class="rating-button"
+                    data-rating="2"
+                >
+
+                    2 ★
+
+                </button>
+
+                <button
+                    class="rating-button"
+                    data-rating="3"
+                >
+
+                    3 ★
+
+                </button>
+
+                <button
+                    class="rating-button"
+                    data-rating="4"
+                >
+
+                    4 ★
+
+                </button>
+
+                <button
+                    class="rating-button active"
+                    data-rating="5"
+                >
+
+                    5 ★
+
+                </button>
+
+            </div>
+
+            <textarea
+                class="review-textarea"
+                id="reviewText"
+                maxlength="350"
+                placeholder="НАПИШИ ОТЗЫВ..."
+            ></textarea>
+
+            <button
+                class="review-submit"
+                id="submitReview"
+            >
+
+                ОПУБЛИКОВАТЬ
+
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+</main>
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer class="glass">
+
+    <div class="footer-logo">
+
+        CreatureMeza
+
+    </div>
+
+    <p class="footer-text">
+
+        Независимый проект одежды.<br>
+        made by Borov’s team<br>
+        our telegram channel: CreatureMeza
+
+    </p>
+
+</footer>
+
+<!-- =========================================================
+     CART
+========================================================= -->
+
+<div
+    class="cart-overlay"
+    id="cartOverlay"
+>
+
+    <div class="cart-panel glass">
+
+        <div class="cart-header">
+
+            <h2>
+
+                Корзина
+
+            </h2>
+
+            <button
+                class="cart-close"
+                id="closeCart"
+            >
+
+                ×
+
+            </button>
+
+        </div>
+
+        <div
+            class="cart-list"
+            id="cartList"
+        ></div>
+
+        <div class="cart-total">
+
+            <span>
+
+                ИТОГО
+
+            </span>
+
+            <strong id="cartTotal">
+
+                $0
+
+            </strong>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================================================
+     TOAST
+========================================================= -->
+
+<div
+    class="toast"
+    id="toast"
+>
+
+    ГОТОВО
+
+</div>
+
+<!-- =========================================================
+     MAIN JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/* =========================================================
+   PRODUCTS
+
+   gender:"BOTH" означает только внутреннюю настройку.
+   На сайте слово BOTH / UNISEX нигде не показывается.
+========================================================= */
+
+const products = [
+
+    {
+        id:1,
+        name:"HOSPITAL T-SHIRT WHITE",
+        gender:"BOTH",
+        category:"tshirt",
+        price:40,
+        oldPrice:60,
+        image:"image/HOSPITAL T-SHIRT WHITE.webp",
+        preorder:true
+    },
+
+    {
+        id:2,
+        name:"CHRISTIANE T-SHIRT",
+        gender:"BOTH",
+        category:"tshirt",
+        price:42,
+        oldPrice:65,
+        image:"image/CHRISTIANE T-SHIRT.webp",
+        preorder:true
+    },
+
+    {
+        id:3,
+        name:"JAP T-SHIRT WHITE",
+        gender:"BOTH",
+        category:"tshirt",
+        price:45,
+        oldPrice:65,
+        image:"image/JAP T-SHIRT WHITE.webp",
+        preorder:true
+    },
+
+    {
+        id:4,
+        name:"PRIVATE T-SHIRT BLACK",
+        gender:"BOTH",
+        category:"tshirt",
+        price:48,
+        oldPrice:70,
+        image:"image/PRIVATE T-SHIRT BLACK.webp",
+        preorder:true
+    },
+
+    {
+        id:5,
+        name:"ARC LONGSLEEVE",
+        gender:"BOTH",
+        category:"longsleeve",
+        price:55,
+        oldPrice:75,
+        image:"image/ARC LONGSLEEVE.webp",
+        preorder:true
+    },
+
+    {
+        id:6,
+        name:"ARC 2 LONGSLEEVE",
+        gender:"BOTH",
+        category:"longsleeve",
+        price:58,
+        oldPrice:80,
+        image:"image/ARC 2 LONGSLEEVE.png",
+        preorder:true
+    },
+
+    {
+        id:7,
+        name:"AFFLICTION POLO",
+        gender:"BOTH",
+        category:"shirt",
+        price:60,
+        oldPrice:85,
+        image:"image/AFFLICTION POLO.jpg",
+        preorder:true
+    },
+
+    {
+        id:8,
+        name:"GRAY HOODIE",
+        gender:"BOTH",
+        category:"hoodie",
+        price:70,
+        oldPrice:95,
+        image:"image/GRAY HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:9,
+        name:"STONE ISLAND HOODIE",
+        gender:"BOTH",
+        category:"hoodie",
+        price:78,
+        oldPrice:105,
+        image:"image/STONE ISLAND HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:10,
+        name:"INSO ZIP-HOODIE",
+        gender:"BOTH",
+        category:"zip",
+        price:72,
+        oldPrice:98,
+        image:"image/INSO ZIP-HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:11,
+        name:"SCULL ZIP-HOODIE",
+        gender:"BOTH",
+        category:"zip",
+        price:76,
+        oldPrice:105,
+        image:"image/SCULL ZIP-HOODIE.jpg",
+        preorder:true
+    },
+
+    {
+        id:12,
+        name:"TORNADO JEANS",
+        gender:"BOTH",
+        category:"jeans",
+        price:68,
+        oldPrice:92,
+        image:"image/TORNADO JEANS.jpg",
+        preorder:true
+    },
+
+    {
+        id:13,
+        name:"HYSTERIC JEANS",
+        gender:"BOTH",
+        category:"jeans",
+        price:74,
+        oldPrice:100,
+        image:"image/HYSTERIC JEANS.jpg",
+        preorder:true
+    },
+
+    {
+        id:14,
+        name:"MM6 EVOLUTION BOOTS",
+        gender:"BOTH",
+        category:"shoes",
+        price:95,
+        oldPrice:125,
+        image:"image/MM6 EVOLUTION BOOTS.jpg",
+        preorder:true
+    },
+
+    {
+        id:15,
+        name:"JEREMY SCOTT BOOTS",
+        gender:"BOTH",
+        category:"shoes",
+        price:105,
+        oldPrice:140,
+        image:"image/JEREMY SCOTT BOOTS.jpg",
+        preorder:true
+    },
+
+    {
+        id:16,
+        name:"ADIDAS BOOTS",
+        gender:"BOTH",
+        category:"shoes",
+        price:85,
+        oldPrice:115,
+        image:"image/ADIDAS BOOTS.jpg",
+        preorder:true
+    },
+
+    {
+        id:17,
+        name:"SAKURA CAP",
+        gender:"BOTH",
+        category:"headwear",
+        price:40,
+        oldPrice:55,
+        image:"image/SAKURA CAP.jpg",
+        preorder:true
+    },
+
+    {
+        id:18,
+        name:"VENICE CAP",
+        gender:"BOTH",
+        category:"headwear",
+        price:42,
+        oldPrice:58,
+        image:"image/VENICE CAP.jpg",
+        preorder:true
+    }
+
+];
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let selectedGender =
+    "MAN";
+
+let selectedCategory =
+    "all";
+
+let uploadGender =
+    "MAN";
+
+let uploadCategory =
+    "shirt";
+
+window.selectedFile =
+    null;
+
+let originalImageURL =
+    "";
+
+let processedImageURL =
+    "";
+
+let activeLayer =
+    "top";
+
+let cart =
+    [];
+
+let reviewScore =
+    5;
+
+/* =========================================================
+   FIT DATA
+========================================================= */
+
+const fit = {
+
+    headwear:null,
+
+    outerwear:null,
+
+    top:null,
+
+    bottom:null,
+
+    shoes:null
+
+};
+
+/* =========================================================
+   TRANSFORMS
+========================================================= */
+
+const transforms = {
+
+    headwear:{
+
+        x:0,
+        y:-245,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:120
+
+    },
+
+    outerwear:{
+
+        x:0,
+        y:-95,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:230
+
+    },
+
+    top:{
+
+        x:0,
+        y:-105,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:210
+
+    },
+
+    bottom:{
+
+        x:0,
+        y:115,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:170
+
+    },
+
+    shoes:{
+
+        x:0,
+        y:250,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:190
+
+    }
+
+};
+
+/* =========================================================
+   CATEGORY DEFAULTS
+========================================================= */
+
+const categoryDefaults = {
+
+    shirt:{
+
+        x:0,
+        y:-105,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:205
+
+    },
+
+    tshirt:{
+
+        x:0,
+        y:-110,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:195
+
+    },
+
+    longsleeve:{
+
+        x:0,
+        y:-105,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:220
+
+    },
+
+    zip:{
+
+        x:0,
+        y:-100,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:230
+
+    },
+
+    hoodie:{
+
+        x:0,
+        y:-100,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:235
+
+    },
+
+    jeans:{
+
+        x:0,
+        y:115,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:165
+
+    },
+
+    headwear:{
+
+        x:0,
+        y:-245,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:115
+
+    },
+
+    shoes:{
+
+        x:0,
+        y:250,
+
+        scale:1,
+        scaleX:1,
+        scaleY:1,
+
+        width:190
+
+    }
+
+};
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const loader =
+    document.getElementById(
+        "loader"
+    );
+
+const productGrid =
+    document.getElementById(
+        "productGrid"
+    );
+
+const itemCount =
+    document.getElementById(
+        "itemCount"
+    );
+
+const clothesInput =
+    document.getElementById(
+        "clothesInput"
+    );
+
+const uploadPhoto =
+    document.getElementById(
+        "uploadPhoto"
+    );
+
+const uploadPreview =
+    document.getElementById(
+        "uploadPreview"
+    );
+
+const uploadPlaceholder =
+    document.getElementById(
+        "uploadPlaceholder"
+    );
+
+const removeBackgroundButton =
+    document.getElementById(
+        "removeBackgroundButton"
+    );
+
+const addUploadToFit =
+    document.getElementById(
+        "addUploadToFit"
+    );
+
+const aiProgress =
+    document.getElementById(
+        "aiProgress"
+    );
+
+const aiProgressBar =
+    document.getElementById(
+        "aiProgressBar"
+    );
+
+const aiStatus =
+    document.getElementById(
+        "aiStatus"
+    );
+
+const fitTop =
+    document.getElementById(
+        "fitTop"
+    );
+
+const fitOuterwear =
+    document.getElementById(
+        "fitOuterwear"
+    );
+
+const fitBottom =
+    document.getElementById(
+        "fitBottom"
+    );
+
+const fitShoes =
+    document.getElementById(
+        "fitShoes"
+    );
+
+const fitHeadwear =
+    document.getElementById(
+        "fitHeadwear"
+    );
+
+const fitEmpty =
+    document.getElementById(
+        "fitEmpty"
+    );
+
+const fitCurrentName =
+    document.getElementById(
+        "fitCurrentName"
+    );
+
+const fitCurrentType =
+    document.getElementById(
+        "fitCurrentType"
+    );
+
+const fitCount =
+    document.getElementById(
+        "fitCount"
+    );
+
+const scaleValue =
+    document.getElementById(
+        "scaleValue"
+    );
+
+const widthValue =
+    document.getElementById(
+        "widthValue"
+    );
+
+const heightValue =
+    document.getElementById(
+        "heightValue"
+    );
+
+const fitGender =
+    document.getElementById(
+        "fitGender"
+    );
+
+const toast =
+    document.getElementById(
+        "toast"
+    );
+
+const cartOverlay =
+    document.getElementById(
+        "cartOverlay"
+    );
+
+const cartList =
+    document.getElementById(
+        "cartList"
+    );
+
+const cartTotal =
+    document.getElementById(
+        "cartTotal"
+    );
+
+const bagCount =
+    document.getElementById(
+        "bagCount"
+    );
+
+/* =========================================================
+   LOAD
+========================================================= */
+
+window.addEventListener(
+    "load",
+    () => {
+
+        setTimeout(
+            () => {
+
+                loader.classList.add(
+                    "hidden"
+                );
+
+            },
+            400
+        );
+
+    }
+);
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function money(value){
+
+    return "$" +
+        Number(
+            value || 0
+        )
+        .toFixed(0);
+
+}
+
+function categoryLabel(category){
+
+    const names = {
+
+        shirt:
+            "РУБАШКА",
+
+        tshirt:
+            "ФУТБОЛКА",
+
+        zip:
+            "ZIP-ХУДИ",
+
+        hoodie:
+            "ХУДИ",
+
+        longsleeve:
+            "ЛОНГСЛИВ",
+
+        jeans:
+            "ДЖИНСЫ",
+
+        headwear:
+            "ГОЛОВНОЙ УБОР",
+
+        shoes:
+            "ОБУВЬ"
+
+    };
+
+    return (
+        names[category] ||
+        category
+    );
+
+}
+
+function genderLabel(gender){
+
+    return (
+        gender === "MAN"
+        ? "МУЖСКОЕ"
+        : "ЖЕНСКОЕ"
+    );
+
+}
+
+function showToast(message){
+
+    toast.textContent =
+        message;
+
+    toast.classList.add(
+        "show"
+    );
+
+    clearTimeout(
+        showToast.timer
+    );
+
+    showToast.timer =
+        setTimeout(
+            () => {
+
+                toast.classList.remove(
+                    "show"
+                );
+
+            },
+            1800
+        );
+
+}
+
+/* =========================================================
+   SAFE HTML
+========================================================= */
+
+function escapeHTML(value){
+
+    return String(value)
+
+        .replaceAll(
+            "&",
+            "&amp;"
+        )
+
+        .replaceAll(
+            "<",
+            "&lt;"
+        )
+
+        .replaceAll(
+            ">",
+            "&gt;"
+        )
+
+        .replaceAll(
+            '"',
+            "&quot;"
+        )
+
+        .replaceAll(
+            "'",
+            "&#039;"
+        );
+
+}
+
+/* =========================================================
+   PRODUCTS
+========================================================= */
+
+function renderProducts(){
+
+    const visible =
+        products.filter(
+            item => {
+
+                const genderMatches =
+
+                    item.gender ===
+                    "BOTH"
+
+                    ||
+
+                    item.gender ===
+                    selectedGender;
+
+                const categoryMatches =
+
+                    selectedCategory ===
+                    "all"
+
+                    ||
+
+                    item.category ===
+                    selectedCategory;
+
+                return (
+                    genderMatches &&
+                    categoryMatches
+                );
+
+            }
+        );
+
+    productGrid.innerHTML =
+        "";
+
+    itemCount.textContent =
+        visible.length +
+        " ШТ.";
+
+    visible.forEach(
+        product => {
+
+            const article =
+                document.createElement(
+                    "article"
+                );
+
+            article.className =
+                "product";
+
+            article.innerHTML = `
+
+                <div class="product-image">
+
+                    <div class="product-placeholder">
+
+                        <div class="placeholder-brand">
+
+                            CREATUREMEZA
+
+                        </div>
+
+                        <div class="placeholder-name">
+
+                            ${escapeHTML(product.name)}
+
+                        </div>
+
+                    </div>
+
+                    <img
+                        src="${encodeURI(product.image)}"
+                        alt="${escapeHTML(product.name)}"
+                        loading="lazy"
+                    >
+
+                    ${
+                        product.preorder
+                        ? `
+
+                        <div class="preorder">
+
+                            ПРЕДЗАКАЗ
+
+                        </div>
+
+                        `
+                        : ""
+                    }
+
+                </div>
+
+                <div class="product-info">
+
+                    <div class="product-name">
+
+                        ${escapeHTML(product.name)}
+
+                    </div>
+
+                    <div class="product-meta">
+
+                        ${categoryLabel(product.category)}
+
+                    </div>
+
+                    <div class="price-row">
+
+                        <span class="price">
+
+                            ${money(product.price)}
+
+                        </span>
+
+                        ${
+                            product.oldPrice
+                            ? `
+
+                            <span class="old-price">
+
+                                ${money(product.oldPrice)}
+
+                            </span>
+
+                            `
+                            : ""
+                        }
+
+                    </div>
+
+                </div>
+
+            `;
+
+            const image =
+                article.querySelector(
+                    "img"
+                );
+
+            image.addEventListener(
+                "error",
+                () => {
+
+                    image.style.display =
+                        "none";
+
+                }
+            );
+
+            article.addEventListener(
+                "click",
+                () => {
+
+                    sendCollectionItemToUpload(
+                        product
+                    );
+
+                }
+            );
+
+            productGrid.appendChild(
+                article
+            );
+
+        }
+    );
+
+}
+
+/* =========================================================
+   COLLECTION → AI LAB
+========================================================= */
+
+async function sendCollectionItemToUpload(product){
+
+    aiStatus.textContent =
+        "ЗАГРУЖАЮ ВЕЩЬ ИЗ КОЛЛЕКЦИИ…";
+
+    removeBackgroundButton.disabled =
+        true;
+
+    addUploadToFit.disabled =
+        true;
+
+    try{
+
+        const response =
+            await fetch(
+                encodeURI(
+                    product.image
+                )
+            );
+
+        if(!response.ok){
+
+            throw new Error(
+                "IMAGE FETCH FAILED"
+            );
+
+        }
+
+        const blob =
+            await response.blob();
+
+        let extension =
+            "jpg";
+
+        if(
+            blob.type.includes(
+                "png"
+            )
+        ){
+
+            extension =
+                "png";
+
+        }
+
+        else if(
+            blob.type.includes(
+                "webp"
+            )
+        ){
+
+            extension =
+                "webp";
+
+        }
+
+        window.selectedFile =
+            new File(
+                [blob],
+                "creaturemeza-item." +
+                extension,
+                {
+                    type:
+                        blob.type ||
+                        "image/jpeg"
+                }
+            );
+
+        if(originalImageURL){
+
+            URL.revokeObjectURL(
+                originalImageURL
+            );
+
+        }
+
+        if(processedImageURL){
+
+            URL.revokeObjectURL(
+                processedImageURL
+            );
+
+            processedImageURL =
+                "";
+
+        }
+
+        originalImageURL =
+            URL.createObjectURL(
+                window.selectedFile
+            );
+
+        uploadPreview.src =
+            originalImageURL;
+
+        uploadPreview.classList.add(
+            "visible"
+        );
+
+        uploadPlaceholder.style.display =
+            "none";
+
+        uploadPhoto.classList.add(
+            "has-image"
+        );
+
+        document
+            .getElementById(
+                "uploadName"
+            )
+            .value =
+                product.name;
+
+        uploadGender =
+            selectedGender;
+
+        uploadCategory =
+            product.category;
+
+        updateUploadButtons();
+
+        aiProgress.classList.remove(
+            "visible"
+        );
+
+        aiProgressBar.style.width =
+            "0%";
+
+        removeBackgroundButton.disabled =
+            false;
+
+        addUploadToFit.disabled =
+            true;
+
+        aiStatus.textContent =
+            "ВЕЩЬ ЗАГРУЖЕНА — УДАЛИ ФОН";
+
+        document
+            .getElementById(
+                "upload"
+            )
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+        showToast(
+            "ВЕЩЬ ПЕРЕНЕСЕНА В AI LAB"
+        );
+
+    }
+
+    catch(error){
+
+        console.error(
+            error
+        );
+
+        aiStatus.textContent =
+            "НЕ УДАЛОСЬ ЗАГРУЗИТЬ ФОТО";
+
+        showToast(
+            "ОШИБКА ЗАГРУЗКИ"
+        );
+
+    }
+
+}
+
+/* =========================================================
+   GENDER SWITCH
+========================================================= */
+
+document
+.querySelectorAll(
+    ".gender-button"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".gender-button"
+                    )
+                    .forEach(
+                        item => {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+                button.classList.add(
+                    "active"
+                );
+
+                selectedGender =
+                    button.dataset.gender;
+
+                fitGender.textContent =
+                    genderLabel(
+                        selectedGender
+                    );
+
+                renderProducts();
+
+            }
+        );
+
+    }
+);
+
+/* =========================================================
+   CATEGORY FILTER
+========================================================= */
+
+document
+.querySelectorAll(
+    ".category"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                document
+                    .querySelectorAll(
+                        ".category"
+                    )
+                    .forEach(
+                        item => {
+
+                            item.classList.remove(
+                                "active"
+                            );
+
+                        }
+                    );
+
+                button.classList.add(
+                    "active"
+                );
+
+                selectedCategory =
+                    button.dataset.category;
+
+                renderProducts();
+
+            }
+        );
+
+    }
+);
+
+/* =========================================================
+   UPLOAD BUTTON STATE
+========================================================= */
+
+function updateUploadButtons(){
+
+    document
+        .querySelectorAll(
+            ".upload-gender"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+
+                    button.dataset.value ===
+                    uploadGender
+                );
+
+            }
+        );
+
+    document
+        .querySelectorAll(
+            ".upload-category"
+        )
+        .forEach(
+            button => {
+
+                button.classList.toggle(
+                    "active",
+
+                    button.dataset.value ===
+                    uploadCategory
+                );
+
+            }
+        );
+
+}
+
+/* =========================================================
+   UPLOAD GENDER
+========================================================= */
+
+document
+.querySelectorAll(
+    ".upload-gender"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                uploadGender =
+                    button.dataset.value;
+
+                updateUploadButtons();
+
+            }
+        );
+
+    }
+);
+
+/* =========================================================
+   UPLOAD CATEGORY
+========================================================= */
+
+document
+.querySelectorAll(
+    ".upload-category"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                uploadCategory =
+                    button.dataset.value;
+
+                updateUploadButtons();
+
+            }
+        );
+
+    }
+);
+
+/* =========================================================
+   LOCAL PHOTO UPLOAD
+========================================================= */
+
+clothesInput.addEventListener(
+    "change",
+    event => {
+
+        const file =
+            event.target.files &&
+            event.target.files[0];
+
+        if(!file){
+
+            return;
+
+        }
+
+        window.selectedFile =
+            file;
+
+        if(originalImageURL){
+
+            URL.revokeObjectURL(
+                originalImageURL
+            );
+
+        }
+
+        if(processedImageURL){
+
+            URL.revokeObjectURL(
+                processedImageURL
+            );
+
+            processedImageURL =
+                "";
+
+        }
+
+        originalImageURL =
+            URL.createObjectURL(
+                file
+            );
+
+        uploadPreview.src =
+            originalImageURL;
+
+        uploadPreview.classList.add(
+            "visible"
+        );
+
+        uploadPlaceholder.style.display =
+            "none";
+
+        uploadPhoto.classList.add(
+            "has-image"
+        );
+
+        removeBackgroundButton.disabled =
+            false;
+
+        addUploadToFit.disabled =
+            true;
+
+        aiProgress.classList.remove(
+            "visible"
+        );
+
+        aiProgressBar.style.width =
+            "0%";
+
+        aiStatus.textContent =
+            "ФОТО ЗАГРУЖЕНО — МОЖНО УДАЛЯТЬ ФОН";
+
+        showToast(
+            "ФОТО ЗАГРУЖЕНО"
+        );
+
+    }
+);
+
+/* =========================================================
+   CROP TRANSPARENT EDGES
+========================================================= */
+
+async function cropTransparentBlob(blob){
+
+    const bitmap =
+        await createImageBitmap(
+            blob
+        );
+
+    const canvas =
+        document.createElement(
+            "canvas"
+        );
+
+    canvas.width =
+        bitmap.width;
+
+    canvas.height =
+        bitmap.height;
+
+    const context =
+        canvas.getContext(
+            "2d",
+            {
+                willReadFrequently:true
+            }
+        );
+
+    context.clearRect(
+        0,
+        0,
+        canvas.width,
+        canvas.height
+    );
+
+    context.drawImage(
+        bitmap,
+        0,
+        0
+    );
+
+    const imageData =
+        context.getImageData(
+            0,
+            0,
+            canvas.width,
+            canvas.height
+        );
+
+    const data =
+        imageData.data;
+
+    let minX =
+        canvas.width;
+
+    let minY =
+        canvas.height;
+
+    let maxX =
+        -1;
+
+    let maxY =
+        -1;
+
+    for(
+        let y = 0;
+        y < canvas.height;
+        y++
+    ){
+
+        for(
+            let x = 0;
+            x < canvas.width;
+            x++
+        ){
+
+            const alpha =
+                data[
+                    (
+                        y *
+                        canvas.width +
+                        x
+                    ) *
+                    4 +
+                    3
+                ];
+
+            if(alpha > 15){
+
+                if(x < minX){
+
+                    minX =
+                        x;
+
+                }
+
+                if(y < minY){
+
+                    minY =
+                        y;
+
+                }
+
+                if(x > maxX){
+
+                    maxX =
+                        x;
+
+                }
+
+                if(y > maxY){
+
+                    maxY =
+                        y;
+
+                }
+
+            }
+
+        }
+
+    }
+
+    if(
+        maxX < minX ||
+        maxY < minY
+    ){
+
+        return blob;
+
+    }
+
+    const objectWidth =
+        maxX -
+        minX;
+
+    const objectHeight =
+        maxY -
+        minY;
+
+    const padding =
+        Math.round(
+            Math.max(
+                objectWidth,
+                objectHeight
+            ) *
+            .035
+        );
+
+    minX =
+        Math.max(
+            0,
+            minX -
+            padding
+        );
+
+    minY =
+        Math.max(
+            0,
+            minY -
+            padding
+        );
+
+    maxX =
+        Math.min(
+            canvas.width - 1,
+            maxX +
+            padding
+        );
+
+    maxY =
+        Math.min(
+            canvas.height - 1,
+            maxY +
+            padding
+        );
+
+    const width =
+        maxX -
+        minX +
+        1;
+
+    const height =
+        maxY -
+        minY +
+        1;
+
+    const output =
+        document.createElement(
+            "canvas"
+        );
+
+    output.width =
+        width;
+
+    output.height =
+        height;
+
+    const outputContext =
+        output.getContext(
+            "2d"
+        );
+
+    outputContext.clearRect(
+        0,
+        0,
+        width,
+        height
+    );
+
+    outputContext.drawImage(
+        canvas,
+
+        minX,
+        minY,
+        width,
+        height,
+
+        0,
+        0,
+        width,
+        height
+    );
+
+    bitmap.close();
+
+    return await new Promise(
+        resolve => {
+
+            output.toBlob(
+                result => {
+
+                    resolve(
+                        result ||
+                        blob
+                    );
+
+                },
+
+                "image/png",
+
+                1
+            );
+
+        }
+    );
+
+}
+
+/* =========================================================
+   AI SUCCESS CALLBACK
+========================================================= */
+
+window.finishBackgroundRemoval =
+    async function(blob){
+
+        aiStatus.textContent =
+            "ОБРЕЗАЮ ПУСТЫЕ КРАЯ…";
+
+        let finalBlob =
+            blob;
+
+        try{
+
+            finalBlob =
+                await cropTransparentBlob(
+                    blob
+                );
+
+        }
+
+        catch(error){
+
+            console.warn(
+                "Crop error:",
+                error
+            );
+
+        }
+
+        if(processedImageURL){
+
+            URL.revokeObjectURL(
+                processedImageURL
+            );
+
+        }
+
+        processedImageURL =
+            URL.createObjectURL(
+                finalBlob
+            );
+
+        uploadPreview.src =
+            processedImageURL;
+
+        uploadPreview.classList.add(
+            "visible"
+        );
+
+        aiProgressBar.style.width =
+            "100%";
+
+        aiStatus.textContent =
+            "ФОН УДАЛЁН ✓";
+
+        removeBackgroundButton.disabled =
+            false;
+
+        addUploadToFit.disabled =
+            false;
+
+        showToast(
+            "ФОН УДАЛЁН"
+        );
+
+    };
+
+/* =========================================================
+   AI ERROR CALLBACK
+========================================================= */
+
+window.backgroundRemovalError =
+    function(error){
+
+        console.error(
+            "CreatureMeza AI error:",
+            error
+        );
+
+        removeBackgroundButton.disabled =
+            false;
+
+        addUploadToFit.disabled =
+            true;
+
+        aiStatus.textContent =
+            "ОШИБКА ИИ — ПОПРОБУЙ ЕЩЁ РАЗ";
+
+        showToast(
+            "НЕ УДАЛОСЬ УДАЛИТЬ ФОН"
+        );
+
+    };
+
+/* =========================================================
+   FIT LAYER
+========================================================= */
+
+function getLayer(category){
+
+    if(
+        category ===
+        "headwear"
+    ){
+
+        return "headwear";
+
+    }
+
+    if(
+        category ===
+        "shoes"
+    ){
+
+        return "shoes";
+
+    }
+
+    if(
+        category ===
+        "jeans"
+    ){
+
+        return "bottom";
+
+    }
+
+    if(
+        category ===
+        "zip"
+
+        ||
+
+        category ===
+        "hoodie"
+    ){
+
+        return "outerwear";
+
+    }
+
+    return "top";
+
+}
+
+/* =========================================================
+   ADD PROCESSED UPLOAD
+========================================================= */
+
+addUploadToFit.addEventListener(
+    "click",
+    () => {
+
+        if(!processedImageURL){
+
+            showToast(
+                "СНАЧАЛА УДАЛИ ФОН"
+            );
+
+            return;
+
+        }
+
+        const inputName =
+            document
+                .getElementById(
+                    "uploadName"
+                )
+                .value
+                .trim();
+
+        const name =
+            inputName ||
+            categoryLabel(
+                uploadCategory
+            );
+
+        const item = {
+
+            id:
+                "upload-" +
+                Date.now(),
+
+            name:name,
+
+            gender:
+                uploadGender,
+
+            category:
+                uploadCategory,
+
+            price:0,
+
+            image:
+                processedImageURL,
+
+            uploaded:true
+
+        };
+
+        addProductToFit(
+            item
+        );
+
+        document
+            .getElementById(
+                "fitBuilder"
+            )
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+    }
+);
+
+/* =========================================================
+   ADD ITEM TO FIT
+========================================================= */
+
+function addProductToFit(item){
+
+    if(!item.image){
+
+        showToast(
+            "У ВЕЩИ НЕТ ФОТО"
+        );
+
+        return;
+
+    }
+
+    const layer =
+        getLayer(
+            item.category
+        );
+
+    activeLayer =
+        layer;
+
+    fit[layer] =
+        item;
+
+    applyDefaults(
+        layer,
+        item.category
+    );
+
+    setActiveTab(
+        layer
+    );
+
+    renderFit();
+
+    showToast(
+        "ДОБАВЛЕНО В ОБРАЗ"
+    );
+
+}
+
+/* =========================================================
+   APPLY DEFAULTS
+========================================================= */
+
+function applyDefaults(
+    layer,
+    category
+){
+
+    const preset =
+        categoryDefaults[
+            category
+        ];
+
+    if(!preset){
+
+        return;
+
+    }
+
+    transforms[layer].x =
+        preset.x;
+
+    transforms[layer].y =
+        preset.y;
+
+    transforms[layer].scale =
+        preset.scale;
+
+    transforms[layer].scaleX =
+        preset.scaleX;
+
+    transforms[layer].scaleY =
+        preset.scaleY;
+
+    transforms[layer].width =
+        preset.width;
+
+}
+
+/* =========================================================
+   LAYER ELEMENT
+========================================================= */
+
+function layerElement(layer){
+
+    if(
+        layer ===
+        "top"
+    ){
+
+        return fitTop;
+
+    }
+
+    if(
+        layer ===
+        "outerwear"
+    ){
+
+        return fitOuterwear;
+
+    }
+
+    if(
+        layer ===
+        "bottom"
+    ){
+
+        return fitBottom;
+
+    }
+
+    if(
+        layer ===
+        "shoes"
+    ){
+
+        return fitShoes;
+
+    }
+
+    return fitHeadwear;
+
+}
+
+/* =========================================================
+   RENDER FIT
+========================================================= */
+
+function renderFit(){
+
+    [
+        "bottom",
+        "top",
+        "outerwear",
+        "shoes",
+        "headwear"
+    ]
+    .forEach(
+        layer => {
+
+            const element =
+                layerElement(
+                    layer
+                );
+
+            const item =
+                fit[
+                    layer
+                ];
+
+            if(
+                !item ||
+                !item.image
+            ){
+
+                element.classList.remove(
+                    "visible"
+                );
+
+                element.removeAttribute(
+                    "src"
+                );
+
+                return;
+
+            }
+
+            const transform =
+                transforms[
+                    layer
+                ];
+
+            element.src =
+                item.image;
+
+            element.classList.add(
+                "visible"
+            );
+
+            element.style.width =
+                (
+                    transform.width ||
+                    190
+                ) +
+                "px";
+
+            element.style.transform =
+                `
+
+                translate(
+                    -50%,
+                    -50%
+                )
+
+                translate(
+                    ${transform.x}px,
+                    ${transform.y}px
+                )
+
+                scale(
+                    ${
+                        transform.scale *
+                        transform.scaleX
+                    },
+
+                    ${
+                        transform.scale *
+                        transform.scaleY
+                    }
+                )
+
+                `;
+
+        }
+    );
+
+    const items =
+        Object.values(
+            fit
+        )
+        .filter(
+            Boolean
+        );
+
+    fitEmpty.style.display =
+        items.length
+        ? "none"
+        : "block";
+
+    fitCount.textContent =
+        items.length;
+
+    updateCurrent();
+
+}
+
+/* =========================================================
+   CURRENT LAYER
+========================================================= */
+
+function updateCurrent(){
+
+    const item =
+        fit[
+            activeLayer
+        ];
+
+    const transform =
+        transforms[
+            activeLayer
+        ];
+
+    if(!item){
+
+        fitCurrentName.textContent =
+            "ПУСТО";
+
+        fitCurrentType.textContent =
+            "—";
+
+    }
+
+    else{
+
+        fitCurrentName.textContent =
+            item.name;
+
+        fitCurrentType.textContent =
+            categoryLabel(
+                item.category
+            );
+
+    }
+
+    scaleValue.textContent =
+        Math.round(
+            transform.scale *
+            100
+        ) +
+        "%";
+
+    widthValue.textContent =
+        Math.round(
+            transform.scaleX *
+            100
+        ) +
+        "%";
+
+    heightValue.textContent =
+        Math.round(
+            transform.scaleY *
+            100
+        ) +
+        "%";
+
+}
+
+/* =========================================================
+   ACTIVE TAB
+========================================================= */
+
+function setActiveTab(layer){
+
+    document
+        .querySelectorAll(
+            ".fit-tab"
+        )
+        .forEach(
+            tab => {
+
+                tab.classList.toggle(
+                    "active",
+
+                    tab.dataset.layer ===
+                    layer
+                );
+
+            }
+        );
+
+}
+
+document
+.querySelectorAll(
+    ".fit-tab"
+)
+.forEach(
+    tab => {
+
+        tab.addEventListener(
+            "click",
+            () => {
+
+                activeLayer =
+                    tab.dataset.layer;
+
+                setActiveTab(
+                    activeLayer
+                );
+
+                updateCurrent();
+
+            }
+        );
+
+    }
+);
+
+/* =========================================================
+   AUTO FIT
+========================================================= */
+
+document
+.getElementById(
+    "autoFit"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        const item =
+            fit[
+                activeLayer
+            ];
+
+        if(!item){
+
+            showToast(
+                "СЛОЙ ПУСТ"
+            );
+
+            return;
+
+        }
+
+        applyDefaults(
+            activeLayer,
+            item.category
+        );
+
+        renderFit();
+
+        showToast(
+            "AUTO FIT ✓"
+        );
+
+    }
+);
+
+/* =========================================================
+   MOVE
+========================================================= */
+
+document
+.querySelectorAll(
+    "[data-move]"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                if(
+                    !fit[
+                        activeLayer
+                    ]
+                ){
+
+                    showToast(
+                        "ВЫБЕРИ ВЕЩЬ"
+                    );
+
+                    return;
+
+                }
+
+                const direction =
+                    button.dataset.move;
+
+                const step =
+                    6;
+
+                if(
+                    direction ===
+                    "left"
+                ){
+
+                    transforms[
+                        activeLayer
+                    ].x -= step;
+
+                }
+
+                if(
+                    direction ===
+                    "right"
+                ){
+
+                    transforms[
+                        activeLayer
+                    ].x += step;
+
+                }
+
+                if(
+                    direction ===
+                    "up"
+                ){
+
+                    transforms[
+                        activeLayer
+                    ].y -= step;
+
+                }
+
+                if(
+                    direction ===
+                    "down"
+                ){
+
+                    transforms[
+                        activeLayer
+                    ].y += step;
+
+                }
+
+                renderFit();
+
+            }
+        );
+
+    }
+);
+
+/* =========================================================
+   SCALE
+========================================================= */
+
+document
+.getElementById(
+    "scaleUp"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !fit[
+                activeLayer
+            ]
+        ){
+
+            return;
+
+        }
+
+        transforms[
+            activeLayer
+        ].scale =
+            Math.min(
+                2,
+
+                transforms[
+                    activeLayer
+                ].scale +
+                .05
+            );
+
+        renderFit();
+
+    }
+);
+
+document
+.getElementById(
+    "scaleDown"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !fit[
+                activeLayer
+            ]
+        ){
+
+            return;
+
+        }
+
+        transforms[
+            activeLayer
+        ].scale =
+            Math.max(
+                .35,
+
+                transforms[
+                    activeLayer
+                ].scale -
+                .05
+            );
+
+        renderFit();
+
+    }
+);
+
+/* =========================================================
+   WIDTH
+========================================================= */
+
+document
+.getElementById(
+    "widthUp"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !fit[
+                activeLayer
+            ]
+        ){
+
+            return;
+
+        }
+
+        transforms[
+            activeLayer
+        ].scaleX =
+            Math.min(
+                1.8,
+
+                transforms[
+                    activeLayer
+                ].scaleX +
+                .04
+            );
+
+        renderFit();
+
+    }
+);
+
+document
+.getElementById(
+    "widthDown"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !fit[
+                activeLayer
+            ]
+        ){
+
+            return;
+
+        }
+
+        transforms[
+            activeLayer
+        ].scaleX =
+            Math.max(
+                .45,
+
+                transforms[
+                    activeLayer
+                ].scaleX -
+                .04
+            );
+
+        renderFit();
+
+    }
+);
+
+/* =========================================================
+   HEIGHT
+========================================================= */
+
+document
+.getElementById(
+    "heightUp"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !fit[
+                activeLayer
+            ]
+        ){
+
+            return;
+
+        }
+
+        transforms[
+            activeLayer
+        ].scaleY =
+            Math.min(
+                1.8,
+
+                transforms[
+                    activeLayer
+                ].scaleY +
+                .04
+            );
+
+        renderFit();
+
+    }
+);
+
+document
+.getElementById(
+    "heightDown"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        if(
+            !fit[
+                activeLayer
+            ]
+        ){
+
+            return;
+
+        }
+
+        transforms[
+            activeLayer
+        ].scaleY =
+            Math.max(
+                .45,
+
+                transforms[
+                    activeLayer
+                ].scaleY -
+                .04
+            );
+
+        renderFit();
+
+    }
+);
+
+/* =========================================================
+   RESET TRANSFORM
+========================================================= */
+
+document
+.getElementById(
+    "resetTransform"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        const item =
+            fit[
+                activeLayer
+            ];
+
+        if(!item){
+
+            return;
+
+        }
+
+        applyDefaults(
+            activeLayer,
+            item.category
+        );
+
+        renderFit();
+
+        showToast(
+            "ПОЛОЖЕНИЕ СБРОШЕНО"
+        );
+
+    }
+);
+
+/* =========================================================
+   REMOVE LAYER
+========================================================= */
+
+document
+.getElementById(
+    "removeLayer"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        fit[
+            activeLayer
+        ] =
+            null;
+
+        renderFit();
+
+        showToast(
+            "ВЕЩЬ УБРАНА"
+        );
+
+    }
+);
+
+/* =========================================================
+   CLEAR FIT
+========================================================= */
+
+document
+.getElementById(
+    "clearFit"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        Object
+            .keys(
+                fit
+            )
+            .forEach(
+                layer => {
+
+                    fit[
+                        layer
+                    ] =
+                        null;
+
+                }
+            );
+
+        renderFit();
+
+        showToast(
+            "ОБРАЗ ОЧИЩЕН"
+        );
+
+    }
+);
+
+/* =========================================================
+   ADD FIT TO CART
+========================================================= */
+
+document
+.getElementById(
+    "addFitToBag"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        const items =
+            Object
+                .values(
+                    fit
+                )
+                .filter(
+                    Boolean
+                );
+
+        if(
+            !items.length
+        ){
+
+            showToast(
+                "ОБРАЗ ПУСТ"
+            );
+
+            return;
+
+        }
+
+        items.forEach(
+            item => {
+
+                cart.push(
+                    item
+                );
+
+            }
+        );
+
+        renderCart();
+
+        showToast(
+            "ОБРАЗ ДОБАВЛЕН"
+        );
+
+    }
+);
+
+/* =========================================================
+   CART
+========================================================= */
+
+function renderCart(){
+
+    bagCount.textContent =
+        cart.length;
+
+    cartList.innerHTML =
+        "";
+
+    if(
+        !cart.length
+    ){
+
+        cartList.innerHTML =
+            `
+
+            <div class="cart-empty">
+
+                КОРЗИНА ПУСТА
+
+            </div>
+
+            `;
+
+    }
+
+    else{
+
+        cart.forEach(
+            item => {
+
+                const row =
+                    document.createElement(
+                        "div"
+                    );
+
+                row.className =
+                    "cart-item";
+
+                row.innerHTML =
+                    `
+
+                    <div>
+
+                        <div class="cart-name">
+
+                            ${escapeHTML(item.name)}
+
+                        </div>
+
+                        <div class="cart-meta">
+
+                            ${categoryLabel(item.category)}
+
+                        </div>
+
+                    </div>
+
+                    <div class="cart-price">
+
+                        ${money(item.price)}
+
+                    </div>
+
+                    `;
+
+                cartList.appendChild(
+                    row
+                );
+
+            }
+        );
+
+    }
+
+    const total =
+        cart.reduce(
+            (
+                sum,
+                item
+            ) => {
+
+                return (
+                    sum +
+                    Number(
+                        item.price ||
+                        0
+                    )
+                );
+
+            },
+            0
+        );
+
+    cartTotal.textContent =
+        money(
+            total
+        );
+
+}
+
+/* =========================================================
+   CART OPEN / CLOSE
+========================================================= */
+
+document
+.getElementById(
+    "openCart"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        cartOverlay.classList.add(
+            "open"
+        );
+
+    }
+);
+
+document
+.getElementById(
+    "closeCart"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        cartOverlay.classList.remove(
+            "open"
+        );
+
+    }
+);
+
+cartOverlay.addEventListener(
+    "click",
+    event => {
+
+        if(
+            event.target ===
+            cartOverlay
+        ){
+
+            cartOverlay.classList.remove(
+                "open"
+            );
+
+        }
+
+    }
+);
+
+/* =========================================================
+   SHORTCUTS
+========================================================= */
+
+document
+.getElementById(
+    "enterCollection"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        document
+            .getElementById(
+                "collection"
+            )
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+    }
+);
+
+document
+.getElementById(
+    "uploadShortcut"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        document
+            .getElementById(
+                "upload"
+            )
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+    }
+);
+
+document
+.getElementById(
+    "fitShortcut"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        document
+            .getElementById(
+                "fitBuilder"
+            )
+            .scrollIntoView({
+                behavior:"smooth"
+            });
+
+    }
+);
+
+/* =========================================================
+   REVIEWS
+========================================================= */
+
+function starsFromRating(rating){
+
+    return (
+        "★".repeat(
+            rating
+        )
+        +
+        "☆".repeat(
+            5 -
+            rating
+        )
+    );
+
+}
+
+function loadReviews(){
+
+    let saved =
+        [];
+
+    try{
+
+        saved =
+            JSON.parse(
+                localStorage.getItem(
+                    "creaturemeza-reviews"
+                )
+                ||
+                "[]"
+            );
+
+    }
+
+    catch(error){
+
+        saved =
+            [];
+
+    }
+
+    saved.forEach(
+        review => {
+
+            addReviewCard(
+                review,
+                false
+            );
+
+        }
+    );
+
+}
+
+function addReviewCard(
+    review,
+    save
+){
+
+    const card =
+        document.createElement(
+            "article"
+        );
+
+    card.className =
+        "review-card glass";
+
+    const top =
+        document.createElement(
+            "div"
+        );
+
+    top.className =
+        "review-top";
+
+    const user =
+        document.createElement(
+            "div"
+        );
+
+    user.className =
+        "review-user";
+
+    user.textContent =
+        review.name;
+
+    const stars =
+        document.createElement(
+            "div"
+        );
+
+    stars.className =
+        "review-stars";
+
+    stars.textContent =
+        starsFromRating(
+            review.rating
+        );
+
+    top.appendChild(
+        user
+    );
+
+    top.appendChild(
+        stars
+    );
+
+    const text =
+        document.createElement(
+            "p"
+        );
+
+    text.className =
+        "review-text";
+
+    text.textContent =
+        review.text;
+
+    card.appendChild(
+        top
+    );
+
+    card.appendChild(
+        text
+    );
+
+    document
+        .getElementById(
+            "reviewsGrid"
+        )
+        .prepend(
+            card
+        );
+
+    if(save){
+
+        let saved =
+            [];
+
+        try{
+
+            saved =
+                JSON.parse(
+                    localStorage.getItem(
+                        "creaturemeza-reviews"
+                    )
+                    ||
+                    "[]"
+                );
+
+        }
+
+        catch(error){
+
+            saved =
+                [];
+
+        }
+
+        saved.push(
+            review
+        );
+
+        localStorage.setItem(
+            "creaturemeza-reviews",
+
+            JSON.stringify(
+                saved
+            )
+        );
+
+    }
+
+}
+
+document
+.querySelectorAll(
+    ".rating-button"
+)
+.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            () => {
+
+                reviewScore =
+                    Number(
+                        button.dataset.rating
+                    );
+
+                document
+                    .querySelectorAll(
+                        ".rating-button"
+                    )
+                    .forEach(
+                        item => {
+
+                            item.classList.toggle(
+                                "active",
+
+                                Number(
+                                    item.dataset.rating
+                                )
+                                ===
+                                reviewScore
+                            );
+
+                        }
+                    );
+
+            }
+        );
+
+    }
+);
+
+document
+.getElementById(
+    "submitReview"
+)
+.addEventListener(
+    "click",
+    () => {
+
+        let name =
+            document
+                .getElementById(
+                    "reviewName"
+                )
+                .value
+                .trim();
+
+        const text =
+            document
+                .getElementById(
+                    "reviewText"
+                )
+                .value
+                .trim();
+
+        if(!name){
+
+            name =
+                "@ANON";
+
+        }
+
+        if(
+            !name.startsWith(
+                "@"
+            )
+        ){
+
+            name =
+                "@" +
+                name;
+
+        }
+
+        if(!text){
+
+            showToast(
+                "НАПИШИ ОТЗЫВ"
+            );
+
+            return;
+
+        }
+
+        addReviewCard(
+            {
+
+                name:name,
+
+                rating:
+                    reviewScore,
+
+                text:text
+
+            },
+            true
+        );
+
+        document
+            .getElementById(
+                "reviewName"
+            )
+            .value =
+                "";
+
+        document
+            .getElementById(
+                "reviewText"
+            )
+            .value =
+                "";
+
+        showToast(
+            "ОТЗЫВ ДОБАВЛЕН"
+        );
+
+    }
+);
+
+/* =========================================================
+   INITIAL
+========================================================= */
+
+renderProducts();
+
+renderFit();
+
+renderCart();
+
+loadReviews();
+
+</script>
+
+<!-- =========================================================
+     BACKGROUND REMOVAL AI — CLICK-SAFE VERSION
+========================================================= -->
+
+<script>
+
+(function(){
+
+    const button = document.getElementById("removeBackgroundButton");
+    const addButton = document.getElementById("addUploadToFit");
+    const status = document.getElementById("aiStatus");
+    const progress = document.getElementById("aiProgress");
+    const bar = document.getElementById("aiProgressBar");
+
+    let running = false;
+    let removerPromise = null;
+
+    async function getRemover(){
+        if(!removerPromise){
+            status.textContent = "ЗАГРУЖАЮ AI-МОДУЛЬ…";
+            removerPromise = import("https://esm.sh/@imgly/background-removal@1.7.0")
+                .then(mod => mod.default || mod.removeBackground)
+                .then(fn => {
+                    if(typeof fn !== "function"){
+                        throw new Error("REMOVE_BACKGROUND_EXPORT_NOT_FOUND");
+                    }
+                    return fn;
+                })
+                .catch(error => {
+                    removerPromise = null;
+                    throw error;
+                });
+        }
+        return removerPromise;
+    }
+
+    button.addEventListener("click", async function(event){
+        event.preventDefault();
+        event.stopPropagation();
+
+        if(running) return;
+
+        if(!window.selectedFile){
+            status.textContent = "СНАЧАЛА ВЫБЕРИ ФОТО";
+            showToast("СНАЧАЛА ВЫБЕРИ ФОТО");
+            return;
+        }
+
+        running = true;
+        button.disabled = true;
+        addButton.disabled = true;
+        progress.classList.add("visible");
+        bar.style.width = "3%";
+        status.textContent = "ЗАПУСКАЮ УДАЛЕНИЕ ФОНА…";
+
+        try{
+            const removeBackground = await getRemover();
+            bar.style.width = "8%";
+            status.textContent = "ЗАГРУЖАЮ AI-МОДЕЛЬ…";
+
+            const result = await removeBackground(window.selectedFile, {
+                model: "isnet_quint8",
+                device: "cpu",
+                proxyToWorker: false,
+                debug: false,
+                output: {
+                    format: "image/png",
+                    quality: 1,
+                    type: "foreground"
+                },
+                progress: function(key, current, total){
+                    let percent = 10;
+                    if(Number.isFinite(current) && Number.isFinite(total) && total > 0){
+                        percent = Math.round((current / total) * 100);
+                    }
+                    percent = Math.max(10, Math.min(95, percent));
+                    bar.style.width = percent + "%";
+                    status.textContent = "AI ОБРАБАТЫВАЕТ — " + percent + "%";
+                }
+            });
+
+            if(!(result instanceof Blob)){
+                throw new Error("AI_RETURNED_NO_IMAGE");
+            }
+
+            bar.style.width = "97%";
+            status.textContent = "ГОТОВЛЮ PNG…";
+            await window.finishBackgroundRemoval(result);
+            bar.style.width = "100%";
+            status.textContent = "ФОН УДАЛЁН ✓";
+        }
+        catch(error){
+            console.error("CreatureMeza background removal:", error);
+            window.backgroundRemovalError(error);
+            status.textContent = "ОШИБКА AI — НАЖМИ ЕЩЁ РАЗ";
+        }
+        finally{
+            running = false;
+            button.disabled = false;
+        }
+    }, {passive:false});
+
+})();
+
+</script>
+
+</body>
+
+</html>
