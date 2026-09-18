@@ -4233,7 +4233,7 @@ let uploadGender =
 let uploadCategory =
     "shirt";
 
-let selectedFile =
+window.selectedFile =
     null;
 
 let originalImageURL =
@@ -7245,7 +7245,7 @@ loadReviews();
 */
 
 import removeBackground
-from "https://cdn.jsdelivr.net/npm/@imgly/background-removal@1.7.0/+esm";
+from "https://esm.sh/@imgly/background-removal@1.7.0";
 
 
 const removeButton =
@@ -7295,13 +7295,13 @@ removeButton.addEventListener(
         }
 
         if(
-            !selectedFile
+            !window.selectedFile
         ){
 
             statusElement.textContent =
                 "СНАЧАЛА ВЫБЕРИ ФОТО";
 
-            showToast(
+            window.showToast(
                 "СНАЧАЛА ВЫБЕРИ ФОТО"
             );
 
@@ -7337,11 +7337,17 @@ removeButton.addEventListener(
 
             const result =
                 await removeBackground(
-                    selectedFile,
+                    window.selectedFile,
                     {
 
                         model:
-                            "small",
+                            "isnet_quint8",
+
+                        device:
+                            "cpu",
+
+                        proxyToWorker:
+                            false,
 
                         output:{
 
