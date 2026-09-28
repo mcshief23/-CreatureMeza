@@ -2537,124 +2537,78 @@ async function getBackgroundModule(){
     return backgroundModule;
 }
 
-removeBackgroundButton.addEventListener(
-    "click",
-    async ()=>{
+removeBackgroundButton.addEventListener("click", async () => {
 
-        if(!selectedFile){
-            showToast("СНАЧАЛА ВЫБЕРИ ФОТО");
-            return;
-        }
-
-        removeBackgroundButton.disabled=true;
-        addUploadToFit.disabled=true;
-
-        aiProgress.classList.add("visible");
-
-        aiProgressBar.style.width="10%";
-
-        aiStatus.textContent=
-            "ИИ АНАЛИЗИРУЕТ ВЕЩЬ…";
-
-        try{
-
-            const AI=
-                await getBackgroundModule();
-
-            aiProgressBar.style.width="25%";
-
-            /*
-             * Основной публичный API библиотеки.
-             * KEEP BRUSH хранится отдельно.
-             */
-            const remove=
-                AI.removeBackground ||
-                AI.default;
-
-            if(typeof remove!=="function"){
-                throw new Error(
-                    "removeBackground unavailable"
-                );
-            }
-
-            const result=
-                await remove(
-                    selectedFile,
-                    {
-                        model:"isnet",
-                        output:{
-                            format:"image/png",
-                            quality:1
-                        }
-                    }
-                );
-
-            aiProgressBar.style.width="85%";
-
-            /*
-             * Если библиотека вернула Blob,
-             * используем его напрямую.
-             */
-            const blob=
-                result instanceof Blob
-                ? result
-                : new Blob(
-                    [result],
-                    {type:"image/png"}
-                );
-
-            if(processedImageURL){
-                URL.revokeObjectURL(
-                    processedImageURL
-                );
-            }
-
-            processedImageURL=
-                URL.createObjectURL(blob);
-
-            /*
-             * Общий state для остальных
-             * частей CreatureMeza.
-             */
-            window.creatureMezaProcessedBlob=
-                blob;
-
-            window.creatureMezaProcessedURL=
-                processedImageURL;
-
-            uploadPreview.src=
-                processedImageURL;
-
-            aiProgressBar.style.width="100%";
-
-            aiStatus.textContent=
-                "ФОН УДАЛЁН ✓";
-
-            addUploadToFit.disabled=false;
-
-            showToast("ФОН УДАЛЁН");
-
-        }catch(error){
-
-            console.error(
-                "Background removal:",
-                error
-            );
-
-            aiProgressBar.style.width="0%";
-
-            aiStatus.textContent=
-                "ОШИБКА ИИ — ПОПРОБУЙ ЕЩЁ РАЗ";
-
-            showToast("ОШИБКА AI");
-
-        }finally{
-
-            removeBackgroundButton.disabled=false;
-        }
+    if (!selectedFile) {
+        showToast("СНАЧАЛА ВЫБЕРИ ФОТО");
+        return;
     }
-);
 
+    removeBackgroundButton.disabled = true;
+    addUploadToFit.disabled = true;
+
+    aiProgress.classList.add("visible");
+    aiProgressBar.style.width = "10%";
+    aiStatus.textContent = "AI ЗАГРУЖАЕТ МОДЕЛЬ…";
+
+    try {
+
+        const AI = await getBackgroundModule();
+
+        aiProgressBar.style.width = "30%";
+        aiStatus.textContent = "AI УДАЛЯЕТ ФОН…";
+
+        const remove = AI.removeBackground || AI.default;
+
+        if (typeof remove !== "function") {
+            throw new Error("AI-модуль не загрузился");
+        }
+
+        const resultBlob = await remove(selectedFile, {
+            model: "isnet_quint8",
+            device: "cpu",
+            output: {
+                format: "image/png",
+                quality: 1
+            }
+        });
+
+        aiProgressBar.style.width = "90%";
+
+        if (processedImageURL) {
+            URL.revokeObjectURL(processedImageURL);
+        }
+
+        processedImageURL = URL.createObjectURL(resultBlob);
+
+        window.creatureMezaProcessedBlob = resultBlob;
+        window.creatureMezaProcessedURL = processedImageURL;
+
+        uploadPreview.src = processedImageURL;
+        uploadPreview.classList.add("visible");
+
+        aiProgressBar.style.width = "100%";
+        aiStatus.textContent = "ФОН УДАЛЁН ✓";
+
+        addUploadToFit.disabled = false;
+
+        showToast("ФОН УДАЛЁН");
+
+    } catch (error) {
+
+        console.error("CreatureMeza AI:", error);
+
+        aiProgressBar.style.width = "0%";
+        aiStatus.textContent = "ОШИБКА УДАЛЕНИЯ ФОНА";
+
+        alert("AI ERROR: " + (error?.message || error));
+
+    } finally {
+
+        removeBackgroundButton.disabled = false;
+
+    }
+});
 /* =========================================================
    FIT HELPERS
 ========================================================= */
